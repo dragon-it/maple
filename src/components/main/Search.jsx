@@ -33,7 +33,7 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 200px;
+  margin-top: 150px;
   width: 100%;
   height: 50px;
   z-index: 99;
