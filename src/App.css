@@ -1,5 +1,19 @@
 .App {
   background-color: aliceblue;
+  font-family: maple-light;
+}
+
+body{
+  background-color: aliceblue;
+}
+@font-face {
+  font-family: maple-bold;
+  src: url("./font/Maplestory\ Bold.ttf");
+}
+
+@font-face {
+  font-family: maple-light;
+  src: url("./font/Maplestory\ Light.ttf");
 }
 
 .App-logo {
@@ -7,6 +21,9 @@
   pointer-events: none;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 
 #root {
   height: 100%;
