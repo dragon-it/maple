@@ -4,12 +4,13 @@ import styled from 'styled-components'
 export const BackgroundImage = () => {
   return (
     <Container>
-      <img src="./assets/Henesys3.png" alt="Henesys" />
+      <img src="./assets/Henesys.jpg" alt="Henesys" />
     </Container>
   )
 }
 
 const Container = styled.div`
+  position: relative;
   img{
 
   object-fit: cover;

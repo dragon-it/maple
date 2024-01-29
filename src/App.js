@@ -1,22 +1,26 @@
-import { Footer } from './components/common/Footer';
-import { Header } from './components/common/Header';
+
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import './App.css';
-import { Search } from './components/main/Search';
+import { Main } from './pages/Main';
+import { User } from './pages/User';
+import { Footer } from './components/common/Footer';
+import { BackgroundImage } from './components/main/BackgroundImage';
+
+
 
 function App() {
   return (
-    <div className="App">
-        <Header/>
-        <Search/>
-        <Footer/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/user" element={<User />} />
+      </Routes>
+      <Footer/>
+      <BackgroundImage/>
+    </Router>
   );
 }
 
-
-
-
 export default App;
-
