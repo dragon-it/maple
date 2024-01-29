@@ -1,32 +1,69 @@
-import React from 'react'
-import styled from 'styled-components'
-import IconSearch from '../../icons/SearchIcon'
-import { Logo } from './Logo'
-import { BackgroundImage } from './BackgroundImage'
-
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import IconSearch from '../../icons/SearchIcon';
+import { Logo } from './Logo';
+import { getOcidApi, getBasicInformation } from '../../api/api';
 
 export const Search = () => {
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearch = async () => {
+    if (searchValue.trim() !== '') {
+      try {
+        // getOcidApi로 ocid 얻기
+        const ocidData = await getOcidApi(searchValue);
+
+        if (ocidData) {
+          console.log('OCID Data:', ocidData);
+
+          // getBasicInformation으로 캐릭터 기본 정보 얻기
+          const basicInfo = await getBasicInformation(ocidData.ocid);
+
+          if (basicInfo) {
+            console.log('Character Basic Information:', basicInfo);
+          } else {
+            console.error('Error fetching character basic information.');
+          }
+        } else {
+          // 에러 처리 로직
+          console.error('Error fetching OCID.');
+        }
+      } catch (error) {
+        console.error('Error during search:', error);
+      }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <Container>
       <InputContainer>
-      <Logo />
-        <input 
+        <Logo />
+        <input
           type="text"
-          placeholder='캐릭터 닉네임을 입력해주세요.'/>
-        <button type='submit'>
+          placeholder="캐릭터 닉네임을 입력해주세요."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button type="submit" onClick={handleSearch}>
           <IconSearch />
         </button>
       </InputContainer>
-      <BackgroundImage />
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-`
+`;
 
 const InputContainer = styled.div`
   position: absolute;
@@ -44,12 +81,12 @@ const InputContainer = styled.div`
     width: 300px;
     height: 40px;
     padding: 2px 10px;
-    border: 2px solid rgba(255, 051, 000, 0.9);
+    border: 2px solid rgba(255, 51, 0, 0.9);
     border-radius: 7px;
     outline: none;
     font-size: 16px;
   }
-  button{
+  button {
     width: 35px;
     height: 100%;
     display: flex;
@@ -64,4 +101,4 @@ const InputContainer = styled.div`
     cursor: pointer;
     color: red;
   }
-`
+`;
