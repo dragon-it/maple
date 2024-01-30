@@ -13,7 +13,7 @@ export const Footer = () => {
 
 const Container = styled.div`
   height: 100%;
-  background-color: red;
+  
   font-family: maple-light;
   display: flex;
   justify-content: center;

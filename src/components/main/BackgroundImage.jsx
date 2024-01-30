@@ -12,7 +12,6 @@ export const BackgroundImage = () => {
 const Container = styled.div`
   position: relative;
   img{
-
   object-fit: cover;
   opacity: 0.9;
   width: 100%;
