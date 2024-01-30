@@ -3,29 +3,29 @@ import styled from 'styled-components';
 import IconSearch from '../../icons/SearchIcon';
 import { Logo } from './Logo';
 import { getOcidApi, getBasicInformation } from '../../api/api';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 export const Search = () => {
   const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();  // Initialize useNavigate
 
   const handleSearch = async () => {
     if (searchValue.trim() !== '') {
       try {
-        // getOcidApi로 ocid 얻기
         const ocidData = await getOcidApi(searchValue);
-
         if (ocidData) {
           console.log('OCID Data:', ocidData);
 
-          // getBasicInformation으로 캐릭터 기본 정보 얻기
           const basicInfo = await getBasicInformation(ocidData.ocid);
-
           if (basicInfo) {
             console.log('Character Basic Information:', basicInfo);
+            
+            // 이동
+            navigate(`/user/${encodeURIComponent(searchValue)}`);
           } else {
             console.error('Error fetching character basic information.');
           }
         } else {
-          // 에러 처리 로직
           console.error('Error fetching OCID.');
         }
       } catch (error) {
