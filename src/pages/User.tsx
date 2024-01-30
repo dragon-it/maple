@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BasicInformation } from '../components/user/BasicInformation'
+import { Information } from '../components/user/Information'
 
 
 
 export const User = () => {
   return (
     <Container>
-      <BasicInformation></BasicInformation>
+      <Information></Information>
     </Container>
   )
 }
