@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import './App.css';
 import { Main } from './pages/Main';
 import { User } from './pages/User';
@@ -15,8 +14,8 @@ function App() {
         <Route path="/user" element={<User />} />
         <Route path="/user/:characterName" element={<User />} />
       </Routes>
-      <Footer />
       <BackgroundImage />
+      <Footer />
     </Router>
   );
 }
