@@ -38,17 +38,17 @@ export const Search = () => {
 };
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 500px;
+  height: 500px;
   position: absolute;
-  z-index: 99;
+  z-index: 9999;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 150px;
+  margin: 20px 0;
   width: 100%;
   height: 50px;
   z-index: 99;
