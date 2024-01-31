@@ -12,12 +12,11 @@ export const Footer = () => {
 };
 
 const Container = styled.div`
-  height: 100%;
-  
-  font-family: maple-light;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  font-family: maple-light;
   white-space: pre-wrap;
   line-height: 20px;
 `;
