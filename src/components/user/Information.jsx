@@ -71,7 +71,6 @@ const formatDateString = (dateString) => {
   
           const results = [];
           for (const api of apiFunctions) {
-            // 일정한 간격(예: 500ms)으로 API 호출
             await new Promise(resolve => setTimeout(resolve, 500));
             const result = await api(ocidData.ocid);
             results.push(result);

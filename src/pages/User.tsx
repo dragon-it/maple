@@ -1,20 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Information } from '../components/user/Information'
+import { Search } from '../components/main/Search'
 
 
 
 export const User = () => {
   return (
+    <>
+    <SearchWrap>
+      <Search/>
+    </SearchWrap>
     <Container>
       <Information></Information>
     </Container>
+    </>
   )
 }
 
 const Container = styled.div`
   display: flex;
-
   align-items: center;
   position: absolute;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
@@ -24,4 +29,12 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: #ffffff;
   z-index: 99;
+`
+
+const SearchWrap = styled.div`
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100px;
+  z-index: 9999;
 `
