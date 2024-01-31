@@ -24,83 +24,125 @@ import {
 } from '../../api/api';
 import { useParams } from 'react-router-dom';
 
+
+const apiFunctions = [
+  getBasicInformation,
+  // getCharacterStat,
+  // getCharacterPopularity,
+  // getHyperStat,
+  // getPropensity,
+  // getAbility,
+  // getItemEquipment,
+  // getCashItemEquipment,
+  // getSymbolEquipment,
+  // getSetEffect,
+  // getBeautyEquipment,
+  // getAndroidEquipment,
+  // getPetEquipment,
+  // // getSkill,
+  // // 스킬 파라미터 조정 예정
+  // getLinkSkill,
+  // getVMatrix,
+  // getHexaMatrix,
+  // getHexaMatrixStat,
+  // getDojang,
+];
+
 export const Information = () => {
   const { characterName } = useParams();
-  const [basicInfo, setBasicInfo] = useState(null);
-  const [statInfo, setstatInfo] = useState(null);
-  
-  // Add more states for other information if needed
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const formatDateString = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+
+
+const formatDateString = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString();
+};
 
   const handleSearch = async () => {
     if (characterName.trim() !== '') {
       try {
+        setLoading(true);
         const ocidData = await getOcidApi(characterName);
         if (ocidData) {
-          console.log('OCID Data:', ocidData);
-
-          const characterBasicInfo = await getBasicInformation(ocidData.ocid);
-          if (characterBasicInfo) {
-            console.log('Character Basic Information:', characterBasicInfo);
-            setBasicInfo(characterBasicInfo);
-
-            // Add more API calls for other information
-            const characterStat = await getCharacterStat(ocidData.ocid);
-            if (characterStat) {
-              console.log('Character Stat Information:', characterStat);
-              setstatInfo(characterStat);
-
-              // Set state for characterStat or update as needed
-            } else {
-              console.error('Error fetching character stat information.');
-            }
-
-            // Repeat the process for other APIs
-          } else {
-            console.error('Error fetching character basic information.');
+          console.log('OCID Data:', ocidData.ocid);
+  
+          const results = [];
+          for (const api of apiFunctions) {
+            // 일정한 간격(예: 500ms)으로 API 호출
+            await new Promise(resolve => setTimeout(resolve, 500));
+            const result = await api(ocidData.ocid);
+            results.push(result);
           }
+  
+          const resultObject = Object.fromEntries(apiFunctions.map((api, index) => [api.name, results[index]]));
+          setResult(resultObject);
+          console.log(resultObject)
         } else {
-          console.error('Error fetching OCID.');
+          setError('Error fetching OCID.');
         }
       } catch (error) {
-        console.error('Error during search:', error);
+        setError(`Error during search: ${error.message}`);
+      } finally {
+        setLoading(false);
       }
     }
   };
 
+  
   useEffect(() => {
     handleSearch();
   }, [characterName]);
 
   return (
     <Container>
-      {basicInfo && (
+      {result && result.getBasicInformation && (
         <InfoWrap>
-          <img src={basicInfo.character_image} alt={basicInfo.character_name} />
-          <div>캐릭터 이름: {basicInfo.character_name}</div>
-          <div>클래스: {basicInfo.character_class}</div>
-          <div>레벨: {basicInfo.character_level}</div>
-          <div>길드: {basicInfo.character_guild_name}</div>
-          <div>차수: {basicInfo.character_class_level}차</div>
-          <div>경험치: {basicInfo.character_exp_rate}%</div>
-          <div>경험치: {basicInfo.character_exp}</div>
-          <div>월드: {basicInfo.world_name}</div>
-          <div>스탯: </div>
-          <div>정보 갱신 기준: {formatDateString(basicInfo.date)}</div>
+          <div><img src={result.getBasicInformation.character_image} alt={result.getBasicInformation.character_name} /></div>
+          <div>캐릭터 이름: {result.getBasicInformation.character_name}</div>
+          <div>직업: {result.getBasicInformation.character_class}</div>
+          <div>레벨: {result.getBasicInformation.character_level}</div>
+          <div>길드: {result.getBasicInformation.character_guild_name}</div>
+          <div>차수: {result.getBasicInformation.character_class_level}차</div>
+          <div>경험치 비율: {result.getBasicInformation.character_exp_rate}%</div>
+          <div>월드: {result.getBasicInformation.world_name}</div>
+          {/* <PointStat>
+          {result.getstatInfo.final_stat.slice(16, 22).map((stat, index) => (
+            <div key={index}>
+              {stat.stat_name}: {stat.stat_value}
+            </div>
+          ))}
+          </PointStat> */}
+          <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
         </InfoWrap>
       )}
-      {/* Render other information based on the state of other API calls */}
     </Container>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  position: absolute;
+  width: 300px;
+  height: 500px;
+  z-index: 99;
+  background-color: #6b77e0;
 
-const InfoWrap = styled.div``;
+`;
+
+const InfoWrap = styled.div`
+
+  width: 100%;
+  height: 100%;
+  img{
+    margin: auto;
+    display: flex;
+    width: 130px;
+    height: 130px;
+    transform: scalex(-1);
+    transition: 1s;
+  }
+`;
+
+// const PointStat = styled.div``;
