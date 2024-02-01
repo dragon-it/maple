@@ -39,7 +39,6 @@ export const Search = () => {
 
 const Container = styled.div`
   width: 500px;
-  height: 500px;
   position: absolute;
   z-index: 9999;
 `;

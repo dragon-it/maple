@@ -23,7 +23,10 @@ import {
   getDojang,
 } from '../../api/api';
 import { useParams } from 'react-router-dom';
-
+import { BasicInformation } from './Information/BasicInformation';
+// import { AbilityInformation } from './Information/AbilityInformation'
+import { DojangInformation } from './Information/DojangInformation';
+import { HexaStatInformation } from './Information/HexaStatInformation';
 
 const apiFunctions = [
   getBasicInformation,
@@ -31,7 +34,7 @@ const apiFunctions = [
   // getCharacterPopularity,
   // getHyperStat,
   // getPropensity,
-  // getAbility,
+  getAbility,
   // getItemEquipment,
   // getCashItemEquipment,
   // getSymbolEquipment,
@@ -44,8 +47,8 @@ const apiFunctions = [
   // getLinkSkill,
   // getVMatrix,
   // getHexaMatrix,
-  // getHexaMatrixStat,
-  // getDojang,
+  getHexaMatrixStat,
+  getDojang,
 ];
 
 export const Information = () => {
@@ -97,16 +100,13 @@ const formatDateString = (dateString) => {
 
   return (
     <Container>
-      {result && result.getBasicInformation && (
+      {result && result.getBasicInformation && result.getDojang && (
         <InfoWrap>
-          <div><img src={result.getBasicInformation.character_image} alt={result.getBasicInformation.character_name} /></div>
-          <div>캐릭터 이름: {result.getBasicInformation.character_name}</div>
-          <div>직업: {result.getBasicInformation.character_class}</div>
-          <div>레벨: {result.getBasicInformation.character_level}</div>
-          <div>길드: {result.getBasicInformation.character_guild_name}</div>
-          <div>차수: {result.getBasicInformation.character_class_level}차</div>
-          <div>경험치 비율: {result.getBasicInformation.character_exp_rate}%</div>
-          <div>월드: {result.getBasicInformation.world_name}</div>
+          <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
+          <BasicInformation BasicInfo={result.getBasicInformation}></BasicInformation>
+          {/* <AbilityInformation Abilityinfo={result.getAbility}></AbilityInformation> */}
+          <DojangInformation DojangInfo={result.getDojang}></DojangInformation>
+          <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
           {/* <PointStat>
           {result.getstatInfo.final_stat.slice(16, 22).map((stat, index) => (
             <div key={index}>
@@ -114,7 +114,6 @@ const formatDateString = (dateString) => {
             </div>
           ))}
           </PointStat> */}
-          <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
         </InfoWrap>
       )}
     </Container>
