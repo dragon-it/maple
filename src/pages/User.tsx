@@ -21,6 +21,7 @@ export const User = () => {
 const Container = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   position: absolute;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   padding: 0px 50px;

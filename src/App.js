@@ -10,10 +10,18 @@ import { ThemeProvider, useTheme } from './components/context/themeProvider';
 import ThemeToggle from './components/theme/ThemeToggle';
 
 
-
+const UserContainer = styled.div`
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+`;
 
 function App() {
-  const [themeMode, toggleTheme] = useTheme(); 
+  const [themeMode, toggleTheme] = useTheme();
 
   return (
     <ThemeProvider>
@@ -21,15 +29,28 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/user/:characterName" element={<User />} />
+            <Route
+              path="/user"
+              element={
+                <UserContainer>
+                  <User />
+                </UserContainer>
+              }
+            />
+            <Route
+              path="/user/:characterName"
+              element={
+                <UserContainer>
+                  <User />
+                </UserContainer>
+              }
+            />
           </Routes>
           <BackgroundImage />
           <Footer />
-
           <ThemeToggle toggle={toggleTheme} mode={themeMode}>
-        DarkMode
-        </ThemeToggle>
+            DarkMode
+          </ThemeToggle>
         </Router>
       </Container>
     </ThemeProvider>
@@ -39,9 +60,9 @@ function App() {
 export default App;
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+
+  height: 100vh;
+
+  background-color: rgb(200, 200,200);
 `;
 

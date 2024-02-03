@@ -24,9 +24,9 @@ import {
 } from '../../api/api';
 import { useParams } from 'react-router-dom';
 import { BasicInformation } from './Information/BasicInformation';
-// import { AbilityInformation } from './Information/AbilityInformation'
 import { DojangInformation } from './Information/DojangInformation';
 import { HexaStatInformation } from './Information/HexaStatInformation';
+import { AbilityInformation } from './Information/AbilityInformation';
 
 const apiFunctions = [
   getBasicInformation,
@@ -104,7 +104,7 @@ const formatDateString = (dateString) => {
         <InfoWrap>
           <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
           <BasicInformation BasicInfo={result.getBasicInformation}></BasicInformation>
-          {/* <AbilityInformation Abilityinfo={result.getAbility}></AbilityInformation> */}
+          <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
           <DojangInformation DojangInfo={result.getDojang}></DojangInformation>
           <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
           {/* <PointStat>
@@ -125,8 +125,8 @@ const Container = styled.div`
   width: 300px;
   height: 500px;
   z-index: 99;
-  background-color: #6b77e0;
-
+  background-color: #b5b7c9;
+  border-radius: 10px;
 `;
 
 const InfoWrap = styled.div`

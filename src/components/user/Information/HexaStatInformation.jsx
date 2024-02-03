@@ -18,7 +18,6 @@ export const HexaStatInformation = ({ HexaStatInfo }) => {
   return (
     <Container>
       <div>Lv.{statLevelData.level}{hexaStatInfo.main_stat_name} : {statLevelData.main_stat_level}</div>
-      // 부스탯 추가 필요
     </Container>
   );
 };
