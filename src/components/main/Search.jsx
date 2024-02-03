@@ -38,7 +38,7 @@ export const Search = () => {
 };
 
 const Container = styled.div`
-  width: 500px;
+  width: 100%;
   position: absolute;
   z-index: 9999;
 `;
@@ -47,7 +47,6 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
   width: 100%;
   height: 50px;
   z-index: 99;

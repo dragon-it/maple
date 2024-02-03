@@ -13,10 +13,9 @@ export const Main = () => {
 
 const SearchWrap = styled.div`
   width: 100%;
-  height: 100px;
+  height: 50px;
   display: flex;
-  position: relative;
+  position: absolute;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: red;
 `

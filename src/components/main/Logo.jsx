@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/Logo.png'
 
 export const Logo = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const Logo = () => {
 
   return (
     <Container onClick={handleClick}>
-      <img src="./assets/Logo.png" alt="Logo" />
+      <img src={logo} alt="Logo" />
       <LogoText>메짱</LogoText>
     </Container>
   );
