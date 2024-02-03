@@ -40,6 +40,7 @@ const Container = styled.div`
   background-color: #cdbdbd;
   position: absolute;
   left: 500px;
+  padding: 15px;
 `;
 
 const PresetWrap = styled.div`
