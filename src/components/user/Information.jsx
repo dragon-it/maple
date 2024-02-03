@@ -27,12 +27,13 @@ import { BasicInformation } from './Information/BasicInformation';
 import { DojangInformation } from './Information/DojangInformation';
 import { HexaStatInformation } from './Information/HexaStatInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
+import { HyperStatInformation } from './Information/HyperStatInformation';
 
 const apiFunctions = [
   getBasicInformation,
   // getCharacterStat,
   // getCharacterPopularity,
-  // getHyperStat,
+  getHyperStat,
   // getPropensity,
   getAbility,
   // getItemEquipment,
@@ -107,6 +108,7 @@ const formatDateString = (dateString) => {
           <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
           <DojangInformation DojangInfo={result.getDojang}></DojangInformation>
           <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
+          <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
           {/* <PointStat>
           {result.getstatInfo.final_stat.slice(16, 22).map((stat, index) => (
             <div key={index}>
@@ -130,8 +132,7 @@ const Container = styled.div`
 `;
 
 const InfoWrap = styled.div`
-
-  width: 100%;
+  padding: 14px;
   height: 100%;
   img{
     margin: auto;
