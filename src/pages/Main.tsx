@@ -6,7 +6,7 @@ export const Main = () => {
   return (
     <Container>
       <SearchWrap>
-        <Search></Search>
+        <Search />
       </SearchWrap>
     </Container>
   )
