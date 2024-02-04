@@ -4,9 +4,14 @@ import styled from 'styled-components';
 export const HyperStatInformation = ({ HyperStatInfo }) => {
   const [detailedStats, setDetailedStats] = useState(Array(17).fill(false));
   const [selectedPreset, setSelectedPreset] = useState(1);
+  const [showAllStats, setShowAllStats] = useState(false);
 
   const handlePresetChange = (presetNumber) => {
     setSelectedPreset(presetNumber);
+  };
+
+  const toggleShowAllStats = () => {
+    setShowAllStats(!showAllStats);
   };
 
   const currentPresetKey = `hyper_stat_preset_${selectedPreset}`;
@@ -28,19 +33,23 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
     });
   };
 
+  const filteredStats = showAllStats
+    ? currentPreset
+    : currentPreset.filter((stat) => stat.stat_level !== 0);
+
   return (
     <Container>
-      {currentPreset.map((stat, index) => (
+      {filteredStats.map((stat, index) => (
         <StatInfo
           key={index}
           onMouseEnter={() => handleMouseEnter(index)}
-          onMouseLeave={() => handleMouseLeave(index)}
-        >
-          <p>
-            {stat.stat_type} Lv.{stat.stat_level}
-          </p>
+          onMouseLeave={() => handleMouseLeave(index)}>
+          <StatContainer>
+            <div>{stat.stat_type}</div>
+            <div>Lv.{stat.stat_level}</div>
+          </StatContainer>
           {stat.stat_increase !== null && detailedStats[index] && (
-            <p>{stat.stat_increase}</p>
+            <div>{stat.stat_increase}</div>
           )}
         </StatInfo>
       ))}
@@ -49,10 +58,14 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
           <PresetButton
             key={presetNumber}
             onClick={() => handlePresetChange(presetNumber)}
-            isSelected={selectedPreset === presetNumber}>
+            isSelected={selectedPreset === presetNumber}
+          >
             {presetNumber}
           </PresetButton>
         ))}
+        <ShowAllButton onClick={toggleShowAllStats}>
+          {showAllStats ? '간략하게 보기' : '자세히 보기'}
+        </ShowAllButton>
       </ButtonContainer>
       <div>POINT: {HyperStatInfo[`${currentPresetKey}_remain_point`]}</div>
     </Container>
@@ -60,19 +73,22 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
 };
 
 const Container = styled.div`
+  padding: 14px;
   width: 300px;
   position: absolute;
   right: 400px;
-  top: 20px;
+  top: -60px;
   background-color: #decdcd;
 `;
 
 const StatInfo = styled.div`
-  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   cursor: pointer;
+  transition: background-color 1s ease; /* 트랜지션 적용 */
 
-  p:hover {
-    text-decoration: underline;
+  &:hover {
+    background-color: #a87777;
   }
 `;
 
@@ -86,6 +102,19 @@ const PresetButton = styled.button`
   border: 1px solid #888;
   padding: 5px 10px;
   cursor: pointer;
+`;
+
+const ShowAllButton = styled.button`
+  background-color: #ddd;
+  border: 1px solid #888;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+`;
+
+const StatContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default HyperStatInformation;
