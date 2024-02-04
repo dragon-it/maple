@@ -52,51 +52,52 @@ const apiFunctions = [
   getDojang,
 ];
 
-export const Information = () => {
+const Information = () => {
   const { characterName } = useParams();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-
-
-const formatDateString = (dateString) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString();
-};
-
-  const handleSearch = async () => {
-    if (characterName.trim() !== '') {
-      try {
-        setLoading(true);
-        const ocidData = await getOcidApi(characterName);
-        if (ocidData) {
-          console.log('OCID Data:', ocidData.ocid);
-  
-          const results = [];
-          for (const api of apiFunctions) {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            const result = await api(ocidData.ocid);
-            results.push(result);
-          }
-  
-          const resultObject = Object.fromEntries(apiFunctions.map((api, index) => [api.name, results[index]]));
-          setResult(resultObject);
-          console.log(resultObject)
-        } else {
-          setError('Error fetching OCID.');
-        }
-      } catch (error) {
-        setError(`Error during search: ${error.message}`);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const formatDateString = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
   };
 
-  
   useEffect(() => {
-    handleSearch();
+    const fetchData = async () => {
+      if (characterName.trim() !== '') {
+        try {
+          setLoading(true);
+          const ocidData = await getOcidApi(characterName);
+          if (ocidData) {
+            console.log('OCID Data:', ocidData.ocid);
+
+            const results = [];
+            for (const api of apiFunctions) {
+              await new Promise((resolve) => setTimeout(resolve, 500));
+              const result = await api(ocidData.ocid);
+              results.push(result);
+            }
+
+            const resultObject = Object.fromEntries(apiFunctions.map((api, index) => [api.name, results[index]]));
+            setResult(resultObject);
+            console.log(resultObject);
+          } else {
+            setError('Error fetching OCID.');
+          }
+        } catch (error) {
+          setError(`Error during search: ${error.message}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData(); // 컴포넌트가 마운트될 때 초기 데이터 로딩
+    return () => {
+      // 언마운트 시 cleanup 함수 (optional)
+      // 여기에 중단할 작업을 추가할 수 있습니다.
+    };
   }, [characterName]);
 
   return (
@@ -105,17 +106,10 @@ const formatDateString = (dateString) => {
         <InfoWrap>
           <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
           <BasicInformation BasicInfo={result.getBasicInformation}></BasicInformation>
-          <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
           <DojangInformation DojangInfo={result.getDojang}></DojangInformation>
+          <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
           <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
           <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
-          {/* <PointStat>
-          {result.getstatInfo.final_stat.slice(16, 22).map((stat, index) => (
-            <div key={index}>
-              {stat.stat_name}: {stat.stat_value}
-            </div>
-          ))}
-          </PointStat> */}
         </InfoWrap>
       )}
     </Container>
@@ -123,9 +117,8 @@ const formatDateString = (dateString) => {
 };
 
 const Container = styled.div`
-  position: absolute;
-  width: 300px;
-  height: 500px;
+  display: flex;
+  flex-direction: row;
   z-index: 99;
   background-color: #b5b7c9;
   border-radius: 10px;
@@ -134,14 +127,17 @@ const Container = styled.div`
 const InfoWrap = styled.div`
   padding: 14px;
   height: 100%;
-  img{
+  display: flex;
+  flex-direction: row;
+  img {
     margin: auto;
     display: flex;
     width: 130px;
     height: 130px;
-    transform: scalex(-1);
+    transform: scaleX(-1);
     transition: 1s;
   }
 `;
 
+export default Information;
 // const PointStat = styled.div``;

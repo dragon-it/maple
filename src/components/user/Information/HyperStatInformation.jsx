@@ -75,9 +75,6 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
 const Container = styled.div`
   padding: 14px;
   width: 300px;
-  position: absolute;
-  right: 400px;
-  top: -60px;
   background-color: #decdcd;
 `;
 
@@ -85,8 +82,7 @@ const StatInfo = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   cursor: pointer;
-  transition: background-color 1s ease; /* 트랜지션 적용 */
-
+  transition: background-color 1s ease; 
   &:hover {
     background-color: #a87777;
   }

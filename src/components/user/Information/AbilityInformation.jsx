@@ -38,8 +38,6 @@ const Container = styled.div`
   display: block;
   width: 400px;
   background-color: #cdbdbd;
-  position: absolute;
-  left: 500px;
   padding: 15px;
 `;
 
