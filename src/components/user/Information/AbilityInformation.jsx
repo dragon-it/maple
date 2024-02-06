@@ -8,7 +8,7 @@ import rareBackgnd from '../../../assets/ui/abilityUi/abilityRareBackgnd.png'
 import epicBackgnd from '../../../assets/ui/abilityUi/abilityEpicBackgnd.png'
 import uniqueBackgnd from '../../../assets/ui/abilityUi/abilityUniqueBackgnd.png'
 import legendaryBackgnd from '../../../assets/ui/abilityUi/abilityLegendaryBackgnd.png'
-import backgroundImage from '../../../assets/ui/abilityUi/abilityBackgnd.png'
+import backgroundImage from '../../../assets/ui/abilityUi/abilityBackgnd2.png'
 import presetBtn1 from '../../../assets/ui/abilityUi/presetBtn1.png'
 import presetBtn2 from '../../../assets/ui/abilityUi/presetBtn2.png'
 import presetBtn3 from '../../../assets/ui/abilityUi/presetBtn3.png'
@@ -64,9 +64,7 @@ export const AbilityInformation = ({ AbilityInfo }) => {
   return (
     <Container>
       <PresetWrap>
-        <div>
           <img src={imagePath} alt={currentPreset.ability_preset_grade} />
-        </div>
         <p style={{ backgroundImage: `url(${backgroundImagePath0})` }}>
           {currentPreset.ability_info[0].ability_value}
         </p>
@@ -96,8 +94,9 @@ export const AbilityInformation = ({ AbilityInfo }) => {
 const Container = styled.div`
   position: relative;
   display: block;
-  width: 244px;
-  height: 176px;
+  width: 246px;
+  height: 191px;
+  margin-right: 50px;
   background-image: url(${backgroundImage});
   background-repeat: no-repeat;
   object-fit: cover;
@@ -105,7 +104,6 @@ const Container = styled.div`
   img{
     width: 100%;
     height: 100%;
-    transform: scaleX(1);
     transition: 1s;
   }
 
@@ -119,11 +117,12 @@ const PresetWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 34px;
+  margin-top: 9px;
   :first-child{
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     height: 26px;
-    width: 224px;
+    width: 220px;
+    margin-top: 5px;
   }
   p{
     font-size: 11px;
@@ -140,7 +139,7 @@ const PresetWrap = styled.div`
     border-radius: 6px;
   }
   span{
-    padding-top: 6px;
+    margin-top: 32px;
     padding-left: 115px;
     width: 100%;
     color: white;
@@ -149,8 +148,8 @@ const PresetWrap = styled.div`
 
 const ButtonContainer = styled.div`
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 80px;
+  bottom: 44px;
 `;
 
 const PresetButton = styled.button`
