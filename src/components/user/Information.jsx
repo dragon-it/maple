@@ -129,15 +129,12 @@ const InfoWrap = styled.div`
   height: 100%;
   display: flex;
   flex-direction: row;
+  font-family: sans-serif;
   img {
     margin: auto;
     display: flex;
-    width: 130px;
-    height: 130px;
-    transform: scaleX(-1);
     transition: 1s;
   }
 `;
 
 export default Information;
-// const PointStat = styled.div``;
