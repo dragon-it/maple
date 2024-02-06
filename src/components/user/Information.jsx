@@ -138,3 +138,4 @@ const InfoWrap = styled.div`
 `;
 
 export default Information;
+// const PointStat = styled.div``;
