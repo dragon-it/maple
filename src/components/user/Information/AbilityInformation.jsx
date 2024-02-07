@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import backgroundImage from '../../../assets/ui/abilityUi/abilityBackgnd2.png'
 import rare from '../../../assets/ui/abilityUi/ability_preset_grade_rare.png'
 import epic from '../../../assets/ui/abilityUi/ability_preset_grade_epic.png'
 import unique from '../../../assets/ui/abilityUi/ability_preset_grade_unique.png'
@@ -8,7 +9,6 @@ import rareBackgnd from '../../../assets/ui/abilityUi/abilityRareBackgnd.png'
 import epicBackgnd from '../../../assets/ui/abilityUi/abilityEpicBackgnd.png'
 import uniqueBackgnd from '../../../assets/ui/abilityUi/abilityUniqueBackgnd.png'
 import legendaryBackgnd from '../../../assets/ui/abilityUi/abilityLegendaryBackgnd.png'
-import backgroundImage from '../../../assets/ui/abilityUi/abilityBackgnd2.png'
 import presetBtn1 from '../../../assets/ui/abilityUi/presetBtn1.png'
 import presetBtn2 from '../../../assets/ui/abilityUi/presetBtn2.png'
 import presetBtn3 from '../../../assets/ui/abilityUi/presetBtn3.png'
@@ -117,12 +117,11 @@ const PresetWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 9px;
+  padding-top: 21px;
   :first-child{
     margin-bottom: 2px;
-    height: 26px;
+    height: 27px;
     width: 220px;
-    margin-top: 5px;
   }
   p{
     font-size: 11px;
@@ -157,12 +156,12 @@ const PresetButton = styled.button`
   background-image: url(${(props) => props.buttonImage});
   background-size: cover;
   border: none;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
   border-radius: 5px;
   ${(props) =>
-    props.isSelected? `filter: brightness(1.3);`: ''}
+    props.isSelected? `filter: brightness(0.5);`: ''}
 `;
 
 export default AbilityInformation;

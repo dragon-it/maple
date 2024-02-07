@@ -35,12 +35,10 @@ export const User: React.FC<UserProps> = () => {
 };
 
 const Container = styled.div`
-
   position: absolute;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   padding: 0px 50px;
   height: 700px;
-  width: 1500px;
   border-radius: 5px;
   background-color: #ffffff;
   z-index: 99;
@@ -49,6 +47,7 @@ const Container = styled.div`
 const SearchWrap = styled.div`
   position: absolute;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   top: 0;
