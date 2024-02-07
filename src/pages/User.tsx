@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Search } from '../components/main/Search';
 import Information from '../components/user/Information';
+import { Equipment } from '../components/user/Equipment';
 
 
 interface UserProps {}
@@ -27,8 +28,8 @@ export const User: React.FC<UserProps> = () => {
           캐릭터 장비
         </Tab>
       </Tabs>
-        {activeTab === 1 ? <Information /> : null}
-        {activeTab === 2 ? <div>test</div> : null}
+        {activeTab === 1 && <Information />}
+        {activeTab === 2 && <Equipment />}
       </Container>
     </>
   );

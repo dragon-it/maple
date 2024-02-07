@@ -2,25 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   getOcidApi,
-  getBasicInformation,
-  getCharacterStat,
-  getCharacterPopularity,
-  getHyperStat,
-  getPropensity,
-  getAbility,
-  getItemEquipment,
-  getCashItemEquipment,
-  getSymbolEquipment,
-  getSetEffect,
-  getBeautyEquipment,
-  getAndroidEquipment,
-  getPetEquipment,
-  getSkill,
-  getLinkSkill,
-  getVMatrix,
-  getHexaMatrix,
-  getHexaMatrixStat,
-  getDojang,
+
 } from '../../api/api';
 import { useParams } from 'react-router-dom';
 import { BasicInformation } from './Information/BasicInformation';
@@ -29,29 +11,8 @@ import { HexaStatInformation } from './Information/HexaStatInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
 import { HyperStatInformation } from './Information/HyperStatInformation';
 import { StatInformation } from './Information/StatInformation';
+import apiFunctions from './ApiFuntion';
 
-const apiFunctions = [
-  getBasicInformation,
-  getCharacterStat,
-  // getCharacterPopularity,
-  getHyperStat,
-  // getPropensity,
-  getAbility,
-  getItemEquipment,
-  // getCashItemEquipment,
-  // getSymbolEquipment,
-  // getSetEffect,
-  // getBeautyEquipment,
-  // getAndroidEquipment,
-  // getPetEquipment,
-  // // getSkill,
-  // // 스킬 파라미터 조정 예정
-  // getLinkSkill,
-  // getVMatrix,
-  // getHexaMatrix,
-  getHexaMatrixStat,
-  getDojang,
-];
 
 const Information = () => {
   const { characterName } = useParams();
