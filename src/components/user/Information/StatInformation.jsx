@@ -35,6 +35,21 @@ export const StatInformation = ({ statInfo }) => {
     <Container>
       <img src={backgrndImg} alt="backgrndImg" />
       <Combatpower>{formatNumber(statInfo.final_stat[42].stat_value)}</Combatpower>
+      <StatWrap>
+          <TextLeft>
+          <p>{statInfo.final_stat[20].stat_value}</p>
+          <p>{statInfo.final_stat[16].stat_value}</p>
+          <p>{statInfo.final_stat[18].stat_value}</p>
+          </TextLeft>
+          <TextRight>
+          <p>{statInfo.final_stat[21].stat_value}</p>
+          <p>{statInfo.final_stat[17].stat_value}</p>
+          <p>{statInfo.final_stat[19].stat_value}</p>
+          </TextRight>
+        <StatUi>
+
+        </StatUi>
+      </StatWrap>
       <AttackFontWrap>
         <TextLeft>
           <p>{formatNumber(statInfo.final_stat[1].stat_value)} </p>
@@ -42,7 +57,7 @@ export const StatInformation = ({ statInfo }) => {
           <p>{statInfo.final_stat[5].stat_value} %</p>
           <p>{statInfo.final_stat[40].stat_value} </p>
           <p>{statInfo.final_stat[41].stat_value} </p>
-          <p>{statInfo.final_stat[33].stat_value}초/ {statInfo.final_stat[34].stat_value}%</p>
+          <p>{statInfo.final_stat[33].stat_value}초 / {statInfo.final_stat[34].stat_value}%</p>
           <p>{statInfo.final_stat[35].stat_value} %</p>
           <p>{statInfo.final_stat[37].stat_value} %</p>
         </TextLeft>
@@ -60,7 +75,19 @@ export const StatInformation = ({ statInfo }) => {
           <img src={attackFont}alt="attackFont" />
         </FontUi>
       </AttackFontWrap>
-
+      <EtcStatWrap>
+        <TextLeft>
+            <p>{statInfo.final_stat[29].stat_value}</p>
+            <p>{statInfo.final_stat[28].stat_value}</p>
+            <p>{statInfo.final_stat[39].stat_value}</p>
+            </TextLeft>
+            <TextRight>
+            <p>{statInfo.final_stat[13].stat_value}</p>
+            <p>{statInfo.final_stat[14].stat_value}</p>
+            <p>{statInfo.final_stat[15].stat_value}</p>
+            </TextRight>
+          <EtcUi></EtcUi>
+      </EtcStatWrap>
     </Container>
   )
 }
@@ -82,8 +109,22 @@ const Combatpower = styled.div`
   top: 7px;
   width: 100%;
   font-size: 20px;
-
 `
+const StatWrap = styled.div`
+position: absolute;
+display: flex;
+align-items: flex-end;
+justify-content: flex-end;
+width: 100%;
+top: 50px;
+gap: 170px;
+background-color: red;
+`
+
+const StatUi = styled.div`
+`
+
+
 const AttackFontWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -121,4 +162,17 @@ const TextLeft = styled.div`
 const FontUi = styled.div`
   position: absolute;
   left: 13px;
+`
+
+const EtcStatWrap = styled.div`
+  position: absolute;
+display: flex;
+right: 0;
+bottom: 0;
+gap: 30px;
+background-color: red;
+`
+
+const EtcUi = styled.div`
+  
 `
