@@ -28,15 +28,16 @@ import { DojangInformation } from './Information/DojangInformation';
 import { HexaStatInformation } from './Information/HexaStatInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
 import { HyperStatInformation } from './Information/HyperStatInformation';
+import { StatInformation } from './Information/StatInformation';
 
 const apiFunctions = [
   getBasicInformation,
-  // getCharacterStat,
+  getCharacterStat,
   // getCharacterPopularity,
   getHyperStat,
   // getPropensity,
   getAbility,
-  // getItemEquipment,
+  getItemEquipment,
   // getCashItemEquipment,
   // getSymbolEquipment,
   // getSetEffect,
@@ -110,6 +111,7 @@ const Information = () => {
           <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
           <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
           <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
+          <StatInformation statInfo={result.getCharacterStat}></StatInformation>
         </InfoWrap>
       )}
     </Container>
@@ -128,10 +130,9 @@ const InfoWrap = styled.div`
   padding: 14px;
   height: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   font-family: sans-serif;
   img {
-    margin: auto;
     display: flex;
     transition: 1s;
   }
