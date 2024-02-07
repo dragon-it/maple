@@ -1,73 +1,138 @@
 import axios from 'axios';
 
 const BASE_URL = 'https://open.api.nexon.com';
-const API_KEY = 'test_1f336620ba5ba22af11842fa88ace8762d04e2c0990208617922362a4441232adf9c3d4feeed4aa9b7ea7aa0d04c773b';
+const API_KEY = 'test_1f336620ba5ba22af11842fa88ace876ce0912e187fd14af5ab2c1de032ff967909818169ece1ab4d1653d6f6ca987f7';
 
-// 캐릭터 ocid 호출
+// 일반적인 API 호출 함수
+const callMapleStoryAPI = async (endpoint, params) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/maplestory/v1/${endpoint}`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        'x-nxopen-api-key': API_KEY,
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error fetching ${endpoint} information:`, error);
+    return false;
+  }
+};
+
+// 날짜를 얻는 함수
+const getFormattedDate = () => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday.toISOString().split('T')[0];
+};
+
+// 사용 예시
 const getOcidApi = async (characterName) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/maplestory/v1/id`, {
-      params: {
-        'character_name': characterName,
-      },
-      headers: {
-        'x-nxopen-api-key': API_KEY,
-      },
-    });
-
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error('Error fetching OCID:', error);
-    return false;
-  }
+  return callMapleStoryAPI('id', { 'character_name': characterName });
 };
 
-// 캐릭터 기본 정보 호출
-// 캐릭터 기본 정보 호출
 const getBasicInformation = async (ocid) => {
-  try {
-    // 어제 날짜 계산
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const formattedDate = yesterday.toISOString().split('T')[0];
-
-    const response = await axios.get(`${BASE_URL}/maplestory/v1/character/basic`, {
-      params: {
-        ocid: ocid,
-        date: formattedDate,
-      },
-      headers: {
-        'x-nxopen-api-key': API_KEY,
-      },
-    });
-
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error('Error fetching basic information:', error);
-    return false;
-  }
+  return callMapleStoryAPI('character/basic', { ocid, date: getFormattedDate() });
 };
 
-export { getOcidApi, getBasicInformation };
+const getCharacterStat = async (ocid) => {
+  return callMapleStoryAPI('character/stat', { ocid, date: getFormattedDate() });
+};
 
+const getCharacterPopularity = async (ocid) => {
+  return callMapleStoryAPI('character/popularity', { ocid, date: getFormattedDate() });
+};
 
+const getHyperStat = async (ocid) => {
+  return callMapleStoryAPI('character/hyper-stat', { ocid, date: getFormattedDate() });
+};
 
+const getPropensity = async (ocid) => {
+  return callMapleStoryAPI('character/propensity', { ocid, date: getFormattedDate() });
+};
 
+const getAbility = async (ocid) => {
+  return callMapleStoryAPI('character/ability', { ocid, date: getFormattedDate() });
+};
 
+const getItemEquipment = async (ocid) => {
+  return callMapleStoryAPI('character/item-equipment', { ocid, date: getFormattedDate() });
+};
 
+const getCashItemEquipment = async (ocid) => {
+  return callMapleStoryAPI('character/cashitem-equipment', { ocid, date: getFormattedDate() });
+};
 
+const getSymbolEquipment = async (ocid) => {
+  return callMapleStoryAPI('character/symbol-equipment', { ocid, date: getFormattedDate() });
+};
 
+const getSetEffect = async (ocid) => {
+  return callMapleStoryAPI('character/set-effect', { ocid, date: getFormattedDate() });
+};
 
-export default getOcidApi;
+const getBeautyEquipment = async (ocid) => {
+  return callMapleStoryAPI('character/beauty-equipment', { ocid, date: getFormattedDate() });
+};
 
+const getAndroidEquipment = async (ocid) => {
+  return callMapleStoryAPI('character/android-equipment', { ocid, date: getFormattedDate() });
+};
 
+const getPetEquipment = async (ocid) => {
+  return callMapleStoryAPI('character/pet-equipment', { ocid, date: getFormattedDate() });
+};
 
+const getSkill = async (ocid) => {
+  return callMapleStoryAPI('character/skill', { ocid, date: getFormattedDate() });
+};
 
+const getLinkSkill = async (ocid) => {
+  return callMapleStoryAPI('character/link-skill', { ocid, date: getFormattedDate() });
+};
+
+const getVMatrix = async (ocid) => {
+  return callMapleStoryAPI('character/vmatrix', { ocid, date: getFormattedDate() });
+};
+
+const getHexaMatrix = async (ocid) => {
+  return callMapleStoryAPI('character/hexamatrix', { ocid, date: getFormattedDate() });
+};
+
+const getHexaMatrixStat = async (ocid) => {
+  return callMapleStoryAPI('character/hexamatrix-stat', { ocid, date: getFormattedDate() });
+};
+
+const getDojang = async (ocid) => {
+  return callMapleStoryAPI('character/dojang', { ocid, date: getFormattedDate() });
+};
+
+export {   
+  getOcidApi,
+  getBasicInformation,
+  getCharacterStat,
+  getCharacterPopularity,
+  getHyperStat,
+  getPropensity,
+  getAbility,
+  getItemEquipment,
+  getCashItemEquipment,
+  getSymbolEquipment,
+  getSetEffect,
+  getBeautyEquipment,
+  getAndroidEquipment,
+  getPetEquipment,
+  getSkill,
+  getLinkSkill,
+  getVMatrix,
+  getHexaMatrix,
+  getHexaMatrixStat,
+  getDojang 
+};

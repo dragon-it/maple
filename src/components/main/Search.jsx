@@ -2,75 +2,51 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import IconSearch from '../../icons/SearchIcon';
 import { Logo } from './Logo';
-import { getOcidApi, getBasicInformation } from '../../api/api';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import { useNavigate } from 'react-router-dom';  
 
 export const Search = () => {
   const [searchValue, setSearchValue] = useState('');
-  const navigate = useNavigate();  // Initialize useNavigate
+  const navigate = useNavigate(); 
 
-  const handleSearch = async () => {
-    if (searchValue.trim() !== '') {
-      try {
-        const ocidData = await getOcidApi(searchValue);
-        if (ocidData) {
-          console.log('OCID Data:', ocidData);
-
-          const basicInfo = await getBasicInformation(ocidData.ocid);
-          if (basicInfo) {
-            console.log('Character Basic Information:', basicInfo);
-            
-            // 이동
-            navigate(`/user/${encodeURIComponent(searchValue)}`);
-          } else {
-            console.error('Error fetching character basic information.');
-          }
-        } else {
-          console.error('Error fetching OCID.');
-        }
-      } catch (error) {
-        console.error('Error during search:', error);
-      }
-    }
+  const handleSearch = () => {
+    navigate(`/user/${encodeURIComponent(searchValue)}`);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearch();
   };
 
   return (
     <Container>
-      <InputContainer>
-        <Logo />
-        <input
-          type="text"
-          placeholder="캐릭터 닉네임을 입력해주세요."
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button type="submit" onClick={handleSearch}>
-          <IconSearch />
-        </button>
-      </InputContainer>
+      <form onSubmit={handleSubmit}>
+        <InputContainer>
+          <Logo />
+          <input
+            type="text"
+            placeholder="캐릭터 닉네임을 입력해주세요."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <button type="submit">
+            <IconSearch />
+          </button>
+        </InputContainer>
+      </form>
     </Container>
   );
 };
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
-  position: relative;
+  position: absolute;
+  z-index: 9999;
 `;
 
 const InputContainer = styled.div`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 150px;
   width: 100%;
   height: 50px;
   z-index: 99;
