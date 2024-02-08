@@ -13,7 +13,7 @@ export const Equipment = () => {
 
   return (
     <Container>
-      <ItemEquipmentInformation EquipData={itemEquipment}></ItemEquipmentInformation>
+      {/* <ItemEquipmentInformation EquipData={itemEquipment}></ItemEquipmentInformation> */}
 
     </Container>
   )
