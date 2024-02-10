@@ -12,24 +12,31 @@ export const PropensityInformation = ({ propensityData }) => {
     { subject: '의지', A: propensityData.willingness_level },
   ];
 
-
+  const PropensityItem = ({ label, level }) => (
+    <SubjectItems style={{ display: "flex", flexDirection: "row" }}>
+      <p style={{ backgroundColor: "rgb(34,187,255)", marginRight: "8px", width: "100px" }}>{label}</p>
+      <p style={{ backgroundColor: "rgb(34,187,255)" }}>
+        <LevelWrap>Lv.{level}</LevelWrap>
+      </p>
+    </SubjectItems>
+  );
 
   return (
     <Container>
       <PropensityTextWrap>
-        <TextWrap>
-          <p>카리스마 {propensityData.charisma_level}Lv</p>
-          <p>매력 {propensityData.charm_level}Lv</p>
-          <p>손재주 {propensityData.handicraft_level}Lv</p>
+      <TextWrap>
+          <PropensityItem label="카리스마" level={propensityData.charisma_level} />
+          <PropensityItem label="매력" level={propensityData.charm_level} />
+          <PropensityItem label="손재주" level={propensityData.handicraft_level} />
         </TextWrap>
         <TextWrap>
-          <p>통찰력 {propensityData.insight_level}Lv</p>
-          <p>감성 {propensityData.charisma_level}Lv</p>
-          <p>의지 {propensityData.sensibility_level}Lv</p>
+          <PropensityItem label="통찰력" level={propensityData.insight_level} />
+          <PropensityItem label="감성" level={propensityData.sensibility_level} />
+          <PropensityItem label="의지" level={propensityData.willingness_level} />
         </TextWrap>
       </PropensityTextWrap>
       <ChartWrap>
-        <RadarChart cx={152} cy={115} outerRadius={100} width={320} height={250} data={data} polarRadius={500} >
+        <RadarChart cx={152} cy={115} outerRadius={100} width={320} height={250} data={data}  >
           <PolarGrid />
           <Tooltip formatter={(value) => `레벨: ${value}`} />
           <PolarAngleAxis dataKey="subject" display="none" />
@@ -58,24 +65,35 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 300px; 
 `;
 
 const PropensityTextWrap = styled.div`
-
+  display: flex;
+  gap: 50px;
 `
 
 const TextWrap = styled.div`
+  p{
+    display: flex;
+    background-color: rgb(68,204,255);
+    margin: 10px;
+    justify-content: space-between;
+  }
 `
-
+const LevelWrap = styled.div`
+  text-align: end;
+`
 const SubjectItems = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   p{
     padding: 8px;
     background-color: rgb(153,221,238);
     color: white;
+    font-weight: 700;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
   }
 
