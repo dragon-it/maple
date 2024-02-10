@@ -6,7 +6,8 @@ import {
   getItemEquipment,
   getHexaMatrixStat,
   getDojang,
-  getCharacterPopularity
+  getCharacterPopularity,
+  getPropensity
 } from '../../api/api';
 
 const apiFunctions = [
@@ -17,7 +18,8 @@ const apiFunctions = [
   getItemEquipment,
   getHexaMatrixStat,
   getDojang,
-  getCharacterPopularity
+  getCharacterPopularity,
+  getPropensity,
 ];
 
 export default apiFunctions;
