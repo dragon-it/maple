@@ -35,7 +35,9 @@ export const StatInformation = ({ statInfo }) => {
       return <span>{value}</span>;
     }
   };
-  
+  const formatNumberWithCommas = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   return (
     <Container>
@@ -47,16 +49,16 @@ export const StatInformation = ({ statInfo }) => {
       <StatWrap>
         <img src={mainStatUi} alt="mainStatUi" />
         <TextWrap>
-          <TextLeft>
-            <p>{statInfo.final_stat[20].stat_value}</p>
-            <p>{statInfo.final_stat[16].stat_value}</p>
-            <p>{statInfo.final_stat[18].stat_value}</p>
-          </TextLeft>
-          <TextRight>
-            <p>{statInfo.final_stat[21].stat_value}</p>
-            <p>{statInfo.final_stat[17].stat_value}</p>
-            <p>{statInfo.final_stat[19].stat_value}</p>
-          </TextRight>
+        <TextLeft>
+          <p>{formatNumberWithCommas(statInfo.final_stat[20].stat_value)}</p>
+          <p>{formatNumberWithCommas(statInfo.final_stat[16].stat_value)}</p>
+          <p>{formatNumberWithCommas(statInfo.final_stat[18].stat_value)}</p>
+        </TextLeft>
+        <TextRight>
+          <p>{formatNumberWithCommas(statInfo.final_stat[21].stat_value)}</p>
+          <p>{formatNumberWithCommas(statInfo.final_stat[17].stat_value)}</p>
+          <p>{formatNumberWithCommas(statInfo.final_stat[19].stat_value)}</p>
+        </TextRight>
         </TextWrap>
         <StatUi>
           <img src={mainFont} alt="mainFont" />
@@ -67,8 +69,8 @@ export const StatInformation = ({ statInfo }) => {
           <p>{formatNumber(statInfo.final_stat[1].stat_value)} </p>
           <p>{statInfo.final_stat[4].stat_value} %</p>
           <p>{statInfo.final_stat[5].stat_value} %</p>
-          <p>{statInfo.final_stat[40].stat_value} </p>
-          <p>{statInfo.final_stat[41].stat_value} </p>
+          <p>{formatNumberWithCommas(statInfo.final_stat[40].stat_value)}</p>
+          <p>{formatNumberWithCommas(statInfo.final_stat[41].stat_value)}</p>
           <p>{statInfo.final_stat[33].stat_value}초 / {statInfo.final_stat[34].stat_value}%</p>
           <p>{statInfo.final_stat[35].stat_value} %</p>
           <p>{statInfo.final_stat[37].stat_value} %</p>
@@ -97,8 +99,8 @@ export const StatInformation = ({ statInfo }) => {
           </TextLeft>
           <TextRight>
             <p>{statInfo.final_stat[13].stat_value}</p>
-            <p>{statInfo.final_stat[14].stat_value}</p>
-            <p>{statInfo.final_stat[15].stat_value}</p>
+            <p>{formatNumberWithCommas(statInfo.final_stat[14].stat_value)}</p>
+            <p>{formatNumberWithCommas(statInfo.final_stat[15].stat_value)}</p>
           </TextRight>
         </EtcTextWrap>
         <EtcUi>

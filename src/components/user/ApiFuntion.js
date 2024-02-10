@@ -3,9 +3,10 @@ import {
   getCharacterStat,
   getHyperStat,
   getAbility,
-  // getItemEquipment,
+  getItemEquipment,
   getHexaMatrixStat,
   getDojang,
+  getCharacterPopularity
 } from '../../api/api';
 
 const apiFunctions = [
@@ -13,9 +14,10 @@ const apiFunctions = [
   getCharacterStat,
   getHyperStat,
   getAbility,
-  // getItemEquipment,
+  getItemEquipment,
   getHexaMatrixStat,
   getDojang,
+  getCharacterPopularity
 ];
 
 export default apiFunctions;

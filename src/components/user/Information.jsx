@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  getOcidApi,
 
-} from '../../api/api';
 import { useParams } from 'react-router-dom';
 import { BasicInformation } from './Information/BasicInformation';
 import { DojangInformation } from './Information/DojangInformation';
@@ -11,7 +8,8 @@ import { HexaStatInformation } from './Information/HexaStatInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
 import { HyperStatInformation } from './Information/HyperStatInformation';
 import { StatInformation } from './Information/StatInformation';
-import apiFunctions from './ApiFuntion';
+
+import fetchData from '../../api/fetchData';
 
 
 const Information = () => {
@@ -26,48 +24,18 @@ const Information = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (characterName.trim() !== '') {
-        try {
-          setLoading(true);
-          const ocidData = await getOcidApi(characterName);
-          if (ocidData) {
-            console.log('OCID Data:', ocidData.ocid);
-
-            const results = [];
-            for (const api of apiFunctions) {
-              await new Promise((resolve) => setTimeout(resolve, 500));
-              const result = await api(ocidData.ocid);
-              results.push(result);
-            }
-
-            const resultObject = Object.fromEntries(apiFunctions.map((api, index) => [api.name, results[index]]));
-            setResult(resultObject);
-            console.log(resultObject);
-          } else {
-            setError('Error fetching OCID.');
-          }
-        } catch (error) {
-          setError(`Error during search: ${error.message}`);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchData(); // 컴포넌트가 마운트될 때 초기 데이터 로딩
+    fetchData(characterName, setResult, setLoading, setError);
     return () => {
-      // 언마운트 시 cleanup 함수 (optional)
-      // 여기에 중단할 작업을 추가할 수 있습니다.
     };
   }, [characterName]);
+
 
   return (
     <Container>
       {result && result.getBasicInformation && result.getDojang && (
         <InfoWrap>
           <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
-          <BasicInformation BasicInfo={result.getBasicInformation}></BasicInformation>
+          <BasicInformation BasicInfo={{getBasicInformation: result.getBasicInformation,getCharacterPopularity: result.getCharacterPopularity}}></BasicInformation>
           <DojangInformation DojangInfo={result.getDojang}></DojangInformation>
           <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
           <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
