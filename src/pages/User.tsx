@@ -65,6 +65,7 @@ const SearchWrap = styled.div`
 
 const Tabs = styled.div`
   display: flex;
+  position: relative;
   flex-direction: row;
   background-color: #f0f0f0;
   padding: 10px;
