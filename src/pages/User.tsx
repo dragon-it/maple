@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Search } from '../components/main/Search';
 import Information from '../components/user/Information';
 import { Equipment } from '../components/user/Equipment';
+import { Propensity } from '../components/user/Propensity';
 
 
 interface UserProps {}
@@ -27,9 +28,13 @@ export const User: React.FC<UserProps> = () => {
         <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
           캐릭터 장비
         </Tab>
+        <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+          성향
+        </Tab>
       </Tabs>
         {activeTab === 1 && <Information />}
         {activeTab === 2 && <Equipment />}
+        {activeTab === 3 && <Propensity />}
       </Container>
     </>
   );
