@@ -52,7 +52,7 @@ export const Propensity = () => {
 };
 
 const Container = styled.div`
-  /* 추가적인 스타일링을 원하면 여기에 추가하세요. */
+  margin-top: 20px;
 `;
 
 const LoadingIndicator = styled.div`

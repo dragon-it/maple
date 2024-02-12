@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Search } from '../components/main/Search';
 import Information from '../components/user/Information';
-import { Equipment } from '../components/user/Equipment';
 import { Propensity } from '../components/user/Propensity';
+import { Equipment } from '../components/user/Equipment';
 
 
 interface UserProps {}
