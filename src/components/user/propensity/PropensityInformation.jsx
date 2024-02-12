@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, Tooltip } from 'recharts';
 
 export const PropensityInformation = ({ propensityData }) => {
+  const [tooltipVisible, setTooltipVisible] = useState(true);
   const data = [
     { subject: '카리스마', A: propensityData.charisma_level },
     { subject: '매력', A: propensityData.charm_level },
@@ -13,13 +14,17 @@ export const PropensityInformation = ({ propensityData }) => {
   ];
 
   const PropensityItem = ({ label, level }) => (
-    <SubjectItems style={{ display: "flex", flexDirection: "row" }}>
-      <p style={{ backgroundColor: "rgb(34,187,255)", marginRight: "8px", width: "100px" }}>{label}</p>
-      <p style={{ backgroundColor: "rgb(34,187,255)" }}>
+    <SubjectItems style={{ flexDirection: "row", marginRight: "8px" }}>
+      <p style={{ backgroundColor: "rgb(34,187,255)", marginRight: "0px", width: "80px", justifyContent: "center" }}>{label}</p>
+      <p style={{ backgroundColor: "rgb(34,187,255)", width: "55px", justifyContent: "center" }}>
         <LevelWrap>Lv.{level}</LevelWrap>
       </p>
     </SubjectItems>
   );
+
+  const handleChartClick = () => {
+    setTooltipVisible(!tooltipVisible);
+  };
 
   return (
     <Container>
@@ -36,9 +41,16 @@ export const PropensityInformation = ({ propensityData }) => {
         </TextWrap>
       </PropensityTextWrap>
       <ChartWrap>
-        <RadarChart cx={152} cy={115} outerRadius={100} width={320} height={250} data={data}  >
+      <RadarChart
+          cx={152}
+          cy={115}
+          outerRadius={100}
+          width={320}
+          height={250}
+          data={data}
+          onClick={handleChartClick}>
           <PolarGrid />
-          <Tooltip formatter={(value) => `레벨: ${value}`} />
+          <Tooltip formatter={(value) => `레벨: ${value}`}  active={tooltipVisible} />
           <PolarAngleAxis dataKey="subject" display="none" />
           <Radar name="레벨" dataKey="A" stroke="#3498db" fill="#3498db" fillOpacity={0.6} />
         </RadarChart>
@@ -68,15 +80,16 @@ const Container = styled.div`
 `;
 
 const PropensityTextWrap = styled.div`
-  display: flex;
-  gap: 50px;
+margin-bottom: 30px;
 `
 
 const TextWrap = styled.div`
+  display: flex;
+  flex-direction: row;
   p{
     display: flex;
     background-color: rgb(68,204,255);
-    margin: 10px;
+    margin: 5px;
     justify-content: space-between;
   }
 `
