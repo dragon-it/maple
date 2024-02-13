@@ -7,7 +7,7 @@ import {
   getHexaMatrixStat,
   getDojang,
   getCharacterPopularity,
-  getPropensity
+  getPropensity,
 } from '../../api/api';
 
 const apiFunctions = [

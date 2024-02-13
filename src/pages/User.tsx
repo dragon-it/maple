@@ -6,6 +6,7 @@ import { Propensity } from '../components/user/Propensity';
 import { Equipment } from '../components/user/Equipment';
 
 
+
 interface UserProps {}
 
 export const User: React.FC<UserProps> = () => {
