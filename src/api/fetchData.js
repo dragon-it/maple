@@ -1,20 +1,34 @@
-// api 호출 함수
+// fetchData.js
 
 import { getOcidApi } from './api';
 import apiFunctions from '../components/user/ApiFuntion';
+
+const getOcid = async (characterName) => {
+  try {
+    const ocidData = await getOcidApi(characterName);
+    if (ocidData) {
+      return ocidData.ocid;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting OCID:', error);
+    return null;
+  }
+};
 
 const fetchData = async (characterName, setResult, setLoading, setError) => {
   if (characterName.trim() !== '') {
     try {
       setLoading(true);
-      const ocidData = await getOcidApi(characterName);
-      if (ocidData) {
-        console.log('OCID Data:', ocidData.ocid);
+      const ocid = await getOcid(characterName);
+      if (ocid) {
+        console.log('OCID:', ocid);
 
         const results = [];
         for (const api of apiFunctions) {
           await new Promise((resolve) => setTimeout(resolve, 500));
-          const result = await api(ocidData.ocid);
+          const result = await api(ocid);
           results.push(result);
         }
 
