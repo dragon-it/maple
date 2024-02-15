@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import equipmentUi from '../../../assets/ui/equipmentUi/equipUi.png'
+import _ from 'lodash';
+
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
-  const [selectedPreset, setSelectedPreset] = useState('preset1');
+const presetKeys = Object.keys(EquipData)
+  .filter(key => key !== 'item_equipment' && key.startsWith('item_equipment_preset'));
+
+const matchingPresetKey = presetKeys.find(key => {
+  const presetData = EquipData[key];
+  const sortedPresetData = _.sortBy(presetData, 'item_equipment_part');
+  const sortedItemEquipment = _.sortBy(EquipData.item_equipment, 'item_equipment_part');
+  
+  const isEqual = _.isEqual(sortedPresetData, sortedItemEquipment);
+  
+  return isEqual;
+});
+
+const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment');
+console.log('matchingPresetKey:', matchingPresetKey);
+
+
   const positions = {    
     '모자': {top: '62px', left: '158px'},
     '얼굴장식': {top: '112px', left: '158px'},
@@ -38,6 +56,19 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
       '레전드리': 'rgb(0, 255, 0)',
     };
 
+
+    const PresetButton = styled.button`
+  /* 기본 스타일 */
+  border: 1px solid gray;
+  background-color: white;
+
+  /* 선택된 프리셋에 대한 스타일 */
+  ${({ isSelected }) => isSelected && `
+    border: 2px solid blue;
+    background-color: lightblue;
+  `}
+`;
+
     const ItemIcon = styled.div`
   position: absolute;
   display: flex;
@@ -49,18 +80,17 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   cursor: pointer;
   border: ${({ grade, gradeColors }) => `2px solid ${gradeColors[grade] || 'none'}`};
 `;
+const handlePresetChange = (preset) => {
+  setSelectedPreset(`item_equipment_${preset}`);
+};
 
-  const handlePresetChange = (preset) => {
-    setSelectedPreset(preset);
-  };
-
-  return (
-    <Container>
-      <UiBackgrnd>
-        <img src={equipmentUi} alt="ui" />
-      </UiBackgrnd>
-      <EquipItems>
-      {EquipData[`item_equipment_${selectedPreset}`].map((item, index) => (
+return (
+  <Container>
+    <UiBackgrnd>
+      <img src={equipmentUi} alt="ui" />
+    </UiBackgrnd>
+    <EquipItems>
+    {EquipData[selectedPreset]?.map((item, index) => (
   <ItemIcon 
     key={index} 
     style={positions[item.item_equipment_slot]} 
@@ -70,14 +100,29 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     <img src={item.item_icon} alt={`icon-${index}`} />
   </ItemIcon>
 ))}
-      </EquipItems>
-      <PresetButtons>
-        <button onClick={() => handlePresetChange('preset1')}>Preset 1</button>
-        <button onClick={() => handlePresetChange('preset2')}>Preset 2</button>
-        <button onClick={() => handlePresetChange('preset3')}>Preset 3</button>
-      </PresetButtons>
-    </Container>
-  );
+    </EquipItems>
+    <PresetButtons>
+      <PresetButton 
+        onClick={() => handlePresetChange('preset1')}
+        isSelected={selectedPreset === 'item_equipment_preset1'}
+      >
+        프리셋1
+      </PresetButton>
+      <PresetButton 
+        onClick={() => handlePresetChange('preset2')}
+        isSelected={selectedPreset === 'item_equipment_preset2'}
+      >
+        프리셋2
+      </PresetButton>
+      <PresetButton 
+        onClick={() => handlePresetChange('preset3')}
+        isSelected={selectedPreset === 'item_equipment_preset3'}
+      >
+        프리셋3
+      </PresetButton>
+    </PresetButtons>
+  </Container>
+);
 };
 
 const Container = styled.div`
