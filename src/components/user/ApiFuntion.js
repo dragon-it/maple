@@ -8,6 +8,8 @@ import {
   getDojang,
   getCharacterPopularity,
   getPropensity,
+  getSetEffect,
+
 } from '../../api/api';
 
 const apiFunctions = [
@@ -20,6 +22,7 @@ const apiFunctions = [
   getDojang,
   getCharacterPopularity,
   getPropensity,
+  getSetEffect,
 ];
 
 export default apiFunctions;
