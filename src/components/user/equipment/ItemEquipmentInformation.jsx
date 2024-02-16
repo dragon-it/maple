@@ -19,8 +19,10 @@ const matchingPresetKey = presetKeys.find(key => {
 });
 
 const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment');
-console.log('matchingPresetKey:', matchingPresetKey);
 
+
+console.log(selectedPreset);
+console.log(matchingPresetKey);
 
   const positions = {    
     '모자': {top: '62px', left: '158px'},
@@ -57,29 +59,36 @@ console.log('matchingPresetKey:', matchingPresetKey);
     };
 
 
-    const PresetButton = styled.button`
-  /* 기본 스타일 */
-  border: 1px solid gray;
-  background-color: white;
-
-  /* 선택된 프리셋에 대한 스타일 */
-  ${({ isSelected }) => isSelected && `
-    border: 2px solid blue;
-    background-color: lightblue;
-  `}
+  const PresetButton = styled.button`
+    position: relative;
+    border: 2px solid gray;
+    border-radius: 5px;
+    background-color: white;
+    ${({ isSelected }) => isSelected && `
+      border: 2px solid blue;
+      background-color: lightblue;
+    `}
+    span{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position:absolute;
+      top: -10px;
+      left: 50px;
+    }
 `;
 
-    const ItemIcon = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
-  width: 46px;
-  height: 46px;
-  cursor: pointer;
-  border: ${({ grade, gradeColors }) => `2px solid ${gradeColors[grade] || 'none'}`};
-`;
+  const ItemIcon = styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+    border: ${({ grade, gradeColors }) => `2px solid ${gradeColors[grade] || 'none'}`};
+  `;
 const handlePresetChange = (preset) => {
   setSelectedPreset(`item_equipment_${preset}`);
 };
@@ -88,39 +97,41 @@ return (
   <Container>
     <UiBackgrnd>
       <img src={equipmentUi} alt="ui" />
+      <PresetButtons>
+        {matchingPresetKey === selectedPreset && <span>현재 적용중인 프리셋이에요!</span>}
+        <PresetButton 
+          onClick={() => handlePresetChange('preset_1')}
+          isSelected={selectedPreset === 'item_equipment_preset_1'}
+        >
+          <div>프리셋1</div>
+        </PresetButton>
+        <PresetButton 
+          onClick={() => handlePresetChange('preset_2')}
+          isSelected={selectedPreset === 'item_equipment_preset_2'}
+        >
+          <div>프리셋2</div>
+        </PresetButton>
+        <PresetButton 
+          onClick={() => handlePresetChange('preset_3')}
+          isSelected={selectedPreset === 'item_equipment_preset_3'}
+        >
+          <div>프리셋3</div>
+        </PresetButton>
+      </PresetButtons>
+
     </UiBackgrnd>
     <EquipItems>
     {EquipData[selectedPreset]?.map((item, index) => (
-  <ItemIcon 
-    key={index} 
-    style={positions[item.item_equipment_slot]} 
-    grade={item.potential_option_grade}
-    gradeColors={gradeColors}
-  >
+      <ItemIcon 
+        key={index} 
+        style={positions[item.item_equipment_slot]} 
+        grade={item.potential_option_grade}
+        gradeColors={gradeColors}
+      >
     <img src={item.item_icon} alt={`icon-${index}`} />
   </ItemIcon>
 ))}
-    </EquipItems>
-    <PresetButtons>
-      <PresetButton 
-        onClick={() => handlePresetChange('preset1')}
-        isSelected={selectedPreset === 'item_equipment_preset1'}
-      >
-        프리셋1
-      </PresetButton>
-      <PresetButton 
-        onClick={() => handlePresetChange('preset2')}
-        isSelected={selectedPreset === 'item_equipment_preset2'}
-      >
-        프리셋2
-      </PresetButton>
-      <PresetButton 
-        onClick={() => handlePresetChange('preset3')}
-        isSelected={selectedPreset === 'item_equipment_preset3'}
-      >
-        프리셋3
-      </PresetButton>
-    </PresetButtons>
+    </EquipItems> 
   </Container>
 );
 };
@@ -146,5 +157,12 @@ const EquipItems = styled.div`
 
 
 const PresetButtons = styled.div`
-  
+  padding-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  span{
+    position: absolute;
+    bottom: 30px;
+  }
 `
