@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import equipmentUi from '../../../assets/ui/equipmentUi/equipUi.png'
 import _ from 'lodash';
+import { ItemDetail } from './ItemDetail';
 
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
@@ -19,10 +20,10 @@ const matchingPresetKey = presetKeys.find(key => {
 });
 
 const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment');
+const [selectedItem, setSelectedItem] = useState(null);
 
 
-console.log(selectedPreset);
-console.log(matchingPresetKey);
+console.log(selectedItem);
 
   const positions = {    
     '모자': {top: '62px', left: '158px'},
@@ -95,50 +96,66 @@ const handlePresetChange = (preset) => {
 
 return (
   <Container>
-    <UiBackgrnd>
-      <img src={equipmentUi} alt="ui" />
-      <PresetButtons>
-        {matchingPresetKey === selectedPreset && <span>현재 적용중인 프리셋이에요!</span>}
-        <PresetButton 
-          onClick={() => handlePresetChange('preset_1')}
-          isSelected={selectedPreset === 'item_equipment_preset_1'}
-        >
-          <div>프리셋1</div>
-        </PresetButton>
-        <PresetButton 
-          onClick={() => handlePresetChange('preset_2')}
-          isSelected={selectedPreset === 'item_equipment_preset_2'}
-        >
-          <div>프리셋2</div>
-        </PresetButton>
-        <PresetButton 
-          onClick={() => handlePresetChange('preset_3')}
-          isSelected={selectedPreset === 'item_equipment_preset_3'}
-        >
-          <div>프리셋3</div>
-        </PresetButton>
-      </PresetButtons>
+    <InfoWrap>
+        <UiBackgrnd>
+          <img src={equipmentUi} alt="ui" />
+          <PresetButtons>
+            {matchingPresetKey === selectedPreset && <span>현재 적용중인 프리셋이에요!</span>}
+            <PresetButton 
+              onClick={() => handlePresetChange('preset_1')}
+              isSelected={selectedPreset === 'item_equipment_preset_1'}
+            >
+              <div>프리셋1</div>
+            </PresetButton>
+            <PresetButton 
+              onClick={() => handlePresetChange('preset_2')}
+              isSelected={selectedPreset === 'item_equipment_preset_2'}
+            >
+              <div>프리셋2</div>
+            </PresetButton>
+            <PresetButton 
+              onClick={() => handlePresetChange('preset_3')}
+              isSelected={selectedPreset === 'item_equipment_preset_3'}
+            >
+              <div>프리셋3</div>
+            </PresetButton>
+          </PresetButtons>
 
-    </UiBackgrnd>
-    <EquipItems>
-    {EquipData[selectedPreset]?.map((item, index) => (
-      <ItemIcon 
-        key={index} 
-        style={positions[item.item_equipment_slot]} 
-        grade={item.potential_option_grade}
-        gradeColors={gradeColors}
-      >
-    <img src={item.item_icon} alt={`icon-${index}`} />
-  </ItemIcon>
-))}
-    </EquipItems> 
-  </Container>
-);
+        </UiBackgrnd>
+        <EquipItems>
+        {EquipData[selectedPreset]?.map((item, index) => (
+          <ItemIcon 
+            key={index} 
+            style={positions[item.item_equipment_slot]} 
+            grade={item.potential_option_grade}
+            gradeColors={gradeColors}
+            onClick={() => setSelectedItem(item)} // 클릭 시 selectedItem 업데이트
+            onMouseOver={() => setSelectedItem(item)} // 마우스 오버 시 selectedItem 업데이트
+          >
+        <img src={item.item_icon} alt={`icon-${index}`} />
+          </ItemIcon>
+        ))}
+        </EquipItems> 
+      </InfoWrap>
+      <DetailWrap>
+        <ItemDetail item={selectedItem}></ItemDetail>
+      </DetailWrap>
+    </Container>
+  );
 };
 
 const Container = styled.div`
   white-space: nowrap;
+  display: flex;
+  flex-direction: row;
 `;
+
+const InfoWrap = styled.div`
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 const UiBackgrnd = styled.div`
   position: relative;
@@ -153,16 +170,22 @@ const EquipItems = styled.div`
   display: flex;
   width: 500px;
   flex-wrap: wrap;
+  
 `;
 
 
 const PresetButtons = styled.div`
   padding-top: 30px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
   span{
     position: absolute;
     bottom: 30px;
   }
+`
+
+const DetailWrap = styled.div`
+  
 `
