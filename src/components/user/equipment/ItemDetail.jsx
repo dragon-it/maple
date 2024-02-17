@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export const ItemDetail = ({ item }) => {
+
+export const ItemDetail = ({ item, clicked }) => {
+  console.log(clicked)
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <Container>아이템을 선택해주세요.</Container>
   }
@@ -24,6 +26,7 @@ export const ItemDetail = ({ item }) => {
     equipment_level_decrease: '착용 레벨 감소',
     max_hp_rate: '최대 HP',
     max_mp_rate: '최대 MP',
+    damage: '데미지'
   }
   
   const optionValueModifierMap = {
@@ -33,11 +36,17 @@ export const ItemDetail = ({ item }) => {
     max_mp_rate: value => `+${value}%`,
     ignore_monster_armor: value => `+${value}%`,
     boss_damage: value => `+${value}%`,
+    damage: value => `+${value}%`,
     default: value => `+${Number(value).toLocaleString()}`,
   }
   
   return (
     <Container>
+        <div style={{ position: 'relative' }}>
+          {clicked && (
+            <PinImage/>
+          )}
+        </div>
       <ItemNameWrap>
       <StarForce style={{ display: item.starforce === 0 ? 'none' : 'block' }}>
         <StartForceFirstLine>{Array.from({ length: Math.min(item.starforce, 15) }, (_, i) => (i + 1) % 5 === 0 ? '★ ' : '★')}</StartForceFirstLine>
@@ -65,7 +74,7 @@ export const ItemDetail = ({ item }) => {
 }
 
 const Container = styled.div`
-  width: 400px;
+  width: 320px;
   background-color: #000000;
   color: white; 
   padding: 20px;
@@ -84,7 +93,7 @@ const ItemNameWrap = styled.div`
 
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
-  font-size: 1.2em; 
+  font-size: 1em; 
 `
 const StartForceFirstLine = styled.div`
   margin-bottom: 10px;
@@ -97,4 +106,17 @@ const StartForceSecondLine = styled.div`
 
 const ItemOptionWrap = styled.div`
   padding: 15px 0;
+  line-height: 20px;
 `
+
+const PinImage = styled.div`
+  position: absolute;
+  top: -25px;
+  left: -20px;
+  width: 10px;
+  height: 10px;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid white;
+  transform: rotate(45deg);
+`;

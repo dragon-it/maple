@@ -21,7 +21,18 @@ const matchingPresetKey = presetKeys.find(key => {
 
 const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment');
 const [selectedItem, setSelectedItem] = useState(null);
+const [clicked, setClicked] = useState(false); // 클릭 이벤트를 관리하는 state 추가
 
+const handleItemHover = (item) => {
+  if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동하도록
+    setSelectedItem(item);
+  }
+};
+
+const handleItemClick = (item) => {
+  setSelectedItem(item);
+  setClicked(!clicked); // 클릭 시 clicked 상태를 반전
+};
 
 console.log(selectedItem);
 
@@ -120,7 +131,6 @@ return (
               <div>프리셋3</div>
             </PresetButton>
           </PresetButtons>
-
         </UiBackgrnd>
         <EquipItems>
         {EquipData[selectedPreset]?.map((item, index) => (
@@ -129,8 +139,8 @@ return (
             style={positions[item.item_equipment_slot]} 
             grade={item.potential_option_grade}
             gradeColors={gradeColors}
-            onClick={() => setSelectedItem(item)} // 클릭 시 selectedItem 업데이트
-            onMouseOver={() => setSelectedItem(item)} // 마우스 오버 시 selectedItem 업데이트
+            onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+            onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
           >
         <img src={item.item_icon} alt={`icon-${index}`} />
           </ItemIcon>
@@ -138,7 +148,7 @@ return (
         </EquipItems> 
       </InfoWrap>
       <DetailWrap>
-        <ItemDetail item={selectedItem}></ItemDetail>
+        <ItemDetail item={selectedItem} clicked={clicked}></ItemDetail>
       </DetailWrap>
     </Container>
   );
@@ -152,6 +162,7 @@ const Container = styled.div`
 
 const InfoWrap = styled.div`
     width: 300px;
+    height: 368px;
     display: flex;
     justify-content: center;
     align-items: center;
