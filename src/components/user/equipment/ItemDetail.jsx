@@ -53,11 +53,20 @@ export const ItemDetail = ({ item, clicked }) => {
         <StartForceSecondLine>{item.starforce > 15 && Array.from({ length: item.starforce - 15 }, (_, i) => (i + 1) % 5 === 0 ? '★ ' : '★')}</StartForceSecondLine>
       </StarForce>
 
-        <h2>{`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}</h2> {/* 아이템 이름 */}
+      <h2>
+          {item && item.soul_name && (
+        <span>{item.soul_name.replace(" 소울 적용", "")}</span>
+      )}
+        <p>{`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}</p>
+      </h2> {/* 아이템 이름 */}
 
         {item.potential_option_grade && <p>{`(${item.potential_option_grade} 아이템)`}</p>} {/* 아이템 품질 */}
       </ItemNameWrap>
-
+      <IconWrap>
+        <IconImage>
+          <img src={item.item_icon} alt={item.item_name} /> 
+        </IconImage>
+      </IconWrap>
       <ItemOptionWrap>
         {Object.entries(item.item_total_option).map(([key, value]) => {
           if ((value !== '0' && value !== 0)) {
@@ -68,7 +77,7 @@ export const ItemDetail = ({ item, clicked }) => {
         })}
       </ItemOptionWrap>
 
-      <img src={item.item_icon} alt={item.item_name} /> 
+
     </Container>
   )
 }
@@ -86,8 +95,35 @@ const ItemNameWrap = styled.div`
   border-bottom: 2px dotted rgb(55, 56, 58);
   padding-bottom: 20px;
   h2{
-    font-size: 20px;
+    font-size: 18px;
     padding: 10px 0;
+    line-height: 24px;
+    text-align: center;
+    span{
+      color: rgb(210,245,57);
+    }
+  }
+`
+
+const IconWrap = styled.div`
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px dotted rgb(55, 56, 58);
+`
+
+const IconImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75px;
+  height: 75px;
+  background-color: white;
+  border-radius: 10px;
+  border: 3px solid rgb(134, 130, 132);
+  img{
+    height: 80%;
   }
 `
 
