@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import gradeColors from './ItemGradeColors'
 
-
-export const ItemDetail = ({ item, clicked }) => {
+export const ItemDetail = ({ item, clicked, gradeColors }) => {
   console.log(clicked)
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <Container>아이템을 선택해주세요.</Container>
@@ -63,7 +63,7 @@ export const ItemDetail = ({ item, clicked }) => {
         {item.potential_option_grade && <p>{`(${item.potential_option_grade} 아이템)`}</p>} {/* 아이템 품질 */}
       </ItemNameWrap>
       <IconWrap>
-        <IconImage>
+        <IconImage gradeColors={gradeColors} grade={item.potential_option_grade}>
           <img src={item.item_icon} alt={item.item_name} /> 
         </IconImage>
       </IconWrap>
@@ -71,7 +71,7 @@ export const ItemDetail = ({ item, clicked }) => {
         {Object.entries(item.item_total_option).map(([key, value]) => {
           if ((value !== '0' && value !== 0)) {
             const modifier = optionValueModifierMap[key] || optionValueModifierMap.default;
-            return <p key={key}>{`${optionNameMap[key]}: ${modifier(value)}`}</p>
+            return <p key={key}>{`${optionNameMap[key]} : ${modifier(value)}`}</p>
           }
           return null;
         })}
@@ -83,10 +83,14 @@ export const ItemDetail = ({ item, clicked }) => {
 }
 
 const Container = styled.div`
-  width: 320px;
+  width: 280px;
   background-color: #000000;
   color: white; 
-  padding: 20px;
+  padding: 0px 20px;
+  border-radius: 5px;
+  border: 1px solid white;
+  outline: 1px solid black;
+
 `
 const ItemNameWrap = styled.div`
   display: flex;
@@ -106,7 +110,7 @@ const ItemNameWrap = styled.div`
 `
 
 const IconWrap = styled.div`
-  padding: 20px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,7 +125,8 @@ const IconImage = styled.div`
   height: 75px;
   background-color: white;
   border-radius: 10px;
-  border: 3px solid rgb(134, 130, 132);
+
+  border: ${({ grade, gradeColors }) => `3px solid ${gradeColors[grade] || 'rgb(134, 130, 132)'}`};
   img{
     height: 80%;
   }
@@ -129,7 +134,8 @@ const IconImage = styled.div`
 
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
-  font-size: 1em; 
+  font-size: 13px;
+  padding-top: 15px;
 `
 const StartForceFirstLine = styled.div`
   margin-bottom: 10px;
@@ -143,11 +149,12 @@ const StartForceSecondLine = styled.div`
 const ItemOptionWrap = styled.div`
   padding: 15px 0;
   line-height: 20px;
+  font-size: 14px;
 `
 
 const PinImage = styled.div`
   position: absolute;
-  top: -25px;
+  top: -5px;
   left: -20px;
   width: 10px;
   height: 10px;

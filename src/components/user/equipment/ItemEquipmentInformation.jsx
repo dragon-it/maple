@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import equipmentUi from '../../../assets/ui/equipmentUi/equipUi.png'
 import _ from 'lodash';
 import { ItemDetail } from './ItemDetail';
-
+import gradeColors from './ItemGradeColors'
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
 const presetKeys = Object.keys(EquipData)
@@ -63,12 +63,6 @@ console.log(selectedItem);
     '펜던트2': {top: '161px', left: '109px'}
     };
 
-    const gradeColors = {
-      '레어': 'rgb(85, 170, 255)',
-      '에픽': 'rgb(204, 102, 255)',
-      '유니크': 'rgb(255, 204, 0)',
-      '레전드리': 'rgb(0, 255, 0)',
-    };
 
 
   const PresetButton = styled.button`
@@ -148,7 +142,7 @@ return (
         </EquipItems> 
       </InfoWrap>
       <DetailWrap>
-        <ItemDetail item={selectedItem} clicked={clicked}></ItemDetail>
+        <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors} > </ItemDetail>
       </DetailWrap>
     </Container>
   );
