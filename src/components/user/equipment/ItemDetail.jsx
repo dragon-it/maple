@@ -5,7 +5,7 @@ import gradeColors from './ItemGradeColors'
 export const ItemDetail = ({ item, clicked, gradeColors }) => {
   console.log(clicked)
   if (!item) { // 아이템 정보가 없는 경우를 처리
-    return <Container>아이템을 선택해주세요.</Container>
+    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
   }
 
   const optionNameMap = {
@@ -48,18 +48,16 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
           )}
         </div>
       <ItemNameWrap>
-      <StarForce style={{ display: item.starforce === 0 ? 'none' : 'block' }}>
+        <StarForce noPadding={item.starforce === 0 || item.starforce === '0'} style={{ display: item.starforce === 0 ? 'none' : 'block' }}>
         <StartForceFirstLine>{Array.from({ length: Math.min(item.starforce, 15) }, (_, i) => (i + 1) % 5 === 0 ? '★ ' : '★')}</StartForceFirstLine>
         <StartForceSecondLine>{item.starforce > 15 && Array.from({ length: item.starforce - 15 }, (_, i) => (i + 1) % 5 === 0 ? '★ ' : '★')}</StartForceSecondLine>
       </StarForce>
-
-      <h2>
-          {item && item.soul_name && (
+      <h2> {/* 아이템 이름 */}
+        {item && item.soul_name && (
         <span>{item.soul_name.replace(" 소울 적용", "")}</span>
-      )}
+        )}
         <p>{`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}</p>
-      </h2> {/* 아이템 이름 */}
-
+      </h2>
         {item.potential_option_grade && <p>{`(${item.potential_option_grade} 아이템)`}</p>} {/* 아이템 품질 */}
       </ItemNameWrap>
       <IconWrap>
@@ -71,33 +69,74 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
         {Object.entries(item.item_total_option).map(([key, value]) => {
           if ((value !== '0' && value !== 0)) {
             const modifier = optionValueModifierMap[key] || optionValueModifierMap.default;
-            return <p key={key}>{`${optionNameMap[key]} : ${modifier(value)}`}</p>
-          }
-          return null;
-        })}
+            const base = item.item_base_option[key] || 0;
+            const add = item.item_add_option[key] || 0;
+            const etc = item.item_etc_option[key] || 0;
+            const starforce = item.item_starforce_option[key] || 0;
+            const addPart = (add !== undefined && add !== '0' && add !== 0) ? <span style={{color: 'rgb(204, 255, 0)'}}> {`${modifier(add)}`}</span> : null;
+            const starforcePart = (starforce !== undefined && starforce !== '0' && starforce !== 0) ? <span style={{color: 'rgb(255, 204, 0)'}}> {`${modifier(starforce)}`}</span> : null;
+            const basePart = (add !== 0 || starforce !== 0) ? <span style={{color: 'rgb(255, 255, 255)'}}>{`${modifier(base)}`}</span> : null;
+            const etcPart = (etc !== undefined && etc !== '0' && etc !== 0) ? <span style={{color: 'rgb(170, 170, 255)'}}> {`${modifier(etc)}`}</span> : null;
+              let outputPart = null;
+              if (basePart && (addPart || starforcePart || etcPart)) {
+                outputPart = (
+                  <>
+                    <span style={{ color: 'white' }}>(</span>
+                    {basePart}
+                    {addPart}
+                    {etcPart}
+                    {starforcePart}
+                    <span style={{ color: 'white' }}>)</span>
+                  </>
+                );
+                
+              } else if (basePart) {
+                outputPart = null;
+              }
+              return (
+                <p key={key} style={{ color: basePart && (addPart || starforcePart || etcPart) ? 'rgb(102,255,255)' : 'white' }}>
+                {`${optionNameMap[key]} : ${modifier(value)} `}
+                {outputPart}
+              </p>
+              );
+            }
+            return null;
+          })}
       </ItemOptionWrap>
-
-
     </Container>
   )
 }
-
-const Container = styled.div`
-  width: 280px;
+const SelectContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 290px;
+  height: 50px;
   background-color: #000000;
   color: white; 
-  padding: 0px 20px;
+  padding: 0px 10px;
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
+  margin-top: 5px;
+`
 
+const Container = styled.div`
+  width: 290px;
+  background-color: #000000;
+  color: white; 
+  padding: 0px 10px;
+  border-radius: 5px;
+  border: 1px solid white;
+  outline: 1px solid black;
+  margin-top: 5px;
 `
 const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   h2{
     font-size: 18px;
     padding: 10px 0;
@@ -128,15 +167,19 @@ const IconImage = styled.div`
 
   border: ${({ grade, gradeColors }) => `3px solid ${gradeColors[grade] || 'rgb(134, 130, 132)'}`};
   img{
-    height: 80%;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
   }
 `
 
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
   font-size: 13px;
-  padding-top: 15px;
+  padding-top: ${(props) => (props.noPadding ? '0' : '15px')};
 `
+
+
 const StartForceFirstLine = styled.div`
   margin-bottom: 10px;
 `
@@ -149,13 +192,13 @@ const StartForceSecondLine = styled.div`
 const ItemOptionWrap = styled.div`
   padding: 15px 0;
   line-height: 20px;
-  font-size: 14px;
+  font-size: 12px;
 `
 
 const PinImage = styled.div`
   position: absolute;
   top: -5px;
-  left: -20px;
+  left: -10px;
   width: 10px;
   height: 10px;
   border-top: 10px solid transparent;
