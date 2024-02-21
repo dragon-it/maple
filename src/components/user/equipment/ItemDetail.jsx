@@ -103,6 +103,18 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
             return null;
           })}
       </ItemOptionWrap>
+      <PotentialOptionWrap>
+        <p>잠재옵션</p>
+        <PotentialItems>{item.potential_option_1}</PotentialItems>
+        <PotentialItems>{item.potential_option_2}</PotentialItems>
+        <PotentialItems>{item.potential_option_3}</PotentialItems>
+      </PotentialOptionWrap>
+      <AdditionalOptionWrap>
+        <p>에디셔널 잠재옵션</p>
+        <AdditionalItems>{item.additional_potential_option_1}</AdditionalItems>
+        <AdditionalItems>{item.additional_potential_option_2}</AdditionalItems>
+        <AdditionalItems>{item.additional_potential_option_3}</AdditionalItems>
+      </AdditionalOptionWrap>
     </Container>
   )
 }
@@ -138,7 +150,7 @@ const ItemNameWrap = styled.div`
   border-bottom: 2px dotted rgb(55, 56, 58);
   padding-bottom: 10px;
   h2{
-    font-size: 18px;
+    font-size: 16px;
     padding: 10px 0;
     line-height: 24px;
     text-align: center;
@@ -164,7 +176,6 @@ const IconImage = styled.div`
   height: 75px;
   background-color: white;
   border-radius: 10px;
-
   border: ${({ grade, gradeColors }) => `3px solid ${gradeColors[grade] || 'rgb(134, 130, 132)'}`};
   img{
     width: 50px;
@@ -193,6 +204,7 @@ const ItemOptionWrap = styled.div`
   padding: 15px 0;
   line-height: 20px;
   font-size: 12px;
+  border-bottom: 2px dotted rgb(55, 56, 58);
 `
 
 const PinImage = styled.div`
@@ -206,3 +218,27 @@ const PinImage = styled.div`
   border-right: 10px solid white;
   transform: rotate(45deg);
 `;
+
+const PotentialOptionWrap = styled.div`
+    font-size: 15px;
+    padding: 7px 0;
+    border-bottom: 2px dotted rgb(55, 56, 58);
+    p{
+      padding-bottom: 10px;
+    }
+`
+
+const AdditionalOptionWrap = styled.div`
+    font-size: 15px;
+    padding: 7px 0;
+    p{
+      padding-bottom: 10px;
+    }
+`
+
+const PotentialItems = styled.div`
+  
+`
+
+const AdditionalItems = styled.div`
+`
