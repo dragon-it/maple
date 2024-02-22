@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components';
 import gradeColors from './ItemGradeColors'
 
 export const ItemDetail = ({ item, clicked, gradeColors }) => {
@@ -89,7 +89,6 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
                     <span style={{ color: 'white' }}>)</span>
                   </>
                 );
-                
               } else if (basePart) {
                 outputPart = null;
               }
@@ -103,18 +102,26 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
             return null;
           })}
       </ItemOptionWrap>
-      <PotentialOptionWrap>
-        <p>잠재옵션</p>
-        <PotentialItems>{item.potential_option_1}</PotentialItems>
-        <PotentialItems>{item.potential_option_2}</PotentialItems>
-        <PotentialItems>{item.potential_option_3}</PotentialItems>
-      </PotentialOptionWrap>
-      <AdditionalOptionWrap>
-        <p>에디셔널 잠재옵션</p>
-        <AdditionalItems>{item.additional_potential_option_1}</AdditionalItems>
-        <AdditionalItems>{item.additional_potential_option_2}</AdditionalItems>
-        <AdditionalItems>{item.additional_potential_option_3}</AdditionalItems>
-      </AdditionalOptionWrap>
+      <OptionWrap>
+        {item.potential_option_grade && (
+          <PotentialOptionWrap>
+            <PotenOptionHeader potengrade={item.potential_option_grade}>잠재옵션</PotenOptionHeader>
+            <PotentialItems>{item.potential_option_1}</PotentialItems>
+            <PotentialItems>{item.potential_option_2}</PotentialItems>
+            <PotentialItems>{item.potential_option_3}</PotentialItems>
+          </PotentialOptionWrap>
+        )}
+
+        {item.additional_potential_option_grade && (
+          <AdditionalOptionWrap>
+            <AddiOptionHeader potengrade={item.additional_potential_option_grade}>에디셔널 잠재옵션</AddiOptionHeader>
+            <AdditionalItems>{item.additional_potential_option_1}</AdditionalItems>
+            <AdditionalItems>{item.additional_potential_option_2}</AdditionalItems>
+            <AdditionalItems>{item.additional_potential_option_3}</AdditionalItems>
+          </AdditionalOptionWrap>
+        )}
+      </OptionWrap>
+
     </Container>
   )
 }
@@ -136,12 +143,13 @@ const SelectContainer = styled.div`
 const Container = styled.div`
   width: 290px;
   background-color: #000000;
-  color: white; 
-  padding: 0px 10px;
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
   margin-top: 5px;
+  line-height: 18px;
+  color: white; 
+  padding: 0px 10px;
 `
 const ItemNameWrap = styled.div`
   display: flex;
@@ -190,7 +198,6 @@ const StarForce = styled.div`
   padding-top: ${(props) => (props.noPadding ? '0' : '15px')};
 `
 
-
 const StartForceFirstLine = styled.div`
   margin-bottom: 10px;
 `
@@ -200,18 +207,12 @@ const StartForceSecondLine = styled.div`
   
 `
 
-const ItemOptionWrap = styled.div`
-  padding: 15px 0;
-  line-height: 20px;
-  font-size: 12px;
-  border-bottom: 2px dotted rgb(55, 56, 58);
-`
 
 const PinImage = styled.div`
   position: absolute;
   top: -5px;
   left: -10px;
-  width: 10px;
+  width: 11px;
   height: 10px;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
@@ -219,26 +220,51 @@ const PinImage = styled.div`
   transform: rotate(45deg);
 `;
 
+
+const ItemOptionWrap = styled.div`
+  padding: 5px 0;
+  line-height: 16px;
+  font-size: 12px;
+  border-bottom: 2px dotted rgb(55, 56, 58);
+`
+
+const OptionWrap = styled.div`
+  font-size: 13px;
+  white-space: pre-line;
+  
+`
+const PotenOptionHeader = styled.div`
+  ${({ potengrade }) => {
+    if (potengrade === '레어') return 'color: rgb(102,225,225);';
+    if (potengrade === '에픽') return 'color: rgb(153,91,197);';
+    if (potengrade === '유니크') return 'color: rgb(255,204,0);';
+    if (potengrade === '레전드리') return 'color: rgb(204,241,20);';
+  }}
+`;
+
+const AddiOptionHeader = styled.div`
+    ${({ potengrade }) => {
+    if (potengrade === '레어') return 'color: rgb(102,225,225);';
+    if (potengrade === '에픽') return 'color: rgb(153,91,197);';
+    if (potengrade === '유니크') return 'color: rgb(255,204,0);';
+    if (potengrade === '레전드리') return 'color: rgb(204,241,20);';
+  }}
+`
 const PotentialOptionWrap = styled.div`
-    font-size: 15px;
-    padding: 7px 0;
+    padding: 2px 0;
     border-bottom: 2px dotted rgb(55, 56, 58);
-    p{
-      padding-bottom: 10px;
-    }
 `
 
 const AdditionalOptionWrap = styled.div`
-    font-size: 15px;
-    padding: 7px 0;
-    p{
-      padding-bottom: 10px;
-    }
+    padding: 2px 0;
 `
 
 const PotentialItems = styled.div`
-  
+      font-size: 12px;
+
 `
 
 const AdditionalItems = styled.div`
+      font-size: 12px;
+
 `
