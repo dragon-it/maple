@@ -37,30 +37,30 @@ const handleItemClick = (item) => {
 console.log(selectedItem);
 
   const positions = {    
-    '모자': {top: '62px', left: '158px'},
-    '얼굴장식': {top: '112px', left: '158px'},
-    '눈장식': {top: '161px', left: '158px'},
-    '귀고리': {top: '161px', left: '207px'},
-    '상의': {top: '210px', left: '158px'},
-    '하의': {top: '260px', left: '158px'},
-    '신발': {top: '309px', left: '158px'},
-    '장갑': {top: '260px', left: '207px'},
-    '망토': {top: '260px', left: '256px'},
-    '보조무기': {top: '210px', left: '256px'},
-    '무기': {top: '210px', left: '109px'},
-    '반지1': {top: '63px', left: '60px'},
-    '반지2': {top: '112px', left: '60px'},
-    '반지3': {top: '161px', left: '60px'},
-    '반지4': {top: '210px', left: '60px'},
-    '펜던트': {top: '112px', left: '109px'},
-    '훈장': {top: '161px', left: '257px'},
-    '벨트': {top: '260px', left: '109px'},
-    '어깨장식': {top: '210px', left: '207px'},
-    '포켓 아이템': {top: '260px', left: '60px'},
-    '기계 심장': {top: '308px', left: '257px'},
-    '뱃지': {top: '112px', left: '257px'},
-    '엠블렘': {top: '62px', left: '257px'},
-    '펜던트2': {top: '161px', left: '109px'}
+    '모자': {top: '72px', left: '158px'},
+    '얼굴장식': {top: '122px', left: '158px'},
+    '눈장식': {top: '171px', left: '158px'},
+    '귀고리': {top: '171px', left: '207px'},
+    '상의': {top: '220px', left: '158px'},
+    '하의': {top: '270px', left: '158px'},
+    '신발': {top: '319px', left: '158px'},
+    '장갑': {top: '270px', left: '207px'},
+    '망토': {top: '270px', left: '256px'},
+    '보조무기': {top: '220px', left: '256px'},
+    '무기': {top: '220px', left: '109px'},
+    '반지1': {top: '73px', left: '60px'},
+    '반지2': {top: '122px', left: '60px'},
+    '반지3': {top: '171px', left: '60px'},
+    '반지4': {top: '220px', left: '60px'},
+    '펜던트': {top: '122px', left: '109px'},
+    '훈장': {top: '171px', left: '257px'},
+    '벨트': {top: '270px', left: '109px'},
+    '어깨장식': {top: '220px', left: '207px'},
+    '포켓 아이템': {top: '270px', left: '60px'},
+    '기계 심장': {top: '318px', left: '257px'},
+    '뱃지': {top: '122px', left: '257px'},
+    '엠블렘': {top: '72px', left: '257px'},
+    '펜던트2': {top: '171px', left: '109px'}
     };
 
 
@@ -152,6 +152,7 @@ const Container = styled.div`
   white-space: nowrap;
   display: flex;
   flex-direction: row;
+  margin-top: 10px;
 `;
 
 const InfoWrap = styled.div`
@@ -164,6 +165,10 @@ const InfoWrap = styled.div`
 
 const UiBackgrnd = styled.div`
   position: relative;
+
+  border-radius: 5px;
+  border: 2px solid rgba(99, 94, 94, 0.952);
+  outline: 1px solid black;
   img{
     width: 262px;
     height: 312px;
