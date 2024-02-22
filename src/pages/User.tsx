@@ -50,7 +50,6 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: #ffffff;
   z-index: 99;
-  white-space: pre;
 `
 
 const SearchWrap = styled.div`
