@@ -82,6 +82,7 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
+        <div>장비 분류 : {item.item_equipment_part}</div>
         {Object.entries(item.item_total_option).map(([key, value]) => {
           if ((value !== '0' && value !== 0)) {
             const modifier = optionValueModifierMap[key] || optionValueModifierMap.default;
