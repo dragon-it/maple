@@ -129,19 +129,24 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
             <PotentialItems>{item.potential_option_3}</PotentialItems>
           </PotentialOptionWrap>
         )}
-
         {item.additional_potential_option_grade && (
           <AdditionalOptionWrap>
             <AddiOptionHeader potengrade={item.additional_potential_option_grade}>
-              <OptionInitial potengrade={item.additional_potential_option_grade}>{getInitial(item.potential_option_grade)}</OptionInitial><span>에디셔널 잠재옵션</span>
+              <OptionInitial potengrade={item.additional_potential_option_grade}>{getInitial(item.additional_potential_option_grade)}</OptionInitial><span>에디셔널 잠재옵션</span>
             </AddiOptionHeader>
             <AdditionalItems>{item.additional_potential_option_1}</AdditionalItems>
             <AdditionalItems>{item.additional_potential_option_2}</AdditionalItems>
             <AdditionalItems>{item.additional_potential_option_3}</AdditionalItems>
           </AdditionalOptionWrap>
         )}
-      </OptionWrap>
+        {item.soul_name && (
+          <SoulOptionWrap>
+            <div>{item.soul_name}</div>
+            <div>{item.soul_option}</div>
+          </SoulOptionWrap>
+        )}
 
+      </OptionWrap>
     </Container>
   )
 }
@@ -321,4 +326,13 @@ const PotentialItems = styled.div`
 const AdditionalItems = styled.div`
       font-size: 12px;
 
+`
+
+const SoulOptionWrap = styled.div`
+      border-top: 2px dotted rgb(55, 56, 58);
+      padding-bottom: 10px;
+      padding-top: 3px;
+      :first-child{
+        color: rgb(255,255,68);
+      }
 `
