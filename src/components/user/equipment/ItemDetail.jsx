@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
-import gradeColors from './ItemGradeColors'
 
-export const ItemDetail = ({ item, clicked, gradeColors }) => {
+
+export const ItemDetail = ({ item, clicked }) => {
   console.log(clicked)
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
@@ -28,6 +28,36 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
     max_mp_rate: '최대 MP',
     damage: '데미지'
   }
+
+  function StatsSummary({ stats }) {
+    // 세부 스탯이 모두 동일하고 0이 아닌 값을 가질 경우 해당 값을 반환하는 함수
+    const getCommonValue = (...keys) => {
+      const allEqual = keys.every(key => stats[key] === stats[keys[0]]);
+      return allEqual && stats[keys[0]] !== '0' ? stats[keys[0]] : null;
+    };
+  
+    // 올스텟, 최대 HP/MP, 공격력/마력에 대한 공통값을 확인
+    const allStatValue = getCommonValue('str', 'dex', 'int', 'luk');
+    const attackMagicValue = getCommonValue('attack_power', 'magic_power');
+    const maxHpMpValue = getCommonValue('max_hp', 'max_mp');
+  
+    return (
+      <div>
+        {allStatValue && (
+          <div>올스텟 : +{allStatValue}</div>
+        )}
+        {attackMagicValue && (
+          <div>공격력 / 마력 : +{attackMagicValue}</div>
+        )}
+        {maxHpMpValue && (
+          <div>최대 HP / 최대 MP : +{maxHpMpValue}</div>
+        )}
+      </div>
+    );
+  }
+  const isAllZero = (stats) => {
+    return Object.values(stats).every(value => value === "0");
+  };
   
   const optionValueModifierMap = {
     all_stat: value => `+${value}%`,
@@ -77,7 +107,7 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
         {item.potential_option_grade && <p>{`(${item.potential_option_grade} 아이템)`}</p>} {/* 아이템 품질 */}
       </ItemNameWrap>
       <IconWrap>
-        <IconImage gradeColors={gradeColors} grade={item.potential_option_grade}>
+        <IconImage grade={item.potential_option_grade}>
           <img src={item.item_icon} alt={item.item_name} /> 
         </IconImage>
       </IconWrap>
@@ -146,7 +176,14 @@ export const ItemDetail = ({ item, clicked, gradeColors }) => {
             <div>{item.soul_option}</div>
           </SoulOptionWrap>
         )}
-
+{item.item_exceptional_option && !isAllZero(item.item_exceptional_option) && (
+  <ExOptionWrap>
+    <ExOptionHeader>
+      <ExInitial>EX</ExInitial>익셉셔널
+    </ExOptionHeader>
+    <StatsSummary stats={item.item_exceptional_option} />
+  </ExOptionWrap>
+)}
       </OptionWrap>
     </Container>
   )
@@ -210,12 +247,26 @@ const IconImage = styled.div`
   height: 75px;
   background-color: white;
   border-radius: 10px;
-  border: ${({ grade, gradeColors }) => `3px solid ${gradeColors[grade] || 'rgb(134, 130, 132)'}`};
   img{
     width: 50px;
     height: 50px;
     object-fit: contain;
   }
+  ${({ grade }) => {
+    switch (grade) {
+      case '레어':
+        return 'border: 3px solid rgb(0,154,255); ';
+      case '에픽':
+        return 'border: 3px solid rgb(120,0,239); ';
+      case '유니크':
+        return 'border: 3px solid rgb(255,188,0) ';
+      case '레전드리':
+        return 'border: 3px solid rgb(0,187,136); ';
+      default:
+        return 'border: 3px solid rgb(134, 130, 132); ';
+    }
+  }}
+
 `
 
 const StarForce = styled.div`
@@ -336,4 +387,29 @@ const SoulOptionWrap = styled.div`
       :first-child{
         color: rgb(255,255,68);
       }
+`
+
+const ExOptionWrap = styled.div`
+    border-top: 2px dotted rgb(55, 56, 58);
+    padding-top: 3px;
+    `
+
+const ExOptionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  color: rgb(255,51,51);
+`
+
+const ExInitial = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 14px;
+  margin-right: 3px;
+  color: white;
+  background-color: rgb(255,51,51);
+  border: 1px solid rgb(255,255,255);
+  border-radius: 4px;
+  text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black
 `
