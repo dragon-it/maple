@@ -100,10 +100,16 @@ export const ItemDetail = ({ item, clicked }) => {
       </StarForce>
       <h2> {/* 아이템 이름 */}
         {item && item.soul_name && (
-        <span>{item.soul_name.replace(" 소울 적용", "")}</span>
+          <span>{item.soul_name.replace(" 소울 적용", "")}</span>
         )}
-        <p>{`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}</p>
+        <p>
+          <div>{`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}</div>
+          {item && item.special_ring_level !== 0 && (
+          <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
+        )}
+        </p>
       </h2>
+
         {item.potential_option_grade && <p>{`(${item.potential_option_grade} 아이템)`}</p>} {/* 아이템 품질 */}
       </ItemNameWrap>
       <IconWrap>
@@ -228,6 +234,9 @@ const ItemNameWrap = styled.div`
     span{
       color: rgb(210,245,57);
     }
+    p{
+      display: flex;
+    }
   }
 `
 
@@ -302,13 +311,15 @@ const ItemOptionWrap = styled.div`
   padding: 5px 0;
   line-height: 16px;
   font-size: 12px;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+
   
 `
 
 const OptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-line;
+  border-top: 2px dotted rgb(55, 56, 58);
+  padding-bottom: 5px;
 `
 const OptionInitial = styled.div`
   display: flex;
