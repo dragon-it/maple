@@ -10,7 +10,6 @@ import {
   getPropensity,
   getSetEffect,
   getUnion,
-
 } from '../../api/api';
 
 const apiFunctions = [
@@ -24,7 +23,7 @@ const apiFunctions = [
   getCharacterPopularity,
   getPropensity,
   getSetEffect,
-  getUnion
+  getUnion,
 ];
 
 export default apiFunctions;

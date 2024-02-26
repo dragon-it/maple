@@ -207,6 +207,7 @@ const SelectContainer = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   margin-top: 5px;
+  font-family: maple-light;
 `
 
 const Container = styled.div`

@@ -4,6 +4,7 @@ import equipmentUi from '../../../assets/ui/equipmentUi/equipUi.png'
 import _ from 'lodash';
 import { ItemDetail } from './ItemDetail';
 import gradeColors from './ItemGradeColors'
+import { ItemSetEffect } from './ItemSetEffect';
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
 const presetKeys = Object.keys(EquipData)
@@ -144,6 +145,7 @@ return (
       <DetailWrap>
         <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors} > </ItemDetail>
       </DetailWrap>
+      <ItemSetEffect setinfo={EquipData.getSetEffect}/>
     </Container>
   );
 };
@@ -193,6 +195,7 @@ const PresetButtons = styled.div`
   span{
     position: absolute;
     bottom: 30px;
+    font-family: maple-light;
   }
 `
 
