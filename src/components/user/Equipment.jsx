@@ -38,7 +38,15 @@ export const Equipment = () => {
 
   return (
     <Container>
-      {result && <ItemEquipmentInformation EquipData={result.getItemEquipment}></ItemEquipmentInformation>}
+{result && result.getItemEquipment && (
+  <ItemEquipmentInformation 
+    EquipData={{
+      ...result.getItemEquipment,
+      getSetEffect: result.getSetEffect
+    }}
+  />
+)}
+
     </Container>
   )
 }
