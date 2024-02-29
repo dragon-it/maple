@@ -24,12 +24,14 @@ export const ItemSetEffect = ({ setinfo }) => {
   
   
 
-const handleSetClick = (index) => {
-  setExpandedArray((prevArray) => {
-    const newArray = prevArray.map((_, i) => (i === index ? !prevArray[i] : false));
-    return newArray;
-  });
-};
+  const handleSetClick = (index) => {
+    setExpandedArray((prevArray) => {
+      const newArray = [...prevArray];
+      // 토글된 상태를 현재 상태에 반대로 설정합니다.
+      newArray[index] = !newArray[index]; // 불리언 값을 토글합니다.
+      return newArray;
+    });
+  };
 
 
   return (
@@ -37,10 +39,19 @@ const handleSetClick = (index) => {
       {setinfo.set_effect && Array.isArray(setinfo.set_effect) && (
         <ul>
           {setinfo.set_effect.map((effect, index) => (
-            <li key={index} onClick={() => handleSetClick(index)}>
+            <SetEffectName key={index} onClick={() => handleSetClick(index)}>
               {effect.set_effect_info.length > 0 && ( // set_effect_info가 비어있지 않은 경우에만 출력
                 <>
-                  {effect.set_name ? `${effect.set_name}` : `${effect.set_count}`} {effect.set_option}
+                  {effect.set_name ? (
+                    <>
+                      <span>{expandedArray[index] ? <span>▼</span> : <span>▶</span>}{effect.set_name}</span> {/* 기존 세트 이름 출력 */}
+                    </>
+                  ) : (
+                    <>
+                      {effect.set_count}
+                    </>
+                  )}
+                  {effect.set_option}
                   {expandedArray[index] && (
                     <div>
                       {effect.set_effect_info.length > 0 && (
@@ -48,14 +59,14 @@ const handleSetClick = (index) => {
                           {effect.set_effect_info.map((info, infoIndex) => (
                             <li key={infoIndex}>
                               <SetEffectWrap>
-                                <SetEffectHeader>{info.set_count}세트 효과</SetEffectHeader>
+                                <SetEffectHeader>{info.set_count}세트효과</SetEffectHeader>
                                 <SetEffectDetail>
-  {extractAll(info.set_option)
-    .split(',')
-    .map((option, index) => (
-      <p key={index}>{option.trim()}</p>
-    ))}
-</SetEffectDetail>
+                                  {extractAll(info.set_option)
+                                    .split(',')
+                                    .map((option, index) => (
+                                      <p key={index}>{option.trim()}</p>
+                                    ))}
+                                </SetEffectDetail>
                               </SetEffectWrap>
                             </li>
                           ))}
@@ -65,12 +76,13 @@ const handleSetClick = (index) => {
                   )}
                 </>
               )}
-            </li>
+            </SetEffectName>
           ))}
         </ul>
       )}
     </Container>
   );
+  
 };
 
 const Container = styled.div`
@@ -84,9 +96,12 @@ const Container = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   color: white;
+  max-height: 500px;
+  overflow-y: scroll;
   ul {
     list-style: none;
     padding: 0;
+    cursor: pointer;
   }
 
   li {
@@ -97,13 +112,34 @@ const Container = styled.div`
 
 `;
 
+
+const SetEffectName = styled.div`
+    color: #ffffff;
+    border-bottom: 1px ridge #ffffff78;
+    span{
+      display: flex;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+    span:hover{
+      background-color: #686767eb;
+      transition: all 0.07s;
+    }
+`
+
 const SetEffectWrap  = styled.div`
   font-size: 14px;
+`
+const SetEffectHeader = styled.div`
+  color: #ccff00;
+  margin-bottom: 3px;
+  
+  
 `
 
 const SetEffectDetail = styled.div`
   color: white;
-`
-const SetEffectHeader = styled.div`
-  color: #ccff00;
+  font-size: 12px;
+  line-height: 14px;
+  
 `

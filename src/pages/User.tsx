@@ -43,7 +43,7 @@ export const User: React.FC<UserProps> = () => {
 
 const Container = styled.div`
   position: absolute;
-  height: 750px;
+  height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   padding: 0px 50px;
   min-height: 500px;
