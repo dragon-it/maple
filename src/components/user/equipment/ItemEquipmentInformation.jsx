@@ -71,6 +71,7 @@ console.log(selectedItem);
     border: 2px solid gray;
     border-radius: 5px;
     background-color: white;
+    cursor: pointer;
     ${({ isSelected }) => isSelected && `
       border: 2px solid blue;
       background-color: lightblue;
@@ -167,7 +168,6 @@ const InfoWrap = styled.div`
 
 const UiBackgrnd = styled.div`
   position: relative;
-
   border-radius: 5px;
   border: 2px solid rgba(99, 94, 94, 0.952);
   outline: 1px solid black;
@@ -192,10 +192,12 @@ const PresetButtons = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  
   span{
     position: absolute;
     bottom: 30px;
     font-family: maple-light;
+    
   }
 `
 
