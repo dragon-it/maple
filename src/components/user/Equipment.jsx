@@ -9,7 +9,7 @@ export const Equipment = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  console.log(result)
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       try {
@@ -38,11 +38,12 @@ export const Equipment = () => {
 
   return (
     <Container>
-{result && result.getItemEquipment && (
-  <ItemEquipmentInformation 
+    {result && result.getItemEquipment && (
+      <ItemEquipmentInformation 
     EquipData={{
       ...result.getItemEquipment,
-      getSetEffect: result.getSetEffect
+      getSetEffect: result.getSetEffect,
+      getSymbol: result.getSymbolEquipment,
     }}
   />
 )}

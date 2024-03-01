@@ -5,8 +5,10 @@ import _ from 'lodash';
 import { ItemDetail } from './ItemDetail';
 import gradeColors from './ItemGradeColors'
 import { ItemSetEffect } from './ItemSetEffect';
+import { ItemSymbol } from './ItemSymbol';
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
+  console.log(EquipData)
 const presetKeys = Object.keys(EquipData)
   .filter(key => key !== 'item_equipment' && key.startsWith('item_equipment_preset'));
 
@@ -147,6 +149,7 @@ return (
         <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors} > </ItemDetail>
       </DetailWrap>
       <ItemSetEffect setinfo={EquipData.getSetEffect}/>
+      <ItemSymbol symbolData={EquipData.getSymbol}></ItemSymbol>
     </Container>
   );
 };
@@ -162,6 +165,7 @@ const InfoWrap = styled.div`
     width: 300px;
     height: 368px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 `
