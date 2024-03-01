@@ -11,6 +11,7 @@ import {
   getSetEffect,
   getUnion,
   getSymbolEquipment,
+  getSkill,
 } from '../../api/api';
 
 const apiFunctions = [
@@ -26,6 +27,7 @@ const apiFunctions = [
   getSetEffect,
   getUnion,
   getSymbolEquipment,
+  getSkill,
 ];
 
 export default apiFunctions;

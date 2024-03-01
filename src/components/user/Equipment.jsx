@@ -40,7 +40,7 @@ export const Equipment = () => {
     <Container>
     {result && result.getItemEquipment && (
       <ItemEquipmentInformation 
-    EquipData={{
+        EquipData={{
       ...result.getItemEquipment,
       getSetEffect: result.getSetEffect,
       getSymbol: result.getSymbolEquipment,

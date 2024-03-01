@@ -83,8 +83,9 @@ const Items = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 140px;
+  width: 100%;
   gap: 3px;
+  padding: 0 10px;
 `
 
 const SymbolIcons = styled.div`
@@ -103,5 +104,4 @@ const SymbolInfo = styled.div`
 `
 
 const SymbolName = styled.div`
-  
 `

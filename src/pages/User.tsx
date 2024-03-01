@@ -4,6 +4,7 @@ import { Search } from '../components/main/Search';
 import Information from '../components/user/Information';
 import { Propensity } from '../components/user/Propensity';
 import { Equipment } from '../components/user/Equipment';
+import { Skill } from '../components/user/Skill';
 
 
 
@@ -32,10 +33,14 @@ export const User: React.FC<UserProps> = () => {
         <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
           성향
         </Tab>
+        <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+          스킬
+        </Tab>
       </Tabs>
         {activeTab === 1 && <Information />}
         {activeTab === 2 && <Equipment />}
         {activeTab === 3 && <Propensity />}
+        {activeTab === 4 && <Skill />}
       </Container>
     </>
   );
