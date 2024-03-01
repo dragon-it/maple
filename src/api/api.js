@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { skillData } from './skillData';
 
 const BASE_URL = 'https://open.api.nexon.com';
 const API_KEY = 'test_1f336620ba5ba22af11842fa88ace876194988027e7df07e146a23e8cc7636663251b93aabcfaaa7285bca2d2daa3681';
@@ -91,8 +92,17 @@ const getPetEquipment = async (ocid) => {
 };
 
 const getSkill = async (ocid) => {
-  return callMapleStoryAPI('character/skill', { ocid, date: getFormattedDate() });
+  const grades = ['0', '1', '1.5', '2', '2.5', '3', '4', 'hyperpassive', 'hyperactive', '5', '6'];
+  const results = {};
+
+  for (let grade of grades) {
+    const response = await callMapleStoryAPI('character/skill', { ocid, date: getFormattedDate(), character_skill_grade: grade });
+    results[grade] = response;
+  }
+
+  return results;
 };
+
 
 const getLinkSkill = async (ocid) => {
   return callMapleStoryAPI('character/link-skill', { ocid, date: getFormattedDate() });
