@@ -48,7 +48,6 @@ export const ItemSetEffect = ({ setinfo }) => {
                     </>
                   ) : (
                     <>
-                      {effect.set_count}
                     </>
                   )}
                   {effect.set_option}
@@ -82,7 +81,6 @@ export const ItemSetEffect = ({ setinfo }) => {
       )}
     </Container>
   );
-  
 };
 
 const Container = styled.div`
@@ -103,29 +101,36 @@ const Container = styled.div`
     padding: 0;
     cursor: pointer;
   }
-
   li {
     cursor: pointer;
     margin: 8px 0;
     color: #e45b5b;
   }
-
 `;
 
 
 const SetEffectName = styled.div`
+  &:not(:empty) {
     color: #ffffff;
-    border-bottom: 1px ridge #ffffff78;
-    span{
-      display: flex;
-      align-items: center;
-      margin-bottom: 3px;
-    }
-    span:hover{
+    border-bottom: 1px dashed #ffffff78;
+
+  span {
+    display: flex;
+    align-items: center;
+    margin: 3px 0;
+    &:hover {
       background-color: #686767eb;
       transition: all 0.07s;
     }
-`
+  }
+}
+  ul {
+    &:hover {
+        background-color: #686767eb;
+        transition: all 0.07s;
+      }
+  }
+`;
 
 const SetEffectWrap  = styled.div`
   font-size: 14px;
@@ -133,13 +138,10 @@ const SetEffectWrap  = styled.div`
 const SetEffectHeader = styled.div`
   color: #ccff00;
   margin-bottom: 3px;
-  
-  
 `
 
 const SetEffectDetail = styled.div`
   color: white;
   font-size: 12px;
   line-height: 14px;
-  
 `
