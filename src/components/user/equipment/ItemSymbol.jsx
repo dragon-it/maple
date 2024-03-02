@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 export const ItemSymbol = ({ symbolData }) => {
   // 필터 함수를 사용하여 아케인 심볼과 어센틱 심볼을 분류합니다.
-  const arcaneSymbols = symbolData.symbol.filter(item => item.symbol_name.includes('아케인'));
-  const authenticSymbols = symbolData.symbol.filter(item => item.symbol_name.includes('어센틱'));
-
+  const symbolList = symbolData?.symbol || [];
+  const arcaneSymbols = symbolList.filter(item => item.symbol_name.includes('아케인'));
+  const authenticSymbols = symbolList.filter(item => item.symbol_name.includes('어센틱'));
+  
   return (
     <Container>
       <CommonSymbolWrap>

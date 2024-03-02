@@ -45,7 +45,7 @@ export const ItemSetEffect = ({ setinfo }) => {
                 <>
                   {effect.set_name ? (
                     <>
-                      <span>{expandedArray[index] ? <span>▼</span> : <span>▶</span>}{effect.set_name}</span> {/* 기존 세트 이름 출력 */}
+                      <span>{expandedArray[index] ? <span>▼&nbsp;</span> : <span>▶&nbsp;</span>}{effect.set_name}</span> {/* 기존 세트 이름 출력 */}
                     </>
                   ) : (
                     <>
