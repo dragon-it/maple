@@ -59,7 +59,7 @@ const InfoWrap = styled.div`
   padding: 14px;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-family: sans-serif;
   img {
     display: flex;
