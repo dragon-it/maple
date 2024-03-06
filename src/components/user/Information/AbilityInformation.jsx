@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import backgroundImage from '../../../assets/ui/abilityUi/abilityBackgnd2.png'
-import rare from '../../../assets/ui/abilityUi/ability_preset_grade_rare.png'
-import epic from '../../../assets/ui/abilityUi/ability_preset_grade_epic.png'
-import unique from '../../../assets/ui/abilityUi/ability_preset_grade_unique.png'
-import legendary from '../../../assets/ui/abilityUi/ability_preset_grade_legendary.png'
-import rareBackgnd from '../../../assets/ui/abilityUi/abilityRareBackgnd.png'
-import epicBackgnd from '../../../assets/ui/abilityUi/abilityEpicBackgnd.png'
-import uniqueBackgnd from '../../../assets/ui/abilityUi/abilityUniqueBackgnd.png'
-import legendaryBackgnd from '../../../assets/ui/abilityUi/abilityLegendaryBackgnd.png'
-import presetBtn1 from '../../../assets/ui/abilityUi/presetBtn1.png'
-import presetBtn2 from '../../../assets/ui/abilityUi/presetBtn2.png'
-import presetBtn3 from '../../../assets/ui/abilityUi/presetBtn3.png'
+
 
 export const AbilityInformation = ({ AbilityInfo }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
@@ -22,70 +11,58 @@ export const AbilityInformation = ({ AbilityInfo }) => {
 
   const currentPreset = AbilityInfo[`ability_preset_${selectedPreset}`];
 
-  // 이미지 경로를 설정하는 함수
-  const getImagePath = (grade) => {
+
+  const getGradeColor = (grade) => {
     switch (grade) {
       case '에픽':
-        return epic;
+        return 'rgb(127,102,211)';
       case '레어':
-        return rare;
+        return 'rgb(54,184,208)';
       case '유니크':
-        return unique;
+        return 'rgb(232,156,9)';
       case '레전드리':
-        return legendary;
+        return 'rgb(164,199,0)';
       default:
-        return '';
+        return 'white'; // 기본 배경색은 white로 설정
     }
   };
-
-  // 등급에 따른 이미지를 가져오는 함수
-  const getGradeImage = (grade) => {
-    switch (grade) {
-      case '에픽':
-        return epicBackgnd;
-      case '레어':
-        return rareBackgnd;
-      case '유니크':
-        return uniqueBackgnd;
-      case '레전드리':
-        return legendaryBackgnd;
-      default:
-        return backgroundImage;
-    }
-  };
-
-  const imagePath = getImagePath(currentPreset.ability_preset_grade);
-  const backgroundImagePath0 = getGradeImage(currentPreset.ability_info[0].ability_grade);
-  const backgroundImagePath1 = getGradeImage(currentPreset.ability_info[1].ability_grade);
-  const backgroundImagePath2 = getGradeImage(currentPreset.ability_info[2].ability_grade);
+  const backgroundColor0 = getGradeColor(currentPreset.ability_info[0].ability_grade);
+  const backgroundColor1 = getGradeColor(currentPreset.ability_info[1].ability_grade);
+  const backgroundColor2 = getGradeColor(currentPreset.ability_info[2].ability_grade);
   const formattedRemainFame = AbilityInfo.remain_fame.toLocaleString(); 
-  const buttonImages = [presetBtn1, presetBtn2, presetBtn3];
+
   
   return (
     <Container>
       <PresetWrap>
-          <img src={imagePath} alt={currentPreset.ability_preset_grade} />
-        <p style={{ backgroundImage: `url(${backgroundImagePath0})` }}>
-          {currentPreset.ability_info[0].ability_value}
-        </p>
-        <p style={{ backgroundImage: `url(${backgroundImagePath1})` }}>
-          {currentPreset.ability_info[1].ability_value}
-        </p>
-        <p style={{ backgroundImage: `url(${backgroundImagePath2})` }}>
-          {currentPreset.ability_info[2].ability_value}
-        </p>
-        <span>{formattedRemainFame}</span>
+        <AbilityHeader>ABILITY</AbilityHeader>
+        <AbilityGradeHeader>어빌리티 등급 : {currentPreset.ability_preset_grade}</AbilityGradeHeader>
+        <AbilityDetail>
+          <p style={{ backgroundColor: backgroundColor0 }}>
+            {currentPreset.ability_info[0].ability_value}
+          </p>
+          <p style={{ backgroundColor: backgroundColor1 }}>
+            {currentPreset.ability_info[1].ability_value}
+          </p>
+          <p style={{ backgroundColor: backgroundColor2 }}>
+            {currentPreset.ability_info[2].ability_value}
+          </p>
+        </AbilityDetail>
+        <ButtonContainer>
+          <ButtonWrap>
+            <PresetHeader>PRESET</PresetHeader>
+              {[1, 2, 3].map((presetNumber, index) => (
+              <PresetButton
+                key={presetNumber}
+                onClick={() => handlePresetChange(presetNumber)}
+                isSelected={selectedPreset === presetNumber}>
+                {presetNumber} 
+              </PresetButton>
+              ))}   
+          </ButtonWrap>    
+          <RemainFame><div>명성치 :</div> {formattedRemainFame}</RemainFame>
+        </ButtonContainer>
       </PresetWrap>
-      <ButtonContainer>
-        {[1, 2, 3].map((presetNumber, index) => (
-          <PresetButton
-            key={presetNumber}
-            onClick={() => handlePresetChange(presetNumber)}
-            isSelected={selectedPreset === presetNumber}
-            buttonImage={buttonImages[index]}>
-          </PresetButton>
-        ))}
-      </ButtonContainer>
     </Container>
   );
 };
@@ -94,19 +71,20 @@ export const AbilityInformation = ({ AbilityInfo }) => {
 const Container = styled.div`
   position: relative;
   display: block;
-  width: 246px;
-  height: 191px;
+  width: 280px;
+  padding: 5px 0;
   margin-right: 50px;
-  background-image: url(${backgroundImage});
-  background-repeat: no-repeat;
-  object-fit: cover;
-  font-size: 12px;
+  border: 1px solid rgb(80,92,101);
+  outline: 1px solid rgb(42,49,58);
+  border-radius: 5px;
+  background-color: rgba(59,66,75, 0.9);
+  font-size: 14px;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
   img{
     width: 100%;
     height: 100%;
     transition: 1s;
   }
-
 `;
 
 const PresetWrap = styled.div`
@@ -115,49 +93,88 @@ const PresetWrap = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   padding-top: 21px;
-  :first-child{
-    margin-bottom: 2px;
-    height: 27px;
-    width: 220px;
-  }
+  padding: 0 5px;
   p{
-    font-size: 11px;
-    width: 220px;
-    height: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    width: 100%;
+    height: 24px;
     padding-left: 1px;
     padding-right: 1px;
-    margin-bottom: 2px;
     color: white;
-    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     border-radius: 6px;
   }
-  span{
-    margin-top: 32px;
-    padding-left: 115px;
-    width: 100%;
-    color: white;
-  }
 `;
+
+const AbilityHeader = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  margin-bottom: 5px;
+`
+const AbilityDetail = styled.div`
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  padding: 3px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`
+
+
+const AbilityGradeHeader = styled.div`
+  font-family: maple-light;
+  color: white;
+  margin-bottom: 5px;
+`
 
 const ButtonContainer = styled.div`
-  position: absolute;
-  right: 80px;
-  bottom: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 25px;
+  padding: 0 3px;
+  background-color: #aaa9a9;
+  border-radius: 5px;
+  font-family: maple-light;
 `;
 
+const RemainFame = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 50%;
+  padding: 0 3px;
+  font-size: 12px;
+  border-radius: 5px;
+  background-color: rgba(59,66,75, 0.9);
+  color: white;
+`
+
+const ButtonWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 2px;
+`
+const PresetHeader = styled.div`
+  font-size: 13px;
+`
+
 const PresetButton = styled.button`
-  margin-right: 5px;
-  background-image: url(${(props) => props.buttonImage});
-  background-size: cover;
   border: none;
-  width: 16px;
-  height: 16px;
   cursor: pointer;
   border-radius: 5px;
   ${(props) =>

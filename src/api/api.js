@@ -2,7 +2,7 @@ import axios from 'axios';
 import { skillData } from './skillData';
 
 const BASE_URL = 'https://open.api.nexon.com';
-const API_KEY = 'test_1f336620ba5ba22af11842fa88ace876194988027e7df07e146a23e8cc7636663251b93aabcfaaa7285bca2d2daa3681';
+const API_KEY = 'test_1f336620ba5ba22af11842fa88ace876ce0912e187fd14af5ab2c1de032ff967909818169ece1ab4d1653d6f6ca987f7';
 
 // 일반적인 API 호출 함수
 const callMapleStoryAPI = async (endpoint, params) => {
@@ -92,7 +92,7 @@ const getPetEquipment = async (ocid) => {
 };
 
 const getSkill = async (ocid) => {
-  const grades = ['0', '1', '1.5', '2', '2.5', '3', '4', 'hyperpassive', 'hyperactive', '5', '6'];
+  const grades = ['5', '6'];
   const results = {};
 
   for (let grade of grades) {

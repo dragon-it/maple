@@ -32,15 +32,26 @@ const Information = () => {
 
   return (
     <Container>
-      {result && result.getBasicInformation && result.getDojang && (
+      {result && result.getBasicInformation && (
         <InfoWrap>
           <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
-          <BasicInformation BasicInfo={{getBasicInformation: result.getBasicInformation,getCharacterPopularity: result.getCharacterPopularity}}></BasicInformation>
-          <DojangInformation DojangInfo={result.getDojang}></DojangInformation>
-          <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
-          <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation>
-          <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
-          <StatInformation statInfo={result.getCharacterStat}></StatInformation>
+        <SynthesisWrap>
+          <BasicWrap>
+              <BasicInformation BasicInfo={{
+                getBasicInformation: result.getBasicInformation,
+                getCharacterPopularity: result.getCharacterPopularity,
+                getDojang: result.getDojang
+                }}></BasicInformation>
+          </BasicWrap>
+          <StatWrap>
+            <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
+            <StatInformation statInfo={result.getCharacterStat}></StatInformation>
+            <AbilWrap>
+              <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
+            </AbilWrap>
+          </StatWrap>
+        </SynthesisWrap>
+          {/* <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation> */}
         </InfoWrap>
       )}
     </Container>
@@ -66,6 +77,27 @@ const InfoWrap = styled.div`
     transition: 1s;
   }
 `;
+
+const SynthesisWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  
+`
+const BasicWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const StatWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const AbilWrap = styled.div`
+  display: flex;
+  align-items: flex-end;
+`
 
 export default Information;
 // const PointStat = styled.div``;
