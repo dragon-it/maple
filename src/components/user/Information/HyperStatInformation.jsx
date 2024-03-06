@@ -2,58 +2,34 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 export const HyperStatInformation = ({ HyperStatInfo }) => {
-  const [detailedStats, setDetailedStats] = useState(Array(17).fill(false));
+
   const [selectedPreset, setSelectedPreset] = useState(1);
-  const [showAllStats, setShowAllStats] = useState(false);
 
   const handlePresetChange = (presetNumber) => {
     setSelectedPreset(presetNumber);
   };
 
-  const toggleShowAllStats = () => {
-    setShowAllStats(!showAllStats);
-  };
-
   const currentPresetKey = `hyper_stat_preset_${selectedPreset}`;
   const currentPreset = HyperStatInfo[currentPresetKey] || [];
-
-  const handleMouseEnter = (index) => {
-    setDetailedStats((prev) => {
-      const updatedStats = [...prev];
-      updatedStats[index] = true;
-      return updatedStats;
-    });
-  };
-
-  const handleMouseLeave = (index) => {
-    setDetailedStats((prev) => {
-      const updatedStats = [...prev];
-      updatedStats[index] = false;
-      return updatedStats;
-    });
-  };
-
-  const filteredStats = showAllStats
-    ? currentPreset
-    : currentPreset.filter((stat) => stat.stat_level !== 0);
+  const filteredStats = currentPreset.filter((stat) => stat.stat_level !== 0);
 
   return (
     <Container>
-      {filteredStats.map((stat, index) => (
-        <StatInfo
-          key={index}
-          onMouseEnter={() => handleMouseEnter(index)}
-          onMouseLeave={() => handleMouseLeave(index)}>
-          <StatContainer>
-            <div>{stat.stat_type}</div>
-            <div>Lv.{stat.stat_level}</div>
-          </StatContainer>
-          {stat.stat_increase !== null && detailedStats[index] && (
-            <div>{stat.stat_increase}</div>
-          )}
-        </StatInfo>
-      ))}
+      <div>Hyper Stat</div>
+      <StatWrap>
+        {filteredStats.map((stat, index) => (
+          <StatInfo
+            key={index}>
+            <StatContainer>
+              <div>{stat.stat_increase}</div>
+              <div>Lv.{stat.stat_level}</div>
+            </StatContainer>
+          </StatInfo>
+        ))}
+      </StatWrap>
+      <div>POINT: {HyperStatInfo[`${currentPresetKey}_remain_point`]}</div>
       <ButtonContainer>
+      <div>프리셋</div>
         {[1, 2, 3].map((presetNumber) => (
           <PresetButton
             key={presetNumber}
@@ -63,49 +39,49 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
             {presetNumber}
           </PresetButton>
         ))}
-        <ShowAllButton onClick={toggleShowAllStats}>
-          {showAllStats ? '간략하게 보기' : '자세히 보기'}
-        </ShowAllButton>
       </ButtonContainer>
-      <div>POINT: {HyperStatInfo[`${currentPresetKey}_remain_point`]}</div>
     </Container>
   );
 };
 
+
 const Container = styled.div`
-  padding: 14px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 300px;
-  background-color: #decdcd;
+  background-color: #ffffff;
+  font-size: 12px;
+  border-radius: 10px;
+  height: 300px;
 `;
 
+const StatWrap = styled.div`
+  margin-bottom: 10px;
+`
+
 const StatInfo = styled.div`
-  padding-top: 10px;
-  padding-bottom: 10px;
-  cursor: pointer;
-  transition: background-color 1s ease; 
-  &:hover {
-    background-color: #a87777;
-  }
+  padding: 5px 0;
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 150px;
+    height: 25px;
+    padding: 0 5px;
+    background-color: #aaa9a9;
+    border-radius: 5px;
 `;
 
 const PresetButton = styled.button`
-  margin-right: 10px;
-  background-color: ${(props) => (props.isSelected ? '#fff' : '#ddd')};
-  border: 1px solid #888;
-  padding: 5px 10px;
+  border: none;
   cursor: pointer;
-`;
-
-const ShowAllButton = styled.button`
-  background-color: #ddd;
-  border: 1px solid #888;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-left: 10px;
+  border-radius: 5px;
+  ${(props) =>
+    props.isSelected? `filter: brightness(0.5);`: ''}
 `;
 
 const StatContainer = styled.div`
