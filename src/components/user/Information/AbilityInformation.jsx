@@ -23,42 +23,36 @@ export const AbilityInformation = ({ AbilityInfo }) => {
       case '레전드리':
         return 'rgb(164,199,0)';
       default:
-        return 'white'; // 기본 배경색은 white로 설정
+        return 'white'; 
     }
   };
-  const backgroundColor0 = getGradeColor(currentPreset.ability_info[0].ability_grade);
-  const backgroundColor1 = getGradeColor(currentPreset.ability_info[1].ability_grade);
-  const backgroundColor2 = getGradeColor(currentPreset.ability_info[2].ability_grade);
-  const formattedRemainFame = AbilityInfo.remain_fame.toLocaleString(); 
 
-  
+  const backgroundColors = currentPreset.ability_info.map(info => getGradeColor(info.ability_grade));
+  const formattedRemainFame = AbilityInfo.remain_fame.toLocaleString();
+
   return (
     <Container>
       <PresetWrap>
         <AbilityHeader>ABILITY</AbilityHeader>
         <AbilityGradeHeader>어빌리티 등급 : {currentPreset.ability_preset_grade}</AbilityGradeHeader>
         <AbilityDetail>
-          <p style={{ backgroundColor: backgroundColor0 }}>
-            {currentPreset.ability_info[0].ability_value}
-          </p>
-          <p style={{ backgroundColor: backgroundColor1 }}>
-            {currentPreset.ability_info[1].ability_value}
-          </p>
-          <p style={{ backgroundColor: backgroundColor2 }}>
-            {currentPreset.ability_info[2].ability_value}
-          </p>
+          {backgroundColors.map((color, index) => (
+            <p key={index} style={{ backgroundColor: color }}>
+              {currentPreset.ability_info[index].ability_value}
+            </p>
+          ))}
         </AbilityDetail>
         <ButtonContainer>
           <ButtonWrap>
             <PresetHeader>PRESET</PresetHeader>
-              {[1, 2, 3].map((presetNumber, index) => (
+            {[1, 2, 3].map((presetNumber) => (
               <PresetButton
                 key={presetNumber}
                 onClick={() => handlePresetChange(presetNumber)}
                 isSelected={selectedPreset === presetNumber}>
                 {presetNumber} 
               </PresetButton>
-              ))}   
+            ))}   
           </ButtonWrap>    
           <RemainFame><div>명성치 :</div> {formattedRemainFame}</RemainFame>
         </ButtonContainer>
@@ -79,7 +73,7 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: rgba(59,66,75, 0.9);
   font-size: 14px;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
   img{
     width: 100%;
     height: 100%;
@@ -128,8 +122,6 @@ const AbilityDetail = styled.div`
   padding: 3px;
   margin-bottom: 10px;
   border-radius: 5px;
-
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `
 
 
@@ -171,6 +163,7 @@ const ButtonWrap = styled.div`
 `
 const PresetHeader = styled.div`
   font-size: 13px;
+  text-shadow: none;
 `
 
 const PresetButton = styled.button`
