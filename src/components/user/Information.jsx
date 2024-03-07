@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { useParams } from 'react-router-dom';
 import { BasicInformation } from './Information/BasicInformation';
-import { DojangInformation } from './Information/DojangInformation';
 import { HexaStatInformation } from './Information/HexaStatInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
 import { HyperStatInformation } from './Information/HyperStatInformation';
@@ -45,7 +44,9 @@ const Information = () => {
               </BasicInformation>
           </BasicWrap>
           <StatWrap>
-            <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
+            <HyperWrap>
+              <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
+            </HyperWrap>
             <StatInformation statInfo={result.getCharacterStat}></StatInformation>
             <AbilWrap>
               <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
@@ -82,6 +83,7 @@ const InfoWrap = styled.div`
 const SynthesisWrap = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 3px;
   
 `
 const BasicWrap = styled.div`
@@ -94,6 +96,11 @@ const BasicWrap = styled.div`
 const StatWrap = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 3px;
+`
+const HyperWrap = styled.div`
+  display: flex;
+  align-items: flex-end;
 `
 
 const AbilWrap = styled.div`
@@ -102,4 +109,3 @@ const AbilWrap = styled.div`
 `
 
 export default Information;
-// const PointStat = styled.div``;
