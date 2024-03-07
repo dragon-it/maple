@@ -41,7 +41,8 @@ const Information = () => {
                 getBasicInformation: result.getBasicInformation,
                 getCharacterPopularity: result.getCharacterPopularity,
                 getDojang: result.getDojang
-                }}></BasicInformation>
+                }}>
+              </BasicInformation>
           </BasicWrap>
           <StatWrap>
             <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
@@ -87,6 +88,7 @@ const BasicWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  
 `
 
 const StatWrap = styled.div`
