@@ -15,7 +15,6 @@ const UserContainer = styled.div`
   position: absolute;
   height: 100%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
 `;

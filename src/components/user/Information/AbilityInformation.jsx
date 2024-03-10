@@ -65,15 +65,14 @@ export const AbilityInformation = ({ AbilityInfo }) => {
 const Container = styled.div`
   position: relative;
   display: block;
-  width: 280px;
+  width: 100%;
   padding: 5px 0;
-  margin-right: 50px;
   border: 1px solid rgb(80,92,101);
   outline: 1px solid rgb(42,49,58);
   border-radius: 5px;
   background-color: rgba(59,66,75, 0.9);
   font-size: 14px;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   img{
     width: 100%;
     height: 100%;

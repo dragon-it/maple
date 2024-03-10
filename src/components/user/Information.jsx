@@ -33,7 +33,7 @@ const Information = () => {
     <Container>
       {result && result.getBasicInformation && (
         <InfoWrap>
-          <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div>
+          {/* <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div> */}
         <SynthesisWrap>
           <BasicWrap>
               <BasicInformation BasicInfo={{
@@ -44,12 +44,10 @@ const Information = () => {
               </BasicInformation>
           </BasicWrap>
           <StatWrap>
-            <HyperWrap>
-              <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
-            </HyperWrap>
             <StatInformation statInfo={result.getCharacterStat}></StatInformation>
             <AbilWrap>
               <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
+              <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
             </AbilWrap>
           </StatWrap>
         </SynthesisWrap>
@@ -83,12 +81,11 @@ const InfoWrap = styled.div`
 const SynthesisWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   
 `
 const BasicWrap = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   
 `
@@ -96,7 +93,7 @@ const BasicWrap = styled.div`
 const StatWrap = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 3px;
+  gap: 5px;
 `
 const HyperWrap = styled.div`
   display: flex;
@@ -105,7 +102,8 @@ const HyperWrap = styled.div`
 
 const AbilWrap = styled.div`
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 5px;
 `
 
 export default Information;
