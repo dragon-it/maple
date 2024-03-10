@@ -35,16 +35,17 @@ const Information = () => {
         <InfoWrap>
           {/* <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div> */}
         <SynthesisWrap>
-          <BasicWrap>
-              <BasicInformation BasicInfo={{
-                getBasicInformation: result.getBasicInformation,
-                getCharacterPopularity: result.getCharacterPopularity,
-                getDojang: result.getDojang
-                }}>
-              </BasicInformation>
-          </BasicWrap>
+
           <StatWrap>
-            <StatInformation statInfo={result.getCharacterStat}></StatInformation>
+            <BasicWrap>
+              <BasicInformation BasicInfo={{
+                  getBasicInformation: result.getBasicInformation,
+                  getCharacterPopularity: result.getCharacterPopularity,
+                  getDojang: result.getDojang
+                  }}>
+              </BasicInformation>
+              <StatInformation statInfo={result.getCharacterStat}></StatInformation>
+            </BasicWrap>
             <AbilWrap>
               <AbilityInformation AbilityInfo={result.getAbility}></AbilityInformation>
               <HyperStatInformation HyperStatInfo={result.getHyperStat}></HyperStatInformation>
@@ -86,6 +87,8 @@ const SynthesisWrap = styled.div`
 `
 const BasicWrap = styled.div`
   display: flex;
+  gap: 5px;
+  flex-direction: column;
   align-items: center;
   
 `
@@ -103,6 +106,7 @@ const HyperWrap = styled.div`
 const AbilWrap = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 5px;
 `
 

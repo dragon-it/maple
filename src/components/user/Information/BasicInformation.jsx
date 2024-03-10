@@ -49,6 +49,7 @@ const Container = styled.div`
   border-radius: 7px;
   color: white;
   padding: 7px;
+  width: 100%;
   font-size: 14px;
   border: 1px solid rgb(80,92,101);
   outline: 1px solid rgb(42,49,58);
@@ -65,6 +66,7 @@ const CharacterHeader = styled.div`
 
 const CharacterBody = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: row;
   background-color: white;
   border-radius: 5px;
