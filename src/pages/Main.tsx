@@ -22,11 +22,9 @@ const Container = styled.div`
 `
 
 const SearchWrap = styled.div`
-  position: absolute;
   display: flex;
   align-items: center;
   top: 0;
   width: 100%;
-  height: 100px;
-  z-index: 9999;
+  height: 80px;
 `

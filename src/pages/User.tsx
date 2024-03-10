@@ -47,25 +47,22 @@ export const User: React.FC<UserProps> = () => {
 };
 
 const Container = styled.div`
-  position: absolute;
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   padding: 0px 50px;
-  min-height: 500px;
   border-radius: 5px;
   background-color: #ffffff;
   z-index: 99;
 `
 
 const SearchWrap = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   top: 0;
   width: 100%;
-  height: 100px;
+  height: 90px;
   z-index: 9999;
 `
 
