@@ -30,17 +30,13 @@ export const User: React.FC<UserProps> = () => {
         <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
           캐릭터 장비
         </Tab>
-        <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-          성향
-        </Tab>
-        <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+        <Tab onClick={() => handleTabClick(4)} active={activeTab === 3}>
           스킬
         </Tab>
       </Tabs>
         {activeTab === 1 && <Information />}
         {activeTab === 2 && <Equipment />}
-        {activeTab === 3 && <Propensity />}
-        {activeTab === 4 && <Skill />}
+        {activeTab === 3 && <Skill />}
       </Container>
     </>
   );
@@ -49,10 +45,11 @@ export const User: React.FC<UserProps> = () => {
 const Container = styled.div`
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
-  padding: 0px 50px;
+  padding: 0px 20px 20px;
   border-radius: 5px;
   background-color: #ffffff;
   z-index: 99;
+  box-sizing: border-box;
 `
 
 const SearchWrap = styled.div`
@@ -63,7 +60,7 @@ const SearchWrap = styled.div`
   top: 0;
   width: 100%;
   height: 90px;
-  z-index: 9999;
+
 `
 
 
@@ -71,7 +68,6 @@ const Tabs = styled.div`
   display: flex;
   position: relative;
   flex-direction: row;
-  background-color: #f0f0f0;
   padding: 10px;
   z-index: 999999;
 `;

@@ -56,11 +56,9 @@ const Container = styled.div`
 `;
 
 const LoadingIndicator = styled.div`
-  /* 로딩 중일 때 표시될 스타일을 여기에 추가하세요. */
 `;
 
 const ErrorMessage = styled.div`
-  /* 에러 발생 시 표시될 스타일을 여기에 추가하세요. */
 `;
 
-// 나머지 컴포넌트 및 스타일링은 상황에 맞게 추가하면 됩니다.
+
