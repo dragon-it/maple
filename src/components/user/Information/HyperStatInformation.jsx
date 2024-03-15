@@ -1,24 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-export const HyperStatInformation = ({ HyperStatInfo }) => {
-
+export const HyperStatInformation = ({ HyperStatInfo, onHeightChange  }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
+  const [showAllStat, setShowAllStat] = useState(true);
+  const containerRef = useRef(null); // 컨테이너의 참조를 저장하기 위한 ref
 
   const handlePresetChange = (presetNumber) => {
     setSelectedPreset(presetNumber);
   };
 
+  const toggleShowAllStat = () => {
+    setShowAllStat(!showAllStat);
+  };
+
+useEffect(() => {
+    if (containerRef.current) {
+      const height = containerRef.current.offsetHeight; // 컨테이너의 높이 확인
+      onHeightChange(height); // 부모 컴포넌트에 높이 전달
+    }
+  }, [showAllStat]);
+
   const currentPresetKey = `hyper_stat_preset_${selectedPreset}`;
   const currentPreset = HyperStatInfo[currentPresetKey] || [];
-  const filteredStats = currentPreset.filter((stat) => stat.stat_level !== 0);
+
+  const filteredStats = showAllStat
+    ? currentPreset
+    : currentPreset.filter((stat) => stat.stat_level !== 0);
 
   return (
-    <Container>
+    <Container ref={containerRef}>
       <HyperHeader>HYPER STAT</HyperHeader>
       <HyperBody>
         <StatWrap>
+          {showAllStat 
+          ?
+          <>
           {filteredStats.map((stat, index) => (
+            <StatInfo
+              key={index}>
+              <StatContainer>
+                <div>{stat.stat_type}</div>
+                <div>Lv.{stat.stat_level}</div>
+              </StatContainer>
+            </StatInfo>
+          ))}
+          </>
+          :
+          <>
+            {filteredStats.map((stat, index) => (
             <StatInfo
               key={index}>
               <StatContainer>
@@ -26,7 +56,9 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
                 <Level>Lv.{stat.stat_level}</Level>
               </StatContainer>
             </StatInfo>
-          ))}
+            ))}
+          </>
+          }
         </StatWrap>
         <ButtonContainer>
           <PresetWrap>
@@ -44,6 +76,9 @@ export const HyperStatInformation = ({ HyperStatInfo }) => {
           <RemainPoint><div>POINT :</div> {HyperStatInfo[`${currentPresetKey}_remain_point`]}</RemainPoint>
         </ButtonContainer>
       </HyperBody>
+      <ShowAllStatBtn onClick={toggleShowAllStat}>
+        {showAllStat ? <p>간략하게 보기</p> : <p>자세히보기</p>}
+      </ShowAllStatBtn>
     </Container>
   );
 };
@@ -54,24 +89,46 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px;
+  width: 100%;
   font-size: 13px;
-  border-radius: 10px;
   border: 1px solid rgb(80,92,101);
   outline: 1px solid rgb(42,49,58);
   border-radius: 5px;
   background-color: rgba(59,66,75, 0.9);
+  img{
+    width: 20px;
+    height: 20px;
+  }
 `;
+
+const ShowAllStatBtn = styled.div`
+  color: white;
+  box-sizing: border-box;
+  font-family: maple-light;
+  cursor: pointer;
+  p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+    border-radius: 5px;
+  }
+  :hover{
+    background-color: rgba(134,148,160, 0.5);
+  }
+`
 
 const HyperHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
   color: rgb(220,252,2);
-  margin: 7px 0;
+  margin: 6px 0;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `
 const HyperBody = styled.div`
   border-radius: 5px;
+  margin-bottom: 6px;
 `
 
 const StatWrap = styled.div`
@@ -83,8 +140,11 @@ const StatWrap = styled.div`
 `
 
 const StatInfo = styled.div`
-  padding: 5px 0;
+  padding: 3px 0;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  :hover{
+    background-color: rgba(59,66,75, 0.9);
+  }
 `;
 
 const Level = styled.div`
@@ -105,7 +165,7 @@ const ButtonContainer = styled.div`
 `;
 
 const PresetWrap = styled.div`
-    display: flex;
+  display: flex;
   align-items: center;
   gap: 5px;
   margin-left: 2px;

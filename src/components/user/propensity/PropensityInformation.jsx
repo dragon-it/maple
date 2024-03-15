@@ -14,8 +14,8 @@ export const PropensityInformation = ({ propensityData }) => {
   ];
 
   const PropensityItem = ({ label, level }) => (
-    <SubjectItems style={{ flexDirection: "row", marginRight: "8px" }}>
-      <p style={{ backgroundColor: "rgb(34,187,255)", marginRight: "0px", width: "80px", justifyContent: "center" }}>{label}</p>
+    <SubjectItems style={{ flexDirection: "row" }}>
+      <p style={{ backgroundColor: "rgb(34,187,255)", width: "80px", justifyContent: "center" }}>{label}</p>
       <p style={{ backgroundColor: "rgb(34,187,255)", width: "55px", justifyContent: "center" }}>
         <LevelWrap>Lv.{level}</LevelWrap>
       </p>
@@ -28,6 +28,7 @@ export const PropensityInformation = ({ propensityData }) => {
 
   return (
     <Container>
+      <PropensityHeader>PROPENSITY</PropensityHeader>
       <PropensityTextWrap>
       <TextWrap>
           <PropensityItem label="카리스마" level={propensityData.charisma_level} />
@@ -40,6 +41,7 @@ export const PropensityInformation = ({ propensityData }) => {
           <PropensityItem label="의지" level={propensityData.willingness_level} />
         </TextWrap>
       </PropensityTextWrap>
+      <D>
       <ChartWrap>
       <RadarChart
           cx={152}
@@ -69,6 +71,7 @@ export const PropensityInformation = ({ propensityData }) => {
             </SubjectItems>
           </ItemsWrap>
         </ChartWrap>
+        </D>
     </Container>
   );
 };
@@ -76,11 +79,42 @@ export const PropensityInformation = ({ propensityData }) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  z-index: 99;
+  border: 1px solid rgb(80,92,101);
+  outline: 1px solid rgb(42,49,58);
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(59,66,75, 0.9);
+  padding: 5px;
 `;
 
+const D = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(59,66,75, 0.9);
+  border-radius: 5px;
+  border: 1px solid rgba(164, 173, 180, 0.5);
+`
+
+const PropensityHeader = styled.div`
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  margin-bottom: 5px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`
+
 const PropensityTextWrap = styled.div`
-margin-bottom: 30px;
+margin-bottom: 10px;
+background-color: #b5b7c9;
+border-radius: 5px;
+
 `
 
 const TextWrap = styled.div`
@@ -89,7 +123,7 @@ const TextWrap = styled.div`
   p{
     display: flex;
     background-color: rgb(68,204,255);
-    margin: 5px;
+    margin: 3px;
     justify-content: space-between;
   }
 `
@@ -134,5 +168,8 @@ const ItemsWrap = styled.div`
 `
 const ChartWrap = styled.div`
   position: relative;
-  margin-top: 50px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  width: 320px;
+  z-index: 99;
 `

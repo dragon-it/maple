@@ -25,7 +25,7 @@ export const BackgroundImage = () => {
 
 const Container = styled.div`
   position: relative;
-  z-index: 9;
+  z-index: -1;
   img {
     object-fit: cover;
     width: 100%;
