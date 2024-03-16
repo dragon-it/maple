@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const ItemSymbol = ({ symbolData }) => {
-  // 필터 함수를 사용하여 아케인 심볼과 어센틱 심볼을 분류합니다.
+  // 필터 함수를 사용하여 아케인 심볼과 어센틱 심볼을 분류
   const symbolList = symbolData?.symbol || [];
   const arcaneSymbols = symbolList.filter(item => item.symbol_name.includes('아케인'));
   const authenticSymbols = symbolList.filter(item => item.symbol_name.includes('어센틱'));
@@ -14,7 +14,7 @@ export const ItemSymbol = ({ symbolData }) => {
           <SymbolWrap>
           {arcaneSymbols.map((item, index) => (
           <Items key={index}>
-            {/* '아케인' 단어를 제거합니다. */}
+            {/* '아케인' 단어 제거 */}
             <SymbolName>{item.symbol_name.replace('아케인심볼 :', '')}</SymbolName>
               <SymbolIcons>
                 <img src={item.symbol_icon} alt={item.symbol_name} />
@@ -31,14 +31,14 @@ export const ItemSymbol = ({ symbolData }) => {
           <SymbolWrap>
           {authenticSymbols.map((item, index) => (
           <Items key={index}>
-            {/* '어센틱' 단어를 제거합니다. */}
-              <SymbolName>{item.symbol_name.replace('어센틱심볼 :', '')}</SymbolName>
-              <SymbolIcons>
-                <img src={item.symbol_icon} alt={item.symbol_name} />
-              </SymbolIcons>
-              <SymbolInfo>
-                {item.symbol_level && <p>Lv.{item.symbol_level}</p>}
-              </SymbolInfo>
+            {/* '어센틱' 단어 제거 */}
+            <SymbolName>{item.symbol_name.replace('어센틱심볼 :', '')}</SymbolName>
+            <SymbolIcons>
+              <img src={item.symbol_icon} alt={item.symbol_name} />
+            </SymbolIcons>
+            <SymbolInfo>
+              {item.symbol_level && <p>Lv.{item.symbol_level}</p>}
+            </SymbolInfo>
           </Items>
           ))}
         </SymbolWrap>
@@ -56,15 +56,20 @@ const Container = styled.div`
   background-color: #dfdfdf;
   height: auto;
   gap: 14px;
+  border: 1px solid rgb(80,92,101);
+  outline: 1px solid rgb(42,49,58);
+  border-radius: 5px;
+  background-color: rgba(59,66,75, 0.9);
 `
 
 
 const CommonSymbolWrap = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid black;
-    font-family: maple-light;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid black;
+  font-family: maple-light;
+  background-color: rgb(134,148,160);
 `
 
 const SymbolHeader = styled.div`
