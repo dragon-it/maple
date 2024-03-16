@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { BasicInformation } from './Information/BasicInformation';
-import { HexaStatInformation } from './Information/HexaStatInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
 import { HyperStatInformation } from './Information/HyperStatInformation';
 import { StatInformation } from './Information/StatInformation';
@@ -24,6 +23,8 @@ const Information = () => {
     };
   }, [characterName]);
 
+  console.log(clickCount)
+
   const handleHeightChange = (height) => {
     console.log("HyperStatInformation의 높이:", height);
     // height가 270 이하일 경우 이미지를 표시합니다.
@@ -31,15 +32,19 @@ const Information = () => {
       document.getElementById('spiritImage').style.display = 'block';
     } else {
       document.getElementById('spiritImage').style.display = 'none';
+      document.getElementById('spiritText').style.display = 'none';
     }
   };
 
   const toggleFlip = () => {
     setClickCount((prevCount) => {
       const newCount = prevCount + 1;
-      if (newCount > 6) { 
+      // 클릭 횟수가 30회에 도달하면 더 이상 플립 상태를 변경하지 않고 30을 유지합니다.
+      if (newCount === 23) {
+        return prevCount; 
+      } else if (newCount > 6) { 
         setIsFlipped(!isFlipped);
-      } else if (newCount < 6) {
+      } else if (newCount <= 6) {
         setIsFlipped(!isFlipped);
       }
       return newCount;
@@ -79,7 +84,9 @@ const Information = () => {
                     style={{
                     transform: getTransformStyle(),
                     transition: 'transform 0.5s',
-                  }} />
+                    }} 
+                  />
+                  {clickCount === 22 && <SpiritText id="spiritText">어지럽담...</SpiritText>}
                 </ImgWrap>
               </AbilContainer>
             </AbilWrap>
@@ -159,6 +166,7 @@ const ProWrap = styled.div`
 `
 
 const ImgWrap = styled.div`
+  position: relative;
   img{
     width: 100%;
     height: 90%;
@@ -169,6 +177,14 @@ const ImgWrap = styled.div`
     border-radius: 5px;
     background-color: rgba(59,66,75, 0.9);
   }
-  
 `
+const SpiritText = styled.div`
+  position: absolute;
+  bottom: 40px;
+  right: 0;
+  color: white;
+  font-family: maple-light;
+  border-radius: 5px;
+`
+
 export default Information;

@@ -14,12 +14,12 @@ export const PropensityInformation = ({ propensityData }) => {
   ];
 
   const PropensityItem = ({ label, level }) => (
-    <SubjectItems style={{ flexDirection: "row" }}>
-      <p style={{ backgroundColor: "rgb(34,187,255)", width: "80px", justifyContent: "center" }}>{label}</p>
-      <p style={{ backgroundColor: "rgb(34,187,255)", width: "55px", justifyContent: "center" }}>
-        <LevelWrap>Lv.{level}</LevelWrap>
+    <PropensityName style={{ flexDirection: "row" }}>
+      <p style={{ backgroundColor: "rgb(31,189,255)", width: "120px"  }}>
+        <PropenLabel>{label}</PropenLabel>
+        <PropenLevel>Lv.{level}</PropenLevel>
       </p>
-    </SubjectItems>
+    </PropensityName>
   );
 
   const handleChartClick = () => {
@@ -30,18 +30,17 @@ export const PropensityInformation = ({ propensityData }) => {
     <Container>
       <PropensityHeader>PROPENSITY</PropensityHeader>
       <PropensityTextWrap>
-      <TextWrap>
-          <PropensityItem label="카리스마" level={propensityData.charisma_level} />
-          <PropensityItem label="매력" level={propensityData.charm_level} />
-          <PropensityItem label="손재주" level={propensityData.handicraft_level} />
-        </TextWrap>
         <TextWrap>
-          <PropensityItem label="통찰력" level={propensityData.insight_level} />
-          <PropensityItem label="감성" level={propensityData.sensibility_level} />
-          <PropensityItem label="의지" level={propensityData.willingness_level} />
-        </TextWrap>
+            <PropensityItem label="카리스마" level={propensityData.charisma_level} />
+            <PropensityItem label="매력" level={propensityData.charm_level} />
+            <PropensityItem label="손재주" level={propensityData.handicraft_level} />
+          </TextWrap>
+          <TextWrap>
+            <PropensityItem label="통찰력" level={propensityData.insight_level} />
+            <PropensityItem label="감성" level={propensityData.sensibility_level} />
+            <PropensityItem label="의지" level={propensityData.willingness_level} />
+          </TextWrap>
       </PropensityTextWrap>
-      <D>
       <ChartWrap>
       <RadarChart
           cx={152}
@@ -71,7 +70,6 @@ export const PropensityInformation = ({ propensityData }) => {
             </SubjectItems>
           </ItemsWrap>
         </ChartWrap>
-        </D>
     </Container>
   );
 };
@@ -90,16 +88,7 @@ const Container = styled.div`
   padding: 5px;
 `;
 
-const D = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(59,66,75, 0.9);
-  border-radius: 5px;
-  border: 1px solid rgba(164, 173, 180, 0.5);
-`
+
 
 const PropensityHeader = styled.div`
   width: 100%;
@@ -112,9 +101,9 @@ const PropensityHeader = styled.div`
 
 const PropensityTextWrap = styled.div`
 margin-bottom: 10px;
-background-color: #b5b7c9;
+background-color: #ffffff;
 border-radius: 5px;
-
+padding: 2px;
 `
 
 const TextWrap = styled.div`
@@ -122,26 +111,24 @@ const TextWrap = styled.div`
   flex-direction: row;
   p{
     display: flex;
-    background-color: rgb(68,204,255);
-    margin: 3px;
+    margin: 2px;
     justify-content: space-between;
   }
 `
-const LevelWrap = styled.div`
-  text-align: end;
-`
+
 const SubjectItems = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   p{
-    padding: 8px;
-    background-color: rgb(153,221,238);
+    padding: 6px;
+    background-color: rgb(106, 214, 241);
     color: white;
     font-weight: 700;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
+    
   }
 
 `
@@ -172,4 +159,28 @@ const ChartWrap = styled.div`
   margin-bottom: 20px;
   width: 320px;
   z-index: 99;
+`
+const PropensityName = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  p{
+    padding: 5px;
+    background-color: rgb(106, 214, 241);
+    color: white;
+    font-weight: 700;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    
+  }
+`
+
+const PropenLabel = styled.div`
+  padding-right: 5px;
+  font-size: 15px;
+`
+const PropenLevel = styled.div`
+  font-size: 15px;
 `

@@ -35,23 +35,20 @@ export const Equipment = () => {
     };
   }, [characterName]);
 
-
   return (
     <Container>
-    {result && result.getItemEquipment && (
+      {result && result.getItemEquipment && (
       <ItemEquipmentInformation 
-        EquipData={{
+      EquipData={{
       ...result.getItemEquipment,
       getSetEffect: result.getSetEffect,
-      getSymbol: result.getSymbolEquipment,
-    }}
-  />
-)}
-
+      getSymbol: result.getSymbolEquipment}}
+      />
+      )}
     </Container>
   )
 }
 
 const Container = styled.div`
-  
+  height: 600px;
 `
