@@ -6,11 +6,63 @@ export const ItemSymbol = ({ symbolData }) => {
   const symbolList = symbolData?.symbol || [];
   const arcaneSymbols = symbolList.filter(item => item.symbol_name.includes('아케인'));
   const authenticSymbols = symbolList.filter(item => item.symbol_name.includes('어센틱'));
-  
+  const totalArcaneForce = arcaneSymbols.reduce((acc, item) => acc + parseInt(item.symbol_force, 10), 0);
+  const totalAuthenticForce = authenticSymbols.reduce((acc, item) => acc + parseInt(item.symbol_force, 10), 0);
+
+  let arcStatsObject = {};
+  let autStatsObject = {};
+
+  arcaneSymbols.forEach(item => {
+    const stats = [
+      { value: item.symbol_luk, name: 'LUK' },
+      { value: item.symbol_str, name: 'STR' },
+      { value: item.symbol_int, name: 'INT' },
+      { value: item.symbol_dex, name: 'DEX' }
+    ];
+    stats.forEach(stat => {
+      const statValue = parseInt(stat.value, 10) || 0;
+      if (statValue > 0) {
+        // 해당 스탯의 값을 객체에 저장
+        arcStatsObject[stat.name] = (arcStatsObject[stat.name] || 0) + statValue;
+      }
+    });
+  });
+
+  authenticSymbols.forEach(item => {
+    const stats = [
+      { value: item.symbol_luk, name: 'LUK' },
+      { value: item.symbol_str, name: 'STR' },
+      { value: item.symbol_int, name: 'INT' },
+      { value: item.symbol_dex, name: 'DEX' }
+    ];
+    stats.forEach(stat => {
+      const statValue = parseInt(stat.value, 10) || 0;
+      if (statValue > 0) {
+        // 해당 스탯의 값을 객체에 저장
+        autStatsObject[stat.name] = (autStatsObject[stat.name] || 0) + statValue;
+      }
+    });
+  });
+
+  // 스탯과 값을 기반으로 표시 문자열 생성
+  const ArcStatDisplay = Object.entries(arcStatsObject).map(([key, value]) => `${key} +${value}`).join('\n');
+  const AutStatDisplay = Object.entries(autStatsObject).map(([key, value]) => `${key} +${value}`).join('\n');
+
+
   return (
     <Container>
       <CommonSymbolWrap>
       <SymbolHeader>아케인 심볼</SymbolHeader>
+        <SymbolIncreaseWrap>
+          <IncreaseArcaneShameWrap>
+            <div>ARC +{totalArcaneForce}</div>
+          </IncreaseArcaneShameWrap>
+          <IncreaseMainStatWrap>
+            {ArcStatDisplay.split('\n').map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
+          </IncreaseMainStatWrap>
+        </SymbolIncreaseWrap>
           <SymbolWrap>
           {arcaneSymbols.map((item, index) => (
           <Items key={index}>
@@ -28,6 +80,16 @@ export const ItemSymbol = ({ symbolData }) => {
         </CommonSymbolWrap>
         <CommonSymbolWrap>
           <SymbolHeader>어센틱 심볼</SymbolHeader>
+          <SymbolIncreaseWrap>
+          <IncreaseArcaneShameWrap>
+            AUT +{totalAuthenticForce}
+          </IncreaseArcaneShameWrap>
+          <IncreaseMainStatWrap>
+            {AutStatDisplay.split('\n').map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
+          </IncreaseMainStatWrap>
+        </SymbolIncreaseWrap>
           <SymbolWrap>
           {authenticSymbols.map((item, index) => (
           <Items key={index}>
@@ -53,13 +115,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 460px;
-  background-color: #dfdfdf;
-  height: auto;
+  padding: 5px;
+  height: 100%;
   gap: 14px;
-  border: 1px solid rgb(80,92,101);
-  outline: 1px solid rgb(42,49,58);
   border-radius: 5px;
-  background-color: rgba(59,66,75, 0.9);
+  background-color: black;
+  border-radius: 5px;
+  border: 1px solid white;
+  outline: 1px solid black;
+
 `
 
 
@@ -67,31 +131,62 @@ const CommonSymbolWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid black;
   font-family: maple-light;
-  background-color: rgb(134,148,160);
+  border-radius: 5px;
+  padding: 5px;
+
 `
 
 const SymbolHeader = styled.div`
   display: flex;
   justify-content: center;
   font-family: maple-light;
+  color: white;
+  width: 100%;
+  font-size: 17px;
+
+  color: rgb(220,252,2);
+
+
 `
+
+const SymbolIncreaseWrap = styled.div`
+    color: white;
+    width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+`
+
+const IncreaseArcaneShameWrap = styled.div`
+
+`
+
+const IncreaseMainStatWrap = styled.div`
+  
+`
+
 
 const SymbolWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 11px;
+  font-size: 12px;
+  gap: 5px;
+  
 `
 const Items = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   gap: 3px;
-  padding: 0 10px;
+  width: 70px;
+  background-color: rgb(255, 255, 255);
+  padding: 5px 0;
+  border-radius: 5px;
 `
 
 const SymbolIcons = styled.div`

@@ -159,6 +159,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  gap: 5px;
 `;
 
 const InfoWrap = styled.div`
