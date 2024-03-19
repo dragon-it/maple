@@ -115,12 +115,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 460px;
-  padding: 5px;
+  padding: 10px;
   height: 100%;
   gap: 14px;
   border-radius: 5px;
-  background-color: black;
-  border-radius: 5px;
+  background-color: #000000;
   border: 1px solid white;
   outline: 1px solid black;
 
@@ -134,7 +133,8 @@ const CommonSymbolWrap = styled.div`
   font-family: maple-light;
   border-radius: 5px;
   padding: 5px;
-
+  background-color: #333333;
+  border: 1px solid rgb(190, 190, 190);
 `
 
 const SymbolHeader = styled.div`
@@ -144,10 +144,7 @@ const SymbolHeader = styled.div`
   color: white;
   width: 100%;
   font-size: 17px;
-
   color: rgb(220,252,2);
-
-
 `
 
 const SymbolIncreaseWrap = styled.div`
@@ -173,7 +170,7 @@ const SymbolWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 13px;
   gap: 5px;
   
 `

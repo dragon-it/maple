@@ -40,33 +40,31 @@ const handleItemClick = (item) => {
 console.log(selectedItem);
 
   const positions = {    
-    '모자': {top: '72px', left: '158px'},
-    '얼굴장식': {top: '122px', left: '158px'},
-    '눈장식': {top: '171px', left: '158px'},
-    '귀고리': {top: '171px', left: '207px'},
-    '상의': {top: '220px', left: '158px'},
-    '하의': {top: '270px', left: '158px'},
-    '신발': {top: '319px', left: '158px'},
-    '장갑': {top: '270px', left: '207px'},
-    '망토': {top: '270px', left: '257px'},
-    '보조무기': {top: '220px', left: '257px'},
-    '무기': {top: '220px', left: '109px'},
-    '반지1': {top: '73px', left: '60px'},
-    '반지2': {top: '122px', left: '60px'},
-    '반지3': {top: '171px', left: '60px'},
-    '반지4': {top: '220px', left: '60px'},
-    '펜던트': {top: '122px', left: '109px'},
-    '훈장': {top: '171px', left: '257px'},
-    '벨트': {top: '270px', left: '109px'},
-    '어깨장식': {top: '220px', left: '207px'},
-    '포켓 아이템': {top: '270px', left: '60px'},
-    '기계 심장': {top: '318px', left: '257px'},
-    '뱃지': {top: '122px', left: '257px'},
-    '엠블렘': {top: '72px', left: '257px'},
-    '펜던트2': {top: '171px', left: '109px'}
+    '모자': {top: '6px', left: '108px'},
+    '얼굴장식': {top: '55px', left: '108px'},
+    '눈장식': {top: '104px', left: '108px'},
+    '귀고리': {top: '104px', left: '157px'},
+    '상의': {top: '154px', left: '108px'},
+    '하의': {top: '203px', left: '108px'},
+    '신발': {top: '252px', left: '108px'},
+    '장갑': {top: '203px', left: '157px'},
+    '망토': {top: '203px', left: '206px'},
+    '보조무기': {top: '154px', left: '206px'},
+    '무기': {top: '154px', left: '59px'},
+    '반지1': {top: '6px', left: '10px'},
+    '반지2': {top: '55px', left: '10px'},
+    '반지3': {top: '104px', left: '10px'},
+    '반지4': {top: '154px', left: '10px'},
+    '펜던트': {top: '55px', left: '59px'},
+    '훈장': {top: '104px', left: '206px'},
+    '벨트': {top: '203px', left: '59px'},
+    '어깨장식': {top: '154px', left: '157px'},
+    '포켓 아이템': {top: '203px', left: '10px'},
+    '기계 심장': {top: '252px', left: '206px'},
+    '뱃지': {top: '55px', left: '206px'},
+    '엠블렘': {top: '6px', left: '206px'},
+    '펜던트2': {top: '104px', left: '59px'}
     };
-
-
 
   const PresetButton = styled.button`
     position: relative;
@@ -93,12 +91,12 @@ console.log(selectedItem);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 99;
     width: 46px;
     height: 46px;
     cursor: pointer;
     border: ${({ grade, gradeColors }) => `2px solid ${gradeColors[grade] || 'none'}`};
   `;
+  
 const handlePresetChange = (preset) => {
   setSelectedPreset(`item_equipment_${preset}`);
 };
@@ -107,7 +105,22 @@ return (
   <Container>
     <InfoWrap>
         <UiBackgrnd>
-          <img src={equipmentUi} alt="ui" />
+          <BackgroundImageWrap/>
+          <EquipItems>
+          <BackgroundImage src={equipmentUi} alt="ui" />
+          {EquipData[selectedPreset]?.map((item, index) => (
+          <ItemIcon 
+            key={index} 
+            style={positions[item.item_equipment_slot]} 
+            grade={item.potential_option_grade}
+            gradeColors={gradeColors}
+            onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+            onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+          >
+          <img src={item.item_icon} alt={`icon-${index}`} />
+          </ItemIcon>
+        ))}
+        </EquipItems> 
           <PresetButtons>
             {matchingPresetKey === selectedPreset && <span>현재 적용중인 프리셋이에요!</span>}
             <PresetButton 
@@ -130,20 +143,6 @@ return (
             </PresetButton>
           </PresetButtons>
         </UiBackgrnd>
-        <EquipItems>
-        {EquipData[selectedPreset]?.map((item, index) => (
-          <ItemIcon 
-            key={index} 
-            style={positions[item.item_equipment_slot]} 
-            grade={item.potential_option_grade}
-            gradeColors={gradeColors}
-            onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-            onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
-          >
-        <img src={item.item_icon} alt={`icon-${index}`} />
-          </ItemIcon>
-        ))}
-        </EquipItems> 
       </InfoWrap>
       <DetailWrap>
         <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors} > </ItemDetail>
@@ -160,6 +159,7 @@ const Container = styled.div`
   flex-direction: row;
   margin-top: 10px;
   gap: 5px;
+  background-color: rgb(242,247,255);
 `;
 
 const InfoWrap = styled.div`
@@ -176,23 +176,30 @@ const UiBackgrnd = styled.div`
   border-radius: 5px;
   border: 2px solid rgba(99, 94, 94, 0.952);
   outline: 1px solid black;
-  img{
-    width: 262px;
-    height: 312px;
-    opacity: 0.8;
-  }
+  
+
+`;
+
+const BackgroundImageWrap = styled.div`
+  width: 262px;
+  height: 312px;
+`
+
+const BackgroundImage = styled.img`
+  width: 262px;
+  height: 312px;
+  opacity: 0.8;
 `;
 
 const EquipItems = styled.div`
-  display: flex;
-  width: 500px;
-  flex-wrap: wrap;
-  
+  position: absolute;
+  top: 0;
 `;
 
 
 const PresetButtons = styled.div`
-  padding-top: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;

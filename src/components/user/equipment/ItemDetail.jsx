@@ -126,10 +126,18 @@ export const ItemDetail = ({ item, clicked }) => {
             const add = item.item_add_option[key] || 0;
             const etc = item.item_etc_option[key] || 0;
             const starforce = item.item_starforce_option[key] || 0;
-            const addPart = (add !== undefined && add !== '0' && add !== 0) ? <span style={{color: 'rgb(204, 255, 0)'}}> {`${modifier(add)}`}</span> : null;
-            const starforcePart = (starforce !== undefined && starforce !== '0' && starforce !== 0) ? <span style={{color: 'rgb(255, 204, 0)'}}> {`${modifier(starforce)}`}</span> : null;
-            const basePart = (add !== 0 || starforce !== 0) ? <span style={{color: 'rgb(255, 255, 255)'}}>{`${modifier(base)}`}</span> : null;
-            const etcPart = (etc !== undefined && etc !== '0' && etc !== 0) ? <span style={{color: 'rgb(170, 170, 255)'}}> {`${modifier(etc)}`}</span> : null;
+            const addPart = (add !== undefined && add !== '0' && add !== 0) 
+            ? <span style={{color: 'rgb(204, 255, 0)'}}> {`${modifier(add)}`}</span> 
+            : null;
+            const starforcePart = (starforce !== undefined && starforce !== '0' && starforce !== 0) 
+            ? <span style={{color: 'rgb(255, 204, 0)'}}> {`${modifier(starforce)}`}</span> 
+            : null;
+            const basePart = (add !== 0 || starforce !== 0) 
+            ? <span style={{color: 'rgb(255, 255, 255)'}}>{`${modifier(base)}`}</span> 
+            : null;
+            const etcPart = (etc !== undefined && etc !== '0' && etc !== 0) 
+            ? <span style={{color: 'rgb(170, 170, 255)'}}> {`${modifier(etc)}`}</span> 
+            : null;
               let outputPart = null;
               if (basePart && (addPart || starforcePart || etcPart)) {
                 outputPart = (
@@ -182,14 +190,14 @@ export const ItemDetail = ({ item, clicked }) => {
             <div>{item.soul_option}</div>
           </SoulOptionWrap>
         )}
-{item.item_exceptional_option && !isAllZero(item.item_exceptional_option) && (
-  <ExOptionWrap>
-    <ExOptionHeader>
-      <ExInitial>EX</ExInitial>익셉셔널
-    </ExOptionHeader>
-    <StatsSummary stats={item.item_exceptional_option} />
-  </ExOptionWrap>
-)}
+      {item.item_exceptional_option && !isAllZero(item.item_exceptional_option) && (
+        <ExOptionWrap>
+          <ExOptionHeader>
+            <ExInitial>EX</ExInitial>익셉셔널
+          </ExOptionHeader>
+          <StatsSummary stats={item.item_exceptional_option} />
+        </ExOptionWrap>
+      )}
       </OptionWrap>
     </Container>
   )
@@ -216,7 +224,6 @@ const Container = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  margin-top: 5px;
   line-height: 18px;
   color: white; 
   padding: 0px 10px;
