@@ -179,8 +179,11 @@ const PropensityName = styled.div`
 
 const PropenLabel = styled.div`
   padding-right: 5px;
-  font-size: 15px;
+  font-size: 14px;
 `
 const PropenLevel = styled.div`
-  font-size: 15px;
+  font-size: 14px;
+  width: 40px;
+  display: flex;
+  justify-content: flex-start;
 `

@@ -23,23 +23,24 @@ const Information = () => {
     };
   }, [characterName]);
 
-  console.log(clickCount)
 
   const handleHeightChange = (height) => {
     console.log("HyperStatInformation의 높이:", height);
-    // height가 270 이하일 경우 이미지를 표시합니다.
+    // height가 300 이하일 경우 이미지를 표시
     if (height <= 300) {
       document.getElementById('spiritImage').style.display = 'block';
     } else {
       document.getElementById('spiritImage').style.display = 'none';
-      document.getElementById('spiritText').style.display = 'none';
+      const spiritTextElement = document.getElementById('spiritText');
+      if (spiritTextElement) {
+        spiritTextElement.style.display = 'none';
+      }
     }
   };
 
   const toggleFlip = () => {
     setClickCount((prevCount) => {
       const newCount = prevCount + 1;
-      // 클릭 횟수가 30회에 도달하면 더 이상 플립 상태를 변경하지 않고 30을 유지합니다.
       if (newCount === 23) {
         return prevCount; 
       } else if (newCount > 6) { 
@@ -167,6 +168,7 @@ const ProWrap = styled.div`
 
 const ImgWrap = styled.div`
   position: relative;
+  user-select: none;
   img{
     width: 100%;
     height: 90%;

@@ -50,5 +50,4 @@ export const Equipment = () => {
 }
 
 const Container = styled.div`
-  height: 600px;
 `
