@@ -42,7 +42,9 @@ export const Equipment = () => {
       EquipData={{
       ...result.getItemEquipment,
       getSetEffect: result.getSetEffect,
-      getSymbol: result.getSymbolEquipment}}
+      getSymbol: result.getSymbolEquipment,
+      getCashItemEquipment: result.getCashItemEquipment         
+    }}
       />
       )}
     </Container>

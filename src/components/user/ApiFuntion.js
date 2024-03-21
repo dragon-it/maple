@@ -12,6 +12,7 @@ import {
   getUnion,
   getSymbolEquipment,
   getSkill,
+  getCashItemEquipment,
 } from '../../api/api';
 
 const apiFunctions = [
@@ -28,6 +29,7 @@ const apiFunctions = [
   getUnion,
   getSymbolEquipment,
   getSkill,
+  getCashItemEquipment,
 ];
 
 export default apiFunctions;

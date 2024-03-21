@@ -27,7 +27,7 @@ const Information = () => {
   const handleHeightChange = (height) => {
     console.log("HyperStatInformation의 높이:", height);
     // height가 300 이하일 경우 이미지를 표시
-    if (height <= 300) {
+    if (height <= 350) {
       document.getElementById('spiritImage').style.display = 'block';
     } else {
       document.getElementById('spiritImage').style.display = 'none';
@@ -107,7 +107,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   z-index: 99;
-  background-color: #b5b7c9;
   border-radius: 10px;
 `;
 
