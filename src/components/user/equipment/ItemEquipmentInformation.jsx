@@ -7,6 +7,7 @@ import { ItemDetail } from './ItemDetail';
 import gradeColors from './ItemGradeColors'
 import { ItemSetEffect } from './ItemSetEffect';
 import { ItemSymbol } from './ItemSymbol';
+import { CashItemDetail } from './CashItemDetail';
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
   console.log(EquipData)
@@ -25,6 +26,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     }
   };
 
+  
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setClicked(!clicked); // 클릭 시 clicked 상태 반전
@@ -38,14 +40,20 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   const handleCashPresetChange = (preset) => {
     setSelectedCashPreset(`cash_item_equipment_${preset}`)
   }
+
+  const handleCashItemBase = () => {
+    setSelectedCashPreset(`cash_item_equipment_base`)
+  }
   
   const [currentTab, setCurrentTab] = useState('장비'); 
   
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
+    setSelectedItem(null);
+    setClicked(false);
   };
   
-
+  
   
   console.log(selectedItem);
 
@@ -114,7 +122,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     width: 46px;
     height: 46px;
     cursor: pointer;
-    border: ${({ grade, gradeColors }) => `2px solid ${gradeColors[grade] || 'none'}`};
+    border: ${({ grade, gradeColors }) => `2px solid ${gradeColors && gradeColors[grade] ? gradeColors[grade] : 'none'}`};
   `;
   
 
@@ -189,7 +197,7 @@ return (
           </EquipItems> 
           <PresetButtonWrap>
               <BaseButton
-                onClick={() => handleCashPresetChange('preset_1')}
+                onClick={() => handleCashItemBase()}
                 isSelected={selectedCashPreset === 'cash_item_equipment_base'}
                 >
                 <div>BASE</div>
@@ -229,8 +237,13 @@ return (
         </UiBackgrnd>
       </InfoWrap>
       <DetailWrap>
-        <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors} > </ItemDetail>
+        {currentTab === '캐시' ? (
+          <CashItemDetail item={selectedItem} clicked={clicked}/>
+        ) : currentTab === '장비' ? (
+          <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors}/>
+        ) : null}
       </DetailWrap>
+
       <ItemSetEffect setinfo={EquipData.getSetEffect}/>
       <ItemSymbol symbolData={EquipData.getSymbol}></ItemSymbol>
     </Container>

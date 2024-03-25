@@ -118,7 +118,7 @@ export const ItemDetail = ({ item, clicked }) => {
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
-        <div>장비 분류 : {item.item_equipment_part}</div>
+        <div>장비 분류 : {item && item.item_equipment_part}</div>
         {Object.entries(item.item_total_option).map(([key, value]) => {
           if ((value !== '0' && value !== 0)) {
             const modifier = optionValueModifierMap[key] || optionValueModifierMap.default;
@@ -163,7 +163,8 @@ export const ItemDetail = ({ item, clicked }) => {
             return null;
           })}
       </ItemOptionWrap>
-      <OptionWrap>
+      <OptionWrap PotenOptions={item && (item.potential_option_grade || item.additional_potential_option_grade || item.soul_name || (item.item_exceptional_option && !isAllZero(item.item_exceptional_option)))}>
+
         {item.potential_option_grade && (
           <PotentialOptionWrap>
             <PotenOptionHeader potengrade={item.potential_option_grade}>
@@ -328,7 +329,9 @@ const OptionWrap = styled.div`
   white-space: pre-line;
   border-top: 2px dotted rgb(55, 56, 58);
   padding-bottom: 5px;
+  ${props => !props.PotenOptions && 'padding-bottom: 0;'}
 `
+
 const OptionInitial = styled.div`
   display: flex;
   align-items: center;
