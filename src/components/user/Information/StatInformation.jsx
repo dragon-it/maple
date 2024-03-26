@@ -106,70 +106,78 @@ export const StatInformation = ({ statInfo }) => {
             </p>
           </TextLeft>
           <TextRight>
+          {statInfo.final_stat[2] && (
             <p>
               <StatHeader>{statInfo.final_stat[2].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[2].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[3] && (
             <p>
               <StatHeader>{statInfo.final_stat[3].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[3].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[32] && (
             <p>
               <StatHeader>{statInfo.final_stat[32].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[32].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[6] && (
             <p>
               <StatHeader>{statInfo.final_stat[6].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[6].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[7] && (
             <p>
               <StatHeader>{statInfo.final_stat[7].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[7].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[30] && (
             <p>
               <StatHeader>{statInfo.final_stat[30].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[30].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[36] && (
             <p>
               <StatHeader>{statInfo.final_stat[36].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[36].stat_value}%</StatValue>
             </p>
+          )}
+          {statInfo.final_stat[43] && (
             <p>
               <StatHeader>{statInfo.final_stat[43].stat_name}</StatHeader>
               <StatValue>{statInfo.final_stat[43].stat_value}%</StatValue>
             </p>
+          )}
           </TextRight>
         </AttackFontWrap>
         <EtcStatWrap>
           <EtcTextWrap>
             <StatLeftWrap>
-                <div>
-                  <StatHeader>{statInfo.final_stat[29].stat_name}</StatHeader>
-                  <StatValue>{statInfo.final_stat[29].stat_value}%</StatValue>
-                </div>
-                <div>
-                  <StatHeader>{statInfo.final_stat[28].stat_name}</StatHeader>
-                  <StatValue>{statInfo.final_stat[28].stat_value}%</StatValue>
-                </div>
-                <div>
-                  <StatHeader>{statInfo.final_stat[39].stat_name}</StatHeader>
-                  <StatValue>{statInfo.final_stat[39].stat_value}%</StatValue>
-                </div>
-              </StatLeftWrap>
-              <StatRightWrap>
-                <div>
-                  <StatHeader>{statInfo.final_stat[13].stat_name}</StatHeader>
-                  <StatValue>{statInfo.final_stat[13].stat_value}</StatValue>
-                </div>
-                <div>
-                  <StatHeader>{statInfo.final_stat[14].stat_name}</StatHeader>
-                  <StatValue>{statInfo.final_stat[14].stat_value}</StatValue>
-                </div>
-                <div>
-                  <StatHeader>{statInfo.final_stat[15].stat_name}</StatHeader>
-                  <StatValue>{statInfo.final_stat[15].stat_value}</StatValue>
-                </div>
-              </StatRightWrap>
+              {[29, 28, 39].map((index) => (
+                statInfo.final_stat[index] && (
+                  <div key={index}>
+                    <StatHeader>{statInfo.final_stat[index].stat_name}</StatHeader>
+                    <StatValue>{statInfo.final_stat[index].stat_value}%</StatValue>
+                  </div>
+                )
+              ))}
+            </StatLeftWrap>
+            <StatRightWrap>
+              {statInfo.final_stat.slice(13, 16).map((stat, index) => (
+                stat && (
+                  <div key={index}>
+                    <StatHeader>{stat.stat_name}</StatHeader>
+                    <StatValue>{stat.stat_value}</StatValue>
+                  </div>
+                )
+              ))}
+            </StatRightWrap>
           </EtcTextWrap>
         </EtcStatWrap>
       </AllStatWrap>

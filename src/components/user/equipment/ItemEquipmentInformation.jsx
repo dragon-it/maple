@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import equipmentUi from '../../../assets/ui/equipmentUi/equipUi.png'
 import cashEquipUi from '../../../assets/ui/equipmentUi/cashEquipUi.png'
-
+import petEquipUi from '../../../assets/ui/equipmentUi/petEquipUi.png'
 import { ItemDetail } from './ItemDetail';
 import gradeColors from './ItemGradeColors'
 import { ItemSetEffect } from './ItemSetEffect';
@@ -128,7 +128,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
 return (
   <Container>
-    <InfoWrap>
+<InfoWrap currentTab={currentTab}>
     <TabMenu>
       <TabButton isSelected={currentTab === '장비'} onClick={() => handleTabChange('장비')}>장비</TabButton>
       <TabButton isSelected={currentTab === '캐시'} onClick={() => handleTabChange('캐시')}>캐시</TabButton>
@@ -179,6 +179,7 @@ return (
             </PresetButtonWrap>
           </EquipWrap>
         )}
+
         {currentTab === '캐시' && (
           <EquipWrap>
           <BackgroundImageWrap/>
@@ -224,12 +225,18 @@ return (
               </PresetButtons>
               {matchingPresetKey === selectedPreset && <ApplyingPreset>현재 적용중인 프리셋이에요!</ApplyingPreset>}
             </PresetButtonWrap>
-
         </EquipWrap>
         )}
+
         {currentTab === '펫' && (
-          <></>
+          <PetEquipWrap>
+            <PetBackgroundImageWrap/>
+            <EquipItems>
+              <PetBackgroundImage src={petEquipUi} alt="ui" />
+            </EquipItems> 
+          </PetEquipWrap>
         )}
+
         {currentTab === 'AD' && (
           <></>
         )}
@@ -262,14 +269,13 @@ const Container = styled.div`
 
 const EquipWrap = styled.div`
   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const InfoWrap = styled.div`
   width: 300px;
-  height: 470px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -277,7 +283,22 @@ const InfoWrap = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
+  height: ${props => {
+    switch (props.currentTab) {
+      case '장비':
+        return '450px';
+      case '캐시':
+        return '470px'; 
+      case '펫':
+        return '320px';
+      case 'AD':
+        return '300px'; 
+      default:
+        return '470px'; // 기본값
+    }
+  }};
 `
+
 const TabMenu = styled.div`
   display: flex;
   justify-content: space-around;
@@ -319,6 +340,23 @@ const BackgroundImage = styled.img`
   height: 312px;
   opacity: 0.8;
 `;
+
+const PetEquipWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
+const PetBackgroundImage = styled.img`
+  width: 262px;
+  margin-top: 25px;
+`
+
+const PetBackgroundImageWrap = styled.div`
+  width: 262px;
+  height: 250px;
+`
 
 const EquipItems = styled.div`
   position: absolute;

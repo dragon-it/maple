@@ -321,7 +321,6 @@ const ItemOptionWrap = styled.div`
   line-height: 16px;
   font-size: 12px;
 
-  
 `
 
 const OptionWrap = styled.div`

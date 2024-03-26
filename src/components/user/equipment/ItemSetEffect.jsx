@@ -87,7 +87,6 @@ export const ItemSetEffect = ({ setinfo }) => {
 const Container = styled.div`
   width: auto;
   height: 100%;
-  margin-left: 10px;
   padding: 10px;
   white-space: pre-line;
   background-color: black;

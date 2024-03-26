@@ -129,7 +129,8 @@ const Experience = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgb(170,204,0);
-  font-size: 12px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  font-size: 13px;
   padding: 5px;
   border-radius: 7px;
 
