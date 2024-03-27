@@ -144,3 +144,5 @@ const SetEffectDetail = styled.div`
   font-size: 12px;
   line-height: 14px;
 `
+
+
