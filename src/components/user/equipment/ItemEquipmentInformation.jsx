@@ -8,6 +8,7 @@ import gradeColors from './ItemGradeColors'
 import { ItemSetEffect } from './ItemSetEffect';
 import { ItemSymbol } from './ItemSymbol';
 import { CashItemDetail } from './CashItemDetail';
+import { PetDetail } from './PetDetail';
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
   console.log(EquipData)
@@ -228,14 +229,119 @@ return (
         </EquipWrap>
         )}
 
-        {currentTab === '펫' && (
-          <PetEquipWrap>
-            <PetBackgroundImageWrap/>
-            <EquipItems>
-              <PetBackgroundImage src={petEquipUi} alt="ui" />
-            </EquipItems> 
-          </PetEquipWrap>
+{currentTab === '펫' && (
+  <PetEquipWrap>
+    <PetBackgroundImageWrap/>
+    <EquipItems>
+    <PetBackgroundImage src={petEquipUi} alt="ui" />
+      <PetIconsWrap>
+        {EquipData.getPetEquipment.pet_1_appearance_icon && (
+          <PetIcons>
+            <PetAppearanceIcon>
+              {EquipData.getPetEquipment.pet_1_appearance_icon ? (
+                <img src={EquipData.getPetEquipment.pet_1_appearance_icon} alt="petIcon" />
+              )
+              :<div style={{ width: '42px', height: '42px' }}></div>
+              }
+            </PetAppearanceIcon>
+            <PetEquipShapeIcon>
+              {EquipData.getPetEquipment.pet_1_equipment.item_shape_icon ? (
+                <img src={EquipData.getPetEquipment.pet_1_equipment.item_shape_icon} alt="petEqipIcon" />
+                )
+                :<div style={{ width: '42px', height: '42px' }}></div>
+                }
+            </PetEquipShapeIcon>
+            <PetAutoSkillWrap>
+              <PetAutoSkillIcon>
+                {EquipData.getPetEquipment.pet_1_auto_skill.skill_1_icon ? (
+                  <img src={EquipData.getPetEquipment.pet_1_auto_skill.skill_1_icon} alt="petAutoSkill1" />
+                  )
+                  :<div style={{ width: '42px', height: '42px' }}></div>
+                  }
+              </PetAutoSkillIcon>
+              <PetAutoSkillIcon>
+                {EquipData.getPetEquipment.pet_1_auto_skill.skill_2_icon ? (
+                  <img src={EquipData.getPetEquipment.pet_1_auto_skill.skill_2_icon} alt="petAutoSkill2" />
+                  )
+                  :<div style={{ width: '42px', height: '42px' }}></div>
+                  }
+              </PetAutoSkillIcon>
+            </PetAutoSkillWrap>
+          </PetIcons>
         )}
+      {EquipData.getPetEquipment.pet_2_appearance_icon && (
+        <PetIcons>
+          <PetAppearanceIcon>
+            {EquipData.getPetEquipment.pet_2_appearance_icon ? (
+              <img src={EquipData.getPetEquipment.pet_2_appearance_icon} alt="petIcon" />
+              )
+              :<div style={{ width: '42px', height: '42px' }}></div>
+              }
+          </PetAppearanceIcon>
+          <PetEquipShapeIcon>
+            {EquipData.getPetEquipment.pet_2_equipment.item_shape_icon ? (
+              <img src={EquipData.getPetEquipment.pet_2_equipment.item_shape_icon} alt="petEqipIcon" />
+              )
+              :<div style={{ width: '42px', height: '42px' }}></div>
+              }
+          </PetEquipShapeIcon>
+          <PetAutoSkillWrap>
+            <PetAutoSkillIcon>
+              {EquipData.getPetEquipment.pet_2_auto_skill.skill_1_icon ? (
+                <img src={EquipData.getPetEquipment.pet_2_auto_skill.skill_1_icon} alt="petAutoSkill1" />
+                )
+                :<div style={{ width: '42px', height: '42px' }}></div>
+                }
+            </PetAutoSkillIcon>
+            <PetAutoSkillIcon>
+              {EquipData.getPetEquipment.pet_2_auto_skill.skill_2_icon ? (
+                <img src={EquipData.getPetEquipment.pet_2_auto_skill.skill_2_icon} alt="petAutoSkill2" />
+                )
+                :<div style={{ width: '42px', height: '42px' }}></div>
+                }
+            </PetAutoSkillIcon>
+          </PetAutoSkillWrap>
+        </PetIcons>
+      )}
+        {EquipData.getPetEquipment.pet_3_appearance_icon && (
+        <PetIcons>
+        <PetAppearanceIcon>
+          {EquipData.getPetEquipment.pet_3_appearance_icon ? (
+            <img src={EquipData.getPetEquipment.pet_3_appearance_icon} alt="petIcon" />
+            )
+            :<div style={{ width: '42px', height: '42px' }}></div>
+            }
+        </PetAppearanceIcon>
+        <PetEquipShapeIcon>
+          {EquipData.getPetEquipment.pet_3_equipment.item_shape_icon ? (
+            <img src={EquipData.getPetEquipment.pet_3_equipment.item_shape_icon} alt="petEqipIcon" />
+            )
+            :<div style={{ width: '42px', height: '42px' }}></div>
+            }
+        </PetEquipShapeIcon>
+        <PetAutoSkillWrap>
+          <PetAutoSkillIcon>
+            {EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon ? (
+              <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon} alt="petAutoSkill1" />
+              )
+              :<div style={{ width: '42px', height: '42px' }}></div>
+              }
+          </PetAutoSkillIcon>
+          <PetAutoSkillIcon>
+            {EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon ? (
+              <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon} alt="petAutoSkill2" />
+              )
+              :<div style={{ width: '42px', height: '42px' }}></div>
+              }
+          </PetAutoSkillIcon>
+        </PetAutoSkillWrap>
+      </PetIcons>
+        )}
+      </PetIconsWrap>
+    </EquipItems> 
+  </PetEquipWrap>
+)}
+
 
         {currentTab === 'AD' && (
           <></>
@@ -244,15 +350,24 @@ return (
         </UiBackgrnd>
       </InfoWrap>
       <DetailWrap>
-        {currentTab === '캐시' ? (
+        {currentTab === '캐시' 
+        ? (
           <CashItemDetail item={selectedItem} clicked={clicked}/>
-        ) : currentTab === '장비' ? (
+        ) 
+        : currentTab === '장비' 
+        ? (
           <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors}/>
-        ) : null}
+        ) 
+        : currentTab === '펫' 
+        ? (
+          <PetDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors}/>
+        )
+        : null
+        }
       </DetailWrap>
 
       <ItemSetEffect setinfo={EquipData.getSetEffect}/>
-      <ItemSymbol symbolData={EquipData.getSymbol}></ItemSymbol>
+      <ItemSymbol symbolData={EquipData.getSymbol}/>
     </Container>
   );
 };
@@ -357,6 +472,48 @@ const PetBackgroundImageWrap = styled.div`
   width: 262px;
   height: 250px;
 `
+
+const PetIconsWrap = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 39px;
+  gap: 19px;
+  width: 100%;
+`
+
+const PetIcons = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 23px;
+  img{
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+  }
+`
+
+const PetAutoSkillWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  margin-left: 11px;
+`
+
+const PetAppearanceIcon = styled.div`
+  
+`
+
+const PetEquipShapeIcon = styled.div`
+  
+`
+
+const PetAutoSkillIcon = styled.div`
+  
+`
+
+
 
 const EquipItems = styled.div`
   position: absolute;
