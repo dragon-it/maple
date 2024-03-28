@@ -11,7 +11,6 @@ import { CashItemDetail } from './CashItemDetail';
 import { PetDetail } from './PetDetail';
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
-  console.log(EquipData)
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
 
@@ -20,6 +19,11 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [clicked, setClicked] = useState(false);
+
+
+  const [petInfo, setPetInfo] = useState(null);
+  console.log(petInfo)
+  console.log(selectedItem)
 
   const handleItemHover = (item) => {
     if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
@@ -55,8 +59,69 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   };
   
   
-  
-  console.log(selectedItem);
+    function petInformationData(index) {
+      const petEquipment = EquipData.getPetEquipment;
+      if (petEquipment[`pet_${index}_appearance`] && 
+          petEquipment[`pet_${index}_date_expire`] && 
+          petEquipment[`pet_${index}_appearance_icon`] && 
+          petEquipment[`pet_${index}_skill`] &&
+          petEquipment[`pet_${index}_nickname`] &&
+          petEquipment[`pet_${index}_name`] &&
+          petEquipment[`pet_${index}_pet_type`] &&
+          petEquipment[`pet_${index}_equipment`] &&
+          petEquipment[`pet_${index}_auto_skill`] && 
+          petEquipment[`pet_${index}_description`]
+          ) {
+      const petInformation = {
+        petAppearance: petEquipment[`pet_${index}_appearance`],
+        petDateExpire: petEquipment[`pet_${index}_date_expire`],
+        petIcon: petEquipment[`pet_${index}_appearance_icon`],
+        petSkill : petEquipment[`pet_${index}_skill`],
+        petNickname: petEquipment[`pet_${index}_nickname`],
+        petName: petEquipment[`pet_${index}_name`],
+        petType: petEquipment[`pet_${index}_pet_type`],
+        petEquipment: petEquipment[`pet_${index}_equipment`],
+        petAutoSkill: petEquipment[`pet_${index}_auto_skill`],
+        petDescription: petEquipment[`pet_${index}_description`]
+      };
+      return petInformation;
+      } else {
+        return null;
+      }
+    }
+// PetAppearanceIcon 컴포넌트에서 사용할 정보 처리 함수 (장착 펫 데이터)
+function handlePetAppearanceInfo(index) {
+  const petInfo = petInformationData(index);
+  if (!petInfo) return;
+
+  setSelectedItem({
+    appearance: petInfo.petAppearance,
+    icon:petInfo.petIcon,
+    expire: petInfo.petDateExpire,
+    description: petInfo.petDescription,
+    name: petInfo.petName,
+    nickname: petInfo.petNickname,
+    type: petInfo.petType
+  });
+}
+
+
+  // PetEquipShapeIcon 컴포넌트에서 사용할 정보 처리 함수 (펫 장비 데이터)
+  function handlePetEquipInfo(index) {
+    const petInfo = petInformationData(index);
+    if (!petInfo) return;
+
+    console.log(`Skill: ${petInfo.petSkill}, Equipment: ${petInfo.petEquipment}`);
+  }
+
+
+
+  const handlePetInformation = (index) => {
+  const info = petInformationData(index);
+  setPetInfo(info);
+
+};
+
 
   const positions = {    
     '모자': {top: '6px', left: '108px'},
@@ -193,7 +258,7 @@ return (
               onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
               onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
             >
-            <img src={item.cash_item_icon} alt={`icon-${index}`} />
+              <img src={item.cash_item_icon} alt={`icon-${index}`} />
             </ItemIcon>
           ))}
           </EquipItems> 
@@ -239,16 +304,19 @@ return (
           <PetIcons>
             <PetAppearanceIcon>
               {EquipData.getPetEquipment.pet_1_appearance_icon ? (
-                <img src={EquipData.getPetEquipment.pet_1_appearance_icon} alt="petIcon" />
+                <img src={EquipData.getPetEquipment.pet_1_appearance_icon} 
+                  alt="petIcon"
+                  onMouseOver={() => handlePetAppearanceInfo(1)}
+                  onClick={() => handlePetAppearanceInfo(1)} />
               )
-              :<div style={{ width: '42px', height: '42px' }}></div>
+              :<div style={{ width: '42px', height: '42px' }}/>
               }
             </PetAppearanceIcon>
             <PetEquipShapeIcon>
               {EquipData.getPetEquipment.pet_1_equipment.item_shape_icon ? (
                 <img src={EquipData.getPetEquipment.pet_1_equipment.item_shape_icon} alt="petEqipIcon" />
                 )
-                :<div style={{ width: '42px', height: '42px' }}></div>
+                :<div style={{ width: '42px', height: '42px' }}/>
                 }
             </PetEquipShapeIcon>
             <PetAutoSkillWrap>
@@ -256,14 +324,14 @@ return (
                 {EquipData.getPetEquipment.pet_1_auto_skill.skill_1_icon ? (
                   <img src={EquipData.getPetEquipment.pet_1_auto_skill.skill_1_icon} alt="petAutoSkill1" />
                   )
-                  :<div style={{ width: '42px', height: '42px' }}></div>
+                  :<div style={{ width: '42px', height: '42px' }}/>
                   }
               </PetAutoSkillIcon>
               <PetAutoSkillIcon>
                 {EquipData.getPetEquipment.pet_1_auto_skill.skill_2_icon ? (
                   <img src={EquipData.getPetEquipment.pet_1_auto_skill.skill_2_icon} alt="petAutoSkill2" />
                   )
-                  :<div style={{ width: '42px', height: '42px' }}></div>
+                  :<div style={{ width: '42px', height: '42px' }}/>
                   }
               </PetAutoSkillIcon>
             </PetAutoSkillWrap>
@@ -272,17 +340,20 @@ return (
       {EquipData.getPetEquipment.pet_2_appearance_icon && (
         <PetIcons>
           <PetAppearanceIcon>
-            {EquipData.getPetEquipment.pet_2_appearance_icon ? (
-              <img src={EquipData.getPetEquipment.pet_2_appearance_icon} alt="petIcon" />
-              )
-              :<div style={{ width: '42px', height: '42px' }}></div>
-              }
+              {EquipData.getPetEquipment.pet_2_appearance_icon ? (
+              <img src={EquipData.getPetEquipment.pet_2_appearance_icon} 
+                alt="petIcon"
+                onMouseOver={() => handlePetAppearanceInfo(2)}
+                onClick={() => handlePetAppearanceInfo(2)} />
+            )
+            :<div style={{ width: '42px', height: '42px' }}/>
+            }
           </PetAppearanceIcon>
           <PetEquipShapeIcon>
             {EquipData.getPetEquipment.pet_2_equipment.item_shape_icon ? (
               <img src={EquipData.getPetEquipment.pet_2_equipment.item_shape_icon} alt="petEqipIcon" />
               )
-              :<div style={{ width: '42px', height: '42px' }}></div>
+              :<div style={{ width: '42px', height: '42px' }}/>
               }
           </PetEquipShapeIcon>
           <PetAutoSkillWrap>
@@ -290,52 +361,55 @@ return (
               {EquipData.getPetEquipment.pet_2_auto_skill.skill_1_icon ? (
                 <img src={EquipData.getPetEquipment.pet_2_auto_skill.skill_1_icon} alt="petAutoSkill1" />
                 )
-                :<div style={{ width: '42px', height: '42px' }}></div>
+                :<div style={{ width: '42px', height: '42px' }}/>
                 }
             </PetAutoSkillIcon>
             <PetAutoSkillIcon>
               {EquipData.getPetEquipment.pet_2_auto_skill.skill_2_icon ? (
                 <img src={EquipData.getPetEquipment.pet_2_auto_skill.skill_2_icon} alt="petAutoSkill2" />
                 )
-                :<div style={{ width: '42px', height: '42px' }}></div>
+                :<div style={{ width: '42px', height: '42px' }}/>
                 }
             </PetAutoSkillIcon>
           </PetAutoSkillWrap>
         </PetIcons>
       )}
         {EquipData.getPetEquipment.pet_3_appearance_icon && (
-        <PetIcons>
-        <PetAppearanceIcon>
-          {EquipData.getPetEquipment.pet_3_appearance_icon ? (
-            <img src={EquipData.getPetEquipment.pet_3_appearance_icon} alt="petIcon" />
-            )
-            :<div style={{ width: '42px', height: '42px' }}></div>
-            }
-        </PetAppearanceIcon>
-        <PetEquipShapeIcon>
-          {EquipData.getPetEquipment.pet_3_equipment.item_shape_icon ? (
-            <img src={EquipData.getPetEquipment.pet_3_equipment.item_shape_icon} alt="petEqipIcon" />
-            )
-            :<div style={{ width: '42px', height: '42px' }}></div>
-            }
-        </PetEquipShapeIcon>
-        <PetAutoSkillWrap>
-          <PetAutoSkillIcon>
-            {EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon ? (
-              <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon} alt="petAutoSkill1" />
+          <PetIcons>
+            <PetAppearanceIcon>
+                {EquipData.getPetEquipment.pet_3_appearance_icon ? (
+                <img src={EquipData.getPetEquipment.pet_3_appearance_icon} 
+                  alt="petIcon"
+                  onMouseOver={() => handlePetAppearanceInfo(3)}
+                  onClick={() => handlePetAppearanceInfo(3)} />
               )
-              :<div style={{ width: '42px', height: '42px' }}></div>
+              :<div style={{ width: '42px', height: '42px' }}/>
               }
-          </PetAutoSkillIcon>
-          <PetAutoSkillIcon>
-            {EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon ? (
-              <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon} alt="petAutoSkill2" />
-              )
-              :<div style={{ width: '42px', height: '42px' }}></div>
-              }
-          </PetAutoSkillIcon>
-        </PetAutoSkillWrap>
-      </PetIcons>
+            </PetAppearanceIcon>
+            <PetEquipShapeIcon>
+              {EquipData.getPetEquipment.pet_3_equipment.item_shape_icon ? (
+                <img src={EquipData.getPetEquipment.pet_3_equipment.item_shape_icon} alt="petEqipIcon" />
+                )
+                :<div style={{ width: '42px', height: '42px' }}/>
+                }
+            </PetEquipShapeIcon>
+            <PetAutoSkillWrap>
+              <PetAutoSkillIcon>
+                {EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon ? (
+                  <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon} alt="petAutoSkill1" />
+                  )
+                  :<div style={{ width: '42px', height: '42px' }}/>
+                  }
+              </PetAutoSkillIcon>
+              <PetAutoSkillIcon>
+                {EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon ? (
+                  <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon} alt="petAutoSkill2" />
+                  )
+                  :<div style={{ width: '42px', height: '42px' }}/>
+                  }
+              </PetAutoSkillIcon>
+            </PetAutoSkillWrap>
+          </PetIcons>
         )}
       </PetIconsWrap>
     </EquipItems> 
@@ -360,7 +434,7 @@ return (
         ) 
         : currentTab === '펫' 
         ? (
-          <PetDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors}/>
+          <PetDetail item={selectedItem} clicked={clicked} />
         )
         : null
         }
@@ -491,6 +565,7 @@ const PetIcons = styled.div`
     width: 42px;
     height: 42px;
     object-fit: contain;
+    cursor: pointer;
   }
 `
 
