@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const PetItemDetail = ({ item, clicked }) => {
-  console.log(clicked)
   console.log(item)
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
@@ -16,20 +15,27 @@ export const PetItemDetail = ({ item, clicked }) => {
           )}
         </div>
       <ItemNameWrap>
-
-      <h2> {/* 아이템 이름 */}
-        <p>
-          {/* <div>{`${item.cash_item_name}`}</div> */}
-        </p>
-      </h2>
+          {item?.nickname && item?.name
+          ?`${item?.nickname}(${item?.name})` 
+          : item?.name 
+          ? item?.name 
+          : item?.autoSkillName || item?.equipment?.item_name}
       </ItemNameWrap>
       <IconWrap>
         <IconImage>
-          {/* <img src={item.cash_item_icon} alt={item.cash_item_icon} />  */}
+          <img src={item?.icon || item?.equipment?.item_icon || item?.autoSkillIcon} alt={'icon'} /> 
         </IconImage>
       </IconWrap>
+      <ItemDescriptionWrap Data={!!item?.description}>
+        <div>{item?.description}</div>
+      </ItemDescriptionWrap>
       <ItemOptionWrap>
         {/* <div>장비 분류 : {item && item.cash_item_equipment_part}</div> */}
+        <div>
+          {Array.isArray(item?.skill) && item?.skill.map((skill, index) => (
+            <div key={index}>{skill}</div>
+          ))}
+        </div>
       </ItemOptionWrap>
       {/* <ItemDescriptionWrap Value={item && item.cash_item_description}>
         <div> {item.cash_item_description} </div>
@@ -70,19 +76,11 @@ const ItemNameWrap = styled.div`
   flex-direction: column;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-  padding-bottom: 10px;
-  h2{
-    font-size: 16px;
-    padding: 10px 0;
-    line-height: 24px;
-    text-align: center;
-    span{
-      color: rgb(210,245,57);
-    }
-    p{
-      display: flex;
-    }
-  }
+  font-size: 16px;
+  padding: 10px 0;
+  line-height: 24px;
+  text-align: center;
+
 `
 
 const IconWrap = styled.div`
@@ -126,15 +124,12 @@ const PinImage = styled.div`
 const ItemOptionWrap = styled.div`
   padding: 5px 0;
   line-height: 16px;
-  font-size: 13px;
-
+  font-size: 14px;
 `
 
 const ItemDescriptionWrap = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   white-space: normal;
-  ${({ Value }) => Value && `
-    border-top: 2px dotted rgb(55, 56, 58);
-    padding: 5px 0;
-  `}
+  padding: 5px 0;
+  ${({ Data }) => Data && `border-bottom: 2px dotted rgb(55, 56, 58);`}
 `
