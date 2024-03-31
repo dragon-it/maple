@@ -14,6 +14,7 @@ import {
   getSkill,
   getCashItemEquipment,
   getPetEquipment,
+  getAndroidEquipment,
 
 } from '../../api/api';
 
@@ -33,6 +34,7 @@ const apiFunctions = [
   getSkill,
   getCashItemEquipment,
   getPetEquipment,
+  getAndroidEquipment,
 ];
 
 export default apiFunctions;

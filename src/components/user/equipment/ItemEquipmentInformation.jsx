@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import equipmentUi from '../../../assets/ui/equipmentUi/equipUi.png'
 import cashEquipUi from '../../../assets/ui/equipmentUi/cashEquipUi.png'
 import petEquipUi from '../../../assets/ui/equipmentUi/petEquipUi.png'
+import androidEquipUi from '../../../assets/ui/equipmentUi/androidEquipUi.png'
 import { ItemDetail } from './ItemDetail';
 import gradeColors from './ItemGradeColors'
 import { ItemSetEffect } from './ItemSetEffect';
@@ -11,6 +12,7 @@ import { CashItemDetail } from './CashItemDetail';
 import { PetDetail } from './PetDetail';
 import { PetItemDetail } from './PetItemDetail';
 
+
 export const ItemEquipmentInformation = ({ EquipData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
@@ -18,91 +20,87 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment_preset_1');
   const [selectedCashPreset, setSelectedCashPreset] = useState(matchingCashPresetKey || 'cash_item_equipment_preset_1');
 
+  // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
+  // 클릭 설정
   const [clicked, setClicked] = useState(false);
-
-  console.log(selectedItem)
-
-  const handleItemHover = (item) => {
-    if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem(item);
-    }
-  };
-
-  
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setClicked(!clicked); // 클릭 시 clicked 상태 반전
-  };
-
-
-  const handlePresetChange = (preset) => {
-    setSelectedPreset(`item_equipment_${preset}`);
-  };
-  
-  const handleCashPresetChange = (preset) => {
-    setSelectedCashPreset(`cash_item_equipment_${preset}`)
-  }
-
-  const handleCashItemBase = () => {
-    setSelectedCashPreset(`cash_item_equipment_base`)
-  }
-  
+  // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState('장비'); 
   
+  // 탭 변경시 select item, click 유무 초기화 함수
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
     setSelectedItem(null);
     setClicked(false);
   };
   
-  
-    function petInformationData(index) {
-      const petEquipment = EquipData.getPetEquipment;
-      if (petEquipment[`pet_${index}_appearance`] && 
-          petEquipment[`pet_${index}_date_expire`] && 
-          petEquipment[`pet_${index}_appearance_icon`] && 
-          petEquipment[`pet_${index}_skill`] &&
-          petEquipment[`pet_${index}_nickname`] &&
-          petEquipment[`pet_${index}_name`] &&
-          petEquipment[`pet_${index}_pet_type`] &&
-          petEquipment[`pet_${index}_equipment`] &&
-          petEquipment[`pet_${index}_auto_skill`] && 
-          petEquipment[`pet_${index}_description`]
-          ) {
-      const petInformation = {
-        petAppearance: petEquipment[`pet_${index}_appearance`],
-        petDateExpire: petEquipment[`pet_${index}_date_expire`],
-        petIcon: petEquipment[`pet_${index}_appearance_icon`],
-        petSkill : petEquipment[`pet_${index}_skill`],
-        petNickname: petEquipment[`pet_${index}_nickname`],
-        petName: petEquipment[`pet_${index}_name`],
-        petType: petEquipment[`pet_${index}_pet_type`],
-        petEquipment: petEquipment[`pet_${index}_equipment`],
-        petAutoSkill: petEquipment[`pet_${index}_auto_skill`],
-        petDescription: petEquipment[`pet_${index}_description`]
-      };
-      return petInformation;
-      } else {
-        return null;
-      }
+  // 마우스 hover 함수
+  const handleItemHover = (item) => {
+    if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
+      setSelectedItem(item);
     }
+  };
+
+  // 마우스 클릭 함수
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    setClicked(!clicked); // 클릭 시 clicked 상태 반전
+  };
+
+  // 장비 아이템 프리셋 선택
+  const handlePresetChange = (preset) => {
+    setSelectedPreset(`item_equipment_${preset}`);
+  };
+  
+  // 캐시 아이템 프리셋
+  const handleCashPresetChange = (preset) => {
+    setSelectedCashPreset(`cash_item_equipment_${preset}`)
+  }
+
+  // 캐시 아이템 베이스
+  const handleCashItemBase = () => {
+    setSelectedCashPreset(`cash_item_equipment_base`)
+  }
+  
+  console.log(selectedItem)
+  
+
+
+  function petInformationData(index) {
+    const petEquipment = EquipData.getPetEquipment;
+  
+    const petInformation = {
+      petAppearance: petEquipment[`pet_${index}_appearance`] || '정보 없음',
+      petDateExpire: petEquipment[`pet_${index}_date_expire`] || '정보 없음',
+      petIcon: petEquipment[`pet_${index}_appearance_icon`] || '정보 없음',
+      petSkill: petEquipment[`pet_${index}_skill`] || '정보 없음',
+      petNickname: petEquipment[`pet_${index}_nickname`] || '정보 없음',
+      petName: petEquipment[`pet_${index}_name`] || '정보 없음',
+      petType: petEquipment[`pet_${index}_pet_type`] || '정보 없음',
+      petEquipment: petEquipment[`pet_${index}_equipment`] || '정보 없음',
+      petAutoSkill: petEquipment[`pet_${index}_auto_skill`] || '정보 없음',
+      petDescription: petEquipment[`pet_${index}_description`] || '정보 없음'
+    };
+    return petInformation;
+  }
+
+
   // PetAppearanceIcon 컴포넌트에서 사용할 정보 처리 함수 (장착 펫 데이터)
   function handlePetAppearanceInfo(index) {
     const petInfo = petInformationData(index);
+
     if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
 
     setSelectedItem({
-      appearance: petInfo.petAppearance,
-      icon:petInfo.petIcon,
-      expire: petInfo.petDateExpire,
-      description: petInfo.petDescription,
-      name: petInfo.petName,
-      nickname: petInfo.petNickname,
-      type: petInfo.petType,
-      skill: petInfo.petSkill
+      appearance: petInfo?.petAppearance,
+      icon:petInfo?.petIcon,
+      expire: petInfo?.petDateExpire,
+      description: petInfo?.petDescription,
+      name: petInfo?.petName,
+      nickname: petInfo?.petNickname,
+      type: petInfo?.petType,
+      skill: petInfo?.petSkill
     });
-
   }
 }
 
@@ -113,9 +111,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
 
     setSelectedItem({
-      equipment: petInfo.petEquipment,
+      equipment: petInfo?.petEquipment,
     });
-
   }
   }
 
@@ -124,10 +121,9 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
 
     setSelectedItem({
-      autoSkillName: petInfo.petAutoSkill.skill_1,
-      autoSkillIcon: petInfo.petAutoSkill.skill_1_icon,
+      autoSkillName: petInfo?.petAutoSkill.skill_1,
+      autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
     });
-
   }
 }
 
@@ -136,11 +132,10 @@ function handlePetSecondSkillInfo(index) {
   if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
 
     setSelectedItem({
-      autoSkillName: petInfo.petAutoSkill.skill_2,
-      autoSkillIcon: petInfo.petAutoSkill.skill_2_icon,
+      autoSkillName: petInfo?.petAutoSkill.skill_2,
+      autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
     });
-
-}
+  }
 }
 
 
@@ -330,7 +325,6 @@ return (
                   alt="petIcon"
                   onMouseOver={() => handlePetAppearanceInfo(1)}
                   onClick={() => handleItemClick(selectedItem)}  />
-                  
               )
               :<div style={{ width: '42px', height: '42px' }}/>
               }
