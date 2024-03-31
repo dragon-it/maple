@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const PetItemDetail = ({ item, clicked }) => {
-  console.log(item)
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
   }
@@ -95,8 +94,8 @@ const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
   background-color: white;
   border-radius: 10px;
   img{
