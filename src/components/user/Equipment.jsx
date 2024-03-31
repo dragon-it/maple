@@ -43,8 +43,9 @@ export const Equipment = () => {
       ...result.getItemEquipment,
       getSetEffect: result.getSetEffect,
       getSymbol: result.getSymbolEquipment,
-      getCashItemEquipment: result.getCashItemEquipment     ,
-      getPetEquipment: result.getPetEquipment
+      getCashItemEquipment: result.getCashItemEquipment,
+      getPetEquipment: result.getPetEquipment,
+      getAndroidEquipment: result.getAndroidEquipment
       }}
       />
       )}
