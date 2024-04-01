@@ -85,7 +85,7 @@ export const ItemSetEffect = ({ setinfo }) => {
 };
 
 const Container = styled.div`
-  width: auto;
+  width: 250px;
   height: 100%;
   padding: 10px;
   white-space: pre-line;
@@ -96,6 +96,9 @@ const Container = styled.div`
   color: white;
   max-height: 500px;
   overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff rgba(104, 103, 103, 0.5);
+
   ul {
     list-style: none;
     padding: 0;
@@ -107,6 +110,8 @@ const Container = styled.div`
     margin: 8px 0;
     color: #e45b5b;
   }
+
+
 `;
 
 

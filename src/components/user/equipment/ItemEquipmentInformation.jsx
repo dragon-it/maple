@@ -268,6 +268,12 @@ return (
           <img src={item.item_icon} alt={`icon-${index}`} />
           </ItemIcon>
         ))}
+        <ADIcon>
+          <img src={EquipData.getAndroidEquipment.android_preset_1.android_icon} alt={`icon`} 
+            onMouseOver={() => setSelectedItem(EquipData.getAndroidEquipment.android_preset_1)} 
+            onClick={() => handleItemClick(EquipData.getAndroidEquipment.android_preset_1)} 
+          />
+        </ADIcon>
       </EquipItems> 
         <PresetButtonWrap>
           <PresetButtons>
@@ -570,7 +576,7 @@ const InfoWrap = styled.div`
       case 'AD':
         return '375px'; 
       default:
-        return '470px'; // 기본값
+        return '450px'; 
     }
   }};
 `
@@ -617,11 +623,23 @@ const BackgroundImage = styled.img`
   opacity: 0.8;
 `;
 
+const ADIcon = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+  right: 59px;
+  bottom: 17px;
+  `;
+
 const PetEquipWrap = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const PetBackgroundImage = styled.img`

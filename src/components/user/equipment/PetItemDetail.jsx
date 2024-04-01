@@ -6,42 +6,59 @@ export const PetItemDetail = ({ item, clicked }) => {
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
   }
 
+  // 날짜 함수
+  const formatExpire = (expireString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    return new Intl.DateTimeFormat('ko-KR', options).format(new Date(expireString));
+  };
+
   return (
     <Container>
-        <div style={{ position: 'relative' }}>
-          {clicked && (
-            <PinImage/>
-          )}
-        </div>
+      <div style={{ position: 'relative' }}>
+        {clicked && <PinImage />}
+      </div>
       <ItemNameWrap>
-          {item?.nickname && item?.name
-          ?`${item?.nickname}(${item?.name})` 
-          : item?.name 
-          ? item?.name 
+
+        {item?.nickname && item?.name
+          ? `${item?.nickname}(${item?.name})`
+          : item?.name
+          ? item?.name
           : item?.autoSkillName || item?.equipment?.item_name}
+
+        {/* 타입 */}
+        {item.type && <ItemType Type={item.type}>{item.type}</ItemType>}
+        
+        {/* 마법의 시간 */}
+        {item.expire && (<ItemExpire>마법의 시간: {formatExpire(item.expire)}까지</ItemExpire>)}
       </ItemNameWrap>
+
+      {/* 아이콘 */}
       <IconWrap>
         <IconImage>
-          <img src={item?.icon || item?.equipment?.item_icon || item?.autoSkillIcon} alt={'icon'} /> 
+        <img src={item?.icon || item?.equipment?.item_icon || item?.autoSkillIcon} alt={`${item?.name || item?.equipment?.item_name}`} />
         </IconImage>
       </IconWrap>
+
+      {/* 아이템 설명 */}
+      {item.description && 
       <ItemDescriptionWrap Data={!!item?.description}>
-        <div>{item?.description}</div>
-      </ItemDescriptionWrap>
+          {item?.description}
+      </ItemDescriptionWrap>}
+
       <ItemOptionWrap>
-        {/* <div>장비 분류 : {item && item.cash_item_equipment_part}</div> */}
-        <div>
-          {Array.isArray(item?.skill) && item?.skill.map((skill, index) => (
-            <div key={index}>{skill}</div>
-          ))}
-        </div>
+        {/* 스킬 */}
+        {Array.isArray(item?.skill) ? item?.skill.map((skill, index) => <div key={index}>{skill}</div>) : null}
+
+        {/* 아이템 옵션 */}
+        {Array.isArray(item.equipment?.item_option) ? item.equipment.item_option.map(({option_type, option_value}, index) => (
+          <div key={index}>
+            {option_type} : {option_value}
+          </div>
+        )) : null}
       </ItemOptionWrap>
-      {/* <ItemDescriptionWrap Value={item && item.cash_item_description}>
-        <div> {item.cash_item_description} </div>
-      </ItemDescriptionWrap> */}
     </Container>
-  )
-}
+  );
+};
 
 
 const SelectContainer = styled.div`
@@ -56,7 +73,6 @@ const SelectContainer = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  margin-top: 5px;
   font-family: maple-light;
 `
 
@@ -69,6 +85,7 @@ const Container = styled.div`
   line-height: 18px;
   color: white; 
   padding: 0px 10px;
+  padding-bottom: 3px;
 `
 const ItemNameWrap = styled.div`
   display: flex;
@@ -79,7 +96,6 @@ const ItemNameWrap = styled.div`
   padding: 10px 0;
   line-height: 24px;
   text-align: center;
-
 `
 
 const IconWrap = styled.div`
@@ -105,6 +121,25 @@ const IconImage = styled.div`
   }
 
 `
+const ItemExpire = styled.div`
+  font-size: 13px;
+`
+
+const ItemType = styled.div`
+  ${({ Type }) => {
+    switch (Type) {
+      case '루나 쁘띠':
+      case '루나 스윗':
+        return `color: rgb(160,133,186);`;
+      case '루나 드림':
+        return `color: rgb(0,205,255);`;
+      case '원더 블랙':
+        return `color: rgb(235,189,5);`;
+      default:
+        return '';
+    }
+  }}
+`
 
 
 const PinImage = styled.div`
@@ -124,6 +159,7 @@ const ItemOptionWrap = styled.div`
   padding: 5px 0;
   line-height: 16px;
   font-size: 14px;
+  color: rgb(255,153,0);
 `
 
 const ItemDescriptionWrap = styled.div`
