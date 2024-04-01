@@ -16,21 +16,12 @@ import { AndroidItemDetail } from './AndroidItemDetail';
 export const ItemEquipmentInformation = ({ EquipData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
-  const matchingADPresetKey = `android_preset_${EquipData.getAndroidEquipment.preset_no}`;
 
 
   const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment_preset_1');
   const [selectedCashPreset, setSelectedCashPreset] = useState(matchingCashPresetKey || 'cash_item_equipment_preset_1');
-  const [selectedADPreset, setSelectedADPreset] = useState(matchingADPresetKey || 'android_preset_1');
-  
-  console.log(matchingPresetKey)
-  console.log(selectedPreset)
-  console.log(matchingPresetKey === selectedPreset)
-  console.log(matchingADPresetKey)
-  console.log(selectedADPreset)
-  console.log(matchingCashPresetKey)
-  console.log(selectedCashPreset)
 
+  
   // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
   // 클릭 설정
@@ -73,11 +64,9 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     setSelectedCashPreset(`cash_item_equipment_base`)
   }
   
-  const handleADPresetChange = (preset) => {
-    setSelectedADPreset(`android_${preset}`)
-  }
+
   console.log(selectedItem)
-  
+  console.log(EquipData)
 
 
   const petInformationData = (index) => {
@@ -158,15 +147,12 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
       case '장비':
         newPresetKey = matchingPresetKey;
         break;
-      case 'AD':
-        newPresetKey = matchingADPresetKey;
-        break;
       default:
         break;
     }
     
     setSelectedCashPreset(newPresetKey);
-  }, [currentTab, matchingCashPresetKey, matchingPresetKey, matchingADPresetKey]); 
+  }, [currentTab, matchingCashPresetKey, matchingPresetKey]); 
 
 
   const positions = {    
@@ -196,23 +182,39 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     '펜던트2': {top: '104px', left: '59px'}
     };
 
-    const cashPositions = {
-      '모자': {top: '6px', left: '108px'},
-      '얼굴장식': {top: '55px', left: '108px'},
-      '눈장식': {top: '104px', left: '108px'},
-      '귀고리': {top: '104px', left: '157px'},
-      '상의': {top: '154px', left: '108px'},
-      '하의': {top: '203px', left: '108px'},
-      '신발': {top: '252px', left: '108px'},
-      '장갑': {top: '203px', left: '157px'},
-      '망토': {top: '203px', left: '206px'},
-      '보조무기': {top: '154px', left: '206px'},
-      '무기': {top: '154px', left: '59px'},
-      '반지1': {top: '6px', left: '10px'},
-      '반지2': {top: '55px', left: '10px'},
-      '반지3': {top: '104px', left: '10px'},
-      '반지4': {top: '154px', left: '10px'},
-    };
+  const cashPositions = {
+    '모자': {top: '6px', left: '108px'},
+    '얼굴장식': {top: '55px', left: '108px'},
+    '눈장식': {top: '104px', left: '108px'},
+    '귀고리': {top: '104px', left: '157px'},
+    '상의': {top: '154px', left: '108px'},
+    '하의': {top: '203px', left: '108px'},
+    '신발': {top: '252px', left: '108px'},
+    '장갑': {top: '203px', left: '157px'},
+    '망토': {top: '203px', left: '206px'},
+    '보조무기': {top: '154px', left: '206px'},
+    '무기': {top: '154px', left: '59px'},
+    '반지1': {top: '6px', left: '10px'},
+    '반지2': {top: '55px', left: '10px'},
+    '반지3': {top: '104px', left: '10px'},
+    '반지4': {top: '154px', left: '10px'},
+  };
+
+  const ADPositions = {
+    '모자': {top: '6px', left: '108px'},
+    '얼굴장식': {top: '55px', left: '108px'},
+    '눈장식': {top: '104px', left: '108px'},
+    '귀고리': {top: '104px', left: '157px'},
+    '상의': {top: '154px', left: '108px'},
+    '하의': {top: '203px', left: '108px'},
+    '신발': {top: '252px', left: '108px'},
+    '장갑': {top: '203px', left: '57px'},
+    '망토': {top: '203px', left: '156px'},
+    '보조무기': {top: '154px', left: '206px'},
+    '무기': {top: '154px', left: '59px'},
+  };
+
+
 
   const PresetButton = styled.button`
     position: relative;
@@ -497,32 +499,17 @@ return (
       <BackgroundImageWrap/>
       <EquipItems>
         <BackgroundImage src={androidEquipUi} alt="ui" />
-        <ItemIcon>
+        {EquipData.getAndroidEquipment.android_cash_item_equipment?.map((item, index) => (
+        <ItemIcon 
+          key={index} 
+          style={ADPositions[item.cash_item_equipment_slot]} 
+          onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+          onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+        >
+          <img src={item.cash_item_icon} alt={`icon-${index}`} />
         </ItemIcon>
+            ))}
       </EquipItems> 
-      <PresetButtonWrap>
-          <PresetButtons>
-            <PresetButton 
-              onClick={() => handleADPresetChange('preset_1')}
-              isSelected={selectedADPreset === 'android_preset_1'}
-            >
-              <div>프리셋1</div>
-            </PresetButton>
-            <PresetButton 
-              onClick={() => handleADPresetChange('preset_2')}
-              isSelected={selectedADPreset === 'android_preset_2'}
-            >
-              <div>프리셋2</div>
-            </PresetButton>
-            <PresetButton 
-              onClick={() => handleADPresetChange('preset_3')}
-              isSelected={selectedADPreset === 'android_preset_3'}
-            >
-              <div>프리셋3</div>
-            </PresetButton>
-          </PresetButtons>
-          {matchingADPresetKey === selectedADPreset && <ApplyingPreset>현재 적용중인 프리셋이에요!</ApplyingPreset>}
-        </PresetButtonWrap>
     </EquipWrap>
     )}
 
@@ -531,17 +518,11 @@ return (
 
       <DetailWrap>
         {currentTab === '캐시' 
-        ? (
-          <CashItemDetail item={selectedItem} clicked={clicked}/>
-        ) 
+        ? (<CashItemDetail item={selectedItem} clicked={clicked}/>) 
         : currentTab === '장비' 
-        ? (
-          <ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors}/>
-        ) 
+        ? (<ItemDetail item={selectedItem} clicked={clicked} gradeColors={gradeColors}/>) 
         : currentTab === '펫' 
-        ? (
-          <PetItemDetail item={selectedItem} clicked={clicked} />
-        )
+        ? (<PetItemDetail item={selectedItem} clicked={clicked} />)
         : <AndroidItemDetail item={selectedItem} clicked={clicked} />
         }
       </DetailWrap>
@@ -587,7 +568,7 @@ const InfoWrap = styled.div`
       case '펫':
         return '320px';
       case 'AD':
-        return '450px'; 
+        return '375px'; 
       default:
         return '470px'; // 기본값
     }
@@ -622,7 +603,7 @@ const BaseButton = styled.button`
 const UiBackgrnd = styled.div`
   position: relative;
   border-top: 1px solid black;
-  background-color: white;
+  background-color: #fffbfb
 `;
 
 const BackgroundImageWrap = styled.div`
