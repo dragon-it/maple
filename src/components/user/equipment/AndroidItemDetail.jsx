@@ -1,9 +1,9 @@
-
 import styled from 'styled-components'
 
 export const AndroidItemDetail = ({ item, clicked }) => {
   console.log(clicked)
   console.log(item)
+  
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
   }
@@ -11,28 +11,24 @@ export const AndroidItemDetail = ({ item, clicked }) => {
   return (
     <Container>
         <div style={{ position: 'relative' }}>
-          {clicked && (
-            <PinImage/>
-          )}
+          {clicked && <PinImage/>}
         </div>
       <ItemNameWrap>
-
-      <h2> {/* 아이템 이름 */}
-        <p>
-          <div>{`${item.cash_item_name}`}</div>
-        </p>
-      </h2>
+        <h2> {/* 아이템 이름 */}
+          <ItemName>{item.cash_item_name}</ItemName>
+          <ItemLabel Label={item.cash_item_label}>{item.cash_item_label}</ItemLabel>
+        </h2>
       </ItemNameWrap>
       <IconWrap>
         <IconImage>
-          <img src={item.cash_item_icon} alt={'icon'} /> 
+          <img src={item.cash_item_icon} alt="icon" /> 
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
-        <div>장비 분류 : {item && item.cash_item_equipment_part}</div>
+        <div>장비 분류 : {item.cash_item_equipment_part}</div>
       </ItemOptionWrap>
-      <ItemDescriptionWrap Value={item && item.cash_item_description}>
-        <div> {item.cash_item_description} </div>
+      <ItemDescriptionWrap Value={item.cash_item_description}>
+        <div>{item.cash_item_description}</div>
       </ItemDescriptionWrap>
     </Container>
   )
@@ -51,7 +47,6 @@ const SelectContainer = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  margin-top: 5px;
   font-family: maple-light;
 `
 
@@ -70,20 +65,30 @@ const ItemNameWrap = styled.div`
   flex-direction: column;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-  padding-bottom: 10px;
   h2{
     font-size: 16px;
     padding: 10px 0;
     line-height: 24px;
     text-align: center;
-    span{
-      color: rgb(210,245,57);
-    }
-    p{
-      display: flex;
-    }
   }
 `
+
+const ItemName = styled.div`
+  
+`
+
+const ItemLabel = styled.div`
+  ${({ Label }) => Label === '블랙라벨' && `
+    color: rgb(255,204,0);
+  `}
+  ${({ Label }) => Label === '레드라벨' && `
+    color: rgb(255,0,89);
+  `}
+    ${({ Label }) => Label === '스페셜라벨' && `
+    color: rgb(188,186,187);
+  `}
+`
+
 
 const IconWrap = styled.div`
   padding: 10px 0;

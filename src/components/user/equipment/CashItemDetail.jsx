@@ -18,9 +18,8 @@ export const CashItemDetail = ({ item, clicked }) => {
       <ItemNameWrap>
 
       <h2> {/* 아이템 이름 */}
-        <p>
-          <div>{`${item.cash_item_name}`}</div>
-        </p>
+        <ItemName>{item.cash_item_name}</ItemName>
+        <ItemLabel Label={item.cash_item_label}>{item.cash_item_label}</ItemLabel>
       </h2>
       </ItemNameWrap>
       <IconWrap>
@@ -51,7 +50,6 @@ const SelectContainer = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  margin-top: 5px;
   font-family: maple-light;
 `
 
@@ -70,20 +68,33 @@ const ItemNameWrap = styled.div`
   flex-direction: column;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-  padding-bottom: 10px;
   h2{
     font-size: 16px;
     padding: 10px 0;
     line-height: 24px;
     text-align: center;
-    span{
-      color: rgb(210,245,57);
-    }
-    p{
-      display: flex;
-    }
   }
 `
+const ItemName = styled.div`
+  
+`
+
+const ItemLabel = styled.div`
+  ${({ Label }) => Label === '블랙라벨' && `
+    color: rgb(255,204,0);
+  `}
+  ${({ Label }) => Label === '레드라벨' && `
+    color: rgb(255,0,89);
+  `}
+  ${({ Label }) => Label === '마스터라벨' && `
+    color: rgb(108,168,192);
+  `}
+  ${({ Label }) => Label === '스페셜라벨' && `
+    color: rgb(188,186,187);
+  `}
+`
+
+
 
 const IconWrap = styled.div`
   padding: 10px 0;

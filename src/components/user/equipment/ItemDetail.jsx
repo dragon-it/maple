@@ -88,37 +88,52 @@ export const ItemDetail = ({ item, clicked }) => {
   return (
     <Container>
         <div style={{ position: 'relative' }}>
-          {clicked && (
-            <PinImage/>
-          )}
+          {clicked && (<PinImage/>)}
         </div>
+
       <ItemNameWrap>
-        <StarForce noPadding={item.starforce === 0 || item.starforce === '0'} style={{ display: item.starforce === 0 ? 'none' : 'block' }}>
+        <StarForce 
+        noData={item.starforce === 0 || item.starforce === '0'} 
+        style={{ display: item.starforce === 0 ? 'none' : 'block' }}>
+
         <StartForceFirstLine>{Array.from({ length: Math.min(item.starforce, 15) }, (_, i) => (i + 1) % 5 === 0 ? '★ ' : '★')}</StartForceFirstLine>
         <StartForceSecondLine>{item.starforce > 15 && Array.from({ length: item.starforce - 15 }, (_, i) => (i + 1) % 5 === 0 ? '★ ' : '★')}</StartForceSecondLine>
       </StarForce>
+
       <h2> {/* 아이템 이름 */}
         {item && item.soul_name && (
           <span>{item.soul_name.replace(" 소울 적용", "")}</span>
         )}
-        <p>
-          <div>{`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}</div>
-          {item && item.special_ring_level !== 0 && (
-          <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
-        )}
-        </p>
+        
+        {item.item_name ? (
+          <p>
+            <div>
+              {`${item.item_name}${item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ''}`}
+            </div>
+            {item.special_ring_level !== 0 && (
+              <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
+            )}
+          </p>
+        ) : item.android_name ? (
+          <div>{item.android_name}</div>
+        ) : null}
+
       </h2>
 
         {item.potential_option_grade && <p>{`(${item.potential_option_grade} 아이템)`}</p>} {/* 아이템 품질 */}
       </ItemNameWrap>
       <IconWrap>
         <IconImage grade={item.potential_option_grade}>
-          <img src={item.item_icon} alt={item.item_name} /> 
+          <img src={item.item_icon || item.android_icon} alt={`item_name`} /> 
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
-        <div>장비 분류 : {item && item.item_equipment_part}</div>
-        {Object.entries(item.item_total_option).map(([key, value]) => {
+        {item.item_equipment_part && (
+          <div>
+            장비 분류 : {item.item_equipment_part}
+          </div>
+        )}
+        {item.item_total_option && Object.entries(item.item_total_option).map(([key, value]) => {
           if ((value !== '0' && value !== 0)) {
             const modifier = optionValueModifierMap[key] || optionValueModifierMap.default;
             const base = item.item_base_option[key] || 0;
@@ -161,8 +176,28 @@ export const ItemDetail = ({ item, clicked }) => {
             }
             return null;
           })}
+
+          {item.android_description && (
+            <ADItemGrade>
+              <ADCategory>장비 분류 : 안드로이드</ADCategory>
+              <ADGrade>등급 : {item.android_grade}</ADGrade>
+            </ADItemGrade>
+          )}
+
+          {/* 안드로이드 description */}
+          {item.android_description && (
+            <ADItemDescription>
+              {item.android_description}
+            </ADItemDescription>
+          )}
+
       </ItemOptionWrap>
-      <OptionWrap PotenOptions={item && (item.potential_option_grade || item.additional_potential_option_grade || item.soul_name || (item.item_exceptional_option && !isAllZero(item.item_exceptional_option)))}>
+      <OptionWrap 
+      PotenOptions={item && (item.potential_option_grade 
+        || item.additional_potential_option_grade 
+        || item.soul_name 
+        || (item.item_exceptional_option 
+        && !isAllZero(item.item_exceptional_option)))}>
 
         {item.potential_option_grade && (
           <PotentialOptionWrap>
@@ -214,7 +249,6 @@ const SelectContainer = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  margin-top: 5px;
   font-family: maple-light;
 `
 
@@ -227,6 +261,7 @@ const Container = styled.div`
   line-height: 18px;
   color: white; 
   padding: 0px 10px;
+  padding-bottom: 3px;
 `
 const ItemNameWrap = styled.div`
   display: flex;
@@ -236,7 +271,7 @@ const ItemNameWrap = styled.div`
   padding-bottom: 10px;
   h2{
     font-size: 16px;
-    padding: 10px 0;
+    padding: 3px 0;
     line-height: 24px;
     text-align: center;
     span{
@@ -289,11 +324,10 @@ const IconImage = styled.div`
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
   font-size: 13px;
-  padding-top: ${(props) => (props.noPadding ? '0' : '15px')};
+  padding-top: ${(props) => (props.Data ? '0' : '15px')};
 `
 
 const StartForceFirstLine = styled.div`
-  margin-bottom: 10px;
 `
 const StartForceSecondLine = styled.div`
   display: flex;
@@ -325,9 +359,10 @@ const ItemOptionWrap = styled.div`
 const OptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-line;
-  border-top: 2px dotted rgb(55, 56, 58);
   padding-bottom: 5px;
   ${props => !props.PotenOptions && 'padding-bottom: 0;'}
+  ${props => props.PotenOptions && 'border-top: 2px dotted rgb(55, 56, 58);'}
+
 `
 
 const OptionInitial = styled.div`
@@ -432,4 +467,21 @@ const ExInitial = styled.div`
   border: 1px solid rgb(255,255,255);
   border-radius: 4px;
   text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black
+`
+
+const ADItemDescription = styled.div`
+  white-space: normal;
+`
+
+const ADItemGrade = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const ADCategory = styled.div`
+  
+`
+
+const ADGrade = styled.div`
+  margin-bottom: 10px;
 `
