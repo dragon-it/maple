@@ -92,15 +92,25 @@ const getPetEquipment = async (ocid) => {
 };
 
 const getSkill = async (ocid) => {
-  const grades = ['5', '6'];
-  const results = {};
-
-  for (let grade of grades) {
-    const response = await callMapleStoryAPI('character/skill', { ocid, date: getFormattedDate(), character_skill_grade: grade });
-    results[grade] = response;
-  }
-
-  return results;
+  // character_skill_grade 값으로 5를 사용한 API 호출
+  const resultForGrade5 = await callMapleStoryAPI('character/skill', { 
+    ocid, 
+    date: getFormattedDate(), 
+    character_skill_grade: 5
+  });
+  
+  // character_skill_grade 값으로 6을 사용한 API 호출
+  const resultForGrade6 = await callMapleStoryAPI('character/skill', { 
+    ocid, 
+    date: getFormattedDate(), 
+    character_skill_grade: 6
+  });
+  
+  // 두 결과를 병합한 뒤 반환
+  return {
+    grade5: resultForGrade5,
+    grade6: resultForGrade6
+  };
 };
 
 

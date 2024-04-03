@@ -1,21 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Search } from '../components/main/Search';
 import Information from '../components/user/Information';
-import { Propensity } from '../components/user/Propensity';
 import { Equipment } from '../components/user/Equipment';
 import { Skill } from '../components/user/Skill';
+import { useParams } from 'react-router-dom';
+import fetchData from '../api/fetchData';
+import errorImg from '../assets/error.png'
+import loadingImg from '../assets/loading.gif'
 
+export const User = () => {
+  const [activeTab, setActiveTab] = useState(1);
 
-
-interface UserProps {}
-
-export const User: React.FC<UserProps> = () => {
-  const [activeTab, setActiveTab] = useState<number>(1);
-
-  const handleTabClick = (tabNumber: number) => {
+  const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
+
+  const { characterName } = useParams();
+  const [result, setResult] = useState(null); // result의 타입을 any로 지정
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  console.log(result)
+
+  useEffect(() => {
+    const fetchDataAndUpdateState = async () => {
+      try {
+        setLoading(true); // 로딩 시작
+        await fetchData(characterName, setResult, setError);
+        setLoading(false); // 로딩 완료
+      } catch (error) {
+        setError('데이터를 불러오는 중 오류가 발생했습니다.'); // 오류 메시지 설정
+        setLoading(false); // 로딩 완료
+      }
+    };
+
+    fetchDataAndUpdateState();
+  }, [characterName]);
 
   return (
     <>
@@ -30,14 +51,16 @@ export const User: React.FC<UserProps> = () => {
         <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
           캐릭터 장비
         </Tab>
-        <Tab onClick={() => handleTabClick(4)} active={activeTab === 3}>
+        <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
           스킬
         </Tab>
       </Tabs>
-        {activeTab === 1 && <Information />}
-        {activeTab === 2 && <Equipment />}
-        {activeTab === 3 && <Skill />}
+        {activeTab === 1 && <Information result={result} />}
+        {activeTab === 2 && <Equipment result={result}/>}
+        {activeTab === 3 && <Skill result={result}/>}
       </Container>
+      <LoadingWrap>{loading && <img src={loadingImg} alt="로딩 중..." />}</LoadingWrap>
+      {error && <><img src={errorImg} alt="오류 발생" /><p>{error}</p></>}
     </>
   );
 };
@@ -73,7 +96,7 @@ const Tabs = styled.div`
 `;
 
 
-const Tab = styled.div<{ active: boolean }>`
+const Tab = styled.div`
   cursor: pointer;
   padding: 10px 20px;
   margin: 0 10px;
@@ -87,3 +110,8 @@ const Tab = styled.div<{ active: boolean }>`
     background-color: ${(props) => (props.active ? '#0056b3' : '#e0e0e0')};
   }
 `;
+
+const LoadingWrap = styled.div`
+  width: 50px;
+  height: 50px;
+`

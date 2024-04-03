@@ -4,8 +4,8 @@ import hexaStatData from './HexaStatData';
 
 
 
-export const HexaStatInformation = ({ HexaStatInfo }) => {
-  const hexaStatInfo = HexaStatInfo.character_hexa_stat_core[0];
+export const HexaStat = ({ Data }) => {
+  const hexaStatInfo = Data.character_hexa_stat_core[0];
 
   // hexaStatData에서 동일한 이름과 레벨을 가진 정보를 찾아옴
   const statLevelData = hexaStatData.find((statData) =>
@@ -17,7 +17,8 @@ export const HexaStatInformation = ({ HexaStatInfo }) => {
 
   return (
     <Container>
-      {/* <div>Lv.{statLevelData.level}{hexaStatInfo.main_stat_name} : {statLevelData.main_stat_level}</div> */}
+      헥사스텟
+      <div>Lv.{statLevelData.level}{hexaStatInfo.main_stat_name} : {statLevelData.main_stat_level}</div>
     </Container>
   );
 };
