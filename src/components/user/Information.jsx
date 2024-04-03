@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 import { BasicInformation } from './Information/BasicInformation';
 import { AbilityInformation } from './Information/AbilityInformation';
 import { HyperStatInformation } from './Information/HyperStatInformation';
 import { StatInformation } from './Information/StatInformation';
-import fetchData from '../../api/fetchData';
 import { PropensityInformation } from './propensity/PropensityInformation';
 import spirit from '../../assets/spirit.png'
 
-const Information = () => {
-  const { characterName } = useParams();
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const Information = ({ result }) => {
+
   const [isFlipped, setIsFlipped] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
-  useEffect(() => {
-    fetchData(characterName, setResult, setLoading, setError);
-    return () => {
-    };
-  }, [characterName]);
+  console.log(result)
 
 
   const handleHeightChange = (height) => {
@@ -93,7 +84,6 @@ const Information = () => {
             </AbilWrap>
           </StatWrap>
         </SynthesisWrap>
-          {/* <HexaStatInformation HexaStatInfo={result.getHexaMatrixStat}></HexaStatInformation> */}
           <ProWrap>          
             <PropensityInformation propensityData={result.getPropensity}></PropensityInformation>
           </ProWrap>

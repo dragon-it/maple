@@ -4,7 +4,6 @@ import {
   getHyperStat,
   getAbility,
   getItemEquipment,
-  getHexaMatrixStat,
   getDojang,
   getCharacterPopularity,
   getPropensity,
@@ -15,6 +14,10 @@ import {
   getCashItemEquipment,
   getPetEquipment,
   getAndroidEquipment,
+  getLinkSkill,
+  getVMatrix,
+  getHexaMatrix,
+  getHexaMatrixStat,
 
 } from '../../api/api';
 
@@ -24,7 +27,6 @@ const apiFunctions = [
   getHyperStat,
   getAbility,
   getItemEquipment,
-  getHexaMatrixStat,
   getDojang,
   getCharacterPopularity,
   getPropensity,
@@ -35,6 +37,10 @@ const apiFunctions = [
   getCashItemEquipment,
   getPetEquipment,
   getAndroidEquipment,
+  getLinkSkill,
+  getVMatrix,
+  getHexaMatrix,
+  getHexaMatrixStat,
 ];
 
 export default apiFunctions;

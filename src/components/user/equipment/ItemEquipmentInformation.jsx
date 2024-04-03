@@ -16,11 +16,8 @@ import { AndroidItemDetail } from './AndroidItemDetail';
 export const ItemEquipmentInformation = ({ EquipData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
-
-
   const [selectedPreset, setSelectedPreset] = useState(matchingPresetKey || 'item_equipment_preset_1');
   const [selectedCashPreset, setSelectedCashPreset] = useState(matchingCashPresetKey || 'cash_item_equipment_preset_1');
-
   
   // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
@@ -64,25 +61,20 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     setSelectedCashPreset(`cash_item_equipment_base`)
   }
   
-
-  console.log(selectedItem)
-  console.log(EquipData)
-
-
   const petInformationData = (index) => {
     const petEquipment = EquipData.getPetEquipment;
   
     const petInformation = {
-      petAppearance: petEquipment[`pet_${index}_appearance`] || '정보 없음',
-      petDateExpire: petEquipment[`pet_${index}_date_expire`] || '정보 없음',
-      petIcon: petEquipment[`pet_${index}_appearance_icon`] || '정보 없음',
-      petSkill: petEquipment[`pet_${index}_skill`] || '정보 없음',
-      petNickname: petEquipment[`pet_${index}_nickname`] || '정보 없음',
-      petName: petEquipment[`pet_${index}_name`] || '정보 없음',
-      petType: petEquipment[`pet_${index}_pet_type`] || '정보 없음',
-      petEquipment: petEquipment[`pet_${index}_equipment`] || '정보 없음',
-      petAutoSkill: petEquipment[`pet_${index}_auto_skill`] || '정보 없음',
-      petDescription: petEquipment[`pet_${index}_description`] || '정보 없음'
+      petAppearance: petEquipment[`pet_${index}_appearance`] || null,
+      petDateExpire: petEquipment[`pet_${index}_date_expire`] || null,
+      petIcon: petEquipment[`pet_${index}_appearance_icon`] || null,
+      petSkill: petEquipment[`pet_${index}_skill`] || null,
+      petNickname: petEquipment[`pet_${index}_nickname`] || null,
+      petName: petEquipment[`pet_${index}_name`] || null,
+      petType: petEquipment[`pet_${index}_pet_type`] || null,
+      petEquipment: petEquipment[`pet_${index}_equipment`] || null,
+      petAutoSkill: petEquipment[`pet_${index}_auto_skill`] || null,
+      petDescription: petEquipment[`pet_${index}_description`] || null,
     };
     return petInformation;
   };
@@ -509,8 +501,8 @@ return (
         <ItemIcon 
           key={index} 
           style={ADPositions[item.cash_item_equipment_slot]} 
-          onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-          onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+          onClick={() => handleItemClick(item)} 
+          onMouseOver={() => handleItemHover(item)} 
         >
           <img src={item.cash_item_icon} alt={`icon-${index}`} />
         </ItemIcon>
