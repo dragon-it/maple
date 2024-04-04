@@ -2,27 +2,70 @@ import React from 'react';
 import styled from 'styled-components';
 import hexaStatData from './HexaStatData';
 
-
-
-export const HexaStat = ({ Data }) => {
-  const hexaStatInfo = Data.character_hexa_stat_core[0];
-
-  // hexaStatData에서 동일한 이름과 레벨을 가진 정보를 찾아옴
-  const statLevelData = hexaStatData.find((statData) =>
-  statData.main_stat_name === hexaStatInfo.main_stat_name &&
-  statData.level === hexaStatInfo.main_stat_level
+const StatInfo = ({ level, name, value }) => (
+  <div>Lv.{level}{name} : {value}</div>
 );
 
-    console.log(statLevelData)
+const findStatData = (name, level, type = 'main', characterClass) => {
+  const statData = hexaStatData.find(statData =>
+    statData[`${type}_stat_name`] === name && statData[`${type}_stat_level`] === level
+  );
+
+  // 캐릭터 직업이 '제논'이고, xenon_value가 존재할 경우
+  if (characterClass === '제논' && statData?.xenon_value) {
+    return {
+      ...statData,
+      value: statData.xenon_value,
+    };
+  }
+  
+  // 캐릭터 직업이 '데몬어벤져'이고, demon_avenger_value가 존재할 경우
+  if (characterClass === '데몬어벤져' && statData?.demon_avenger_value) {
+    return {
+      ...statData,
+      value: statData.demon_avenger_value,
+      // '주력 스탯 증가'인 경우 이름을 'Max hp'로 변경
+      [`${type}_stat_name`]: name === '주력 스탯 증가' ? '주력 스탯 증가(Max Hp)' : name,
+    };
+  }
+
+  return statData;
+};
+
+// HexaStat 컴포넌트 내에서
+export const HexaStat = ({ Data }) => {
+  const hexaStatInfo = Data.character_hexa_stat_core[0];
+  const characterClass = Data.character_class;
+
+  const mainStatLevelData = findStatData(hexaStatInfo.main_stat_name, hexaStatInfo.main_stat_level, 'main', characterClass);
+  const subFirstStatLevelData = findStatData(hexaStatInfo.sub_stat_name_1, hexaStatInfo.sub_stat_level_1, 'sub', characterClass);
+  const subSecondStatLevelData = findStatData(hexaStatInfo.sub_stat_name_2, hexaStatInfo.sub_stat_level_2, 'sub', characterClass);
 
   return (
     <Container>
-      헥사스텟
-      <div>Lv.{statLevelData.level}{hexaStatInfo.main_stat_name} : {statLevelData.main_stat_level}</div>
+      Hexa Stat
+      <div>Main Stat</div>
+      <StatInfo 
+        level={mainStatLevelData.main_stat_level} 
+        name={mainStatLevelData.main_stat_name} 
+        value={mainStatLevelData.value} 
+      />
+
+      <StatInfo 
+        level={subFirstStatLevelData.sub_stat_level} 
+        name={subFirstStatLevelData.sub_stat_name} 
+        value={subFirstStatLevelData.value} 
+      />
+      <StatInfo 
+        level={subSecondStatLevelData.sub_stat_level} 
+        name={subSecondStatLevelData.sub_stat_name} 
+        value={subSecondStatLevelData.value} 
+      />
     </Container>
   );
 };
 
+
 const Container = styled.div`
-  // 스타일 정의
+
 `;

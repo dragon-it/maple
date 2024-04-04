@@ -30,8 +30,13 @@ export const StatInformation = ({ statInfo }) => {
     }
   };
   const formatNumberWithCommas = (value) => {
+    // value가 null이나 undefined인 경우, 빈 문자열로 처리합니다.
+    if (value === null || value === undefined) {
+      return '0';
+    }
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+  
 
   return (
     <Container>

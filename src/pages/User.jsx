@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import fetchData from '../api/fetchData';
 import errorImg from '../assets/error.png'
 import loadingImg from '../assets/loading.gif'
+import { Error } from './Error';
 
 export const User = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -60,7 +61,7 @@ export const User = () => {
         {activeTab === 3 && <Skill result={result}/>}
       </Container>
       <LoadingWrap>{loading && <img src={loadingImg} alt="로딩 중..." />}</LoadingWrap>
-      {error && <><img src={errorImg} alt="오류 발생" /><p>{error}</p></>}
+      {error && Error}
     </>
   );
 };
