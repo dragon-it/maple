@@ -1,38 +1,34 @@
-import React from 'react'
 import styled from 'styled-components'
 
-export const CashItemDetail = ({ item, clicked }) => {
+export const SkillDetail = ({ item, clicked }) => {
   console.log(clicked)
   console.log(item)
-  if (!item) { // 아이템 정보가 없는 경우를 처리
-    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
+  
+  if (!item) { // 스킬 정보가 없는 경우를 처리
+    return <SelectContainer>스킬을 선택해주세요.</SelectContainer>
   }
 
   return (
     <Container>
         <div style={{ position: 'relative' }}>
-          {clicked && (
-            <PinImage/>
-          )}
+          {clicked && <PinImage/>}
         </div>
-      <ItemNameWrap>
-
-      <h2> {/* 아이템 이름 */}
-        <ItemName>{item.cash_item_name}</ItemName>
-        <ItemLabel Label={item.cash_item_label}>{item.cash_item_label}</ItemLabel>
-      </h2>
-      </ItemNameWrap>
+      <SkillNameWrap>
+        <h2> {/* 스킬 이름 */}
+          <SkillName>{item.skill_name}</SkillName>
+        </h2>
+      </SkillNameWrap>
       <IconWrap>
         <IconImage>
-          <img src={item.cash_item_icon} alt={item.cash_item_icon} /> 
+          <img src={item.skill_icon} alt="icon" /> 
         </IconImage>
       </IconWrap>
-      <ItemOptionWrap>
-        <div>장비 분류 : {item && item.cash_item_equipment_part}</div>
-      </ItemOptionWrap>
-      <ItemDescriptionWrap Value={item && item.cash_item_description}>
-        <div> {item.cash_item_description} </div>
-      </ItemDescriptionWrap>
+      <SkillDescriptionWrap>
+        <div>{item.skill_description}</div>
+      </SkillDescriptionWrap>
+      <SkillEffect Data={item.skill_effect}>
+        <div>{item.skill_effect}</div>
+      </SkillEffect>
     </Container>
   )
 }
@@ -62,8 +58,9 @@ const Container = styled.div`
   line-height: 18px;
   color: white; 
   padding: 0px 10px;
+  padding-bottom: 10px;
 `
-const ItemNameWrap = styled.div`
+const SkillNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,23 +72,9 @@ const ItemNameWrap = styled.div`
     text-align: center;
   }
 `
-const ItemName = styled.div`
-  
-`
 
-const ItemLabel = styled.div`
-  ${({ Label }) => Label === '블랙라벨' && `
-    color: rgb(255,204,0);
-  `}
-  ${({ Label }) => Label === '레드라벨' && `
-    color: rgb(255,0,89);
-  `}
-  ${({ Label }) => Label === '마스터라벨' && `
-    color: rgb(108,168,192);
-  `}
-  ${({ Label }) => Label === '스페셜라벨' && `
-    color: rgb(188,186,187);
-  `}
+const SkillName = styled.div`
+  
 `
 
 
@@ -117,6 +100,7 @@ const IconImage = styled.div`
     height: 50px;
     object-fit: contain;
   }
+
 `
 
 
@@ -133,17 +117,16 @@ const PinImage = styled.div`
 `;
 
 
-const ItemOptionWrap = styled.div`
-  padding: 5px 0;
-  line-height: 16px;
+
+
+const SkillDescriptionWrap = styled.div`
   font-size: 13px;
+  white-space: pre-wrap;
 `
 
-const ItemDescriptionWrap = styled.div`
+const SkillEffect = styled.div`
   font-size: 13px;
-  white-space: normal;
-  ${({ Value }) => Value && `
-    border-top: 2px dotted rgb(55, 56, 58);
-    padding: 5px 0;
-  `}
+  white-space: pre-wrap;
+  ${({ Data }) => Data && `margin-top: 10px;`}
+  
 `

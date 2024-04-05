@@ -17,6 +17,7 @@ const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
 `;
 
 // QueryClient 인스턴스를 외부에서 생성
