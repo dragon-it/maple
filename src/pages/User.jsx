@@ -6,7 +6,6 @@ import { Equipment } from '../components/user/Equipment';
 import { Skill } from '../components/user/Skill';
 import { useParams } from 'react-router-dom';
 import fetchData from '../api/fetchData';
-import errorImg from '../assets/error.png'
 import loadingImg from '../assets/loading.gif'
 import { Error } from './Error';
 
@@ -39,11 +38,10 @@ export const User = () => {
     fetchDataAndUpdateState();
   }, [characterName]);
 
+
   return (
     <>
-      <SearchWrap>
-        <Search />
-      </SearchWrap>
+
       <Container>
       <Tabs>
         <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
@@ -55,13 +53,15 @@ export const User = () => {
         <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
           스킬
         </Tab>
+        <SearchWrap>
+        <Search />
+      </SearchWrap>
       </Tabs>
         {activeTab === 1 && <Information result={result} />}
         {activeTab === 2 && <Equipment result={result}/>}
         {activeTab === 3 && <Skill result={result}/>}
       </Container>
       <LoadingWrap>{loading && <img src={loadingImg} alt="로딩 중..." />}</LoadingWrap>
-      {error && Error}
     </>
   );
 };
@@ -74,6 +74,7 @@ const Container = styled.div`
   background-color: #ffffff;
   z-index: 99;
   box-sizing: border-box;
+
 `
 
 const SearchWrap = styled.div`
@@ -82,9 +83,8 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   top: 0;
-  width: 100%;
-  height: 90px;
-
+  height: 40px;
+  
 `
 
 
