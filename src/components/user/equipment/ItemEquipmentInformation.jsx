@@ -260,12 +260,15 @@ return (
           <img src={item.item_icon} alt={`icon-${index}`} />
           </ItemIcon>
         ))}
-        <ADIcon>
-          <img src={EquipData.getAndroidEquipment.android_preset_1.android_icon} alt={`icon`} 
+        {EquipData.getAndroidEquipment.android_preset_1?.android_icon ? 
+          (<ADIcon>
+          <img src={EquipData.getAndroidEquipment.android_preset_1?.android_icon} 
+            alt="ADicon"
             onMouseOver={() => setSelectedItem(EquipData.getAndroidEquipment.android_preset_1)} 
-            onClick={() => handleItemClick(EquipData.getAndroidEquipment.android_preset_1)} 
-          />
-        </ADIcon>
+            onClick={() => handleItemClick(EquipData.getAndroidEquipment.android_preset_1)}   />
+          </ADIcon>)
+          :<div style={{ width: '42px', height: '42px' }}/>
+        }
       </EquipItems> 
         <PresetButtonWrap>
           <PresetButtons>
