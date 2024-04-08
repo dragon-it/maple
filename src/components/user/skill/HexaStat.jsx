@@ -2,15 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 import hexaStatData from './HexaStatData';
 
-const StatInfo = ({ level, name, value }) => (
-  <div>Lv.{level}{name} : {value}</div>
-);
+const StatInfo = ({ level, name, value }) => {
+  return (
+    <div>Lv.{level}{name} : {value}</div>
+  );
+};
 
 const findStatData = (name, level, type = 'main', characterClass) => {
   const statData = hexaStatData.find(statData =>
     statData[`${type}_stat_name`] === name && statData[`${type}_stat_level`] === level
   );
 
+  if (!statData) {
+    return {
+      [`${type}_stat_level`]: level,
+      [`${type}_stat_name`]: name,
+      value: '정보 없음',
+    };
+  }
   // 캐릭터 직업이 '제논'이고, xenon_value가 존재할 경우
   if (characterClass === '제논' && statData?.xenon_value) {
     return {
@@ -18,7 +27,6 @@ const findStatData = (name, level, type = 'main', characterClass) => {
       value: statData.xenon_value,
     };
   }
-  
   // 캐릭터 직업이 '데몬어벤져'이고, demon_avenger_value가 존재할 경우
   if (characterClass === '데몬어벤져' && statData?.demon_avenger_value) {
     return {
@@ -32,8 +40,12 @@ const findStatData = (name, level, type = 'main', characterClass) => {
   return statData;
 };
 
-// HexaStat 컴포넌트 내에서
 export const HexaStat = ({ Data }) => {
+  if(!Data.character_hexa_stat_core || Data.character_hexa_stat_core.length === 0) {
+    // 데이터가 없을 때 출력하지 않음
+    return ;
+  }
+
   const hexaStatInfo = Data.character_hexa_stat_core[0];
   const characterClass = Data.character_class;
 
@@ -64,7 +76,6 @@ export const HexaStat = ({ Data }) => {
     </Container>
   );
 };
-
 
 const Container = styled.div`
 

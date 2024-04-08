@@ -27,7 +27,7 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
 
         const results = [];
         for (const api of apiFunctions) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 700));
           const result = await api(ocid);
           results.push(result);
         }
