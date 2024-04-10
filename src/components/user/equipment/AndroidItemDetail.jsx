@@ -102,8 +102,8 @@ const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
   background-color: white;
   border-radius: 10px;
   img{

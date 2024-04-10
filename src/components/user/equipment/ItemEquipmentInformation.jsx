@@ -538,7 +538,6 @@ const Container = styled.div`
   white-space: nowrap;
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
   gap: 5px;
   background-color: rgb(242,247,255);
 `;

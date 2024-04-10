@@ -41,27 +41,33 @@ export const User = () => {
 
   return (
     <>
-
-      <Container>
-      <Tabs>
-        <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-          캐릭터 정보
-        </Tab>
-        <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-          캐릭터 장비
-        </Tab>
-        <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-          스킬
-        </Tab>
-        <SearchWrap>
-        <Search />
-      </SearchWrap>
-      </Tabs>
-        {activeTab === 1 && <Information result={result} />}
-        {activeTab === 2 && <Equipment result={result}/>}
-        {activeTab === 3 && <Skill result={result}/>}
-      </Container>
-      <LoadingWrap>{loading && <img src={loadingImg} alt="로딩 중..." />}</LoadingWrap>
+      {loading ? (
+        <LoadingWrap>
+          <img src={loadingImg} alt="로딩 중..." />
+        </LoadingWrap>
+      ) : (
+        <Container>
+          <HeaderWrap>
+            <Tabs>
+              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+                캐릭터 정보
+              </Tab>
+              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+                캐릭터 장비
+              </Tab>
+              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+                스킬
+              </Tab>
+            </Tabs>
+            <SearchWrap>
+              <Search />
+            </SearchWrap>
+          </HeaderWrap>
+          {activeTab === 1 && <Information result={result} />}
+          {activeTab === 2 && <Equipment result={result}/>}
+          {activeTab === 3 && <Skill result={result}/>}
+        </Container>
+      )}
     </>
   );
 };
@@ -69,11 +75,18 @@ export const User = () => {
 const Container = styled.div`
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
-  padding: 0px 20px 20px;
   border-radius: 5px;
   background-color: #ffffff;
   z-index: 99;
   box-sizing: border-box;
+  margin-top: 40px;
+`
+
+const HeaderWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 3px 10px;
 
 `
 
@@ -83,16 +96,15 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   top: 0;
-  height: 40px;
-  
+  width: 500px;
 `
 
 
 const Tabs = styled.div`
   display: flex;
-  position: relative;
+  top: 0;
   flex-direction: row;
-  padding: 10px;
+  padding: 10px 0;
   z-index: 999999;
 `;
 
@@ -113,6 +125,9 @@ const Tab = styled.div`
 `;
 
 const LoadingWrap = styled.div`
-  width: 50px;
-  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `

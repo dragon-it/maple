@@ -34,7 +34,7 @@ export const BasicInformation = ({ BasicInfo }) => {
             </World>
             <Guild>
               <Title>길드</Title>
-              <Value>{BasicInfo.getBasicInformation.character_guild_name}</Value>
+              <Value>{BasicInfo.getBasicInformation.character_guild_name ? BasicInfo.getBasicInformation.character_guild_name : '-'}</Value>
             </Guild>
           </ItemWrap>
         </GuildWorldGroup>

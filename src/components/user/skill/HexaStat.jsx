@@ -4,7 +4,7 @@ import hexaStatData from './HexaStatData';
 
 const StatInfo = ({ level, name, value }) => {
   return (
-    <div>Lv.{level}{name} : {value}</div>
+    <div>Lv.{level}{name} +{value}</div>
   );
 };
 
@@ -55,28 +55,66 @@ export const HexaStat = ({ Data }) => {
 
   return (
     <Container>
-      Hexa Stat
-      <div>Main Stat</div>
-      <StatInfo 
-        level={mainStatLevelData.main_stat_level} 
-        name={mainStatLevelData.main_stat_name} 
-        value={mainStatLevelData.value} 
-      />
+      <Header>Hexa Stat</Header>
+      <StatWrap>
+        {/* Main Stat */}
+        <MainStat>
+          
+          <StatInfo 
+            level={mainStatLevelData.main_stat_level} 
+            name={mainStatLevelData.main_stat_name} 
+            value={mainStatLevelData.value} 
+          />
+          <MainText>Main!</MainText>
 
-      <StatInfo 
-        level={subFirstStatLevelData.sub_stat_level} 
-        name={subFirstStatLevelData.sub_stat_name} 
-        value={subFirstStatLevelData.value} 
-      />
-      <StatInfo 
-        level={subSecondStatLevelData.sub_stat_level} 
-        name={subSecondStatLevelData.sub_stat_name} 
-        value={subSecondStatLevelData.value} 
-      />
+        </MainStat>
+        {/* Sub Stat */}
+        <StatInfo 
+          level={subFirstStatLevelData.sub_stat_level} 
+          name={subFirstStatLevelData.sub_stat_name} 
+          value={subFirstStatLevelData.value} 
+        />
+        <StatInfo 
+          level={subSecondStatLevelData.sub_stat_level} 
+          name={subSecondStatLevelData.sub_stat_name} 
+          value={subSecondStatLevelData.value} 
+        />
+
+      </StatWrap>
     </Container>
   );
 };
 
 const Container = styled.div`
-
+  background-color: #000000d3;
+  border-radius: 5px;
+  border: 1px solid white;
+  outline: 1px solid black;
+  color: white;
+  padding: 7px;
+  line-height: 25px;
 `;
+
+const Header = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  margin-bottom: 5px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`
+
+const StatWrap = styled.div`
+  font-size: 15px;
+`
+
+const MainStat = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 17px;
+  font-weight: bold;
+`
+
+
+const MainText = styled.div`
+  
+`

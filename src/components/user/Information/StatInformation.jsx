@@ -221,6 +221,7 @@ const CombatpowerWrap = styled.div`
   width: 100%;
   height: 40px;
   font-size: 20px;
+  font-weight: bold;
   background-color: rgb(62,96,118);
   border-radius: 5px;
 `;

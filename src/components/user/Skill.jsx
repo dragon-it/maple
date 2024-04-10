@@ -54,12 +54,17 @@ export const Skill = ({ result }) => {
 }
 
 const Container = styled.div`
+  position: relative;
   display: flex;
+  justify-content: center;
   flex-direction: row;
+  padding: 10px;
+  padding-top: 5px;
 `
 
 const SkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 5px;
 `
