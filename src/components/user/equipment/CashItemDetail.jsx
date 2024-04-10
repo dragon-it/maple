@@ -59,7 +59,6 @@ const Container = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  line-height: 18px;
   color: white; 
   padding: 0px 10px;
 `
@@ -108,8 +107,8 @@ const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
   background-color: white;
   border-radius: 10px;
   img{

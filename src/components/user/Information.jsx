@@ -101,7 +101,8 @@ const Container = styled.div`
 `;
 
 const InfoWrap = styled.div`
-  padding: 14px;
+  padding: 10px;
+  padding-top: 5px;
   height: 100%;
   display: flex;
   gap: 5px;

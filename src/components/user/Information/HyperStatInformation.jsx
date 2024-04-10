@@ -123,7 +123,7 @@ const HyperHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
   color: rgb(220,252,2);
-  margin: 6px 0;
+  margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `
 const HyperBody = styled.div`
@@ -140,7 +140,7 @@ const StatWrap = styled.div`
 `
 
 const StatInfo = styled.div`
-  padding: 3px 0;
+  padding: 2px 0;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   :hover{
     background-color: rgba(59,66,75, 0.9);

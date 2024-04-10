@@ -27,9 +27,10 @@ const Container = styled.div`
   position: relative;
   z-index: -1;
   img {
+    display: block;
     object-fit: cover;
     width: 100%;
-    height: 95vh;
+    height: 100vh;
     left: 0;
   }
 `;

@@ -13,11 +13,12 @@ export const Footer = () => {
 
 const Container = styled.div`
   display: flex;
+  position: absolute;
+  bottom: 0;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 100%;
-  background-color: rgb(200, 200,200);
   font-family: maple-light;
   white-space: pre-wrap;
   line-height: 20px;

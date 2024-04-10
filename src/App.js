@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
 import { Main } from './pages/Main';
 import { User } from './pages/User';
@@ -17,48 +16,42 @@ const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
 `;
-
-// QueryClient 인스턴스를 외부에서 생성
-const queryClient = new QueryClient();
 
 function App() {
   const [themeMode, toggleTheme] = useTheme();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <Container>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route
-                path="/user"
-                element={
-                  <UserContainer>
-                    <User />
-                  </UserContainer>
-                }
-              />
-              <Route
-                path="/user/:characterName"
-                element={
-                  <UserContainer>
-                    <User />
-                  </UserContainer>
-                }
-              />
-            </Routes>
-            <BackgroundImage />
-            <Footer />
-            <ThemeToggle toggle={toggleTheme} mode={themeMode}>
-              DarkMode
-            </ThemeToggle>
-          </Router>
-        </Container>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <Container>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route
+              path="/user"
+              element={
+                <UserContainer>
+                  <User />
+                </UserContainer>
+              }
+            />
+            <Route
+              path="/user/:characterName"
+              element={
+                <UserContainer>
+                  <User />
+                </UserContainer>
+              }
+            />
+          </Routes>
+          <BackgroundImage />
+          <Footer />
+          <ThemeToggle toggle={toggleTheme} mode={themeMode}>
+            DarkMode
+          </ThemeToggle>
+        </Router>
+      </Container>
+    </ThemeProvider>
   );
 }
 
@@ -66,4 +59,5 @@ export default App;
 
 const Container = styled.div`
   height: 100vh;
+  position: relative;
 `;

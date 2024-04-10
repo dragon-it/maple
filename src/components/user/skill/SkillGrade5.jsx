@@ -18,17 +18,27 @@ export const SkillGrade5 = ({ Data, setSelectedItem, clicked, onClick }) => {
 
   return (
     <Container>
+      <SkillHeader>
+      5차 스킬
+      </SkillHeader>
+
       <SkillWrap>
-        5차 스킬: 
         {Data.character_skill.map((item, index) => (
-          <SkillIcon>
-            <img 
-            src={item.skill_icon} 
-            alt={`icon-${index}`} 
-            onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-            onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+          <SkillSimpleWrap
+          onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+          onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+          >
+            <SkillIcon>
+              <img 
+              src={item.skill_icon} 
+              alt={`icon-${index}`}
             />
-          </SkillIcon>
+            </SkillIcon>
+            <SkillNameLevelWrap>
+              <SkillName>{item.skill_name}</SkillName>
+              <SkillLevel>Lv.{item.skill_level}</SkillLevel>
+            </SkillNameLevelWrap>
+          </SkillSimpleWrap>
         ))}
       </SkillWrap>
     </Container>
@@ -36,22 +46,64 @@ export const SkillGrade5 = ({ Data, setSelectedItem, clicked, onClick }) => {
 }
 
 const Container = styled.div`
-  background-color: #645c5c;
-  width: 500px;
+    background-color: #000000d3;
+  border-radius: 5px;
+  border: 1px solid white;
+  outline: 1px solid black;
+    color: white;
+    padding: 7px;
 `
-
+const SkillHeader = styled.div`
+    font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  margin-bottom: 5px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`
 const SkillWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 5px;
-  flex-wrap: wrap;
+  width: 800px;
+  cursor: pointer;
+    color: white;
+  :hover{
+    background-color: #616161;
+    img{
+      scale: 1.2;
+    }
+  }
 `
 
 const SkillIcon = styled.div`
-
+  display: flex;
+  flex-direction: row;
   cursor: pointer;
-  :hover{
-    scale: 1.3;
+  img{
+    width: 32px;
+    height: 32px;
   }
+
+
+`
+
+const SkillSimpleWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+  gap: 5px;
+
+`
+
+const SkillNameLevelWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const SkillName = styled.div`
+`
+
+const SkillLevel = styled.div`
+  
 `
