@@ -36,7 +36,7 @@ export const ItemSetEffect = ({ setinfo }) => {
 
   return (
     <Container>
-      <div>적용중인 세트효과</div>
+      <Header>SET EFFECT</Header>
       {setinfo.set_effect && Array.isArray(setinfo.set_effect) && (
         <ul>
           {setinfo.set_effect.map((effect, index) => (
@@ -110,10 +110,15 @@ const Container = styled.div`
     margin: 8px 0;
     color: #e45b5b;
   }
-
-
 `;
 
+const Header = styled.div`
+    font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  margin-bottom: 5px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`
 
 const SetEffectName = styled.div`
   &:not(:empty) {

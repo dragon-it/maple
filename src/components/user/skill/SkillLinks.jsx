@@ -18,40 +18,48 @@ export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
 
   return (
     <Container>
-      <SkillHeader>
-      6차 스킬
-      </SkillHeader>
-
-      <SkillWrap>
-        {Data.character_link_skill.map((item, index) => (
-          <SkillSimpleWrap
-          onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-          onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
-          >
-            <SkillIcon>
-              <img 
-              src={item.skill_icon} 
-              alt={`icon-${index}`}
-            />
-            </SkillIcon>
-            <SkillNameLevelWrap>
-              <SkillName>{item.skill_name}</SkillName>
-              <SkillLevel>Lv.{item.skill_level}</SkillLevel>
-            </SkillNameLevelWrap>
-          </SkillSimpleWrap>
-        ))}
-      </SkillWrap>
+      {Data.character_link_skill && Data.character_link_skill.length > 0
+      ?
+      <>
+        <SkillHeader>링크 스킬</SkillHeader>
+        <SkillWrap>
+          {Data.character_link_skill.map((item, index) => (
+            <SkillSimpleWrap
+            onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+            onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+            >
+              <SkillIcon>
+                <img 
+                src={item.skill_icon} 
+                alt={`icon-${index}`}
+              />
+              </SkillIcon>
+              <SkillNameLevelWrap>
+                <SkillName>{item.skill_name}</SkillName>
+                <SkillLevel>Lv.{item.skill_level}</SkillLevel>
+              </SkillNameLevelWrap>
+            </SkillSimpleWrap>
+          ))}
+        </SkillWrap>
+      </>
+      :
+      <>
+        <SkillHeader>링크 스킬</SkillHeader>
+        <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
+      </>
+      }
     </Container>
   )
 }
 
 const Container = styled.div`
-    background-color: #000000d3;
+  width: 100%;
+  background-color: #000000d3;
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-    color: white;
-    padding: 7px;
+  color: white;
+  padding: 7px;
 `
 const SkillHeader = styled.div`
   font-size: 15px;
@@ -106,4 +114,8 @@ const SkillName = styled.div`
 
 const SkillLevel = styled.div`
   
+`
+
+const SkillNoDataText = styled.div`
+
 `

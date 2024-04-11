@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FooterText = "Font by MapleStory, Data by NEXON Open API";
+const FooterText = "Data by NEXON Open API, Font by MapleStory";
 
 export const Footer = () => {
   return (

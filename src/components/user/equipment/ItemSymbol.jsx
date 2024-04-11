@@ -51,6 +51,7 @@ export const ItemSymbol = ({ symbolData }) => {
 
   return (
     <Container>
+      <Header>SYMBOL</Header>
       <CommonSymbolWrap>
       <SymbolHeader>아케인 심볼</SymbolHeader>
         <SymbolIncreaseWrap>
@@ -125,6 +126,12 @@ const Container = styled.div`
 
 `
 
+const Header = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`
 
 const CommonSymbolWrap = styled.div`
   display: flex;
