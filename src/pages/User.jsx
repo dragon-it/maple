@@ -18,7 +18,7 @@ export const User = () => {
   };
 
   const { characterName } = useParams();
-  const [result, setResult] = useState(null); // result의 타입을 any로 지정
+  const [result, setResult] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -27,12 +27,12 @@ export const User = () => {
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       try {
-        setLoading(true); // 로딩 시작
+        setLoading(true);
         await fetchData(characterName, setResult, setError);
-        setLoading(false); // 로딩 완료
+        setLoading(false); 
       } catch (error) {
-        setError('데이터를 불러오는 중 오류가 발생했습니다.'); // 오류 메시지 설정
-        setLoading(false); // 로딩 완료
+        setError('데이터를 불러오는 중 오류가 발생했습니다.');
+        setLoading(false); 
       }
     };
 
@@ -50,15 +50,10 @@ export const User = () => {
         <Container>
           <HeaderWrap>
             <Tabs>
-              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-                캐릭터 정보
-              </Tab>
-              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-                캐릭터 장비
-              </Tab>
-              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-                스킬
-              </Tab>
+              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>캐릭터 정보</Tab>
+              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>캐릭터 장비</Tab>
+              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>스킬</Tab>
+              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>유니온</Tab>
             </Tabs>
             <SearchWrap>
               <Search />
@@ -112,7 +107,7 @@ const Tabs = styled.div`
 
 const Tab = styled.div`
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 10px 0px;
   margin: 0 10px;
   border-radius: 5px;
   background-color: ${(props) => (props.active ? '#007bff' : 'transparent')};
