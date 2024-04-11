@@ -25,10 +25,11 @@ export const Skill = ({ result }) => {
   return (
     <Container>
       <SkillWrap>
-        <SkillLinks 
-        Data={result.getLinkSkill}
+        <HexaStat Data={result.getHexaMatrixStat}/>
+        <SkillGrade6 
+        Data={result.getSkill.grade6}        
         setSelectedItem={setSelectedItem} 
-        onClick={setClicked}
+        onClick={setClicked} 
         clicked={clicked}
         onMouseOver={handleItemHover} 
         />
@@ -39,14 +40,13 @@ export const Skill = ({ result }) => {
         clicked={clicked}
         onMouseOver={handleItemHover}
         />
-        <SkillGrade6 
-        Data={result.getSkill.grade6}        
+        <SkillLinks 
+        Data={result.getLinkSkill}
         setSelectedItem={setSelectedItem} 
-        onClick={setClicked} 
+        onClick={setClicked}
         clicked={clicked}
         onMouseOver={handleItemHover} 
         />
-        <HexaStat Data={result.getHexaMatrixStat}/>
       </SkillWrap>
       <SkillDetail item={selectedItem} clicked={clicked}/>
     </Container>

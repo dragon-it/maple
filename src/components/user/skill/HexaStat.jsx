@@ -4,7 +4,11 @@ import hexaStatData from './HexaStatData';
 
 const StatInfo = ({ level, name, value }) => {
   return (
-    <div>Lv.{level}{name} +{value}</div>
+    <StatInfoContainer>
+      <StatLevel>Lv.{level}</StatLevel>
+      <StatName>{name}</StatName>
+      <StatValue>+{value}</StatValue>
+    </StatInfoContainer>
   );
 };
 
@@ -43,7 +47,13 @@ const findStatData = (name, level, type = 'main', characterClass) => {
 export const HexaStat = ({ Data }) => {
   if(!Data.character_hexa_stat_core || Data.character_hexa_stat_core.length === 0) {
     // 데이터가 없을 때 출력하지 않음
-    return ;
+    return (    
+    <Container>
+      <Header>HEXA STAT</Header>
+      <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
+    </Container>)
+
+  ;
   }
 
   const hexaStatInfo = Data.character_hexa_stat_core[0];
@@ -55,17 +65,15 @@ export const HexaStat = ({ Data }) => {
 
   return (
     <Container>
-      <Header>Hexa Stat</Header>
+      <Header>HEXA STAT</Header>
       <StatWrap>
         {/* Main Stat */}
         <MainStat>
-          
           <StatInfo 
             level={mainStatLevelData.main_stat_level} 
             name={mainStatLevelData.main_stat_name} 
             value={mainStatLevelData.value} 
           />
-          <MainText>Main!</MainText>
 
         </MainStat>
         {/* Sub Stat */}
@@ -92,7 +100,7 @@ const Container = styled.div`
   outline: 1px solid black;
   color: white;
   padding: 7px;
-  line-height: 25px;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -115,6 +123,25 @@ const MainStat = styled.div`
 `
 
 
-const MainText = styled.div`
+const StatInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  margin-bottom: 3px;
+`
+
+const StatLevel = styled.div`
   
+`
+
+const StatName = styled.div`
+  
+`
+
+const StatValue = styled.div`
+  
+`
+
+const SkillNoDataText = styled.div`
+
 `

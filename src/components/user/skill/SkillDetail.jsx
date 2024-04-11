@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const SkillDetail = ({ item, clicked }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 800, y: 0 });
+  const [position, setPosition] = useState({ x: 905, y: 0 });
   const dragItemRef = useRef(null);
 
   const startDragging = (e) => {
@@ -80,7 +80,7 @@ export const SkillDetail = ({ item, clicked }) => {
 
 const SelectContainer = styled.div`
   position: absolute;
-  right: 0;
+  right: -290px;
   display: flex;
   justify-content: center;
   align-items: center;

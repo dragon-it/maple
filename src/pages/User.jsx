@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import fetchData from '../api/fetchData';
 import loadingImg from '../assets/loading.gif'
 import { Error } from './Error';
+import { Union } from '../components/user/Union';
 
 export const User = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -66,6 +67,7 @@ export const User = () => {
           {activeTab === 1 && <Information result={result} />}
           {activeTab === 2 && <Equipment result={result}/>}
           {activeTab === 3 && <Skill result={result}/>}
+          {activeTab === 4 && <Union result={result}/>}
         </Container>
       )}
     </>
@@ -96,7 +98,6 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   top: 0;
-  width: 500px;
 `
 
 
