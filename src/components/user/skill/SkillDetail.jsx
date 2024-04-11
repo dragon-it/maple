@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const SkillDetail = ({ item, clicked }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 905, y: 0 });
+  const [position, setPosition] = useState({ x: 838, y: 5 });
   const dragItemRef = useRef(null);
 
   const startDragging = (e) => {

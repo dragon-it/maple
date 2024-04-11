@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { skillData } from './skillData';
 
 const BASE_URL = 'https://open.api.nexon.com';
 const API_KEY = 'test_1f336620ba5ba22af11842fa88ace876194988027e7df07e146a23e8cc7636663251b93aabcfaaa7285bca2d2daa3681';
@@ -135,8 +134,17 @@ const getDojang = async (ocid) => {
 };
 
 const getUnion = async (ocid) => {
+  return callMapleStoryAPI('user/union', { ocid, date: getFormattedDate() });
+};
+
+const getUnionArtiFact = async (ocid) => {
   return callMapleStoryAPI('user/union-artifact', { ocid, date: getFormattedDate() });
 };
+
+const getUnionRaider = async (ocid) => {
+  return callMapleStoryAPI('user/union-raider', { ocid, date: getFormattedDate() });
+};
+
 
 export {   
   getOcidApi,
@@ -159,5 +167,7 @@ export {
   getHexaMatrix,
   getHexaMatrixStat,
   getDojang,
-  getUnion
+  getUnionArtiFact,
+  getUnion,
+  getUnionRaider
 };
