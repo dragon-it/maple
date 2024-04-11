@@ -107,7 +107,7 @@ const Tabs = styled.div`
 
 const Tab = styled.div`
   cursor: pointer;
-  padding: 10px 0px;
+  padding: 10px 8px;
   margin: 0 10px;
   border-radius: 5px;
   background-color: ${(props) => (props.active ? '#007bff' : 'transparent')};
