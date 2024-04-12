@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import UnionIcons from './UnionIcon';
+import { UnionArtifactEffect } from './UnionArtifactEffect';
 
 
 const selectIcon = (level) => {
@@ -30,7 +31,8 @@ const selectIcon = (level) => {
 };
 
 export const UnionInfo = ({ Data }) => {
-  const icon = selectIcon(Data.union_level);
+  console.log(Data)
+  const icon = selectIcon(Data.union.union_level);
 
   const toRoman = (gradeString) => {
     // 로마 숫자 배열
@@ -44,7 +46,7 @@ export const UnionInfo = ({ Data }) => {
   };
 
   // Data.union_grade에서 숫자를 로마 숫자로 변환
-  const romanGrade = toRoman(Data.union_grade);
+  const romanGrade = toRoman(Data.union.union_grade);
 
   return (
     <Container>
@@ -53,46 +55,82 @@ export const UnionInfo = ({ Data }) => {
         <InfoWrap>
           <UnionIcon style={{ backgroundImage: `url(${icon})` }}></UnionIcon>
           <LevelWrap>
-            <UnionLevel>TOTAL LEVEL {Data.union_level}</UnionLevel>
-            <UnionArtifact>ARTIFACT LEVEL{Data.union_artifact_level}</UnionArtifact>
+            <UnionLevel>
+              <Title>TOTAL LEVEL</Title> 
+              <Level>{Data.union.union_level}</Level>
+            </UnionLevel>
+            <UnionArtifact>
+              <Title>ARTIFACT LEVEL</Title>
+              <Level>{Data.union.union_artifact_level}</Level>
+            </UnionArtifact>
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
+      <UnionArtifactEffect Data={Data.unionArtiFact}/>
     </Container>
   )
 }
 
 const Container = styled.div`
-
+  padding: 7px;
+  background-color: rgb(56,60,69);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-family: maple-light;
 `
 
 const UnionWrap = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(48,54,63);
+  border-radius: 5px;
+  border: 1px solid rgb(69,89,100);
+  outline: 1px solid rgb(56,70,81);
+  color: white;
+  gap: 10px;
+  padding: 10px;
 `
 
 const UnionGrade = styled.div`
-
+  color: yellow;
+  font-size: 20px;
 `
 
 const InfoWrap = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 22px;
 `
 
 const LevelWrap = styled.div`
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `
 
 const UnionLevel = styled.div`
-
+  
 `
 
 const UnionIcon = styled.div`
-  width: 80px; 
-  height: 80px; 
+  width: 100px; 
+  height: 100px;
   background-size: cover;
 `
 
 const UnionArtifact = styled.div`
   
+`
+
+const Title = styled.div`
+  text-align: end;
+  margin-bottom: 5px;
+`
+
+const Level = styled.div`
+  text-align: end;
+  font-size: 20px;
 `
