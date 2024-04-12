@@ -7,13 +7,26 @@ import { UnionArtifact } from './union/UnionArtifact'
 export const Union = ({ result }) => {
   return (
     <Container>
-      <UnionInfo Data={result.getUnion}/>
-      <UnionArtifact Data={result.getUnionArtiFact}/>
+      <InfoWrap>
+        <UnionArtifact Data={result.getUnionArtiFact}/>
+        <UnionInfo Data={{ unionArtiFact: result.getUnionArtiFact, union: result.getUnion }}/>
+      </InfoWrap>
       <UnionRaider Data={result.getUnionRaider}/>
     </Container>
   )
 }
 
 const Container = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 10px;
+  padding-top: 5px;
+`
 
+const InfoWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 `
