@@ -10,14 +10,18 @@ export const BasicInformation = ({ BasicInfo }) => {
         <JobGroup>
           <Job>{BasicInfo.getBasicInformation.character_class}</Job>
           <ItemWrap>
-            <Dojang>
+            <Contents>
+              <Title>유니온</Title>
+              <Value>{BasicInfo.getUnion.union_level}</Value>
+            </Contents>
+            <Contents>
               <Title>무릉도장</Title>
               <Value>{BasicInfo.getDojang.dojang_best_floor}층</Value>
-            </Dojang>
-            <Popularity>
+            </Contents>
+            <Contents>
               <Title>인기도</Title>
               <Value>{BasicInfo.getCharacterPopularity.popularity}</Value>
-            </Popularity>
+            </Contents>
           </ItemWrap>
         </JobGroup>
         <CharacterInfoGroup>
@@ -146,7 +150,7 @@ const Job = styled.div`
   align-items: center;
 `
 
-const Dojang = styled.div`
+const Contents = styled.div`
   background-color: rgb(202,204,206);
   width: 110px;
   border-radius: 7px;
@@ -156,15 +160,7 @@ const Dojang = styled.div`
   align-items: center;
 `
 
-const Popularity = styled.div`
-  background-color: rgb(202,204,206);
-  width: 110px;
-  border-radius: 7px;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
+
 
 const Guild = styled.div`
   background-color: rgb(202,204,206);

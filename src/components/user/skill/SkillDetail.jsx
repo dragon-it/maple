@@ -80,7 +80,7 @@ export const SkillDetail = ({ item, clicked }) => {
 
 const SelectContainer = styled.div`
   position: absolute;
-  right: -290px;
+  right: -292px;
   display: flex;
   justify-content: center;
   align-items: center;

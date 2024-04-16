@@ -1,21 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { UnionInfo } from './union/UnionInfo'
-import { UnionRaider } from './union/UnionRaider'
 import styled from 'styled-components'
 import { UnionArtifact } from './union/UnionArtifact'
 
 export const Union = ({ result }) => {
+  const [showUnionRaider, setShowUnionRaider] = useState(false);
+
   return (
     <Container>
       <InfoWrap>
-        <UnionArtifact Data={{ 
-          unionArtiFact: result.getUnionArtiFact, 
-          unionRaider: result.getUnionRaider 
-        }}/>
-        <UnionInfo Data={{ 
-          unionArtiFact: result.getUnionArtiFact, 
-          union: result.getUnion 
-        }}/>
+        <UnionArtifact 
+          Data={{ 
+            unionArtiFact: result.getUnionArtiFact, 
+            unionRaider: result.getUnionRaider 
+          }}
+          showUnionRaider={showUnionRaider}
+          setShowUnionRaider={setShowUnionRaider}
+        />
+        <UnionInfo 
+          Data={{ 
+            unionArtiFact: result.getUnionArtiFact, 
+            union: result.getUnion,
+            unionRaider: result.getUnionRaider 
+          }}
+          showUnionRaider={showUnionRaider}
+        />
       </InfoWrap>
     </Container>
   )

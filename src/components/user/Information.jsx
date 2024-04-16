@@ -62,7 +62,8 @@ const Information = ({ result }) => {
               <BasicInformation BasicInfo={{
                   getBasicInformation: result.getBasicInformation,
                   getCharacterPopularity: result.getCharacterPopularity,
-                  getDojang: result.getDojang
+                  getDojang: result.getDojang,
+                  getUnion: result.getUnion,
                   }}>
               </BasicInformation>
               <StatInformation statInfo={result.getCharacterStat}></StatInformation>
