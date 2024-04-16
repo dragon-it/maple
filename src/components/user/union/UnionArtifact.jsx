@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import UnionArtifactIcon from './UnionArtifactIcon';
 import { UnionRaider } from './UnionRaider';
+import { UnionOccupiedStat } from './UnionOccupiedStat';
 
-export const UnionArtifact = ({ Data }) => {
+export const UnionArtifact = ({ Data,showUnionRaider, setShowUnionRaider }) => {
   console.log(Data)
-  const [showUnionRaider, setShowUnionRaider] = useState(false);
+
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map(crystal => 
     crystal.name.replace('크리스탈 : ', '')
   );
@@ -33,15 +34,20 @@ export const UnionArtifact = ({ Data }) => {
   
   return (
     <Container RaiderShow={showUnionRaider}>
-      <UnionRaiderText onClick={() => setShowUnionRaider(prevState => !prevState)}> {showUnionRaider? "유니온 점령지도 보기": "유니온 아티팩트 보기"}</UnionRaiderText>
+      <UnionRaiderText onClick={() => setShowUnionRaider(prevState => !prevState)}>
+        {showUnionRaider ? "유니온 아티팩트 보기": "유니온 점령지도 보기"}
+      </UnionRaiderText>
       {showUnionRaider 
       ? 
-      <RaiderWrap>
-        <UnionRaider Data={Data.unionRaider}/>
-      </RaiderWrap>
-      
+      <>      
+        <RaiderWrap>
+          <UnionRaider Data={Data.unionRaider}/>
+        </RaiderWrap>
+        <UnionOccupiedStat Data={Data.unionRaider}/>
+      </>
+
       :
-      <>
+      <ArtifactWrap>
         {Data.unionArtiFact.union_artifact_crystal.map((crystal, index) => (
         <InfoWrap key={index}>
           <ArtiFactIcon>          
@@ -58,7 +64,7 @@ export const UnionArtifact = ({ Data }) => {
           </Option>
       </InfoWrap>
       ))}
-      </>
+      </ArtifactWrap>
       }
 
     </Container>
@@ -68,9 +74,9 @@ export const UnionArtifact = ({ Data }) => {
 
 const Container = styled.div`
   display: flex;
-  justify-content: ${(props) => (props.RaiderShow  ? "center" : "flex-start")}; 
+  justify-content: ${(props) => (props.RaiderShow  ? "space-around" : "")}; 
+  align-items: ${(props) => (props.RaiderShow  ? "center" : "")}; 
   gap: 5px;
-  flex-direction: row;
   font-family: maple-light;
   background-color: rgb(56, 60, 69);
   border-radius: 5px;
@@ -81,8 +87,10 @@ const Container = styled.div`
   height: auto;
   flex-wrap: wrap;
   color: white;
+
 `
 const RaiderWrap = styled.div`
+  display: flex;
   background-color: rgb(56, 60, 69);
   border-radius: 5px;
   border: 2px solid rgb(69,89,100);
@@ -91,14 +99,17 @@ const RaiderWrap = styled.div`
 `
 
 const UnionRaiderText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 20px;
   border-radius: 5px;
-  text-align: center;
-  background-color: rgb(87, 179, 207);
+  color: black;
+  background-color: rgb(144, 177, 187);
   cursor: pointer;
-  :hover{
-    background-color: rgba(189, 179, 179, 0.171);
+  &:hover{
+    background-color: rgb(1, 196, 255);
   }
 `
 
@@ -122,7 +133,6 @@ const ArtiFactIcon = styled.div`
   width: 90px;
   height: 90px;
   }
-
 `
 
 
@@ -136,5 +146,13 @@ const Name = styled.div`
   
 `
 
-const Level = styled.div`
+
+const ArtifactWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+  :hover{
+    background-color: #525050;
+  }
 `

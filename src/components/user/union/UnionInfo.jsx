@@ -30,7 +30,8 @@ const selectIcon = (level) => {
   return UnionIcons[rankCategory][rank];
 };
 
-export const UnionInfo = ({ Data }) => {
+export const UnionInfo = ({ Data, showUnionRaider }) => {
+  console.log(showUnionRaider)
   console.log(Data)
   const icon = selectIcon(Data.union.union_level);
 
@@ -66,7 +67,10 @@ export const UnionInfo = ({ Data }) => {
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
-      <UnionArtifactEffect Data={Data.unionArtiFact}/>
+      <UnionArtifactEffect 
+      Data={Data}
+      showUnionRaider={showUnionRaider}
+      />
     </Container>
   )
 }
