@@ -8,10 +8,15 @@ export const Union = ({ result }) => {
   return (
     <Container>
       <InfoWrap>
-        <UnionArtifact Data={result.getUnionArtiFact}/>
-        <UnionInfo Data={{ unionArtiFact: result.getUnionArtiFact, union: result.getUnion }}/>
+        <UnionArtifact Data={{ 
+          unionArtiFact: result.getUnionArtiFact, 
+          unionRaider: result.getUnionRaider 
+        }}/>
+        <UnionInfo Data={{ 
+          unionArtiFact: result.getUnionArtiFact, 
+          union: result.getUnion 
+        }}/>
       </InfoWrap>
-      <UnionRaider Data={result.getUnionRaider}/>
     </Container>
   )
 }

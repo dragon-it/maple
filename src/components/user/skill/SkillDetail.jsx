@@ -98,7 +98,7 @@ const SelectContainer = styled.div`
 const Container = styled.div`
   position: absolute;
   right: 0;
-  width: 290px;
+  width: 320px;
   height: fit-content;
   background-color: #000000;
   border-radius: 5px;
