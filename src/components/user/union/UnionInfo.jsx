@@ -23,9 +23,12 @@ const selectIcon = (level) => {
     rankCategory = 'supreme';
   }
 
+  // Math.floor() 숫자 내림하여 가장 가까운 정수 반환
+  // Math.min() 주어진 숫자들 중 가장 작은 값 반환
+  // (Math.floor((level - baseLevel) / 500) 와 UnionIcons[rankCategory].length - 1 중 작은 값,
   // 유니온 레벨에 따른 baseLevel과 Category를 지정받고,
   // (유니온 레벨-baseLevel) / 500을 하여  UnionIcons의 배열에서 rank를 추출함
-  const rank = (Math.floor((level - baseLevel) / 500), UnionIcons[rankCategory].length - 1);
+  const rank = Math.min(Math.floor((level - baseLevel) / 500), UnionIcons[rankCategory].length - 1);
   //  UnionIcons의 카테고리와 랭크를 계산하여 icon 렌더링
   return UnionIcons[rankCategory][rank];
 };
@@ -82,7 +85,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-family: maple-light;
+
 `
 
 const UnionWrap = styled.div`

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import asd from '../../../assets/InfoBgImg/black/Sword_Grave_BG.png'
 
 export const BasicInformation = ({ BasicInfo }) => {
   return (
@@ -74,6 +74,8 @@ const CharacterBody = styled.div`
   flex-direction: row;
   background-color: white;
   border-radius: 5px;
+  background-image: url(${asd});
+  background-size: cover;
 `
 
 const JobGroup = styled.div`

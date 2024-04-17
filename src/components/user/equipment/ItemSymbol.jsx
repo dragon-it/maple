@@ -116,11 +116,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 460px;
-  padding: 10px;
   height: 100%;
-  gap: 14px;
+  padding: 10px;
+  gap: 10px;
   border-radius: 5px;
-  background-color: #000000;
+  background-color: rgba(0,0,0, 0.9);
   border: 1px solid white;
   outline: 1px solid black;
 
@@ -148,6 +148,7 @@ const SymbolHeader = styled.div`
   display: flex;
   justify-content: center;
   font-family: maple-light;
+  margin-top: 10px;
   color: white;
   width: 100%;
   font-size: 17px;
@@ -161,7 +162,7 @@ const SymbolIncreaseWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  gap: 3px;
 `
 
 const IncreaseArcaneShameWrap = styled.div`

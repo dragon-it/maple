@@ -535,11 +535,13 @@ return (
 };
 
 const Container = styled.div`
+  position: relative;
   white-space: nowrap;
   display: flex;
   flex-direction: row;
   gap: 5px;
-  background-color: rgb(242,247,255);
+  border-radius: 5px;
+  padding: 5px;
 `;
 
 
@@ -577,15 +579,19 @@ const InfoWrap = styled.div`
 
 const TabMenu = styled.div`
   display: flex;
-  justify-content: space-around;
 `;
 
 const TabButton = styled.button`
-  flex-grow: 1;
-  padding: 10px;
-  background: ${({ isSelected }) => (isSelected ? '#f0f0f0' : 'white')};
-  border: none;
-  border-top: ${({ isSelected }) => (isSelected ? '1px solid blue' : '1px solid #ddd')};
+  width: 55px;
+  height: 27px;
+  padding: 5px;
+  font-family: maple-light;
+  font-size: 14px;
+  color: white;
+  background: ${({ isSelected }) => (isSelected ? '#FFAA00' : '#999999')};
+  border: 1px solid ${({ isSelected }) => (isSelected ? '#E47733' : '#777777')};
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   cursor: pointer;
 `;
 
@@ -603,7 +609,9 @@ const BaseButton = styled.button`
 const UiBackgrnd = styled.div`
   position: relative;
   border-top: 1px solid black;
-  background-color: #fffbfb
+  background-color: #fffbfb;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 `;
 
 const BackgroundImageWrap = styled.div`
@@ -716,5 +724,6 @@ const PresetButtons = styled.div`
 `
 
 const DetailWrap = styled.div`
-  
+  position: absolute;
+  right: -302px;
 `
