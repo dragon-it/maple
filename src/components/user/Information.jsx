@@ -147,7 +147,6 @@ const AbilContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   width: 100%;
-  max-height: 614px;
   min-width: 275px;
 `
 
@@ -162,9 +161,8 @@ const ImgWrap = styled.div`
   user-select: none;
   img{
     width: 100%;
-    height: 90%;
     max-height: 220px;
-    max-width: 322px;
+    max-width: 345px;
     border: 1px solid rgb(80,92,101);
     outline: 1px solid rgb(42,49,58);
     border-radius: 5px;

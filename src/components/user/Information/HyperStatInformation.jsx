@@ -29,7 +29,7 @@ useEffect(() => {
     : currentPreset.filter((stat) => stat.stat_level !== 0);
 
   return (
-    <Container ref={containerRef}>
+    <Container ref={containerRef} showAllStat={showAllStat}>
       <HyperHeader>HYPER STAT</HyperHeader>
       <HyperBody>
         <StatWrap>
@@ -87,6 +87,7 @@ useEffect(() => {
 const Container = styled.div`
   padding: 5px;
   display: flex;
+  height: ${(props) => (props.showAllStat ? "100%": "")};
   flex-direction: column;
   justify-content: space-between;
   width: 100%;

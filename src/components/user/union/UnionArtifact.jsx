@@ -74,17 +74,16 @@ export const UnionArtifact = ({ Data,showUnionRaider, setShowUnionRaider }) => {
 
 const Container = styled.div`
   display: flex;
-  justify-content: ${(props) => (props.RaiderShow  ? "space-around" : "")}; 
+  justify-content: ${(props) => (props.RaiderShow  ? "space-around" : "flex-start")}; 
   align-items: ${(props) => (props.RaiderShow  ? "center" : "")}; 
   gap: 5px;
-  font-family: maple-light;
   background-color: rgb(56, 60, 69);
   border-radius: 5px;
   border: 1px solid rgb(69,89,100);
   outline: 1px solid rgb(56,70,81);
   padding: 5px;
   width: 682px;
-  height: auto;
+  height: 100%;
   flex-wrap: wrap;
   color: white;
 

@@ -85,16 +85,17 @@ export const ItemSetEffect = ({ setinfo }) => {
 };
 
 const Container = styled.div`
+  position: absolute;
+  left: -261px;
   width: 250px;
-  height: 100%;
   padding: 10px;
   white-space: pre-line;
-  background-color: black;
+  background-color: rgba(0,0,0, 0.9);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
   color: white;
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: #ffffff rgba(104, 103, 103, 0.5);

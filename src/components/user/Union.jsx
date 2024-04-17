@@ -37,10 +37,12 @@ const Container = styled.div`
   flex-direction: row;
   padding: 10px;
   padding-top: 5px;
+  font-family: maple-light;
 `
 
 const InfoWrap = styled.div`
   display: flex;
   flex-direction: row;
   gap: 5px;
+  height: 100%;
 `
