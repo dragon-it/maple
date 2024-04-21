@@ -118,7 +118,7 @@ const StatWrap = styled.div`
 const MainStat = styled.div`
   display: flex;
   flex-direction: row;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
 `
 

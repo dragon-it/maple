@@ -6,8 +6,11 @@ import { User } from './pages/User';
 import { Footer } from './components/common/Footer';
 import { BackgroundImage } from './components/main/BackgroundImage';
 import styled from 'styled-components';
-import { ThemeProvider, useTheme } from './components/context/themeProvider';
-import ThemeToggle from './components/theme/ThemeToggle';
+import { ThemeProvider } from './context/ThemeProvider';
+import ThemeToggleButton from './context/ThemeToggleButton';
+import { GlobalStyle } from './components/theme/GlobalStyles';
+
+
 
 const UserContainer = styled.div`
   width: 100%;
@@ -19,10 +22,9 @@ const UserContainer = styled.div`
 `;
 
 function App() {
-  const [themeMode, toggleTheme] = useTheme();
-
   return (
     <ThemeProvider>
+      <GlobalStyle />
       <Container>
         <Router>
           <Routes>
@@ -46,10 +48,8 @@ function App() {
           </Routes>
           <BackgroundImage />
           <Footer />
-          <ThemeToggle toggle={toggleTheme} mode={themeMode}>
-            DarkMode
-          </ThemeToggle>
         </Router>
+        <ThemeToggleButton />
       </Container>
     </ThemeProvider>
   );

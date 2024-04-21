@@ -76,7 +76,7 @@ useEffect(() => {
           <RemainPoint><div>POINT :</div> {HyperStatInfo[`${currentPresetKey}_remain_point`]}</RemainPoint>
         </ButtonContainer>
       </HyperBody>
-      <ShowAllStatBtn onClick={toggleShowAllStat}>
+      <ShowAllStatBtn onClick={toggleShowAllStat} showAllStat={showAllStat}>
         {showAllStat ? <p>간략하게 보기</p> : <p>자세히보기</p>}
       </ShowAllStatBtn>
     </Container>
@@ -107,6 +107,7 @@ const ShowAllStatBtn = styled.div`
   box-sizing: border-box;
   font-family: maple-light;
   cursor: pointer;
+  margin-bottom:  ${(props) => (props.showAllStat ? "5px": "0px")};
   p{
     display: flex;
     justify-content: center;
@@ -183,6 +184,7 @@ const PresetButton = styled.button`
 const PresetHeader = styled.div`
   font-size: 13px;
   text-shadow: none;
+  color: rgb(0,0,0);
 `
 
 const StatContainer = styled.div`

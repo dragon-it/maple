@@ -1,12 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import asd from '../../../assets/InfoBgImg/black/Sword_Grave_BG.png'
+import { ThemeBackground } from '../../theme/ThemeBackground';
 
 export const BasicInformation = ({ BasicInfo }) => {
+    // 현재 표시되는 이미지의 인덱스를 관리하는 상태입니다.
+  // 초기값은 0으로, 첫 번째 이미지를 표시합니다.
+  const [currentImageIndex, setCurrentImageIndex] = useState(3);
+
+  // 현재 테마를 관리하는 상태입니다. "black" 또는 "white"를 가질 수 있습니다.
+  // 이 예시에서는 단순화를 위해 항상 "black"을 사용합니다.
+  const currentTheme = 'black';
+
+  // 이미지를 변경하는 함수입니다.
+  const changeImage = () => {
+    // 다음 이미지의 인덱스를 계산합니다.
+    const nextIndex = (currentImageIndex + 1) % ThemeBackground[currentTheme].length;
+    // 계산된 인덱스로 상태를 업데이트합니다.
+    setCurrentImageIndex(nextIndex);
+  };
+
+  // 컴포넌트가 마운트될 때, 클릭 이벤트 리스너를 추가합니다.
+  useEffect(() => {
+    const characterBody = document.querySelector('#CharacterBody');
+    if(characterBody) characterBody.addEventListener('click', changeImage);
+
+    // 컴포넌트가 언마운트될 때, 이벤트 리스너를 제거합니다.
+    return () => {
+      if(characterBody) characterBody.removeEventListener('click', changeImage);
+    };
+  }, [currentImageIndex]);
+
+
+
   return (
     <Container>
       <CharacterHeader>CHARACTER INFO</CharacterHeader>
-      <CharacterBody>
+      <CharacterBody id="CharacterBody" style={{ backgroundImage: `url(${ThemeBackground[currentTheme][currentImageIndex]})` }}>
         <JobGroup>
           <Job>{BasicInfo.getBasicInformation.character_class}</Job>
           <ItemWrap>
@@ -74,8 +103,8 @@ const CharacterBody = styled.div`
   flex-direction: row;
   background-color: white;
   border-radius: 5px;
-  background-image: url(${asd});
   background-size: cover;
+  cursor: pointer;
 `
 
 const JobGroup = styled.div`
@@ -109,6 +138,7 @@ const Level = styled.div`
   padding: 3px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px; 
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 `;
 
 
@@ -150,6 +180,7 @@ const Job = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 `
 
 const Contents = styled.div`
@@ -188,7 +219,7 @@ const Value = styled.div`
 `
 
 const Title = styled.div`
-text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 `
 
 const ItemWrap = styled.div`

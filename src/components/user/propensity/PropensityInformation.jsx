@@ -86,6 +86,7 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: rgba(59,66,75, 0.9);
   padding: 5px;
+  color: black;
 `;
 
 
