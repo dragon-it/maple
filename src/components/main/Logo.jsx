@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import logo from '../../assets/Logo.png'
 
+
 export const Logo = () => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const handleClick = () => {
@@ -11,14 +13,12 @@ export const Logo = () => {
   };
 
   const UserRoute = location.pathname.startsWith('/user/');
-
+  console.log(UserRoute)
   return (
     <Container 
-    onClick={handleClick}
-    UserRoute={UserRoute}
-    >
+    onClick={handleClick} UserRoute={UserRoute}>
       <img src={logo} alt="Logo" />
-      <LogoText>메짱</LogoText>
+      <LogoText UserRoute={UserRoute}>메짱</LogoText>
     </Container>
   );
 };
@@ -37,4 +37,5 @@ const Container = styled.div`
 
 const LogoText = styled.div`
   font-family: maple-light;
+  color: ${({ theme, UserRoute }) => UserRoute ?  theme.logoColor: 'black'};
 `;

@@ -74,6 +74,7 @@ export const ItemSymbol = ({ symbolData }) => {
               </SymbolIcons>
               <SymbolInfo>
                 {item.symbol_level && <p>Lv.{item.symbol_level}</p>}
+                {item.symbol_level === 20 ? <p>MAX</p> : ''}
               </SymbolInfo>
           </Items>
           ))}
@@ -101,6 +102,7 @@ export const ItemSymbol = ({ symbolData }) => {
             </SymbolIcons>
             <SymbolInfo>
               {item.symbol_level && <p>Lv.{item.symbol_level}</p>}
+              {item.symbol_level === 11 ? <p>MAX</p> : ''}
             </SymbolInfo>
           </Items>
           ))}
@@ -206,7 +208,7 @@ const SymbolIcons = styled.div`
   }
 `
 const SymbolInfo = styled.div`
-  
+  text-align: center;
 `
 
 const SymbolName = styled.div`

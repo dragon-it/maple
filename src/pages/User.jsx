@@ -9,10 +9,11 @@ import fetchData from '../api/fetchData';
 import loadingImg from '../assets/loading.gif'
 import { Error } from './Error';
 import { Union } from '../components/user/Union';
+import { useTheme } from '../context/ThemeProvider';
+
 
 export const User = () => {
   const [activeTab, setActiveTab] = useState(1);
-
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
@@ -73,7 +74,7 @@ const Container = styled.div`
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.bgColor};
   z-index: 99;
   box-sizing: border-box;
   margin-top: 40px;
@@ -110,14 +111,13 @@ const Tab = styled.div`
   padding: 10px 8px;
   margin: 0 10px;
   border-radius: 5px;
-  background-color: ${(props) => (props.active ? '#007bff' : 'transparent')};
-  color: ${(props) => (props.active ? '#ffffff' : '#000000')};
   font-weight: bold;
   transition: background-color 0.3s, color 0.3s;
-
+  background-color: ${({ theme, active }) => (active ? theme.tabActiveColor : 'transparent')};  
+  color:  ${({ theme, active }) => (active ? theme.tabActiveTextColor : theme.tabColor)};  
   &:hover {
-    background-color: ${(props) => (props.active ? '#0056b3' : '#e0e0e0')};
-  }
+  background-color: ${({ theme, active }) => (active ? theme.tabNotHoverColor : theme.tabHoverColor)};
+}
 `;
 
 const LoadingWrap = styled.div`
@@ -127,3 +127,4 @@ const LoadingWrap = styled.div`
   width: 100%;
   height: 100%;
 `
+

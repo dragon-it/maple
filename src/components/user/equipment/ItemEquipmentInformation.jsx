@@ -213,12 +213,13 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     border: 2px solid gray;
     border-radius: 5px;
     background-color: white;
+    color: white;
     cursor: pointer;
-    ${({ isSelected }) => isSelected && `
-      border: 2px solid blue;
-      background-color: lightblue;
-    `}
+    font-family: maple-light;
+    background: ${({ isSelected }) => (isSelected ? '#FFAA00' : '#999999')};
+    border: 1px solid ${({ isSelected }) => (isSelected ? '#E47733' : '#777777')};
 `;
+
 
   const ItemIcon = styled.div`
     position: absolute;
@@ -235,6 +236,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 return (
   <Container>
     <InfoWrap currentTab={currentTab}>
+    <Header>EQUIPMENT</Header>
     <TabMenu>
       <TabButton isSelected={currentTab === '장비'} onClick={() => handleTabChange('장비')}>장비</TabButton>
       <TabButton isSelected={currentTab === '캐시'} onClick={() => handleTabChange('캐시')}>캐시</TabButton>
@@ -544,6 +546,13 @@ const Container = styled.div`
   padding: 5px;
 `;
 
+const Header = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220,252,2);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+  margin-bottom: 10px;
+`
 
 const EquipWrap = styled.div`
   display: flex;
@@ -568,9 +577,9 @@ const InfoWrap = styled.div`
       case '캐시':
         return '470px'; 
       case '펫':
-        return '320px';
+        return '345px';
       case 'AD':
-        return '375px'; 
+        return '400px'; 
       default:
         return '450px'; 
     }
@@ -595,15 +604,16 @@ const TabButton = styled.button`
   cursor: pointer;
 `;
 
+
 const BaseButton = styled.button`
   position: relative;
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
-  ${({ isSelected }) => isSelected && `
-    border: 2px solid blue;
-    background-color: lightblue;
-  `}
+  color: white;
+  font-family: maple-light;
+    background: ${({ isSelected }) => (isSelected ? '#FFAA00' : '#999999')};
+    border: 1px solid ${({ isSelected }) => (isSelected ? '#E47733' : '#777777')};
 `;
 
 const UiBackgrnd = styled.div`
@@ -704,7 +714,7 @@ const EquipItems = styled.div`
 
 const ApplyingPreset = styled.div`
   margin-top: 10px;
-  width: 210px;
+  width: 188px;
   font-family: maple-light;
   text-align: center;
   position: absolute;
