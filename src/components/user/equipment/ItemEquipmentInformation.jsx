@@ -544,6 +544,10 @@ const Container = styled.div`
   gap: 5px;
   border-radius: 5px;
   padding: 5px;
+  
+  @media screen and (max-width:767px) {
+  flex-direction: column;
+  }
 `;
 
 const Header = styled.div`

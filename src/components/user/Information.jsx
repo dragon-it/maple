@@ -99,6 +99,8 @@ const Container = styled.div`
   flex-direction: row;
   z-index: 99;
   border-radius: 10px;
+
+
 `;
 
 const InfoWrap = styled.div`
@@ -113,6 +115,11 @@ const InfoWrap = styled.div`
     display: flex;
     transition: 1s;
   }
+
+  @media screen and (max-width:767px) {
+    display: flex;
+    flex-direction: column;
+}
 `;
 
 const SynthesisWrap = styled.div`
@@ -133,6 +140,11 @@ const StatWrap = styled.div`
   display: flex;
   flex-direction: row;
   gap: 5px;
+
+  //반응형
+  @media screen and (max-width:767px) {
+  flex-direction: column;
+  }
 `
 
 
