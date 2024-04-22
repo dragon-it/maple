@@ -78,6 +78,13 @@ const Container = styled.div`
   z-index: 99;
   box-sizing: border-box;
   margin-top: 40px;
+
+  //반응형
+  @media screen and (max-width:767px) {
+    width: 700px;
+}
+
+
 `
 
 const HeaderWrap = styled.div`
@@ -94,6 +101,11 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   top: 0;
+
+  @media screen and (max-width:767px) {
+    position: absolute;
+    top: 0;
+}
 `
 
 
@@ -115,6 +127,7 @@ const Tab = styled.div`
   transition: background-color 0.3s, color 0.3s;
   background-color: ${({ theme, active }) => (active ? theme.tabActiveColor : 'transparent')};  
   color:  ${({ theme, active }) => (active ? theme.tabActiveTextColor : theme.tabColor)};  
+
   &:hover {
   background-color: ${({ theme, active }) => (active ? theme.tabNotHoverColor : theme.tabHoverColor)};
 }

@@ -293,6 +293,12 @@ const AttackFontWrap = styled.div`
     justify-content: space-between;
     gap: 25px;
   }
+
+  //반응형
+  @media screen and (max-width:767px) {
+    flex-direction: column;
+    gap: 70px;
+  }
 `;
 
 
@@ -340,6 +346,11 @@ const EtcTextWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+
+  @media screen and (max-width:767px) {
+
+      gap: 70px;
+}
 `;
 
 

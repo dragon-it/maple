@@ -126,6 +126,9 @@ const Container = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
 
+  @media screen and (max-width:767px) {
+    width: 100%;
+  }
 `
 
 const Header = styled.div`
@@ -180,7 +183,7 @@ const SymbolWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
+  font-size: 12px;
   gap: 5px;
   
 `
