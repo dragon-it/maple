@@ -24,6 +24,10 @@ const Container = styled.div`
   outline: 1px solid rgb(102,102,102);
   padding: 3px;
   font-size: 13px;
+
+  @media screen and (max-width:767px) {
+    width: 100%;
+  }
 `
 
 const Header = styled.div`

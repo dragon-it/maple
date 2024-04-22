@@ -82,6 +82,12 @@ const SkillWrap = styled.div`
       scale: 1.2;
     }
   }
+
+  //반응형
+  @media screen and (max-width:767px) {
+    grid-template-columns: repeat(3, 1fr);
+    width: auto;
+  }
 `
 
 const SkillIcon = styled.div`

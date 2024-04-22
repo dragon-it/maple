@@ -15,10 +15,13 @@ import { GlobalStyle } from './components/theme/GlobalStyles';
 const UserContainer = styled.div`
   width: 100%;
   position: absolute;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width:767px) {
+    padding: 20px;
+  }
 `;
 
 function App() {

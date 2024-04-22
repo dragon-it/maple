@@ -32,9 +32,6 @@ export const Union = ({ result }) => {
 
 const Container = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
   padding: 10px;
   padding-top: 5px;
   font-family: maple-light;
@@ -45,4 +42,8 @@ const InfoWrap = styled.div`
   flex-direction: row;
   gap: 5px;
   height: 100%;
+
+  @media screen and (max-width:767px) {
+    flex-direction: column-reverse;
+  }
 `

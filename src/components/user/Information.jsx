@@ -179,6 +179,10 @@ const ImgWrap = styled.div`
     outline: 1px solid rgb(42,49,58);
     border-radius: 5px;
     background-color: rgba(59,66,75, 0.9);
+
+    @media screen and (max-width:767px) {
+      max-width: 460px;
+    }
   }
 `
 const SpiritText = styled.div`
