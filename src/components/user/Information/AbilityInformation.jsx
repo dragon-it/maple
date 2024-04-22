@@ -163,6 +163,7 @@ const ButtonWrap = styled.div`
 const PresetHeader = styled.div`
   font-size: 13px;
   text-shadow: none;
+  color: black;
 `
 
 const PresetButton = styled.button`

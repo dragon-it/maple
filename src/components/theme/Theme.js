@@ -1,5 +1,5 @@
 export const light = {
-  toggleBgColor: 'rgb(30,30,34)',
+  toggleBgColor: 'rgb(55,55,55)',
   toggleColor: 'rgb(255,255,255)',
   toggleBorderColor: '1px solid rgb(44, 45, 51)', 
   bgColor: 'rgba(255,255,255, 0.63)',
