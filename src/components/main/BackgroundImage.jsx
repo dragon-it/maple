@@ -23,7 +23,7 @@ export const BackgroundImage = () => {
 };
 
 const Container = styled.div`
-  position: relative;
+  position: fixed;
   z-index: -1;
   
   img {

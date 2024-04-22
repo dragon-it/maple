@@ -1,60 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 export const SkillDetail = ({ item, clicked }) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 838, y: 5 });
-  const dragItemRef = useRef(null);
-
-  const startDragging = (e) => {
-    setIsDragging(true);
-    dragItemRef.current = {
-      startX: e.pageX - position.x,
-      startY: e.pageY - position.y,
-    };
-  };
-
-  const onDragging = (e) => {
-    if (isDragging) {
-      setPosition({
-        x: e.pageX - dragItemRef.current.startX,
-        y: e.pageY - dragItemRef.current.startY,
-      });
-    }
-  };
-
-  const stopDragging = () => {
-    setIsDragging(false);
-    dragItemRef.current = null;
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', onDragging);
-      window.addEventListener('mouseup', stopDragging);
-    } else {
-      window.removeEventListener('mousemove', onDragging);
-      window.removeEventListener('mouseup', stopDragging);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', onDragging);
-      window.removeEventListener('mouseup', stopDragging);
-    };
-  }, [isDragging]);
-
   if (!item) {
     return <SelectContainer>스킬을 선택해주세요.</SelectContainer>
   }
 
   return (
-    <Container
-      style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-      }}
-      onMouseDown={startDragging}
-    >
+    <Container>
       <div style={{ position: 'relative' }}>
         {clicked && <PinImage />}
       </div>
@@ -93,11 +46,16 @@ const SelectContainer = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   font-family: maple-light;
+
+  @media screen and (max-width:767px) {
+    display: none;
+  }
+
 `
 
 const Container = styled.div`
   position: absolute;
-  right: 0;
+  right: -325px;
   width: 320px;
   height: fit-content;
   background-color: #000000;
@@ -108,7 +66,11 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
   padding-bottom: 10px;
-  cursor: grab;
+
+  @media screen and (max-width:767px) {
+    left: 25%;
+    top: 20%;
+  }
 `
 
 const SkillNameWrap = styled.div`
@@ -149,6 +111,7 @@ const IconImage = styled.div`
     height: 50px;
     object-fit: contain;
   }
+
 `
 
 const PinImage = styled.div`

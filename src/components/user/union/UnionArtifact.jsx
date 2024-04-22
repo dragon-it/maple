@@ -87,6 +87,9 @@ const Container = styled.div`
   flex-wrap: wrap;
   color: white;
 
+  @media screen and (max-width:767px) {
+    width: 457px;
+  }
 `
 const RaiderWrap = styled.div`
   display: flex;

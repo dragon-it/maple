@@ -18,7 +18,7 @@ export const Skill = ({ result }) => {
   const handleItemHover = (item) => {
     if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
       setSelectedItem(item);
-    }
+    } 
   };
 
   console.log(selectedItem)

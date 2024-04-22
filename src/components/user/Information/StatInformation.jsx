@@ -197,6 +197,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
   border: 1px solid rgb(80,92,101);
   outline: 1px solid rgb(42,49,58);
@@ -294,11 +295,6 @@ const AttackFontWrap = styled.div`
     gap: 25px;
   }
 
-  //반응형
-  @media screen and (max-width:767px) {
-    flex-direction: column;
-    gap: 70px;
-  }
 `;
 
 
@@ -347,10 +343,7 @@ const EtcTextWrap = styled.div`
   justify-content: flex-end;
   gap: 10px;
 
-  @media screen and (max-width:767px) {
 
-      gap: 70px;
-}
 `;
 
 

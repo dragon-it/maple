@@ -111,6 +111,13 @@ const Container = styled.div`
     margin: 8px 0;
     color: #e45b5b;
   }
+
+  @media screen and (max-width:767px) {
+      position: relative;
+      width: 100%;
+      max-height: fit-content;
+      left: 0%;
+    }
 `;
 
 const Header = styled.div`

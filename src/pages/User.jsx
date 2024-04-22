@@ -79,12 +79,10 @@ const Container = styled.div`
   box-sizing: border-box;
   margin-top: 40px;
 
-  //반응형
   @media screen and (max-width:767px) {
-    width: 700px;
+    margin-bottom: 20px;
+    min-width: 460px;
 }
-
-
 `
 
 const HeaderWrap = styled.div`

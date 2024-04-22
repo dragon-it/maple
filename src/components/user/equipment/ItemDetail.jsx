@@ -250,6 +250,10 @@ const SelectContainer = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   font-family: maple-light;
+  
+  @media screen and (max-width:767px) {
+    width: 278px;
+  }
 `
 
 const Container = styled.div`
@@ -261,6 +265,10 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
   padding-bottom: 3px;
+  
+  @media screen and (max-width:767px) {
+    width: 278px;
+  }
 `
 const ItemNameWrap = styled.div`
   display: flex;
@@ -326,7 +334,9 @@ const StarForce = styled.div`
 `
 
 const StartForceFirstLine = styled.div`
+
 `
+
 const StartForceSecondLine = styled.div`
   display: flex;
   justify-content: center;
