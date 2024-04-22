@@ -192,6 +192,7 @@ const Items = styled.div`
   gap: 3px;
   width: 70px;
   background-color: rgb(255, 255, 255);
+  color: black;
   padding: 5px 0;
   border-radius: 5px;
 `
