@@ -50,7 +50,7 @@ const SelectContainer = styled.div`
   font-family: maple-light;
 
   @media screen and (max-width:767px) {
-    width: 255px;
+    width: 300px;
   }
 `
 

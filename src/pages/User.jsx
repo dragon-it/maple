@@ -47,25 +47,30 @@ export const User = () => {
         <LoadingWrap>
           <img src={loadingImg} alt="로딩 중..." />
         </LoadingWrap>
-      ) : (
-        <Container>
-          <HeaderWrap>
-            <Tabs>
-              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>캐릭터 정보</Tab>
-              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>캐릭터 장비</Tab>
-              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>스킬</Tab>
-              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>유니온</Tab>
-            </Tabs>
-            <SearchWrap>
-              <Search />
-            </SearchWrap>
-          </HeaderWrap>
-          {activeTab === 1 && <Information result={result} />}
-          {activeTab === 2 && <Equipment result={result}/>}
-          {activeTab === 3 && <Skill result={result}/>}
-          {activeTab === 4 && <Union result={result}/>}
-        </Container>
-      )}
+    ) : error ? ( 
+      <ErrorWrap>
+        <Error message={error} /> 
+      </ErrorWrap>
+
+    ) : (
+      <Container>
+        <HeaderWrap>
+          <Tabs>
+            <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>캐릭터 정보</Tab>
+            <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>캐릭터 장비</Tab>
+            <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>스킬</Tab>
+            <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>유니온</Tab>
+          </Tabs>
+          <SearchWrap>
+            <Search />
+          </SearchWrap>
+        </HeaderWrap>
+        {activeTab === 1 && <Information result={result} />}
+        {activeTab === 2 && <Equipment result={result}/>}
+        {activeTab === 3 && <Skill result={result}/>}
+        {activeTab === 4 && <Union result={result}/>}
+      </Container>
+    )}
     </>
   );
 };
@@ -103,6 +108,8 @@ const SearchWrap = styled.div`
   @media screen and (max-width:767px) {
     position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
 }
 `
 
@@ -112,7 +119,6 @@ const Tabs = styled.div`
   top: 0;
   flex-direction: row;
   padding: 10px 0;
-  z-index: 999999;
 `;
 
 
@@ -139,3 +145,10 @@ const LoadingWrap = styled.div`
   height: 100%;
 `
 
+const ErrorWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`

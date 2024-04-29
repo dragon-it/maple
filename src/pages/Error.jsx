@@ -1,8 +1,8 @@
 import React from 'react'
-import errorImg from '../assets/error.png'
+import error_image from '../assets/error_image.png'
 
 export const Error = () => {
   return (
-    <div><img src={errorImg} alt="오류 발생" /></div>
+    <div><img src={error_image} alt="오류 발생" /></div>
   )
 }

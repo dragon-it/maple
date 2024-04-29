@@ -7,13 +7,16 @@ import { HexaStat } from './skill/HexaStat'
 import { SkillDetail } from './skill/SkillDetail'
 
 export const Skill = ({ result }) => {
-
   const [selectedItem, setSelectedItem] = useState(null);
-  // 클릭 설정
   const [clicked, setClicked] = useState(false);
-  console.log(clicked)
+  const [isCloseClick, setIsCloseClick] = useState(false)
 
-
+  const handleCloseClick = () => {
+    setClicked(false);
+    setSelectedItem(null);
+    setIsCloseClick(true); // 필요에 따라 이 상태를 업데이트
+    // setIsCloseClick(false)를 어딘가에서 호출해줘야 할 수도 있습니다.
+  };
 
   const handleItemHover = (item) => {
     if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
@@ -48,7 +51,7 @@ export const Skill = ({ result }) => {
         onMouseOver={handleItemHover} 
         />
       </SkillWrap>
-      <SkillDetail item={selectedItem} clicked={clicked}/>
+      <SkillDetail item={selectedItem} clicked={clicked} closeClick={isCloseClick} onClose={handleCloseClick}/>
     </Container>
   )
 }

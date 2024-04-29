@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
 
-  console.log(clicked)
     const handleItemClick = (item) => {
       setSelectedItem(item);
       onClick(!clicked);
