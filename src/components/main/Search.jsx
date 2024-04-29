@@ -55,6 +55,10 @@ const InputContainer = styled.div`
   width: 100%;
   height: 50px;
   z-index: 99;
+
+  @media screen and (max-width:767px) {
+  justify-content: center;
+  }
 `;
 
 

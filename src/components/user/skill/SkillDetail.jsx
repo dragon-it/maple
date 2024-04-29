@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const SkillDetail = ({ item, clicked }) => {
+export const SkillDetail = ({ item, clicked, onClose }) => {
+
+  
   if (!item) {
     return <SelectContainer>스킬을 선택해주세요.</SelectContainer>
   }
 
   return (
-    <Container>
+    <Container onClick={onClose}>
       <div style={{ position: 'relative' }}>
         {clicked && <PinImage />}
       </div>
@@ -55,7 +57,7 @@ const SelectContainer = styled.div`
 
 const Container = styled.div`
   position: absolute;
-  right: -325px;
+  right: -322px;
   width: 320px;
   height: fit-content;
   background-color: #000000;
@@ -68,8 +70,10 @@ const Container = styled.div`
   padding-bottom: 10px;
 
   @media screen and (max-width:767px) {
+    position: fixed;
     left: 25%;
-    top: 20%;
+    top: 15%;
+    z-index: 99999;
   }
 `
 

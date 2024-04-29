@@ -548,6 +548,7 @@ const Container = styled.div`
   
   @media screen and (max-width:767px) {
   flex-direction: column;
+  padding: 0;
   }
 `;
 
@@ -589,12 +590,21 @@ const InfoWrap = styled.div`
         return '450px'; 
     }
   }};
+
+@media screen and (max-width:640px) {
+  width: 372px;
+  }
 `
 
 const ItemInfoDetailWrap = styled.div`
   display: flex;
   flex-direction: row;
   gap: 3px;
+
+  @media screen and (max-width:767px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const TabMenu = styled.div`

@@ -80,8 +80,10 @@ export const UnionInfo = ({ Data, showUnionRaider }) => {
 
 const Container = styled.div`
   padding: 7px;
-  background-color: rgb(56,60,69);
+  background-color: rgb(56, 60, 69);
   border-radius: 5px;
+  border: 1px solid rgb(69,89,100);
+  outline: 1px solid rgb(56,70,81);
   display: flex;
   flex-direction: column;
   gap: 5px;

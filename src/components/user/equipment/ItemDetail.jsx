@@ -252,7 +252,7 @@ const SelectContainer = styled.div`
   font-family: maple-light;
   
   @media screen and (max-width:767px) {
-    width: 278px;
+    width: 460px;
   }
 `
 
@@ -267,7 +267,7 @@ const Container = styled.div`
   padding-bottom: 3px;
   
   @media screen and (max-width:767px) {
-    width: 278px;
+    width: 300px;
   }
 `
 const ItemNameWrap = styled.div`

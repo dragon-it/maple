@@ -38,4 +38,8 @@ const Container = styled.div`
 const LogoText = styled.div`
   font-family: maple-light;
   color: ${({ theme, UserRoute }) => UserRoute ?  theme.logoColor: 'black'};
+
+  @media screen and (max-width:767px) {
+    color: black;
+  }
 `;

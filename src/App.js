@@ -14,13 +14,15 @@ import { GlobalStyle } from './components/theme/GlobalStyles';
 
 const UserContainer = styled.div`
   width: 100%;
+  height: 100%;
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  
   @media screen and (max-width:767px) {
     padding: 20px;
+    height: 100%;
   }
 `;
 
