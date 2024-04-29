@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import IconSearch from '../../icons/SearchIcon';
 import { Logo } from './Logo';
 import { useNavigate, useLocation } from 'react-router-dom'; 
+import ThemeToggleButton from '../../context/ThemeToggleButton';
 
 
 export const Search = () => {
@@ -40,12 +41,20 @@ export const Search = () => {
           </InputWrap>
         </InputContainer>
       </form>
+      <ThemeToggleWrap>
+        <ThemeToggleButton /> 
+      </ThemeToggleWrap>
     </Container>
   );
 };
 
 const Container = styled.div`
   width: 100%;
+  @media screen and (max-width:767px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -102,3 +111,13 @@ const StyledButton = styled.button`
   background: none;
   cursor: pointer;
 `;
+
+const ThemeToggleWrap = styled.div`
+  display: none;
+  margin-left: 10px;
+
+  @media screen and (max-width:767px) {
+  display: block;
+  position: relative;
+  }
+`
