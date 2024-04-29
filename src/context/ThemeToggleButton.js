@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from './ThemeProvider';
 import styled from 'styled-components';
 import dark_theme_icon from '../assets/themeIcons/dark_mode_icon.png'
-import light_theme_icon from '../assets/themeIcons/light_mode_icon.png'
+import light_theme_icon from '../assets/themeIcons/light_mode_icon3.png'
 
 function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
@@ -35,12 +35,12 @@ const ToggleWrapper = styled.button`
   cursor: pointer;
 
   @media screen and (max-width: 767px) {
-    position: absolute;
+    position: relative;
     width: 32px;
     height: 32px;
-    background-color: rgb(74,74,74);
+    left: 0;
+    background-color: transparent;
     border: none;
-    top: 10px;
   }
 `;
 
@@ -52,8 +52,8 @@ const Text = styled.span`
 
 const Icon = styled.img`
   display: none; 
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
 
   @media screen and (max-width: 767px) {
     display: block; 

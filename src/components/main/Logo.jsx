@@ -26,7 +26,7 @@ export const Logo = () => {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 10px;
   cursor: pointer;
   font-size: ${(props) => (props.UserRoute ? '25px' : '30px')};
   img {

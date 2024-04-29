@@ -54,7 +54,9 @@ function App() {
           <BackgroundImage />
           <Footer />
         </Router>
-        <ThemeToggleButton />
+        <ThemeToggleWrap>
+          <ThemeToggleButton /> 
+        </ThemeToggleWrap>
       </Container>
     </ThemeProvider>
   );
@@ -66,3 +68,11 @@ const Container = styled.div`
   height: 100vh;
   position: relative;
 `;
+
+
+const ThemeToggleWrap = styled.div`
+  @media screen and (max-width:767px){
+    display: none;
+  }
+
+`
