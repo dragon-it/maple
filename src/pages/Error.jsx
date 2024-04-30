@@ -3,7 +3,6 @@ import error_image from '../assets/error_image.png';
 import styled from 'styled-components';
 import { Search } from '../components/main/Search';
 
-// errorMessage prop을 추가하여 컴포넌트의 범용성을 높임
 export const Error = ({ errorMessage }) => {
   return (
     <ErrorPageWrap>

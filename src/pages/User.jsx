@@ -9,7 +9,6 @@ import fetchData from '../api/fetchData';
 import loadingImg from '../assets/loading.gif'
 import { Error } from './Error';
 import { Union } from '../components/user/Union';
-import { useTheme } from '../context/ThemeProvider';
 
 
 export const User = () => {
@@ -23,7 +22,6 @@ export const User = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(result)
 
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
