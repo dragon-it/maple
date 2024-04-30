@@ -49,7 +49,7 @@ export const User = () => {
         </LoadingWrap>
     ) : error ? ( 
       <ErrorWrap>
-        <Error message={error} /> 
+        <Error errorMessage="존재하지 않는 캐릭터 명이거나 오랫동안 갱신되지 않은 캐릭터입니다."  /> 
       </ErrorWrap>
 
     ) : (
