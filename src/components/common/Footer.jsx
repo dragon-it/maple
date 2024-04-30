@@ -1,23 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FooterText = "Font by MapleStory, Data by NEXON Open API";
+const FooterText = "Data by NEXON Open API, Font by MapleStory";
 
 export const Footer = () => {
   return (
     <Container>
-      {FooterText}
+      <div>{FooterText}</div>
     </Container>
   );
 };
 
 const Container = styled.div`
-  height: 100%;
-  background-color: red;
-  font-family: maple-light;
   display: flex;
+  position: absolute;
+  bottom: 0;
   justify-content: center;
   align-items: center;
+  height: 40px;
+  width: 100%;
+  font-family: maple-light;
   white-space: pre-wrap;
   line-height: 20px;
 `;
