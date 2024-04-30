@@ -21,4 +21,8 @@ body{
 
 #root {
   height: 100%;
+  position: relative;
+  line-height: 16px;
+  font-size: 14px;
 }
+
