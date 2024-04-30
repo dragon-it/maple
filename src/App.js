@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { ThemeProvider } from './context/ThemeProvider';
 import ThemeToggleButton from './context/ThemeToggleButton';
 import { GlobalStyle } from './components/theme/GlobalStyles';
+import { Error } from './pages/Error';
 
 
 
@@ -50,6 +51,7 @@ function App() {
                 </UserContainer>
               }
             />
+              <Route path="*" element={<Error errorMessage="페이지를 찾을 수 없습니다."  />} /> 
           </Routes>
           <BackgroundImage />
           <Footer />
