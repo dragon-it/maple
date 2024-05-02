@@ -13,7 +13,7 @@ export const Logo = () => {
   };
 
   const UserRoute = location.pathname.startsWith('/user/');
-  console.log(UserRoute)
+
   return (
     <Container 
     onClick={handleClick} UserRoute={UserRoute}>
@@ -33,6 +33,8 @@ const Container = styled.div`
     width: ${(props) => (props.UserRoute ? '40px' : '50px')};
     height: ${(props) => (props.UserRoute ? '40px' : '50px')};
   }
+
+
 `;
 
 const LogoText = styled.div`
@@ -41,5 +43,10 @@ const LogoText = styled.div`
 
   @media screen and (max-width:767px) {
     color: black;
+  }
+
+  @media screen and (max-width:576px) {
+    font-size: 25px;
+
   }
 `;

@@ -1,36 +1,34 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ThemeBackground } from '../../theme/ThemeBackground';
+import BasicInfoBackground from './BasicInfoBackground'
+import { useTheme } from '../../../context/ThemeProvider';
+
 
 export const BasicInformation = ({ BasicInfo }) => {
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(3);
-
-  const currentTheme = 'black';
-
-
-  const changeImage = useCallback(() => {
-    const nextIndex = (currentImageIndex + 1) % ThemeBackground[currentTheme].length;
-    setCurrentImageIndex(nextIndex);
-  }, [currentImageIndex, currentTheme]); 
-
+  const { theme } = useTheme();
+  const [backgroundImage, setBackgroundImage] = useState('');
 
   useEffect(() => {
-    const characterBody = document.querySelector('#CharacterBody');
-    if(characterBody) characterBody.addEventListener('click', changeImage);
+    if (BasicInfoBackground[theme]) {
+      const themeBackgrounds = BasicInfoBackground[theme];
+      const randomIndex = Math.floor(Math.random() * themeBackgrounds.length);
+      setBackgroundImage(themeBackgrounds[randomIndex]);
+    } 
+  }, [theme]);
 
-
-    return () => {
-      if(characterBody) characterBody.removeEventListener('click', changeImage);
-    };
-  }, [changeImage, currentImageIndex]);
-
-
+  const handleImageClick = () => {
+    if (BasicInfoBackground[theme]) {
+      const themeBackgrounds = BasicInfoBackground[theme];
+      const currentIndex = themeBackgrounds.indexOf(backgroundImage);
+      const nextIndex = (currentIndex + 1) % themeBackgrounds.length;
+      setBackgroundImage(themeBackgrounds[nextIndex]);
+    }
+  };
 
   return (
     <Container>
       <CharacterHeader>CHARACTER INFO</CharacterHeader>
-      <CharacterBody id="CharacterBody" style={{ backgroundImage: `url(${ThemeBackground[currentTheme][currentImageIndex]})` }}>
+      <CharacterBody id="CharacterBody" style={{ backgroundImage: `url(${backgroundImage})` }}  onClick={handleImageClick}>
         <JobGroup>
           <Job>{BasicInfo.getBasicInformation.character_class}</Job>
           <ItemWrap>
@@ -78,7 +76,7 @@ const Container = styled.div`
   color: white;
   padding: 7px;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   border: 1px solid rgb(80,92,101);
   outline: 1px solid rgb(42,49,58);
   border-radius: 5px;
@@ -109,6 +107,10 @@ const JobGroup = styled.div`
   justify-content: space-between;
   width: 130px;
   padding: 5px 0;
+
+  @media screen and (max-width:576px) {
+    width: 100px;
+  }
 `
 
 const CharacterInfoGroup = styled.div`
@@ -116,6 +118,10 @@ const CharacterInfoGroup = styled.div`
   flex-direction: column;
   padding: 0 15px;
   padding-bottom: 5px;
+
+  @media screen and (max-width:576px) {
+    padding: 0 10px;
+  }
 `
 
 const GuildWorldGroup = styled.div`
@@ -125,6 +131,10 @@ const GuildWorldGroup = styled.div`
   justify-content: flex-end;
   width: 130px;
   padding: 5px 0;
+
+  @media screen and (max-width:576px) {
+    width: 100px;
+  }
 `
 
 const Level = styled.div`
@@ -143,6 +153,7 @@ const CharacterImg = styled.div`
   transform: scaleX(-1);
   width: 110px;
   margin: 2px 0;
+
 `
 
 const CharacterName = styled.div`
@@ -176,6 +187,10 @@ const Job = styled.div`
   justify-content: center;
   align-items: center;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 
 const Contents = styled.div`
@@ -186,6 +201,10 @@ const Contents = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 
 
@@ -198,6 +217,10 @@ const Guild = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 
 const World = styled.div`
@@ -208,6 +231,10 @@ const World = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 const Value = styled.div`
   color: black;

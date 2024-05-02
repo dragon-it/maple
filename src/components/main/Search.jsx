@@ -50,10 +50,15 @@ export const Search = () => {
 
 const Container = styled.div`
   width: 100%;
+
   @media screen and (max-width:767px) {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  @media screen and (max-width:576px) {
+    
   }
 `;
 
@@ -65,8 +70,19 @@ const InputContainer = styled.div`
   height: 50px;
   z-index: 99;
 
+  
+
   @media screen and (max-width:767px) {
   justify-content: center;
+  flex-direction: column;
+  }
+
+
+  @media screen and (max-width:576px) {
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 `;
 
@@ -120,4 +136,10 @@ const ThemeToggleWrap = styled.div`
   display: block;
   position: relative;
   }
+
+  @media screen and (max-width:576px) {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
 `

@@ -295,6 +295,10 @@ const AttackFontWrap = styled.div`
     gap: 25px;
   }
 
+  @media screen and (max-width:576px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 

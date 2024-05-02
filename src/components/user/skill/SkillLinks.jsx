@@ -87,6 +87,10 @@ const SkillWrap = styled.div`
     grid-template-columns: repeat(3, 1fr);
     width: auto;
   }
+
+  @media screen and (max-width:576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 const SkillIcon = styled.div`
@@ -116,6 +120,10 @@ const SkillNameLevelWrap = styled.div`
 `
 
 const SkillName = styled.div`
+
+  @media screen and (max-width:576px) {
+    font-size: 10px;
+  }
 `
 
 const SkillLevel = styled.div`

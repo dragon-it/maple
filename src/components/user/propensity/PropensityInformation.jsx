@@ -15,10 +15,10 @@ export const PropensityInformation = ({ propensityData }) => {
 
   const PropensityItem = ({ label, level }) => (
     <PropensityName style={{ flexDirection: "row" }}>
-      <p style={{ backgroundColor: "rgb(31,189,255)", width: "120px"  }}>
+      <PropensityItemWrapper>
         <PropenLabel>{label}</PropenLabel>
         <PropenLevel>Lv.{level}</PropenLevel>
-      </p>
+      </PropensityItemWrapper>
     </PropensityName>
   );
 
@@ -87,9 +87,20 @@ const Container = styled.div`
   background-color: rgba(59,66,75, 0.9);
   padding: 5px;
   color: black;
+
+  @media screen and (max-width:576px) {
+    width: 100%;
+  }
 `;
 
+const PropensityItemWrapper = styled.p`
+  background-color: rgb(31,189,255);
+  width: 120px;
 
+  @media screen and (max-width:576px) {
+    width: 105px;
+  }
+`;
 
 const PropensityHeader = styled.div`
   width: 100%;
@@ -174,7 +185,9 @@ const PropensityName = styled.div`
     font-weight: 700;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
-    
+  }
+  @media screen and (max-width:576px) {
+    width: 100%;
   }
 `
 
@@ -187,4 +200,9 @@ const PropenLevel = styled.div`
   width: 40px;
   display: flex;
   justify-content: flex-start;
+
+  @media screen and (max-width:576px) {
+    width: auto;
+    font-size: 13px;
+  }
 `

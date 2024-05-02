@@ -63,6 +63,7 @@ const Container = styled.div`
   flex-direction: row;
   padding: 10px;
   padding-top: 5px;
+  
 `
 
 const SkillWrap = styled.div`
@@ -70,4 +71,6 @@ const SkillWrap = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
+
+
 `
