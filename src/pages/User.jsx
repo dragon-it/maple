@@ -69,6 +69,7 @@ export const User = () => {
         {activeTab === 4 && <Union result={result}/>}
       </Container>
     )}
+    
     </>
   );
 };
@@ -83,9 +84,15 @@ const Container = styled.div`
   margin-top: 40px;
 
   @media screen and (max-width:767px) {
-    margin-bottom: 20px;
-    min-width: 460px;
-}
+  }
+
+  @media screen and (max-width:576px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 90px;
+  }
 `
 
 const HeaderWrap = styled.div`
@@ -93,6 +100,11 @@ const HeaderWrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 3px 10px;
+
+
+  @media screen and (max-width:576px) {
+    padding: 0;
+  }
 
 `
 
@@ -117,6 +129,7 @@ const Tabs = styled.div`
   top: 0;
   flex-direction: row;
   padding: 10px 0;
+  white-space: nowrap;
 `;
 
 
@@ -132,7 +145,11 @@ const Tab = styled.div`
 
   &:hover {
   background-color: ${({ theme, active }) => (active ? theme.tabNotHoverColor : theme.tabHoverColor)};
-}
+  } 
+
+  @media screen and (max-width:576px) {
+    font-size: 13px;
+  }
 `;
 
 const LoadingWrap = styled.div`
@@ -141,6 +158,12 @@ const LoadingWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+
+  @media screen and (max-width:576px) {
+    img{
+      width: 80px;
+    }
+  }
 `
 
 const ErrorWrap = styled.div`

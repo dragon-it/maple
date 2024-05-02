@@ -14,12 +14,10 @@ export const Footer = () => {
 const Container = styled.div`
   display: flex;
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 100%;
   font-family: maple-light;
-  white-space: pre-wrap;
-  line-height: 20px;
 `;

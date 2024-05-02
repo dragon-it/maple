@@ -126,7 +126,9 @@ const Container = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
 
-
+  @media screen and (max-width:576px) {
+    width: 100%;
+  }
 `
 
 const Header = styled.div`
@@ -196,6 +198,10 @@ const Items = styled.div`
   color: black;
   padding: 5px 0;
   border-radius: 5px;
+
+  @media screen and (max-width:576px) {
+    width: 55px;
+  }
 `
 
 const SymbolIcons = styled.div`
@@ -214,4 +220,7 @@ const SymbolInfo = styled.div`
 `
 
 const SymbolName = styled.div`
+  @media screen and (max-width:576px) {
+    font-size: 10px;
+  }
 `

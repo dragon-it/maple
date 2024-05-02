@@ -12,14 +12,14 @@ export const UnionRaider = ({ Data }) => {
 
   // 인덱스에 따라 유니온 레이더 위치를 설정하는 로직을 배열
   const positions = [
-    { left: 68, top: 43 }, // 11시에서 12시 사이
-    { left: 140, top: 43 }, // 12시에서 1시 사이
-    { left: 180, top: 83 }, // 1시에서 3시 사이
-    { left: 180, top: 140 }, // 3시에서 5시 사이
-    { left: 140, top: 183 }, // 5시에서 6시 사이
-    { left: 58, top: 183 }, // 6시에서 7시 사이
-    { left: 10, top: 140 }, // 7시에서 9시 사이
-    { left: 10, top: 83 } // 9시에서 11시 사이
+    { default: { left: 68, top: 43 }, mobile: { left: 45, top: 22 } }, // 11시에서 12시 사이
+    { default: { left: 140, top: 43 }, mobile: { left: 100, top: 22 } }, // 12시에서 1시 사이
+    { default: { left: 180, top: 83 }, mobile: { left: 140, top: 60 } }, // 1시에서 3시 사이
+    { default: { left: 180, top: 140 }, mobile: { left: 140, top: 105 } }, // 3시에서 5시 사이
+    { default: {left: 140, top: 183}, mobile: { left: 100, top: 140 } }, // 5시에서 6시 사이
+    { default: {left: 58, top: 183}, mobile: { left: 40, top: 140 } }, // 6시에서 7시 사이
+    { default: {left: 10, top: 140}, mobile: { left: 9, top: 105 } }, // 7시에서 9시 사이
+    { default: {left: 10, top: 83}, mobile: { left: 9, top: 60 } } // 9시에서 11시 사이
   ];
 
   return (
@@ -55,7 +55,7 @@ export const UnionRaider = ({ Data }) => {
       </RaiderExternalStat>
       <RaiderInnerStatWrap>
         {Data.union_inner_stat.map((stat, index) => (
-          <UnionRaiderPosition key={index} style={positions[index]}>
+          <UnionRaiderPosition key={index} position={positions[index]}>
             {stat.stat_field_effect.replace('유니온 ', '')}
           </UnionRaiderPosition>
         ))}
@@ -77,6 +77,14 @@ const Container = styled.div`
     width: 440px;
     height: 400px;
   }
+
+  @media screen and (max-width:576px) {
+    width:330px;
+    img{
+      width: 330px;
+      height: 300px;
+    }
+}
 `
 
 const Cell = styled.div`
@@ -84,6 +92,11 @@ const Cell = styled.div`
   height: 20px;
   background-color: ${props => props.color};
   opacity: 0.65;
+
+  @media screen and (max-width:576px) {
+    width: 15px;
+    height: 15px;
+}
 `
 
 const RaiderInnerStatWrap = styled.div`
@@ -102,6 +115,14 @@ const RaiderExternalStat = styled.div`
 
 const UnionRaiderPosition = styled.div`
   position: absolute;
+  left: ${props => `${props.position.default.left}px`};
+  top: ${props => `${props.position.default.top}px`};
+
+  @media screen and (max-width:576px) {
+    left: ${props => `${props.position.mobile.left}px`};
+    top: ${props => `${props.position.mobile.top}px`};
+    font-size: 10px;
+  }
 `
 
 const StatItem = styled.div`

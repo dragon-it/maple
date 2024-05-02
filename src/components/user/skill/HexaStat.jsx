@@ -112,13 +112,12 @@ const Header = styled.div`
 `
 
 const StatWrap = styled.div`
-  font-size: 15px;
+  font-size: 13px;
 `
 
 const MainStat = styled.div`
   display: flex;
   flex-direction: row;
-  font-size: 15px;
   font-weight: bold;
 `
 

@@ -17,8 +17,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 100%;
   height: 100px;
+  width: 100%;
 `
 
 const SearchWrap = styled.div`
@@ -28,4 +28,6 @@ const SearchWrap = styled.div`
   top: 0;
   width: 100%;
   height: 80px;
+  
+
 `
