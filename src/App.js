@@ -22,7 +22,6 @@ const UserContainer = styled.div`
   
   @media screen and (max-width:767px) {
     padding: 20px;
-    position: relative;
   }
 
   @media screen and (max-width:576px) {

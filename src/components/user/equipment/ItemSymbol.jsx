@@ -126,9 +126,11 @@ const Container = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
 
-  @media screen and (max-width:576px) {
+  @media screen and (max-width:767px) {
     width: 100%;
   }
+
+  
 `
 
 const Header = styled.div`

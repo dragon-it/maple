@@ -119,6 +119,7 @@ const InfoWrap = styled.div`
   }
 
   @media screen and (max-width:767px) {
+    width: 100%;
     display: flex;
     flex-direction: column;
   }

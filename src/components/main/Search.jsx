@@ -73,17 +73,13 @@ const InputContainer = styled.div`
   
 
   @media screen and (max-width:767px) {
-  justify-content: center;
-  flex-direction: column;
-  }
-
-
-  @media screen and (max-width:576px) {
-
-    display: flex;
+    justify-content: center;
     flex-direction: column;
     height: 100%;
+    
   }
+
+
 `;
 
 
@@ -133,13 +129,10 @@ const ThemeToggleWrap = styled.div`
   margin-left: 10px;
 
   @media screen and (max-width:767px) {
-  display: block;
-  position: relative;
-  }
-
-  @media screen and (max-width:576px) {
+    display: block;
     position: absolute;
     right: 10px;
     top: 5px;
-}
+  }
+
 `

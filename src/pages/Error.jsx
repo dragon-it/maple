@@ -9,7 +9,7 @@ export const Error = ({ errorMessage }) => {
       <SearchWrap>
         <Search />
       </SearchWrap>
-      <img src={error_image} alt="error_image" />
+      <ErrorImg><img src={error_image} alt="error_image" /></ErrorImg>
       <ErrorText>{errorMessage}</ErrorText>
     </ErrorPageWrap>
   );
@@ -24,24 +24,45 @@ const ErrorPageWrap = styled.div`
   width: 100%;
   height: 100%;
   gap: 30px;
+  
 `;
 
 const ErrorText = styled.div`
-  font-family: maple-light;
+  font-family: maple-bold;
   font-size: 16px;
+  @media screen and (max-width:767px) {
+    font-size: 13px;
+  }
 `;
 
+const ErrorImg = styled.div`
+
+  @media screen and (max-width:767px) {
+    img{
+      width: 160px;
+    }
+  }
+
+  @media screen and (max-width:576px) {
+      img{
+        width: 130px;
+      }
+  }
+`
+
 const SearchWrap = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   top: 0;
-
+  width: 100%;
+  height: 100px;
   @media screen and (max-width:767px) {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+
+
   }
 `;

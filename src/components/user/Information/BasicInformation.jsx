@@ -6,6 +6,7 @@ import { useTheme } from '../../../context/ThemeProvider';
 
 export const BasicInformation = ({ BasicInfo }) => {
   const { theme } = useTheme();
+  
   const [backgroundImage, setBackgroundImage] = useState('');
 
   useEffect(() => {
