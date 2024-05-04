@@ -34,7 +34,7 @@ const getFormattedDate = () => {
   return yesterday.toISOString().split('T')[0];
 };
 
-// 사용 예시
+
 const getOcidApi = async (characterName) => {
   return callMapleStoryAPI('id', { 'character_name': characterName });
 };

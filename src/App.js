@@ -56,7 +56,6 @@ function App() {
               <Route path="*" element={<Error errorMessage="페이지를 찾을 수 없습니다."  />} /> 
           </Routes>
           <BackgroundImage />
-
         </Router>
         <ThemeToggleWrap>
           <ThemeToggleButton /> 
