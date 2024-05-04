@@ -25,14 +25,9 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
       if (ocid) {
         console.log('OCID:', ocid);
 
-        const results = [];
-        for (const api of apiFunctions) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          const result = await api(ocid);
-          results.push(result);
-        }
-
+        const results = await Promise.all(apiFunctions.map(api => api(ocid)));
         const resultObject = Object.fromEntries(apiFunctions.map((api, index) => [api.name, results[index]]));
+
         setResult(resultObject);
         console.log(resultObject);
       } else {
@@ -45,5 +40,6 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
     }
   }
 };
+
 
 export default fetchData;
