@@ -591,8 +591,12 @@ const InfoWrap = styled.div`
     }
   }};
 
-@media screen and (max-width:640px) {
+@media screen and (max-width:767px) {
   width: 372px;
+  }
+
+  @media screen and (max-width:576px) {
+    width: 100%;
   }
 `
 
@@ -623,6 +627,7 @@ const TabButton = styled.button`
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   cursor: pointer;
+  
 `;
 
 
@@ -760,6 +765,9 @@ const DetailWrap = styled.div`
 
   @media screen and (max-width:767px) {
     position: relative;
+    display: flex;
+    justify-content: center;
     right: 0;
+    width: 100%;
   }
 `

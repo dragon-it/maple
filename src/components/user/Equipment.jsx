@@ -28,4 +28,8 @@ export const Equipment = ({ result }) => {
 const Container = styled.div`
   padding: 10px;
   padding-top: 5px;
+
+  @media screen and (max-width:576px) {
+    width: 100%;
+  }
 `

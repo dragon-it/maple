@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Main } from './pages/Main';
 import { User } from './pages/User';
-import { Footer } from './components/common/Footer';
 import { BackgroundImage } from './components/main/BackgroundImage';
 import styled from 'styled-components';
 import { ThemeProvider } from './context/ThemeProvider';
@@ -23,7 +22,10 @@ const UserContainer = styled.div`
   
   @media screen and (max-width:767px) {
     padding: 20px;
-    height: 100%;
+  }
+
+  @media screen and (max-width:576px) {
+    padding: 5px;
   }
 `;
 
@@ -54,7 +56,7 @@ function App() {
               <Route path="*" element={<Error errorMessage="페이지를 찾을 수 없습니다."  />} /> 
           </Routes>
           <BackgroundImage />
-          <Footer />
+
         </Router>
         <ThemeToggleWrap>
           <ThemeToggleButton /> 

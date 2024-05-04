@@ -9,7 +9,7 @@ import fetchData from '../api/fetchData';
 import loadingImg from '../assets/loading.gif'
 import { Error } from './Error';
 import { Union } from '../components/user/Union';
-import { useTheme } from '../context/ThemeProvider';
+import { Footer } from '../components/common/Footer';
 
 
 export const User = () => {
@@ -23,7 +23,6 @@ export const User = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(result)
 
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
@@ -69,13 +68,20 @@ export const User = () => {
         {activeTab === 2 && <Equipment result={result}/>}
         {activeTab === 3 && <Skill result={result}/>}
         {activeTab === 4 && <Union result={result}/>}
+        <FooterWrap>
+          <Footer />
+        </FooterWrap>
       </Container>
+
     )}
     </>
   );
 };
 
+
+
 const Container = styled.div`
+  position: relative;
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
@@ -85,9 +91,16 @@ const Container = styled.div`
   margin-top: 40px;
 
   @media screen and (max-width:767px) {
-    margin-bottom: 20px;
-    min-width: 460px;
-}
+    margin-top: 80px;
+    width: 100%;
+  }
+
+  @media screen and (max-width:576px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 90px;
+  }
 `
 
 const HeaderWrap = styled.div`
@@ -95,6 +108,11 @@ const HeaderWrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 3px 10px;
+
+
+  @media screen and (max-width:576px) {
+    padding: 0;
+  }
 
 `
 
@@ -107,10 +125,15 @@ const SearchWrap = styled.div`
 
   @media screen and (max-width:767px) {
     position: absolute;
-    top: 0;
+    top: -80px;
     left: 0;
     width: 100%;
-}
+  }
+
+
+  @media screen and (max-width:576px) {
+    top: -90px;
+  }
 `
 
 
@@ -119,6 +142,7 @@ const Tabs = styled.div`
   top: 0;
   flex-direction: row;
   padding: 10px 0;
+  white-space: nowrap;
 `;
 
 
@@ -134,7 +158,11 @@ const Tab = styled.div`
 
   &:hover {
   background-color: ${({ theme, active }) => (active ? theme.tabNotHoverColor : theme.tabHoverColor)};
-}
+  } 
+
+  @media screen and (max-width:576px) {
+    font-size: 13px;
+  }
 `;
 
 const LoadingWrap = styled.div`
@@ -143,6 +171,18 @@ const LoadingWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+
+  @media screen and (max-width:767px) {
+    img{
+      width: 160px;
+    }
+  }
+
+  @media screen and (max-width:576px) {
+      img{
+        width: 130px;
+      }
+  }
 `
 
 const ErrorWrap = styled.div`
@@ -151,4 +191,16 @@ const ErrorWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+`
+
+
+const FooterWrap = styled.div`
+  display: none;
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  @media screen and (max-width:767px){
+    display: block;
+  }
 `

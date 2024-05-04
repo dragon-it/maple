@@ -88,8 +88,13 @@ const Container = styled.div`
   color: white;
 
   @media screen and (max-width:767px) {
-    width: 457px;
+    width: 100%;
   }
+
+  @media screen and (max-width:576px) {
+
+  }
+
 `
 const RaiderWrap = styled.div`
   display: flex;
@@ -128,6 +133,11 @@ const InfoWrap = styled.div`
   padding: 5px;
   width: 220px;
 
+
+  @media screen and (max-width:767px) {
+    width: 49%;
+  }
+  
 `
 
 const ArtiFactIcon = styled.div`

@@ -55,7 +55,6 @@ const Information = ({ result }) => {
     <Container>
       {result && result.getBasicInformation && (
         <InfoWrap>
-          {/* <div>정보 갱신 기준: {formatDateString(result.getBasicInformation.date)}</div> */}
         <SynthesisWrap>
           <StatWrap>
             <BasicWrap>
@@ -99,8 +98,11 @@ const Container = styled.div`
   flex-direction: row;
   z-index: 99;
   border-radius: 10px;
+  white-space: nowrap;
 
-
+  @media screen and (max-width:576px) {
+    width: 100%;
+  }
 `;
 
 const InfoWrap = styled.div`
@@ -117,9 +119,14 @@ const InfoWrap = styled.div`
   }
 
   @media screen and (max-width:767px) {
+    width: 100%;
     display: flex;
     flex-direction: column;
-}
+  }
+
+  @media screen and (max-width:576px) {
+      width: 100%;
+  }
 `;
 
 const SynthesisWrap = styled.div`
@@ -141,7 +148,7 @@ const StatWrap = styled.div`
   flex-direction: row;
   gap: 5px;
 
-  //반응형
+
   @media screen and (max-width:767px) {
   flex-direction: column;
   }
@@ -180,8 +187,8 @@ const ImgWrap = styled.div`
     border-radius: 5px;
     background-color: rgba(59,66,75, 0.9);
 
-    @media screen and (max-width:767px) {
-      max-width: 460px;
+    @media screen and (max-width:576px) {
+      max-width: none;
     }
   }
 `

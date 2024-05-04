@@ -19,7 +19,7 @@ useEffect(() => {
       const height = containerRef.current.offsetHeight; // 컨테이너의 높이 확인
       onHeightChange(height); // 부모 컴포넌트에 높이 전달
     }
-  }, [showAllStat]);
+  }, [onHeightChange, showAllStat]);
 
   const currentPresetKey = `hyper_stat_preset_${selectedPreset}`;
   const currentPreset = HyperStatInfo[currentPresetKey] || [];

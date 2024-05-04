@@ -295,12 +295,22 @@ const AttackFontWrap = styled.div`
     gap: 25px;
   }
 
+
+  @media screen and (max-width:767px) {
+    justify-content: center;
+  }
+
+  @media screen and (max-width:576px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 
 const TextRight = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   align-items: flex-end;
   font-size: 14px;
   color: white;
@@ -315,6 +325,7 @@ const TextRight = styled.div`
 const TextLeft = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   align-items: flex-end;
   font-size: 14px;
   color: white;

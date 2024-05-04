@@ -35,6 +35,11 @@ const Container = styled.div`
   padding: 10px;
   padding-top: 5px;
   font-family: maple-light;
+
+  @media screen and (max-width:767px) {
+    width: 100%;
+  }
+
 `
 
 const InfoWrap = styled.div`
@@ -46,4 +51,8 @@ const InfoWrap = styled.div`
   @media screen and (max-width:767px) {
     flex-direction: column-reverse;
   }
+
+  @media screen and (max-width:576px) {
+
+}
 `

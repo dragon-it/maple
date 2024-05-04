@@ -1,41 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ThemeBackground } from '../../theme/ThemeBackground';
+import BasicInfoBackground from './BasicInfoBackground'
+import { useTheme } from '../../../context/ThemeProvider';
+
 
 export const BasicInformation = ({ BasicInfo }) => {
-    // 현재 표시되는 이미지의 인덱스를 관리하는 상태입니다.
-  // 초기값은 0으로, 첫 번째 이미지를 표시합니다.
-  const [currentImageIndex, setCurrentImageIndex] = useState(3);
+  const { theme } = useTheme();
+  
+  const [backgroundImage, setBackgroundImage] = useState('');
 
-  // 현재 테마를 관리하는 상태입니다. "black" 또는 "white"를 가질 수 있습니다.
-  // 이 예시에서는 단순화를 위해 항상 "black"을 사용합니다.
-  const currentTheme = 'black';
-
-  // 이미지를 변경하는 함수입니다.
-  const changeImage = () => {
-    // 다음 이미지의 인덱스를 계산합니다.
-    const nextIndex = (currentImageIndex + 1) % ThemeBackground[currentTheme].length;
-    // 계산된 인덱스로 상태를 업데이트합니다.
-    setCurrentImageIndex(nextIndex);
-  };
-
-  // 컴포넌트가 마운트될 때, 클릭 이벤트 리스너를 추가합니다.
   useEffect(() => {
-    const characterBody = document.querySelector('#CharacterBody');
-    if(characterBody) characterBody.addEventListener('click', changeImage);
+    if (BasicInfoBackground[theme]) {
+      const themeBackgrounds = BasicInfoBackground[theme];
+      const randomIndex = Math.floor(Math.random() * themeBackgrounds.length);
+      setBackgroundImage(themeBackgrounds[randomIndex]);
+    } 
+  }, [theme]);
 
-    // 컴포넌트가 언마운트될 때, 이벤트 리스너를 제거합니다.
-    return () => {
-      if(characterBody) characterBody.removeEventListener('click', changeImage);
-    };
-  }, [currentImageIndex]);
-
-
+  const handleImageClick = () => {
+    if (BasicInfoBackground[theme]) {
+      const themeBackgrounds = BasicInfoBackground[theme];
+      const currentIndex = themeBackgrounds.indexOf(backgroundImage);
+      const nextIndex = (currentIndex + 1) % themeBackgrounds.length;
+      setBackgroundImage(themeBackgrounds[nextIndex]);
+    }
+  };
 
   return (
     <Container>
       <CharacterHeader>CHARACTER INFO</CharacterHeader>
-      <CharacterBody id="CharacterBody" style={{ backgroundImage: `url(${ThemeBackground[currentTheme][currentImageIndex]})` }}>
+      <CharacterBody id="CharacterBody" style={{ backgroundImage: `url(${backgroundImage})` }}  onClick={handleImageClick}>
         <JobGroup>
           <Job>{BasicInfo.getBasicInformation.character_class}</Job>
           <ItemWrap>
@@ -83,7 +77,7 @@ const Container = styled.div`
   color: white;
   padding: 7px;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   border: 1px solid rgb(80,92,101);
   outline: 1px solid rgb(42,49,58);
   border-radius: 5px;
@@ -114,6 +108,10 @@ const JobGroup = styled.div`
   justify-content: space-between;
   width: 130px;
   padding: 5px 0;
+
+  @media screen and (max-width:576px) {
+    width: 100px;
+  }
 `
 
 const CharacterInfoGroup = styled.div`
@@ -121,6 +119,10 @@ const CharacterInfoGroup = styled.div`
   flex-direction: column;
   padding: 0 15px;
   padding-bottom: 5px;
+
+  @media screen and (max-width:576px) {
+    padding: 0 10px;
+  }
 `
 
 const GuildWorldGroup = styled.div`
@@ -130,6 +132,10 @@ const GuildWorldGroup = styled.div`
   justify-content: flex-end;
   width: 130px;
   padding: 5px 0;
+
+  @media screen and (max-width:576px) {
+    width: 100px;
+  }
 `
 
 const Level = styled.div`
@@ -148,6 +154,7 @@ const CharacterImg = styled.div`
   transform: scaleX(-1);
   width: 110px;
   margin: 2px 0;
+
 `
 
 const CharacterName = styled.div`
@@ -181,6 +188,10 @@ const Job = styled.div`
   justify-content: center;
   align-items: center;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 
 const Contents = styled.div`
@@ -191,6 +202,10 @@ const Contents = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 
 
@@ -203,6 +218,10 @@ const Guild = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 
 const World = styled.div`
@@ -213,6 +232,10 @@ const World = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width:576px) {
+    width: 90px;
+  }
 `
 const Value = styled.div`
   color: black;
