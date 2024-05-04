@@ -28,12 +28,13 @@ export const User = () => {
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
-      await fetchData(characterName, setResult, setError);
+      await fetchData(characterName, setResult, setLoading, setError); // setError 추가
       setLoading(false); 
     };
   
     fetchDataAndUpdateState();
   }, [characterName]);
+  
 
 
   return (
