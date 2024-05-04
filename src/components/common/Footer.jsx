@@ -14,12 +14,20 @@ export const Footer = () => {
 const Container = styled.div`
   display: flex;
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 100%;
-  font-family: maple-light;
-  white-space: pre-wrap;
-  line-height: 20px;
+  font-family: maple-bold;
+  z-index: 9999999999999;
+
+  @media screen and (max-width:767px) {
+    margin-top: 77px;
+    position: relative;
+  }
+
+  @media screen and (max-width:576px) {
+
+}
 `;

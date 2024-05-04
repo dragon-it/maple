@@ -254,6 +254,10 @@ const SelectContainer = styled.div`
   @media screen and (max-width:767px) {
     width: 460px;
   }
+
+  @media screen and (max-width:576px) {
+    width: 100%;
+  }
 `
 
 const Container = styled.div`

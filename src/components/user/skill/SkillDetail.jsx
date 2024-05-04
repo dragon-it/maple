@@ -75,6 +75,15 @@ const Container = styled.div`
     top: 15%;
     z-index: 99999;
   }
+
+
+  @media screen and (max-width:576px) {
+    left: 11%;
+  }
+
+  @media screen and (max-width:380px) {
+    width: 292px;
+  }
 `
 
 const SkillNameWrap = styled.div`
