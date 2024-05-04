@@ -14,7 +14,6 @@ const Information = ({ result }) => {
 
   console.log(result)
 
-
   const handleHeightChange = (height) => {
     console.log("HyperStatInformation의 높이:", height);
     // height가 300 이하일 경우 이미지를 표시
@@ -53,6 +52,7 @@ const Information = ({ result }) => {
 
   return (
     <Container>
+      dd
       {result && result.getBasicInformation && (
         <InfoWrap>
         <SynthesisWrap>

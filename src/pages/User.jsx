@@ -23,19 +23,15 @@ export const User = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  console.log(result)
 
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
-      try {
-        setLoading(true);
-        await fetchData(characterName, setResult, setError);
-        setLoading(false); 
-      } catch (error) {
-        setError('데이터를 불러오는 중 오류가 발생했습니다.');
-        setLoading(false); 
-      }
+      setLoading(true);
+      await fetchData(characterName, setResult, setError);
+      setLoading(false); 
     };
-
+  
     fetchDataAndUpdateState();
   }, [characterName]);
 
