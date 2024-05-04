@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+
 const BASE_URL = 'https://open.api.nexon.com';
-const API_KEY = 'test_1f336620ba5ba22af11842fa88ace876194988027e7df07e146a23e8cc7636663251b93aabcfaaa7285bca2d2daa3681';
+
 
 // 일반적인 API 호출 함수
 const callMapleStoryAPI = async (endpoint, params) => {
@@ -11,7 +12,7 @@ const callMapleStoryAPI = async (endpoint, params) => {
         ...params,
       },
       headers: {
-        'x-nxopen-api-key': API_KEY,
+        'x-nxopen-api-key': process.env.REACT_APP_API_KEY,
       },
     });
 
