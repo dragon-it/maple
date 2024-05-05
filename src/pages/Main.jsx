@@ -1,6 +1,7 @@
 import React from 'react'
 import { Search } from '../components/main/Search'
 import styled from 'styled-components'
+import { Footer } from '../components/common/Footer'
 
 export const Main = () => {
   return (
@@ -8,6 +9,9 @@ export const Main = () => {
       <SearchWrap>
         <Search />
       </SearchWrap>
+      <FooterWrap>
+        <Footer />
+      </FooterWrap>
     </Container>
   )
 }
@@ -15,9 +19,8 @@ export const Main = () => {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   position: absolute;
-  height: 100px;
+  height: 100%;
   width: 100%;
 `
 
@@ -27,7 +30,16 @@ const SearchWrap = styled.div`
   justify-content: center;
   top: 0;
   width: 100%;
-  height: 80px;
-  
+  height: 100px;
+`
 
+
+const FooterWrap = styled.div`
+  display: none;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  @media screen and (max-width:767px){
+    display: block;
+  }
 `
