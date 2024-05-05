@@ -4,8 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/Logo.png'
 
 
-export const Logo = () => {
-
+export const Logo = ({ error }) => {
+  
   const navigate = useNavigate();
   const location = useLocation();
   const handleClick = () => {
@@ -18,7 +18,7 @@ export const Logo = () => {
     <Container 
     onClick={handleClick} UserRoute={UserRoute}>
       <img src={logo} alt="Logo" />
-      <LogoText UserRoute={UserRoute}>메짱</LogoText>
+      <LogoText UserRoute={UserRoute} error={error}>메짱</LogoText>
     </Container>
   );
 };
@@ -39,7 +39,7 @@ const Container = styled.div`
 
 const LogoText = styled.div`
   font-family: maple-light;
-  color: ${({ theme, UserRoute }) => UserRoute ?  theme.logoColor: 'black'};
+  color: ${({ theme, UserRoute, error }) => error ? 'black' : (UserRoute ? theme.logoColor : 'black')};
 
   @media screen and (max-width:767px) {
     color: black;
