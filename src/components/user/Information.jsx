@@ -12,10 +12,9 @@ const Information = ({ result }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
-  console.log(result)
+
 
   const handleHeightChange = (height) => {
-    console.log("HyperStatInformation의 높이:", height);
     // height가 300 이하일 경우 이미지를 표시
     if (height <= 350) {
       document.getElementById('spiritImage').style.display = 'block';
