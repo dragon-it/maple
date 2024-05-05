@@ -26,9 +26,9 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         console.log('OCID:', ocid);
 
         const results = [];
-        for (const {function: apiFunction} of apiFunctions) { // 객체 구조 분해 할당을 사용하여 함수를 가져옵니다.
-          await new Promise((resolve) => setTimeout(resolve, 100)); // API 호출 사이에 약간의 지연을 주어 부하를 줄입니다.
-          const result = await apiFunction(ocid); // 수정된 부분: apiFunction을 직접 호출합니다.
+        for (const {function: apiFunction} of apiFunctions) { // 객체 구조 분해 할당을 사용하여 함수를 가져옴
+          await new Promise((resolve) => setTimeout(resolve, 50)); 
+          const result = await apiFunction(ocid); 
           results.push(result);
         }
 

@@ -3,11 +3,11 @@ import error_image from '../assets/error_image.png';
 import styled from 'styled-components';
 import { Search } from '../components/main/Search';
 
-export const Error = ({ errorMessage }) => {
+export const Error = ({ errorMessage, error }) => {
   return (
     <ErrorPageWrap>
       <SearchWrap>
-        <Search />
+        <Search error={error}/>
       </SearchWrap>
       <ErrorImg><img src={error_image} alt="error_image" /></ErrorImg>
       <ErrorText>{errorMessage}</ErrorText>
@@ -24,7 +24,6 @@ const ErrorPageWrap = styled.div`
   width: 100%;
   height: 100%;
   gap: 30px;
-  
 `;
 
 const ErrorText = styled.div`
@@ -62,7 +61,5 @@ const SearchWrap = styled.div`
   @media screen and (max-width:767px) {
     position: absolute;
     top: 0;
-
-
   }
 `;

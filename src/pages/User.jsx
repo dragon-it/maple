@@ -22,14 +22,13 @@ export const User = () => {
   const [result, setResult] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log(result)
-
+  console.log(error)
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
-      await fetchData(characterName, setResult, setLoading, setError); // setError 추가
-      setLoading(false); 
+      setError(null); // 오류 상태 초기화
+      await fetchData(characterName, setResult, setLoading, setError);
+      setLoading(false);
     };
   
     fetchDataAndUpdateState();
@@ -45,7 +44,7 @@ export const User = () => {
         </LoadingWrap>
     ) : error ? ( 
       <ErrorWrap>
-        <Error errorMessage="존재하지 않는 캐릭터 명이거나 오랫동안 갱신되지 않은 캐릭터입니다."  /> 
+        <Error error={error} errorMessage="존재하지 않는 캐릭터 명이거나 오랫동안 갱신되지 않은 캐릭터입니다."  /> 
       </ErrorWrap>
 
     ) : (
@@ -119,7 +118,7 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   top: 0;
-
+  
   @media screen and (max-width:767px) {
     position: absolute;
     top: -80px;
