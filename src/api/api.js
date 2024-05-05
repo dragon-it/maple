@@ -21,7 +21,6 @@ const callMapleStoryAPI = async (endpoint, params) => {
       return false;
     }
   } catch (error) {
-    console.error(`Error fetching ${endpoint} information:`, error);
     return false;
   }
 };
