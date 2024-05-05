@@ -10,7 +10,7 @@ export function ThemeProvider({ children }) {
     return localStorage.getItem('theme') || 'light'; // 수정된 부분
   });
 
-  console.log(theme)
+
   useEffect(() => {
     // 테마 상태가 변경될 때마다 로컬 스토리지에 저장
     localStorage.setItem('theme', theme);

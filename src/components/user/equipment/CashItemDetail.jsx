@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const CashItemDetail = ({ item, clicked }) => {
-  console.log(clicked)
-  console.log(item)
+
   if (!item) { // 아이템 정보가 없는 경우를 처리
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
   }
