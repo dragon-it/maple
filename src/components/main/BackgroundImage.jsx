@@ -9,8 +9,7 @@ import { Footer } from '../common/Footer';
 export const BackgroundImage = () => {
   const { theme } = useTheme(); 
   const [imageSrc, setImageSrc] = useState(theme === 'dark' ? darkBGI : whiteBGI);
-  console.log(theme)
-  
+
   useEffect(() => {
     // 테마가 변경될 때마다 이미지 소스를 업데이트합니다.
     setImageSrc(theme === 'dark' ? darkBGI : whiteBGI);
