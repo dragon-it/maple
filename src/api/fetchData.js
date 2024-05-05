@@ -25,7 +25,7 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
 
         const results = [];
         for (const {function: apiFunction} of apiFunctions) { // 객체 구조 분해 할당을 사용하여 함수를 가져옴
-          await new Promise((resolve) => setTimeout(resolve, 50)); 
+          await new Promise((resolve) => setTimeout(resolve, 10)); 
           const result = await apiFunction(ocid); 
           results.push(result);
         }
