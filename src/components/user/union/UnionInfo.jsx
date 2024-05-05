@@ -34,8 +34,7 @@ const selectIcon = (level) => {
 };
 
 export const UnionInfo = ({ Data, showUnionRaider }) => {
-  console.log(showUnionRaider)
-  console.log(Data)
+
   const icon = selectIcon(Data.union.union_level);
 
   const toRoman = (gradeString) => {

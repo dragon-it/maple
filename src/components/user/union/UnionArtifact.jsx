@@ -5,7 +5,7 @@ import { UnionRaider } from './UnionRaider';
 import { UnionOccupiedStat } from './UnionOccupiedStat';
 
 export const UnionArtifact = ({ Data,showUnionRaider, setShowUnionRaider }) => {
-  console.log(Data)
+
 
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map(crystal => 
     crystal.name.replace('크리스탈 : ', '')
