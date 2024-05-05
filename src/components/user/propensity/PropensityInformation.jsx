@@ -32,13 +32,13 @@ export const PropensityInformation = ({ propensityData }) => {
       <PropensityTextWrap>
         <TextWrap>
             <PropensityItem label="카리스마" level={propensityData.charisma_level} />
-            <PropensityItem label="매력" level={propensityData.charm_level} />
-            <PropensityItem label="손재주" level={propensityData.handicraft_level} />
-          </TextWrap>
-          <TextWrap>
-            <PropensityItem label="통찰력" level={propensityData.insight_level} />
             <PropensityItem label="감성" level={propensityData.sensibility_level} />
+            <PropensityItem label="통찰력" level={propensityData.insight_level} />
+          </TextWrap>
+          <TextWrap>     
             <PropensityItem label="의지" level={propensityData.willingness_level} />
+            <PropensityItem label="손재주" level={propensityData.handicraft_level} />
+            <PropensityItem label="매력" level={propensityData.charm_level} />
           </TextWrap>
       </PropensityTextWrap>
       <ChartWrap>
