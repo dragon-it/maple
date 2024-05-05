@@ -48,7 +48,7 @@ export const UnionRaider = ({ Data }) => {
         <StatItem style={{ top: '11%', right: '30%' }}>획득경험치</StatItem>
         <StatItem style={{ top: '30%', right: '3%' }}>크리티컬 확률</StatItem>
         <StatItem style={{ bottom: '31%', right: '5%' }}>보스데미지</StatItem>
-        <StatItem style={{ bottom: '10%', right: '32%' }}>스탠스</StatItem>
+        <StatItem style={{ bottom: '10%', right: '32%' }}>일반데미지</StatItem>
         <StatItem style={{ bottom: '10%', left: '24%' }}>버프지속시간</StatItem>
         <StatItem style={{ bottom: '31%', left: '5%' }}>방어율무시</StatItem>
         <StatItem style={{ top: '30%', left: '1%' }}>크리티컬 데미지</StatItem>
