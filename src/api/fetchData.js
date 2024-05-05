@@ -12,7 +12,7 @@ const getOcid = async (characterName) => {
       return null;
     }
   } catch (error) {
-    console.error('Error getting OCID:', error);
+    console.error('OCID 가져오기 오류:', error);
     return null;
   }
 };
@@ -26,13 +26,14 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         console.log('OCID:', ocid);
 
         const results = [];
-        for (const api of apiFunctions) {
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          const result = await api(ocid);
+        for (const {function: apiFunction} of apiFunctions) { // 객체 구조 분해 할당을 사용하여 함수를 가져옴
+          await new Promise((resolve) => setTimeout(resolve, 50)); 
+          const result = await apiFunction(ocid); 
           results.push(result);
         }
 
-        const resultObject = Object.fromEntries(apiFunctions.map((api, index) => [api.name, results[index]]));
+        // 객체의 name 속성을 사용하여 결과 객체를 생성합니다.
+        const resultObject = Object.fromEntries(apiFunctions.map(({name}, index) => [name, results[index]]));
         setResult(resultObject);
         console.log(resultObject);
       } else {

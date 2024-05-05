@@ -52,7 +52,6 @@ const Information = ({ result }) => {
 
   return (
     <Container>
-      dd
       {result && result.getBasicInformation && (
         <InfoWrap>
         <SynthesisWrap>

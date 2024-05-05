@@ -4,7 +4,6 @@ import axios from 'axios';
 const BASE_URL = 'https://open.api.nexon.com';
 
 
-// 일반적인 API 호출 함수
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
     const response = await axios.get(`${BASE_URL}/maplestory/v1/${endpoint}`, {

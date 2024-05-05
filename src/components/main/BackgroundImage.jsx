@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import whiteBGI from '../../assets/Henesys3.png';
+import whiteBGI from '../../assets/Henesys.jpg';
 import darkBGI from '../../assets/Kerning City.jpg';
 import { useTheme } from '../../context/ThemeProvider';
 import { Footer } from '../common/Footer';

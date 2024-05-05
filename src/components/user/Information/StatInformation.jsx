@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
-
 export const StatInformation = ({ statInfo }) => {
   const formatNumber = (value) => {
     if (value >= 100000000) {
@@ -234,7 +232,6 @@ const CombatpowerHeader = styled.div`
 const StatWrap = styled.div`
   display: flex;
   flex-direction: row;
-  top: 75px;
   background-color: rgba(134,148,158, 0.8);
   padding: 8px;
   gap: 10px;
@@ -245,12 +242,15 @@ const StatLeftWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 53%;
+  width: 54%;
   div{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 25px;
+  }
+
+  @media screen and (max-width: 767px){
+    width: 50%;
   }
 `
 
@@ -263,7 +263,6 @@ const StatRightWrap = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 25px;
   }
 `
 
@@ -282,8 +281,8 @@ const AttackFontWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px 8px;
-  gap: 15px;
+  padding: 8px;
+  gap: 10px;
   background-color: rgb(108,120,134);
   border-radius: 5px;
   white-space: nowrap;
@@ -315,11 +314,9 @@ const TextRight = styled.div`
   font-size: 14px;
   color: white;
   gap: 8px;
-
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  
 `;
 
 const TextLeft = styled.div`
@@ -343,7 +340,7 @@ const EtcStatWrap = styled.div`
   top: 75px;
   background-color: rgba(134,148,158, 0.8);
   padding: 8px;
-  gap: 15px;
+  gap: 10px;
   border-radius: 5px;
 `;
 
@@ -353,8 +350,6 @@ const EtcTextWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-
-
 `;
 
 

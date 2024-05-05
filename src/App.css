@@ -26,3 +26,8 @@ body{
   font-size: 14px;
 }
 
+
+::placeholder{
+  color: rgb(3, 3, 3);
+  font-family: maple-light;
+}
