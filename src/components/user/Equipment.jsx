@@ -3,10 +3,7 @@ import styled from 'styled-components';
 import { ItemEquipmentInformation } from './equipment/ItemEquipmentInformation';
 
 export const Equipment = ({ result }) => {
-
-  console.log(result)
-
-
+  
   return (
     <Container>
       {result && result.getItemEquipment && (

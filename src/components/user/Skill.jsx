@@ -24,7 +24,6 @@ export const Skill = ({ result }) => {
     } 
   };
 
-  console.log(selectedItem)
   return (
     <Container>
       <SkillWrap>

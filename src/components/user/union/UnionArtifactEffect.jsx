@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const UnionArtifactEffect = ({Data, showUnionRaider}) => {
-  console.log(Data)
+
   return (
     <Container>
       {showUnionRaider 
