@@ -55,13 +55,13 @@ export const SkillGrade5 = ({ Data, setSelectedItem, clicked, onClick }) => {
 }
 
 const Container = styled.div`
-    background-color: #000000d3;
-    width: 100%;
+  background-color: #000000d3;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-    color: white;
-    padding: 7px;
+  color: white;
+  padding: 7px;
 `
 const SkillHeader = styled.div`
     font-size: 15px;
