@@ -12,8 +12,14 @@ export const Search = ({ error }) => {
   const location = useLocation();
 
   const handleSearch = () => {
-    navigate(`/user/${encodeURIComponent(searchValue)}`);
+    if (!searchValue.trim()) {
+      return;
+    }
+    // 사용자가 입력한 검색어에서 모든 공백을 제거
+    const processedSearchValue = searchValue.replace(/\s+/g, '');
+    navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
