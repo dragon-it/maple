@@ -1,5 +1,3 @@
-// fetchData.js
-
 import { getOcidApi } from './api';
 import apiFunctions from '../components/user/ApiFuntion';
 
@@ -41,12 +39,9 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
       setLoading(true);
       const ocid = await getOcid(characterName);
       if (ocid) {
-        const results = [];
-        for (const {function: apiFunction} of apiFunctions) {
-          await new Promise((resolve) => setTimeout(resolve, 10)); 
-          const result = await apiFunction(ocid); 
-          results.push(result);
-        }
+        const results = await Promise.all(
+          apiFunctions.map(({function: apiFunction}) => apiFunction(ocid))
+        );
 
         const resultObject = Object.fromEntries(apiFunctions.map(({name}, index) => [name, results[index]]));
         setResult(resultObject);
