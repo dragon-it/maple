@@ -2,20 +2,51 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BasicInfoBackground from './BasicInfoBackground'
 import { useTheme } from '../../../context/ThemeProvider';
+import favorite_true from '../../../assets/favoriteIcon/favorite_Star_True.png'
+import favorite_false from '../../../assets/favoriteIcon/favorite_Star_False.png'
 
 
 export const BasicInformation = ({ BasicInfo }) => {
   const { theme } = useTheme();
   
   const [backgroundImage, setBackgroundImage] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false); 
 
   useEffect(() => {
     if (BasicInfoBackground[theme]) {
       const themeBackgrounds = BasicInfoBackground[theme];
       const randomIndex = Math.floor(Math.random() * themeBackgrounds.length);
       setBackgroundImage(themeBackgrounds[randomIndex]);
-    } 
+    }
   }, [theme]);
+
+  useEffect(() => {
+    const favoriteCharacters = JSON.parse(localStorage.getItem('favoriteCharacters') || '[]');
+
+    const characterName = BasicInfo.getBasicInformation.character_name;
+    if (favoriteCharacters.includes(characterName)) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [BasicInfo.getBasicInformation.character_name]); 
+
+  
+const handleFavoriteClick = (event) => {
+  event.stopPropagation();
+  const characterName = BasicInfo.getBasicInformation.character_name;
+  const favoriteCharacters = JSON.parse(localStorage.getItem('favoriteCharacters') || '[]');
+
+  if (isFavorite) {
+    const updatedFavorites = favoriteCharacters.filter(name => name !== characterName);
+    localStorage.setItem('favoriteCharacters', JSON.stringify(updatedFavorites));
+    setIsFavorite(false);
+  } else {
+    const updatedFavorites = [...favoriteCharacters, characterName];
+    localStorage.setItem('favoriteCharacters', JSON.stringify(updatedFavorites));
+    setIsFavorite(true);
+  }
+};
 
   const handleImageClick = () => {
     if (BasicInfoBackground[theme]) {
@@ -65,6 +96,9 @@ export const BasicInformation = ({ BasicInfo }) => {
             </Guild>
           </ItemWrap>
         </GuildWorldGroup>
+        <FavoriteIcon onClick={handleFavoriteClick}>
+          <img src={isFavorite ? favorite_true : favorite_false} alt="Favorite Icon" />
+        </FavoriteIcon>
       </CharacterBody>
     </Container>
   );
@@ -92,6 +126,7 @@ const CharacterHeader = styled.div`
 `
 
 const CharacterBody = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -249,4 +284,11 @@ const ItemWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
+`
+
+const FavoriteIcon = styled.div`
+  position: absolute;
+  height: fit-content;
+  top: 0;
+  right: 0;
 `
