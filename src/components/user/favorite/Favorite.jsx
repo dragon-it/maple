@@ -1,0 +1,85 @@
+import React, { useState, useEffect } from 'react';
+import favorite_true from '../../../assets/favoriteIcon/favorite_Star_True.png';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+export const Favorite = () => {
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favoriteCharacters') || '[]');
+    setFavoriteCharacters(storedFavorites);
+  }, []);
+
+  // 즐겨찾기 삭제 함수
+  const removeFavorite = (characterName) => {
+    const updatedFavorites = favoriteCharacters.filter(name => name !== characterName);
+    localStorage.setItem('favoriteCharacters', JSON.stringify(updatedFavorites));
+    setFavoriteCharacters(updatedFavorites);
+  };
+
+  // 캐릭터 이름 클릭 시 이동 함수
+  const navigateToCharacter = (characterName) => {
+    navigate(`/user/${characterName}`);
+  };
+
+  return (
+    <FavoriteWrap>
+      <FavoriteHeader>즐겨찾기</FavoriteHeader>
+      <ul>
+        {favoriteCharacters.length > 0 ? (
+          favoriteCharacters.map((characterName, index) => (
+            <CharacterNameList key={index} onClick={() => navigateToCharacter(characterName)}>
+              {characterName}
+              <img src={favorite_true} alt="Favorite" style={{ width: '20px' }} onClick={(e) => {
+                e.stopPropagation();
+                removeFavorite(characterName);
+              }} />
+            </CharacterNameList>
+          ))
+        ) : (
+          <NoFavoriteText>즐겨찾기한 캐릭터가 없습니다.</NoFavoriteText>
+        )}
+      </ul>
+    </FavoriteWrap>
+  );
+};
+
+const FavoriteWrap = styled.div`
+  padding: 10px 0px;
+  font-family: maple-light;
+  color: rgb(255,255,255);
+  max-height: 500px;
+`
+
+const FavoriteHeader = styled.div`
+  width: 200px;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-family: maple-light;
+  text-align: center;
+
+  @media screen and (max-width:767px) {
+    font-size: 14px;
+  }
+`
+
+const CharacterNameList = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px;
+  padding: 0px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 5px;
+
+  &:hover{
+    background-color: rgba(162,162,162, 0.25);
+  }
+`
+
+const NoFavoriteText = styled.div`
+  text-align: center;
+`

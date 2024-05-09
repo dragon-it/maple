@@ -25,7 +25,6 @@ export const BackgroundImage = () => {
 
 const Container = styled.div`
   position: fixed;
-  z-index: -1;
   
   img {
     display: block;
