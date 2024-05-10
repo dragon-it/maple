@@ -12,7 +12,6 @@ import { CashItemDetail } from './CashItemDetail';
 import { PetItemDetail } from './PetItemDetail';
 import { AndroidItemDetail } from './AndroidItemDetail';
 
-
 export const ItemEquipmentInformation = ({ EquipData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
@@ -21,8 +20,11 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   
   // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
+  console.log(selectedItem)
+
   // 클릭 설정
   const [clicked, setClicked] = useState(false);
+  console.log(clicked)
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState('장비'); 
   
@@ -44,7 +46,10 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setClicked(!clicked); // 클릭 시 clicked 상태 반전
+    console.log(item)
   };
+
+
 
   // 장비 아이템 프리셋 선택
   const handlePresetChange = (preset) => {
@@ -361,7 +366,7 @@ return (
                       <img src={EquipData.getPetEquipment.pet_1_appearance_icon} 
                         alt="petIcon"
                         onMouseOver={() => handlePetAppearanceInfo(1)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetAppearanceInfo(1)}  />
                     )
                     :<div style={{ width: '42px', height: '42px' }}/>
                     }
@@ -371,7 +376,7 @@ return (
                       <img src={EquipData.getPetEquipment.pet_1_equipment.item_shape_icon} 
                         alt="petEqipIcon"
                         onMouseOver={() => handlePetEquipInfo(1)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetEquipInfo(1)}  />
                       )
                       :<div style={{ width: '42px', height: '42px' }}/>
                       }
@@ -382,7 +387,7 @@ return (
                         <img src={EquipData.getPetEquipment.pet_1_auto_skill.skill_1_icon} 
                         alt="petAutoSkill1" 
                         onMouseOver={() => handlePetFirstSkillInfo(1)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetFirstSkillInfo(1)}  />
                         )
                         :<div style={{ width: '42px', height: '42px' }}/>
                         }
@@ -392,7 +397,7 @@ return (
                         <img src={EquipData.getPetEquipment.pet_1_auto_skill.skill_2_icon} 
                         alt="petAutoSkill2" 
                         onMouseOver={() => handlePetSecondSkillInfo(1)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetSecondSkillInfo(1)}  />
                         )
                         :<div style={{ width: '42px', height: '42px' }}/>
                         }
@@ -407,7 +412,7 @@ return (
                     <img src={EquipData.getPetEquipment.pet_2_appearance_icon} 
                       alt="petIcon"
                       onMouseOver={() => handlePetAppearanceInfo(2)}
-                      onClick={() => handleItemClick(selectedItem)}  />
+                      onClick={() => handlePetAppearanceInfo(2)}  />
                     )
                     :<div style={{ width: '42px', height: '42px' }}/>
                     }
@@ -417,7 +422,7 @@ return (
                     <img src={EquipData.getPetEquipment.pet_2_equipment.item_shape_icon} 
                     alt="petEqipIcon"
                     onMouseOver={() => handlePetEquipInfo(2)}
-                    onClick={() => handleItemClick(selectedItem)}  />
+                    onClick={() => handlePetEquipInfo(2)}  />
                   )
                     :<div style={{ width: '42px', height: '42px' }}/>
                     }
@@ -428,7 +433,7 @@ return (
                       <img src={EquipData.getPetEquipment.pet_2_auto_skill.skill_1_icon} 
                       alt="petAutoSkill1" 
                       onMouseOver={() => handlePetFirstSkillInfo(2)}
-                      onClick={() => handleItemClick(selectedItem)}  />
+                      onClick={() => handlePetFirstSkillInfo(2)}  />
                       )
                       :<div style={{ width: '42px', height: '42px' }}/>
                       }
@@ -438,7 +443,7 @@ return (
                       <img src={EquipData.getPetEquipment.pet_2_auto_skill.skill_2_icon} 
                       alt="petAutoSkill2" 
                       onMouseOver={() => handlePetSecondSkillInfo(2)}
-                      onClick={() => handleItemClick(selectedItem)}  />
+                      onClick={() => handlePetSecondSkillInfo(2)}  />
                       )
                       :<div style={{ width: '42px', height: '42px' }}/>
                       }
@@ -453,7 +458,7 @@ return (
                       <img src={EquipData.getPetEquipment.pet_3_appearance_icon} 
                         alt="petIcon"
                         onMouseOver={() => handlePetAppearanceInfo(3)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetAppearanceInfo(3)}  />
                     )
                     :<div style={{ width: '42px', height: '42px' }}/>
                     }
@@ -463,7 +468,7 @@ return (
                       <img src={EquipData.getPetEquipment.pet_3_equipment.item_shape_icon} 
                       alt="petEqipIcon"
                       onMouseOver={() => handlePetEquipInfo(3)}
-                      onClick={() => handleItemClick(selectedItem)}  />
+                      onClick={() => handlePetEquipInfo(3)}  />
                     )
                       :<div style={{ width: '42px', height: '42px' }}/>
                       }
@@ -474,7 +479,7 @@ return (
                         <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_1_icon} 
                         alt="petAutoSkill1" 
                         onMouseOver={() => handlePetFirstSkillInfo(3)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetFirstSkillInfo(3)}  />
                         )
                         :<div style={{ width: '42px', height: '42px' }}/>
                         }
@@ -484,7 +489,7 @@ return (
                         <img src={EquipData.getPetEquipment.pet_3_auto_skill.skill_2_icon} 
                         alt="petAutoSkill2" 
                         onMouseOver={() => handlePetSecondSkillInfo(3)}
-                        onClick={() => handleItemClick(selectedItem)}  />
+                        onClick={() => handlePetSecondSkillInfo(3)}  />
                         )
                         :<div style={{ width: '42px', height: '42px' }}/>
                         }
