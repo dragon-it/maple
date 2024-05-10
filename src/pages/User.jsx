@@ -28,7 +28,8 @@ export const User = () => {
       setLoading(true);
       setError(null); // 오류 상태 초기화
       await fetchData(characterName, setResult, setLoading, setError);
-      setLoading(false);
+
+      setTimeout(() => setLoading(false), 500);
     };
   
     fetchDataAndUpdateState();
@@ -68,7 +69,6 @@ export const User = () => {
           <Footer />
         </FooterWrap>
       </Container>
-
     )}
     </>
   );
@@ -167,6 +167,7 @@ const LoadingWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  z-index: 999;
 
   @media screen and (max-width:767px) {
     img{
