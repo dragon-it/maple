@@ -36,7 +36,7 @@ const getOcid = async (characterName) => {
 const fetchData = async (characterName, setResult, setLoading, setError) => {
   if (characterName.trim() !== '') {
     try {
-      setLoading(true);
+      setLoading(false);
       const ocid = await getOcid(characterName);
       if (ocid) {
         const results = await Promise.all(
@@ -51,7 +51,7 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
     } catch (error) {
       setError(`검색 중 오류 발생: ${error.message}`);
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   }
 };
