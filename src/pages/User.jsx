@@ -28,8 +28,7 @@ export const User = () => {
       setLoading(true);
       setError(null); // 오류 상태 초기화
       await fetchData(characterName, setResult, setLoading, setError);
-
-      setTimeout(() => setLoading(false), 500);
+      setLoading(false);
     };
   
     fetchDataAndUpdateState();
@@ -69,6 +68,7 @@ export const User = () => {
           <Footer />
         </FooterWrap>
       </Container>
+
     )}
     </>
   );
