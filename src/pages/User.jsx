@@ -167,6 +167,7 @@ const LoadingWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  z-index: 999;
 
   @media screen and (max-width:767px) {
     img{
