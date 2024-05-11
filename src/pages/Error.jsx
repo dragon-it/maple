@@ -24,6 +24,7 @@ const ErrorPageWrap = styled.div`
   width: 100%;
   height: 100%;
   gap: 30px;
+  z-index: 1;
 `;
 
 const ErrorText = styled.div`
