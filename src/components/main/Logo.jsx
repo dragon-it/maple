@@ -29,6 +29,7 @@ const Container = styled.div`
   margin-right: 10px;
   cursor: pointer;
   font-size: ${(props) => (props.UserRoute ? '25px' : '30px')};
+  z-index: 1;
   img {
     width: ${(props) => (props.UserRoute ? '40px' : '50px')};
     height: ${(props) => (props.UserRoute ? '40px' : '50px')};
