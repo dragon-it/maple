@@ -49,9 +49,10 @@ const SelectContainer = styled.div`
   outline: 1px solid black;
   font-family: maple-light;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1280px) {
     display: none;
   }
+
 
 `
 
@@ -69,11 +70,15 @@ const Container = styled.div`
   padding: 0px 10px;
   padding-bottom: 10px;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1280px) {
     position: fixed;
-    left: 25%;
+    left: 37%;
     top: 15%;
     z-index: 99999;
+  }
+
+  @media screen and (max-width:768px) {
+    left: 25%;
   }
 
 

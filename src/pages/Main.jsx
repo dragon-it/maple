@@ -46,7 +46,7 @@ const FooterWrap = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  @media screen and (max-width:767px){
+  @media screen and (max-width:768px){
     display: block;
   }
 `
@@ -57,7 +57,7 @@ const FavoriteWrap = styled.div`
   height: auto;
   background-color: rgba(0, 0, 0, 0.53);
   border-radius: 5px;
-  @media screen and (max-width:767px){
+  @media screen and (max-width:768px){
     top: 130px;
   }
 `

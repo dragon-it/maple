@@ -116,7 +116,7 @@ const InfoWrap = styled.div`
     transition: 1s;
   }
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -147,7 +147,7 @@ const StatWrap = styled.div`
   gap: 5px;
 
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
   flex-direction: column;
   }
 `

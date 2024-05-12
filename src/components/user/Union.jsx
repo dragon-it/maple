@@ -36,8 +36,7 @@ const Container = styled.div`
   padding-top: 5px;
   font-family: maple-light;
 
-  @media screen and (max-width:767px) {
-    width: 100%;
+  @media screen and (max-width:1024px) {
   }
 
 `
@@ -48,7 +47,7 @@ const InfoWrap = styled.div`
   gap: 5px;
   height: 100%;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     flex-direction: column-reverse;
   }
 

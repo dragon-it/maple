@@ -30,8 +30,8 @@ const Container = styled.div`
     display: block;
     object-fit: cover;
     width: 100%;
-    height: 100vh;
-    left: 0;
-    
+    min-height: 105vh;
   }
+
+
 `;

@@ -16,6 +16,9 @@ import Ludibrium_BG from "../../assets/InfoBgImg/white/Ludibrium_BG.jpg"
 import Mu_Lung_BG from "../../assets/InfoBgImg/white/Mu_Lung_BG.jpg"
 import Orbis_BG from "../../assets/InfoBgImg/white/Orbis_BG.jpg"
 
+import white_BG from '../../assets/Henesys.jpg';
+import dark_BG from '../../assets/Kerning City.jpg';
+
 
 export const ThemeBackground = {
   black: [
@@ -40,3 +43,7 @@ export const ThemeBackground = {
   ]
 }
 
+export const ThemeMainBackground = {
+  black: dark_BG,
+  white: white_BG
+}
