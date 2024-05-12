@@ -30,14 +30,14 @@ const ErrorPageWrap = styled.div`
 const ErrorText = styled.div`
   font-family: maple-bold;
   font-size: 16px;
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     font-size: 13px;
   }
 `;
 
 const ErrorImg = styled.div`
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     img{
       width: 160px;
     }
@@ -59,7 +59,7 @@ const SearchWrap = styled.div`
   top: 0;
   width: 100%;
   height: 100px;
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     position: absolute;
     top: 0;
   }
