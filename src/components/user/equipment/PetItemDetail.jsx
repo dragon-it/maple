@@ -76,7 +76,11 @@ const SelectContainer = styled.div`
   outline: 1px solid black;
   font-family: maple-light;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
+    width: 200px;
+  }
+
+  @media screen and (max-width:768px) {
     width: 460px;
   }
 
@@ -95,8 +99,9 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
   padding-bottom: 3px;
+  height: fit-content;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     width: 300px;
   }
 `

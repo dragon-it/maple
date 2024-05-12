@@ -46,8 +46,9 @@ const SelectContainer = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   font-family: maple-light;
+  height: fit-content;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     width: 300px;
   }
 
@@ -66,7 +67,7 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
     
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     width: 255px;
   }
 `
