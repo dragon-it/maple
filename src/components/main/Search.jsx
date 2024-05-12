@@ -57,7 +57,7 @@ export const Search = ({ error }) => {
 const Container = styled.div`
   width: 100%;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,7 +78,7 @@ const InputContainer = styled.div`
 
   
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     justify-content: center;
     flex-direction: column;
     height: 100%;
@@ -135,7 +135,7 @@ const ThemeToggleWrap = styled.div`
   display: none;
   margin-left: 10px;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     display: block;
     position: absolute;
     right: 10px;

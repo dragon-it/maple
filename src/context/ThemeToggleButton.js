@@ -34,7 +34,14 @@ const ToggleWrapper = styled.button`
   border-radius: 30px;
   cursor: pointer;
 
-  @media screen and (max-width: 767px) {
+
+  @media screen and (max-width: 1024px){
+    width: 60px;
+    height: 32px;
+    font-size: 15px;
+  }
+
+  @media screen and (max-width: 768px) {
     position: relative;
     width: 32px;
     height: 32px;
@@ -45,7 +52,7 @@ const ToggleWrapper = styled.button`
 `;
 
 const Text = styled.span`
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `;
@@ -55,7 +62,7 @@ const Icon = styled.img`
   width: 30px;
   height: 30px;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     display: block; 
   }
 `;

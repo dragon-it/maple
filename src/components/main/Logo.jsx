@@ -42,7 +42,7 @@ const LogoText = styled.div`
   font-family: maple-light;
   color: ${({ theme, UserRoute, error }) => error ? 'black' : (UserRoute ? theme.logoColor : 'black')};
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     color: black;
   }
 

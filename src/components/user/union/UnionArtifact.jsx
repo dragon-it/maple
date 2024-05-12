@@ -83,16 +83,11 @@ const Container = styled.div`
   outline: 1px solid rgb(56,70,81);
   padding: 5px;
   width: 682px;
-  height: 100%;
   flex-wrap: wrap;
   color: white;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px){
     width: 100%;
-  }
-
-  @media screen and (max-width:576px) {
-
   }
 
 `
@@ -131,13 +126,7 @@ const InfoWrap = styled.div`
   outline: 1px solid rgb(56,70,81);
   gap: 5px;
   padding: 5px;
-  width: 220px;
 
-
-  @media screen and (max-width:767px) {
-    width: 49%;
-  }
-  
 `
 
 const ArtiFactIcon = styled.div`
@@ -160,11 +149,17 @@ const Name = styled.div`
 
 
 const ArtifactWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 970px;
   gap: 5px;
   :hover{
     background-color: #525050;
+  }
+
+  @media screen and (max-width:1024px){
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
   }
 `

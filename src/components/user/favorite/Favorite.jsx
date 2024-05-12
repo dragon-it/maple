@@ -60,7 +60,7 @@ const FavoriteHeader = styled.div`
   font-family: maple-light;
   text-align: center;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     font-size: 14px;
   }
 `

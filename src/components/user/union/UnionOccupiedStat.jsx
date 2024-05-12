@@ -25,7 +25,11 @@ const Container = styled.div`
   padding: 3px;
   font-size: 13px;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
+    
+  }
+
+  @media screen and (max-width:786px) {
     width: 100%;
   }
 `

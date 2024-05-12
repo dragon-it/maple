@@ -551,9 +551,10 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 5px;
   
-  @media screen and (max-width:767px) {
-  flex-direction: column;
-  padding: 0;
+  @media screen and (max-width:1024px) {
+    width: 100%;
+    flex-direction: column;
+    padding: 0;
   }
 `;
 
@@ -596,7 +597,7 @@ const InfoWrap = styled.div`
     }
   }};
 
-@media screen and (max-width:767px) {
+@media screen and (max-width:768px) {
   width: 372px;
   }
 
@@ -610,7 +611,8 @@ const ItemInfoDetailWrap = styled.div`
   flex-direction: row;
   gap: 3px;
 
-  @media screen and (max-width:767px) {
+
+  @media screen and (max-width:768px) {
     flex-direction: column;
     align-items: center;
   }
@@ -768,11 +770,14 @@ const DetailWrap = styled.div`
   position: absolute;
   right: -302px;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1280px) {
     position: relative;
     display: flex;
     justify-content: center;
     right: 0;
+  }
+
+  @media screen and (max-width:768px) {
     width: 100%;
   }
 `

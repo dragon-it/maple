@@ -27,7 +27,7 @@ const Container = styled.div`
   font-family: maple-light;
   z-index: 999;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     margin-top: 77px;
     position: relative;
   }

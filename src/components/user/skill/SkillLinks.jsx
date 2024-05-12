@@ -69,9 +69,9 @@ const SkillHeader = styled.div`
 `
 const SkillWrap = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 5px;
-  width: 800px;
+  width: 970px;
   cursor: pointer;
     color: white;
   :hover{
