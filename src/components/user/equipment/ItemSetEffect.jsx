@@ -112,7 +112,7 @@ const Container = styled.div`
     color: #e45b5b;
   }
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
       position: relative;
       width: 100%;
       max-height: fit-content;
