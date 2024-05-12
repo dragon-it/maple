@@ -71,9 +71,9 @@ const SkillHeader = styled.div`
 `
 const SkillWrap = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 5px;
-  width: 800px;
+  width: 970px;
   color: white;
   :hover{
     background-color: #616161;
@@ -82,7 +82,6 @@ const SkillWrap = styled.div`
     }
   }
 
-  //반응형
   @media screen and (max-width:767px) {
     grid-template-columns: repeat(3, 1fr);
     width: auto;

@@ -86,12 +86,12 @@ const Container = styled.div`
   box-sizing: border-box;
   margin-top: 40px;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     margin-top: 80px;
-    width: 100%;
   }
 
   @media screen and (max-width:576px) {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,7 +119,7 @@ const SearchWrap = styled.div`
   justify-content: center;
   top: 0;
   
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     position: absolute;
     top: -80px;
     left: 0;
@@ -169,7 +169,7 @@ const LoadingWrap = styled.div`
   height: 100%;
   z-index: 999;
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     img{
       width: 160px;
     }
@@ -197,7 +197,7 @@ const FooterWrap = styled.div`
   bottom: 0;
   height: 50px;
   width: 100%;
-  @media screen and (max-width:767px){
+  @media screen and (max-width:768px){
     display: block;
   }
 `

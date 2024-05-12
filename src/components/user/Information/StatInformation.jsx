@@ -249,7 +249,7 @@ const StatLeftWrap = styled.div`
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 767px){
+  @media screen and (max-width: 768px){
     width: 50%;
   }
 `
@@ -295,7 +295,7 @@ const AttackFontWrap = styled.div`
   }
 
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     justify-content: center;
   }
 

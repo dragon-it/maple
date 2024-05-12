@@ -20,7 +20,7 @@ const UserContainer = styled.div`
   flex-direction: column;
   align-items: center;
   
-  @media screen and (max-width:767px) {
+  @media screen and (max-width:1024px) {
     padding: 20px;
   }
 
@@ -47,11 +47,11 @@ function App() {
             />
               <Route path="*" element={<Error errorMessage="페이지를 찾을 수 없습니다."  />} /> 
           </Routes>
-          <BackgroundImage />
         </Router>
         <ThemeToggleWrap>
           <ThemeToggleButton /> 
         </ThemeToggleWrap>
+        <BackgroundImage />
       </Container>
       <Analytics/>
     </ThemeProvider>
@@ -67,7 +67,7 @@ const Container = styled.div`
 
 
 const ThemeToggleWrap = styled.div`
-  @media screen and (max-width:767px){
+  @media screen and (max-width:768px){
     display: none;
   }
 

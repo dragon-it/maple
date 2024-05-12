@@ -26,6 +26,14 @@ const Container = styled.div`
   padding: 10px;
   padding-top: 5px;
 
+
+  @media screen and (max-width:1024px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
   @media screen and (max-width:576px) {
     width: 100%;
   }
