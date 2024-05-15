@@ -93,17 +93,13 @@ const Information = ({ result }) => {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
-  z-index: 99;
   border-radius: 10px;
   white-space: nowrap;
-
-  @media screen and (max-width:576px) {
-    width: 100%;
-  }
+  width: 100%;
 `;
 
 const InfoWrap = styled.div`
+  width: 100%;
   padding: 10px;
   padding-top: 5px;
   height: 100%;
@@ -111,19 +107,15 @@ const InfoWrap = styled.div`
   gap: 5px;
   flex-direction: row;
   font-family: sans-serif;
+  
   img {
     display: flex;
     transition: 1s;
   }
 
-  @media screen and (max-width:1024px) {
-    width: 100%;
+  @media screen and (max-width:1300px) {
     display: flex;
     flex-direction: column;
-  }
-
-  @media screen and (max-width:576px) {
-      width: 100%;
   }
 `;
 
