@@ -18,7 +18,6 @@ export const BackgroundImage = () => {
   return (
     <Container>
       <img src={imageSrc} alt="Background"/>
-      <Footer />
     </Container>
   );
 };
