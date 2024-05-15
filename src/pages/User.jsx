@@ -84,7 +84,6 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
   z-index: 99;
-  box-sizing: border-box;
   margin-top: 40px;
 
   @media screen and (max-width:1024px) {
@@ -102,15 +101,8 @@ const Container = styled.div`
 
 const HeaderWrap = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding: 3px 10px;
-
-
-  @media screen and (max-width:576px) {
-    padding: 0;
-  }
-
 `
 
 const SearchWrap = styled.div`
@@ -118,7 +110,6 @@ const SearchWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  top: 0;
   
   @media screen and (max-width:1024px) {
     position: absolute;
@@ -136,8 +127,6 @@ const SearchWrap = styled.div`
 
 const Tabs = styled.div`
   display: flex;
-  top: 0;
-  flex-direction: row;
   padding: 10px 0;
   white-space: nowrap;
 `;
@@ -196,9 +185,4 @@ const FooterWrap = styled.div`
   bottom: 0;
   width: 100%;
   z-index: 999;
-  margin-top: 30px;
-  margin-bottom: 10px;
-  @media screen and (max-width:1024px){
-    display: block;
-  }
 `

@@ -64,7 +64,6 @@ export const AbilityInformation = ({ AbilityInfo }) => {
 
 const Container = styled.div`
   position: relative;
-  display: block;
   width: 100%;
   padding: 5px 0;
   border: 1px solid rgb(80,92,101);
@@ -73,6 +72,7 @@ const Container = styled.div`
   background-color: rgba(59,66,75, 0.9);
   font-size: 14px;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  color: white;
   img{
     width: 100%;
     height: 100%;
@@ -86,7 +86,6 @@ const PresetWrap = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 21px;
   padding: 0 5px;
   p{
     display: flex;
@@ -126,7 +125,6 @@ const AbilityDetail = styled.div`
 
 const AbilityGradeHeader = styled.div`
   font-family: maple-light;
-  color: white;
   margin-bottom: 5px;
 `
 
@@ -151,7 +149,6 @@ const RemainFame = styled.div`
   font-size: 12px;
   border-radius: 5px;
   background-color: rgba(59,66,75, 0.9);
-  color: white;
 `
 
 const ButtonWrap = styled.div`
