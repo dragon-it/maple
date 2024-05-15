@@ -60,7 +60,6 @@ const Container = styled.div`
   position: absolute;
   right: -322px;
   width: 320px;
-  height: fit-content;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;

@@ -81,10 +81,13 @@ const SkillWrap = styled.div`
     }
   }
 
-  //반응형
+  @media screen and (max-width:1024px) {
+    width: auto;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   @media screen and (max-width:767px) {
     grid-template-columns: repeat(3, 1fr);
-    width: auto;
   }
 
   @media screen and (max-width:576px) {
