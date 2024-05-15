@@ -100,6 +100,10 @@ const PropensityItemWrapper = styled.p`
   @media screen and (max-width:576px) {
     width: 105px;
   }
+
+  @media screen and (max-width:376px) {
+    width: 95px;
+  }
 `;
 
 const PropensityHeader = styled.div`
@@ -178,6 +182,7 @@ const PropensityName = styled.div`
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  font-size: 13px;
   p{
     padding: 5px;
     background-color: rgb(106, 214, 241);
@@ -189,20 +194,22 @@ const PropensityName = styled.div`
   @media screen and (max-width:576px) {
     width: 100%;
   }
+
+  @media screen and (max-width:376px) {
+    font-size: 12px;
+  }
 `
 
 const PropenLabel = styled.div`
   padding-right: 5px;
-  font-size: 14px;
 `
 const PropenLevel = styled.div`
-  font-size: 14px;
   width: 40px;
   display: flex;
   justify-content: flex-start;
 
   @media screen and (max-width:576px) {
     width: auto;
-    font-size: 13px;
   }
+
 `
