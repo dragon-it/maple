@@ -42,10 +42,10 @@ const SearchWrap = styled.div`
 
 
 const FooterWrap = styled.div`
-  display: none;
   position: absolute;
   bottom: 0;
   width: 100%;
+  z-index: 999;
   @media screen and (max-width:768px){
     display: block;
   }

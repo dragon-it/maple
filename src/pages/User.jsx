@@ -48,27 +48,28 @@ export const User = () => {
       </ErrorWrap>
 
     ) : (
-      <Container>
-        <HeaderWrap>
-          <Tabs>
-            <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>캐릭터 정보</Tab>
-            <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>캐릭터 장비</Tab>
-            <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>스킬</Tab>
-            <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>유니온</Tab>
-          </Tabs>
-          <SearchWrap>
-            <Search />
-          </SearchWrap>
-        </HeaderWrap>
-        {activeTab === 1 && <Information result={result} />}
-        {activeTab === 2 && <Equipment result={result}/>}
-        {activeTab === 3 && <Skill result={result}/>}
-        {activeTab === 4 && <Union result={result}/>}
+      <>
+        <Container>
+          <HeaderWrap>
+            <Tabs>
+              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>캐릭터 정보</Tab>
+              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>캐릭터 장비</Tab>
+              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>스킬</Tab>
+              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>유니온</Tab>
+            </Tabs>
+            <SearchWrap>
+              <Search />
+            </SearchWrap>
+          </HeaderWrap>
+          {activeTab === 1 && <Information result={result} />}
+          {activeTab === 2 && <Equipment result={result}/>}
+          {activeTab === 3 && <Skill result={result}/>}
+          {activeTab === 4 && <Union result={result}/>}
+        </Container>
         <FooterWrap>
           <Footer />
         </FooterWrap>
-      </Container>
-
+      </>
     )}
     </>
   );
@@ -192,12 +193,12 @@ const ErrorWrap = styled.div`
 
 
 const FooterWrap = styled.div`
-  display: none;
-  position: absolute;
   bottom: 0;
-  height: 50px;
   width: 100%;
-  @media screen and (max-width:768px){
+  z-index: 999;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  @media screen and (max-width:1024px){
     display: block;
   }
 `

@@ -18,19 +18,10 @@ export const Footer = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
-  bottom: 60px;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  text-align: center;
+  height: 70px;
   width: 100%;
   font-family: maple-light;
-  z-index: 999;
-
-  @media screen and (max-width:1024px) {
-    margin-top: 77px;
-    bottom: 0;
-    position: relative;
-  }
-
 `;

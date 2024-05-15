@@ -19,6 +19,7 @@ const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   
   @media screen and (max-width:1024px) {
     padding: 20px;
