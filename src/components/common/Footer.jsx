@@ -19,7 +19,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  bottom: 8px;
+  bottom: 60px;
   justify-content: center;
   align-items: center;
   height: 60px;
@@ -29,6 +29,7 @@ const Container = styled.div`
 
   @media screen and (max-width:1024px) {
     margin-top: 77px;
+    bottom: 0;
     position: relative;
   }
 
