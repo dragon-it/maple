@@ -2,15 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FooterText = "Data by NEXON Open API, Font by MapleStory";
-const AllRightsReservedText = "© 2024. 메짱. All rights reserved."
-const ContactText = "Contact by sideoff0217@naver.com"
+const AllRightsReservedText = "© 2024. 메짱. All rights reserved.";
+const ContactText = "Contact by sideoff0217@naver.com";
 
 export const Footer = () => {
   return (
     <Container>
-      <div>{FooterText}</div>
-      <div>{AllRightsReservedText}</div>
-      <div>{ContactText}</div>
+      <FooterTextDiv>{FooterText}</FooterTextDiv>
+      <FooterTextDiv>{AllRightsReservedText}</FooterTextDiv>
+      <FooterTextDiv>{ContactText}</FooterTextDiv>
     </Container>
   );
 };
@@ -23,6 +23,8 @@ const Container = styled.div`
   text-align: center;
   height: 70px;
   width: 100%;
-  font-family: maple-light;
-  font-display: swap;
+`;
+
+const FooterTextDiv = styled.div`
+  font-family: 'maple-light', Arial, sans-serif;
 `;
