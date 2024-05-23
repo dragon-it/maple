@@ -24,4 +24,5 @@ const Container = styled.div`
   height: 70px;
   width: 100%;
   font-family: maple-light;
+  font-display: swap;
 `;

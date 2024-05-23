@@ -8,6 +8,7 @@ export const Logo = ({ error }) => {
   
   const navigate = useNavigate();
   const location = useLocation();
+
   const handleClick = () => {
     navigate(`/`);
   };
@@ -16,7 +17,8 @@ export const Logo = ({ error }) => {
 
   return (
     <Container 
-    onClick={handleClick} UserRoute={UserRoute}>
+    onClick={handleClick} 
+    UserRoute={UserRoute}>
       <img src={logo} alt="Logo" />
       <LogoText UserRoute={UserRoute} error={error}>메짱</LogoText>
     </Container>
