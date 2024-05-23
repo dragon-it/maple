@@ -76,8 +76,6 @@ const InputContainer = styled.div`
   height: 50px;
   z-index: 99;
 
-  
-
   @media screen and (max-width:1024px) {
     justify-content: center;
     flex-direction: column;
