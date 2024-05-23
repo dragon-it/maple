@@ -156,7 +156,7 @@ const CharacterInfoGroup = styled.div`
   padding-bottom: 5px;
 
   @media screen and (max-width:576px) {
-    padding: 0 10px;
+    padding: 5px 10px;
   }
 `
 
