@@ -9,9 +9,6 @@ export const Main = () => {
     <Container>
       <SearchWrap>
         <Search />
-        <FavoriteWrap>
-          <Favorite/>
-        </FavoriteWrap>
       </SearchWrap>
 
     </Container>
