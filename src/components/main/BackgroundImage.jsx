@@ -25,6 +25,7 @@ const Container = styled.div`
   position: fixed;
   
   img {
+    display: block;
     object-fit: cover;
     width: 100%;
     min-height: 105vh;
