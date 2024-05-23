@@ -29,8 +29,8 @@ export const Favorite = () => {
       <FavoriteHeader>즐겨찾기</FavoriteHeader>
       <ul>
         {favoriteCharacters.length > 0 ? (
-          favoriteCharacters.map((characterName, index) => (
-            <CharacterNameList key={index} onClick={() => navigateToCharacter(characterName)}>
+            favoriteCharacters.map((characterName) => (
+              <CharacterNameList key={characterName} onClick={() => navigateToCharacter(characterName)}>
               {characterName}
               <img src={favorite_true} alt="Favorite" style={{ width: '20px' }} onClick={(e) => {
                 e.stopPropagation();
@@ -57,7 +57,6 @@ const FavoriteHeader = styled.div`
   width: 200px;
   font-size: 18px;
   margin-bottom: 20px;
-  font-family: maple-light;
   text-align: center;
 
   @media screen and (max-width:1024px) {
