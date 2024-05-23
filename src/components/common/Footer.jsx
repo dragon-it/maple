@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import FooterText from './FooterText';
 
-const FooterText = "Data by NEXON Open API, Font by MapleStory";
-const AllRightsReservedText = "© 2024. 메짱. All rights reserved.";
-const ContactText = "Contact by sideoff0217@naver.com";
 
 export const Footer = () => {
   return (
     <Container>
       <FooterTextDiv>{FooterText}</FooterTextDiv>
-      <FooterTextDiv>{AllRightsReservedText}</FooterTextDiv>
-      <FooterTextDiv>{ContactText}</FooterTextDiv>
     </Container>
   );
 };
@@ -27,4 +23,5 @@ const Container = styled.div`
 
 const FooterTextDiv = styled.div`
   font-family: 'maple-light', Arial, sans-serif;
+  white-space: pre-line; 
 `;
