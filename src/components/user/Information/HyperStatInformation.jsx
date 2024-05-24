@@ -87,7 +87,7 @@ useEffect(() => {
 const Container = styled.div`
   padding: 5px;
   display: flex;
-  height: ${(props) => (props.showAllStat ? "100%": "")};
+  height: auto;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;

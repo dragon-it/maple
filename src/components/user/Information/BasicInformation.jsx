@@ -80,7 +80,7 @@ const handleFavoriteClick = (event) => {
         </JobGroup>
         <CharacterInfoGroup>
           <Level>Lv. {BasicInfo.getBasicInformation.character_level}</Level>
-          <CharacterImg><img src={BasicInfo.getBasicInformation.character_image} alt={BasicInfo.character_name} /></CharacterImg>
+          <CharacterImg><img src={BasicInfo.getBasicInformation.character_image} alt="character_image" /></CharacterImg>
           <CharacterName>{BasicInfo.getBasicInformation.character_name}</CharacterName>
           <Experience>경험치 {BasicInfo.getBasicInformation.character_exp_rate}%</Experience>
         </CharacterInfoGroup>
@@ -156,7 +156,7 @@ const CharacterInfoGroup = styled.div`
   padding-bottom: 5px;
 
   @media screen and (max-width:576px) {
-    padding: 5px 10px;
+    padding: 0px 10px 5px 10px;
   }
 `
 
