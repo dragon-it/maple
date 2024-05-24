@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom'; 
-import logo from '../../assets/Logo.png'
+import logo from '../../assets/Logo3.png'
 
 
 export const Logo = ({ error }) => {
@@ -33,10 +33,10 @@ const Container = styled.div`
   font-size: ${(props) => (props.UserRoute ? '25px' : '30px')};
   z-index: 1;
   img {
-    width: ${(props) => (props.UserRoute ? '40px' : '50px')};
-    height: ${(props) => (props.UserRoute ? '40px' : '50px')};
+    width: 40px;
+    height: 40px;
+    margin-right: 3px;
   }
-
 
 `;
 

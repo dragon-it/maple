@@ -15,7 +15,10 @@ export const GlobalStyle = createGlobalStyle`
       "NanumSquare",
       "Noto Sans",
       "Noto Sans CJK KR",
+      maple-light,
+      maple-bold,
       sans-serif;
+    font-display: swap;
     word-break: keep-all;
     word-wrap: break-word;
     text-rendering: optimizeLegibility;
