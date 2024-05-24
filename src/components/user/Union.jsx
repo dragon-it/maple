@@ -34,7 +34,7 @@ const Container = styled.div`
   position: relative;
   padding: 10px;
   padding-top: 5px;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
 
   @media screen and (max-width:1024px) {
   }

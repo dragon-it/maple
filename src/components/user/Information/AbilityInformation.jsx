@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-
 export const AbilityInformation = ({ AbilityInfo }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
 
@@ -10,7 +9,6 @@ export const AbilityInformation = ({ AbilityInfo }) => {
   };
 
   const currentPreset = AbilityInfo[`ability_preset_${selectedPreset}`];
-
 
   const getGradeColor = (grade) => {
     switch (grade) {
@@ -26,6 +24,15 @@ export const AbilityInformation = ({ AbilityInfo }) => {
         return 'white'; 
     }
   };
+
+  if (!currentPreset) {
+    return <Container>
+      <NoDataWrap>
+        <AbilityHeader>ABILITY</AbilityHeader>
+        <AbilityNoData>데이터가 없습니다.</AbilityNoData>
+      </NoDataWrap>
+      </Container>; 
+  }
 
   const backgroundColors = currentPreset.ability_info.map(info => getGradeColor(info.ability_grade));
   const formattedRemainFame = AbilityInfo.remain_fame.toLocaleString();
@@ -80,6 +87,12 @@ const Container = styled.div`
   }
 `;
 
+const NoDataWrap = styled.div`
+  line-height: 20px;
+  flex-direction: column;
+  padding: 0 5px;
+`
+
 const PresetWrap = styled.div`
   line-height: 20px;
   width: 100%;
@@ -124,8 +137,12 @@ const AbilityDetail = styled.div`
 
 
 const AbilityGradeHeader = styled.div`
-  font-family: maple-light;
+  font-family: MaplestoryOTFLight;
   margin-bottom: 5px;
+`
+
+const AbilityNoData = styled.div`
+  font-family: MaplestoryOTFLight;
 `
 
 const ButtonContainer = styled.div`
@@ -136,7 +153,7 @@ const ButtonContainer = styled.div`
   padding: 0 3px;
   background-color: #aaa9a9;
   border-radius: 5px;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
 `;
 
 const RemainFame = styled.div`
