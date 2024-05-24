@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import IconSearch from '../../icons/SearchIcon';
 import { Logo } from './Logo';
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import ThemeToggleButton from '../../context/ThemeToggleButton';
-
+import serchIcon_big from '../../assets/SearchIcon_big.png';
+import serchIcon_small from '../../assets/SearchIcon_small.png';
 
 export const Search = ({ error }) => {
   const [searchValue, setSearchValue] = useState('');
@@ -15,7 +15,6 @@ export const Search = ({ error }) => {
     if (!searchValue.trim()) {
       return;
     }
-    // 사용자가 입력한 검색어에서 모든 공백을 제거
     const processedSearchValue = searchValue.replace(/\s+/g, '');
     navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
   };
@@ -42,7 +41,7 @@ export const Search = ({ error }) => {
               UserRoute={UserRoute}
             />
             <StyledButton UserRoute={UserRoute}>
-              <IconSearch />
+              <img src={UserRoute ? serchIcon_small : serchIcon_big} alt="검색" />
             </StyledButton>
           </InputWrap>
         </InputContainer>
