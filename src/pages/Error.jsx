@@ -28,7 +28,7 @@ const ErrorPageWrap = styled.div`
 `;
 
 const ErrorText = styled.div`
-  font-family: maple-bold;
+  font-family: MaplestoryOTFLight;
   font-size: 16px;
   @media screen and (max-width:1024px) {
     font-size: 13px;

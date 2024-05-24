@@ -12,12 +12,8 @@ export const Footer = () => {
 };
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: center;
   height: 70px;
-  width: 100%;
 `;
 
 const FooterTextDiv = styled.div`

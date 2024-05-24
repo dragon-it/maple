@@ -22,7 +22,8 @@ export const Main = () => {
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -42,7 +43,6 @@ const SearchWrap = styled.div`
 
 
 const FooterWrap = styled.div`
-  position: absolute;
   bottom: 0;
   width: 100%;
   z-index: 999;
@@ -54,6 +54,7 @@ const FavoriteWrap = styled.div`
   height: auto;
   background-color: rgba(0, 0, 0, 0.53);
   border-radius: 5px;
+
   @media screen and (max-width:768px){
     top: 130px;
   }
