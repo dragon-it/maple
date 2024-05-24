@@ -30,13 +30,13 @@ export const Favorite = () => {
       <ul>
         {favoriteCharacters.length > 0 ? (
             favoriteCharacters.map((characterName) => (
-              <CharacterNameList key={characterName} onClick={() => navigateToCharacter(characterName)}>
+              <CharacterNameListItem key={characterName} onClick={() => navigateToCharacter(characterName)}>
               {characterName}
               <img src={favorite_true} alt="Favorite" style={{ width: '20px' }} onClick={(e) => {
                 e.stopPropagation();
                 removeFavorite(characterName);
               }} />
-            </CharacterNameList>
+            </CharacterNameListItem>
           ))
         ) : (
           <NoFavoriteText>즐겨찾기한 캐릭터가 없습니다.</NoFavoriteText>
@@ -48,7 +48,6 @@ export const Favorite = () => {
 
 const FavoriteWrap = styled.div`
   padding: 10px 0px;
-  font-family: maple-light;
   color: rgb(255,255,255);
   max-height: 500px;
 `
@@ -64,7 +63,7 @@ const FavoriteHeader = styled.div`
   }
 `
 
-const CharacterNameList = styled.div`
+const CharacterNameListItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;

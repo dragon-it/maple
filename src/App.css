@@ -8,11 +8,13 @@ body{
 
 @font-face {
   font-family: maple-bold;
+  font-display: swap;
   src: url("./font/Maplestory\ Bold.ttf");
 }
 
 @font-face {
   font-family: maple-light;
+  font-display: swap;
   src: url("./font/Maplestory\ Light.ttf");
 }
 
