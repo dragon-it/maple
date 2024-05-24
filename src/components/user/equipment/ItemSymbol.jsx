@@ -144,7 +144,7 @@ const CommonSymbolWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-   font-family: MaplestoryOTFLight;
+  font-family: maple-light;
   border-radius: 5px;
   padding: 5px;
   background-color: #333333;
@@ -154,7 +154,7 @@ const CommonSymbolWrap = styled.div`
 const SymbolHeader = styled.div`
   display: flex;
   justify-content: center;
-   font-family: MaplestoryOTFLight;
+  font-family: maple-light;
   margin-top: 10px;
   color: white;
   width: 100%;

@@ -41,7 +41,7 @@ const Container = styled.div`
 `;
 
 const LogoText = styled.div`
-  font-family: MaplestoryOTFLight;
+  font-family: maple-light;
   color: ${({ theme, UserRoute, error }) => error ? 'black' : (UserRoute ? theme.logoColor : 'black')};
 
   @media screen and (max-width:1024px) {

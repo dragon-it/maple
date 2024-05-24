@@ -9,11 +9,19 @@ body{
 
 
 @font-face {
-  font-family: 'MaplestoryOTFLight';
-  src: url('https://cdn.jsdelivr.net/gh/fontbee/font@main/Nexon/MaplestoryOTFLight.woff') format('woff');
+  font-family: 'maple-bold';
+  src: url('./fonts/Maplestory_Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'maple-light';
+  src: url('./fonts/Maplestory_Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
 }
+
 
 #root {
   height: 100%;
@@ -25,7 +33,7 @@ body{
 
 ::placeholder{
   color: rgb(3, 3, 3);
-  font-family: MaplestoryOTFLight;
+  font-family: maple-light;
 }
 
 img{

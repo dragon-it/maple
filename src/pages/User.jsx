@@ -137,7 +137,6 @@ const Tab = styled.div`
   padding: 10px 8px;
   margin: 0 10px;
   border-radius: 5px;
-  font-weight: bold;
   transition: background-color 0.3s, color 0.3s;
   background-color: ${({ theme, active }) => (active ? theme.tabActiveColor : 'transparent')};  
   color:  ${({ theme, active }) => (active ? theme.tabActiveTextColor : theme.tabColor)};  

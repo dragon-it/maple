@@ -137,12 +137,12 @@ const AbilityDetail = styled.div`
 
 
 const AbilityGradeHeader = styled.div`
-  font-family: MaplestoryOTFLight;
+  font-family: maple-light;
   margin-bottom: 5px;
 `
 
 const AbilityNoData = styled.div`
-  font-family: MaplestoryOTFLight;
+  font-family: maple-light;
 `
 
 const ButtonContainer = styled.div`
@@ -153,7 +153,7 @@ const ButtonContainer = styled.div`
   padding: 0 3px;
   background-color: #aaa9a9;
   border-radius: 5px;
-   font-family: MaplestoryOTFLight;
+  font-family: maple-light;
 `;
 
 const RemainFame = styled.div`
