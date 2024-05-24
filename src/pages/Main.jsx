@@ -46,9 +46,6 @@ const FooterWrap = styled.div`
   bottom: 0;
   width: 100%;
   z-index: 999;
-  @media screen and (max-width:768px){
-    display: block;
-  }
 `
 
 const FavoriteWrap = styled.div`
