@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom'; 
-import logo from '../../assets/Logo3.png'
+import logo from '../../assets/Logo.png'
 
 
 export const Logo = ({ error }) => {
