@@ -105,7 +105,7 @@ const Container = styled.div`
 const ShowAllStatBtn = styled.div`
   color: white;
   box-sizing: border-box;
-  font-family: MaplestoryOTFLight;
+  font-family: maple-light;
   cursor: pointer;
   margin-bottom:  ${(props) => (props.showAllStat ? "5px": "0px")};
   p{
@@ -163,7 +163,7 @@ const ButtonContainer = styled.div`
     padding: 0 3px;
     background-color: #aaa9a9;
     border-radius: 5px;
-    font-family: MaplestoryOTFLight;
+    font-family: maple-light;
 `;
 
 const PresetWrap = styled.div`

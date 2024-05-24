@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import whiteBGI from '../../assets/Henesys.jpg';
-import darkBGI from '../../assets/Kerning City.jpg';
+import whiteBGI from '../../assets/Henesys.webp';
+import darkBGI from '../../assets/Kerning-City.webp';
 import { useTheme } from '../../context/ThemeProvider';
 
 
@@ -31,5 +31,4 @@ const Container = styled.div`
     height: auto;
     min-height: 105vh;
   }
-
 `;
