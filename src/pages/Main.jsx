@@ -13,6 +13,9 @@ export const Main = () => {
           <Favorite/>
         </FavoriteWrap>
       </SearchWrap>
+      <FooterWrap>
+        <Footer />
+      </FooterWrap>
     </Container>
   )
 }
