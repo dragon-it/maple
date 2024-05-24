@@ -220,7 +220,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     background-color: white;
     color: white;
     cursor: pointer;
-    font-family: maple-light;
+     font-family: MaplestoryOTFLight;
     background: ${({ isSelected }) => (isSelected ? '#FFAA00' : '#999999')};
     border: 1px solid ${({ isSelected }) => (isSelected ? '#E47733' : '#777777')};
 `;
@@ -626,7 +626,7 @@ const TabButton = styled.button`
   width: 55px;
   height: 27px;
   padding: 5px;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
   font-size: 14px;
   color: white;
   background: ${({ isSelected }) => (isSelected ? '#FFAA00' : '#999999')};
@@ -644,7 +644,7 @@ const BaseButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   color: white;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
     background: ${({ isSelected }) => (isSelected ? '#FFAA00' : '#999999')};
     border: 1px solid ${({ isSelected }) => (isSelected ? '#E47733' : '#777777')};
 `;
@@ -748,7 +748,7 @@ const EquipItems = styled.div`
 const ApplyingPreset = styled.div`
   margin-top: 10px;
   width: 188px;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
   text-align: center;
   position: absolute;
   color: white;

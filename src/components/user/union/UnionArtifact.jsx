@@ -83,6 +83,7 @@ const Container = styled.div`
   outline: 1px solid rgb(56,70,81);
   padding: 5px;
   width: 682px;
+  height: fit-content;
   flex-wrap: wrap;
   color: white;
 
@@ -153,7 +154,6 @@ const ArtifactWrap = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 5px;
   width: 970px;
-  gap: 5px;
   :hover{
     background-color: #525050;
   }

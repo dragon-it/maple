@@ -87,7 +87,7 @@ useEffect(() => {
 const Container = styled.div`
   padding: 5px;
   display: flex;
-  height: ${(props) => (props.showAllStat ? "100%": "")};
+  height: auto;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
@@ -105,7 +105,7 @@ const Container = styled.div`
 const ShowAllStatBtn = styled.div`
   color: white;
   box-sizing: border-box;
-  font-family: maple-light;
+  font-family: MaplestoryOTFLight;
   cursor: pointer;
   margin-bottom:  ${(props) => (props.showAllStat ? "5px": "0px")};
   p{
@@ -163,7 +163,7 @@ const ButtonContainer = styled.div`
     padding: 0 3px;
     background-color: #aaa9a9;
     border-radius: 5px;
-    font-family: maple-light;
+    font-family: MaplestoryOTFLight;
 `;
 
 const PresetWrap = styled.div`

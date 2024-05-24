@@ -74,7 +74,7 @@ const SelectContainer = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
 
   @media screen and (max-width:1024px) {
     width: 200px;
