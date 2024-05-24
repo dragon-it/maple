@@ -28,8 +28,8 @@ const Container = styled.div`
     display: block;
     object-fit: cover;
     width: 100%;
+    height: auto;
     min-height: 105vh;
   }
-
 
 `;
