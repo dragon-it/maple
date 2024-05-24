@@ -18,7 +18,6 @@ const Container = styled.div`
   text-align: center;
   height: 70px;
   width: 100%;
-  font-family: maple-light, Arial, sans-serif;
 `;
 
 const FooterTextDiv = styled.div`
