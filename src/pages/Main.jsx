@@ -54,6 +54,7 @@ const FavoriteWrap = styled.div`
   height: auto;
   background-color: rgba(0, 0, 0, 0.53);
   border-radius: 5px;
+  
   @media screen and (max-width:768px){
     top: 130px;
   }

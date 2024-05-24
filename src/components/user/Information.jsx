@@ -187,7 +187,7 @@ const SpiritText = styled.div`
   bottom: 40px;
   right: 0;
   color: white;
-  font-family: maple-light;
+   font-family: MaplestoryOTFLight;
   border-radius: 5px;
 `
 
