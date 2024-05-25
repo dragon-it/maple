@@ -27,12 +27,14 @@ export const User = () => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
       setError(null); // 오류 상태 초기화
+      setActiveTab(1); 
       await fetchData(characterName, setResult, setLoading, setError);
       setLoading(false);
     };
   
     fetchDataAndUpdateState();
-  }, [characterName]);
+  }, [characterName]); 
+  
   
 
 
@@ -87,7 +89,7 @@ const Container = styled.div`
   margin-top: 40px;
 
   @media screen and (max-width:1024px) {
-    margin-top: 80px;
+    margin-top: 70px;
   }
 
   @media screen and (max-width:576px) {
