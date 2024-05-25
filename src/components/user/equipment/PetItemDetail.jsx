@@ -99,6 +99,7 @@ const Container = styled.div`
   padding: 0px 10px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: sans-serif;
 
   @media screen and (max-width:1024px) {
     width: 300px;
