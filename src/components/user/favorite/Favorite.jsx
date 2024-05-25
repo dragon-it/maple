@@ -27,7 +27,7 @@ export const Favorite = () => {
   return (
     <FavoriteWrap>
       <FavoriteHeader>즐겨찾기</FavoriteHeader>
-      <ul>
+      <>
         {favoriteCharacters.length > 0 ? (
             favoriteCharacters.map((characterName) => (
               <CharacterNameListItem key={characterName} onClick={() => navigateToCharacter(characterName)}>
@@ -41,7 +41,7 @@ export const Favorite = () => {
         ) : (
           <NoFavoriteText>즐겨찾기한 캐릭터가 없습니다.</NoFavoriteText>
         )}
-      </ul>
+      </>
     </FavoriteWrap>
   );
 };
@@ -63,7 +63,7 @@ const FavoriteHeader = styled.div`
   }
 `
 
-const CharacterNameListItem = styled.li`
+const CharacterNameListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
