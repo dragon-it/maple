@@ -23,7 +23,7 @@ export const CashItemDetail = ({ item, clicked }) => {
       </ItemNameWrap>
       <IconWrap>
         <IconImage>
-          <img src={item.cash_item_icon} alt={item.cash_item_icon} /> 
+          <img src={item.cash_item_icon} alt="cash_item" /> 
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
