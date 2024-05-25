@@ -124,7 +124,7 @@ export const ItemDetail = ({ item, clicked }) => {
       </ItemNameWrap>
       <IconWrap>
         <IconImage grade={item.potential_option_grade}>
-          <img src={item.item_icon || item.android_icon} alt={`item_name`} /> 
+          <img src={item.item_icon || item.android_icon} alt='android_icon' /> 
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
