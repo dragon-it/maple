@@ -6,7 +6,6 @@ export const PetItemDetail = ({ item, clicked }) => {
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
   }
 
-  console.log(item)
   // 날짜 함수
   const formatExpire = (expireString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -100,6 +99,7 @@ const Container = styled.div`
   padding: 0px 10px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: sans-serif;
 
   @media screen and (max-width:1024px) {
     width: 300px;

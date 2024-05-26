@@ -66,6 +66,7 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
   height: fit-content;
+  font-family: sans-serif;
   
   @media screen and (max-width:1024px) {
     width: 255px;
