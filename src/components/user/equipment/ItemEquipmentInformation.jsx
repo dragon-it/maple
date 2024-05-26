@@ -20,11 +20,9 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   
   // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
-  console.log(selectedItem)
 
   // 클릭 설정
   const [clicked, setClicked] = useState(false);
-  console.log(clicked)
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState('장비'); 
   
@@ -46,7 +44,6 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setClicked(!clicked); // 클릭 시 clicked 상태 반전
-    console.log(item)
   };
 
 

@@ -23,7 +23,7 @@ export const CashItemDetail = ({ item, clicked }) => {
       </ItemNameWrap>
       <IconWrap>
         <IconImage>
-          <img src={item.cash_item_icon} alt={item.cash_item_icon} /> 
+          <img src={item.cash_item_icon} alt="cash_item" /> 
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
@@ -73,6 +73,7 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
   height: fit-content;
+  font-family: sans-serif;
     
   @media screen and (max-width:1024px) {
     width: 300px;

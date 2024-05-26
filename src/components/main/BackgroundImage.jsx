@@ -16,7 +16,7 @@ export const BackgroundImage = () => {
 
   return (
     <Container>
-      <img src={imageSrc} alt="Background"/>
+      <img src={imageSrc} alt="Background" width="1920" height="1080" />
     </Container>
   );
 };
