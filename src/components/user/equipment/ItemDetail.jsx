@@ -124,7 +124,7 @@ export const ItemDetail = ({ item, clicked }) => {
       </ItemNameWrap>
       <IconWrap>
         <IconImage grade={item.potential_option_grade}>
-          <img src={item.item_icon || item.android_icon} alt={`item_name`} /> 
+          <img src={item.item_icon || item.android_icon} alt='android_icon' /> 
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
@@ -274,6 +274,7 @@ const Container = styled.div`
   padding: 0px 10px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: sans-serif;
   
   @media screen and (max-width:1024px) {
     width: 300px;

@@ -41,7 +41,12 @@ export const Search = ({ error }) => {
               UserRoute={UserRoute}
             />
             <StyledButton UserRoute={UserRoute}>
-              <img src={UserRoute ? serchIcon_small : serchIcon_big} alt="검색" />
+            <img 
+              src={UserRoute ? serchIcon_small : serchIcon_big} 
+              alt="검색" 
+              width={UserRoute ? "18" : "23"} 
+              height={UserRoute ? "18" : "23"}
+            />
             </StyledButton>
           </InputWrap>
         </InputContainer>

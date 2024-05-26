@@ -68,6 +68,7 @@ const Container = styled.div`
   color: white; 
   padding: 0px 10px;
   padding-bottom: 10px;
+  font-family: sans-serif;
 
   @media screen and (max-width:1280px) {
     position: fixed;
