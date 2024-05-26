@@ -9,7 +9,9 @@ export const Error = ({ errorMessage, error }) => {
       <SearchWrap>
         <Search error={error}/>
       </SearchWrap>
-      <ErrorImg><img src={error_image} alt="error_image" /></ErrorImg>
+      <ErrorImg>
+        <img src={error_image} alt="error_image" width="207" height="258" />
+      </ErrorImg>
       <ErrorText>{errorMessage}</ErrorText>
     </ErrorPageWrap>
   );
@@ -36,6 +38,8 @@ const ErrorText = styled.div`
 `;
 
 const ErrorImg = styled.div`
+    width: 207px;
+    height: 258px;
 
   @media screen and (max-width:1024px) {
     img{
