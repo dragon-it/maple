@@ -1,18 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import whiteBGI_mobile from '../../assets/Henesys-mobile.webp';
+import darkBGI_mobile from '../../assets/Kerning-City-mobile.webp';
 import whiteBGI from '../../assets/Henesys.webp';
 import darkBGI from '../../assets/Kerning-City.webp';
 import { useTheme } from '../../context/ThemeProvider';
 
-
 export const BackgroundImage = () => {
-  const { theme } = useTheme(); 
-  const [imageSrc, setImageSrc] = useState(theme === 'dark' ? darkBGI : whiteBGI);
+  const { theme } = useTheme();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const getImageSrc = (width, theme) => {
+    if (width <= 1024) { 
+      return theme === 'dark' ? darkBGI_mobile : whiteBGI_mobile;
+    } else { 
+      return theme === 'dark' ? darkBGI : whiteBGI;
+    }
+  };
+
+  const [imageSrc, setImageSrc] = useState(getImageSrc(windowWidth, theme));
 
   useEffect(() => {
-    // 테마가 변경될 때마다 이미지 소스를 업데이트합니다.
-    setImageSrc(theme === 'dark' ? darkBGI : whiteBGI);
-  }, [theme]); // 테마 모드가 변경될 때마다 이 effect가 실행됩니다.
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    setImageSrc(getImageSrc(windowWidth, theme));
+  }, [theme, windowWidth]);
 
   return (
     <Container>
@@ -27,8 +47,8 @@ const Container = styled.div`
   img {
     display: block;
     object-fit: cover;
-    width: 100%;
+    width: 100vw;
     height: auto;
-    min-height: 105vh;
+    min-height: 100vh;
   }
 `;
