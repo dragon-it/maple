@@ -38,12 +38,16 @@ const ErrorText = styled.div`
 `;
 
 const ErrorImg = styled.div`
-    width: 207px;
-    height: 258px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 207px;
+  height: 258px;
 
   @media screen and (max-width:1024px) {
     img{
       width: 160px;
+      height: auto;
     }
   }
 
