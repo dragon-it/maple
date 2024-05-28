@@ -49,13 +49,12 @@ const SelectContainer = styled.div`
   outline: 1px solid black;
   font-family: maple-light;
 
-  @media screen and (max-width:1280px) {
+  @media screen and (max-width:1504px) {
     display: none;
   }
 
 
 `
-
 const Container = styled.div`
   position: absolute;
   right: -322px;
@@ -70,26 +69,20 @@ const Container = styled.div`
   padding-bottom: 10px;
   font-family: sans-serif;
 
-  @media screen and (max-width:1280px) {
+  @media screen and (max-width:1504px) {
     position: fixed;
-    left: 37%;
+    left: 50%;
     top: 15%;
     z-index: 99999;
+    transform: translateX(-50%);
   }
 
-  @media screen and (max-width:768px) {
-    left: 25%;
-  }
-
-
-  @media screen and (max-width:576px) {
-    left: 11%;
-  }
 
   @media screen and (max-width:380px) {
     width: 292px;
   }
 `
+
 
 const SkillNameWrap = styled.div`
   display: flex;
