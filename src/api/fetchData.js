@@ -1,5 +1,6 @@
-import { getOcidApi } from './api';
+import { getGuildBasicInformation, getOcidApi, getOguildId } from './api';
 import apiFunctions from '../components/user/ApiFuntion';
+
 
 const getAllCaseCombinations = (str) => {
   if (str.length === 0) return [''];
@@ -33,6 +34,7 @@ const getOcid = async (characterName) => {
   }
 };
 
+
 const fetchData = async (characterName, setResult, setLoading, setError) => {
   if (characterName.trim() !== '') {
     try {
@@ -44,6 +46,17 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         );
 
         const resultObject = Object.fromEntries(apiFunctions.map(({name}, index) => [name, results[index]]));
+
+        const { character_guild_name, world_name } = resultObject.getBasicInformation;
+
+        // OguildId 가져오기
+        const oguildId = await getOguildId(character_guild_name, world_name);
+
+        const guildBasicInformation = await getGuildBasicInformation(oguildId.oguild_id);
+
+        // 결과 객체에 길드 정보 추가
+        resultObject.guildBasicInformation = guildBasicInformation;
+
         setResult(resultObject);
       } else {
         setError('OCID 가져오기 오류.');
