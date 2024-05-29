@@ -63,7 +63,7 @@ const Container = styled.div`
   padding: 7px;
 `
 const SkillHeader = styled.div`
-    font-size: 15px;
+  font-size: 15px;
   font-weight: 700;
   color: rgb(220,252,2);
   margin-bottom: 5px;
