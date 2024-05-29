@@ -144,8 +144,17 @@ const getUnionRaider = async (ocid) => {
   return callMapleStoryAPI('user/union-raider', { ocid, date: getFormattedDate() });
 };
 
+const getOguildId = async (guildName, worldName) => {
+  return callMapleStoryAPI('guild/id', { guild_name: guildName, world_name: worldName });
+};
+
+const getGuildBasicInformation = async (oguildId) => {
+  return callMapleStoryAPI('guild/basic', { oguild_id: oguildId, date: getFormattedDate() });
+};
 
 export {   
+  callMapleStoryAPI,
+  getFormattedDate,
   getOcidApi,
   getBasicInformation,
   getCharacterStat,
@@ -168,5 +177,7 @@ export {
   getDojang,
   getUnionArtiFact,
   getUnion,
-  getUnionRaider
+  getUnionRaider,
+  getOguildId,
+  getGuildBasicInformation
 };
