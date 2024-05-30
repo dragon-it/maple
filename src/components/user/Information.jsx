@@ -106,7 +106,6 @@ const InfoWrap = styled.div`
   display: flex;
   gap: 5px;
   flex-direction: row;
-  font-family: sans-serif;
   
   img {
     display: flex;

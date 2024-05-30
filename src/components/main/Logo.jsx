@@ -30,8 +30,7 @@ const Container = styled.div`
   align-items: center;
   margin-right: 10px;
   cursor: pointer;
-  font-size: ${(props) => (props.UserRoute ? '25px' : '30px')};
-  z-index: 1;
+  height: 100%;
   img {
     width: 40px;
     height: 40px;
@@ -40,9 +39,10 @@ const Container = styled.div`
 
 `;
 
-const LogoText = styled.div`
+const LogoText = styled.span`
   font-family: maple-light;
   color: ${({ theme, UserRoute, error }) => error ? 'black' : (UserRoute ? theme.logoColor : 'black')};
+  font-size: ${(props) => (props.UserRoute ? '25px' : '30px')};
 
   @media screen and (max-width:1024px) {
     color: black;

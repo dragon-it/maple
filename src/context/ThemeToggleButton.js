@@ -26,9 +26,6 @@ const ToggleWrapper = styled.button`
   border: ${({ theme }) => theme.toggleBorderColor};
   color: ${({ theme }) => theme.toggleColor};
   font-size: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 96px;
   height: 48px;
   border-radius: 30px;
@@ -63,6 +60,8 @@ const Icon = styled.img`
   height: 32px;
 
   @media screen and (max-width: 768px) {
-    display: block; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;

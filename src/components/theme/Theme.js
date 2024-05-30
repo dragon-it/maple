@@ -3,7 +3,7 @@ export const light = {
   toggleColor: 'rgb(255,255,255)',
   toggleBorderColor: '1px solid rgb(44, 45, 51)', 
   bgColor: 'rgba(255,255,255, 0.63)',
-  textColor: 'rgb(49, 48, 46)',
+  textColor: 'rgb(0,0,0)',
   borderColor: '1px solid rgb(234, 234, 234)', 
   logoColor: 'rgb(0,0,0)',
   tabColor: 'rgb(0,0,0)',
