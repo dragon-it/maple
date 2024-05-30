@@ -47,9 +47,10 @@ export const Favorite = () => {
 };
 
 const FavoriteWrap = styled.div`
-  padding: 10px 0px;
+  padding: 10px;
   color: rgb(255,255,255);
   max-height: 500px;
+  font-family: maple-light;
 `
 
 const FavoriteHeader = styled.div`
@@ -67,8 +68,6 @@ const CharacterNameListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 100px;
-  padding: 0px 10px;
   cursor: pointer;
   font-size: 14px;
   margin-bottom: 5px;
