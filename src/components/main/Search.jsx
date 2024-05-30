@@ -59,34 +59,16 @@ export const Search = ({ error }) => {
 };
 
 const Container = styled.div`
-  width: 100%;
 
-  @media screen and (max-width:1024px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  @media screen and (max-width:576px) {
-    
-  }
 `;
 
 const InputContainer = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 50px;
-  z-index: 99;
 
   @media screen and (max-width:1024px) {
-    justify-content: center;
     flex-direction: column;
-    height: 100%;
-    
   }
-
 
 `;
 

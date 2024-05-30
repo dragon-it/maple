@@ -161,7 +161,6 @@ const SetEffectDetail = styled.div`
   color: white;
   font-size: 12px;
   line-height: 14px;
-  font-family: sans-serif;
 `
 
 

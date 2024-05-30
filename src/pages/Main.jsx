@@ -21,10 +21,10 @@ export const Main = () => {
 }
 
 const Container = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: absolute;
   height: 100%;
   width: 100%;
 `
@@ -35,7 +35,6 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  top: 0;
   width: 100%;
   height: 100px;
   z-index: 9999;
@@ -43,7 +42,6 @@ const SearchWrap = styled.div`
 
 
 const FooterWrap = styled.div`
-  bottom: 0;
   width: 100%;
   z-index: 999;
 `
