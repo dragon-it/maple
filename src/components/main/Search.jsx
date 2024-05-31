@@ -27,9 +27,8 @@ export const Search = ({ error }) => {
   const isUserRoute = location.pathname.startsWith('/user/');
 
   return (
-    <Container>
-      <form onSubmit={handleSubmit}>
-        <InputContainer isUserRoute={isUserRoute}>
+    <>
+        <InputContainer isUserRoute={isUserRoute}  onSubmit={handleSubmit}>
           <Logo 
           error={error}
           isUserRoute={isUserRoute}
@@ -52,17 +51,16 @@ export const Search = ({ error }) => {
             </StyledButton>
           </InputWrap>
         </InputContainer>
-      </form>
       <ThemeToggleWrap>
         <ThemeToggleButton /> 
       </ThemeToggleWrap>
-    </Container>
+    </>
   );
 };
 
-const Container = styled.div``;
 
-const InputContainer = styled.div`
+
+const InputContainer = styled.form`
   display: flex;
   align-items: center;
 
