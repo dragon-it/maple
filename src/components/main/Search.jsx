@@ -63,6 +63,9 @@ export const Search = ({ error }) => {
 const InputContainer = styled.form`
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 5px;
 
   @media screen and (max-width:1024px) {
     flex-direction: column;
@@ -77,17 +80,13 @@ const InputWrap = styled.div`
 `;
 
 const StyledInput = styled.input`
-  display: flex;
   position: relative;
-  justify-content: center;
-  align-items: center;
-  width: ${({ isUserRoute }) => (isUserRoute ? '210px' : '240px')};
-  height: ${({ isUserRoute }) => (isUserRoute ? '25px' : '35px')};
+  width: 220px;
+  height: 30px;
   padding: 2px 10px;
   border: 2px solid rgba(0, 0, 0, 0.9);
   border-radius: 7px;
   outline: none;
-  font-size: 13px;
   background-color: rgba(255, 255, 255, 0.4);
 
   &:focus {
