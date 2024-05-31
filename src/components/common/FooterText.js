@@ -1,4 +1,3 @@
-// FooterText.js
 import React from 'react';
 
 const FooterText = () => (
