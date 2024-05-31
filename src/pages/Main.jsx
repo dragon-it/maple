@@ -13,9 +13,7 @@ export const Main = () => {
           <Favorite/>
         </FavoriteWrap>
       </SearchWrap>
-      <FooterWrap>
         <Footer />
-      </FooterWrap>
     </Container>
   )
 }
@@ -37,14 +35,11 @@ const SearchWrap = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100px;
-  z-index: 9999;
-`
-
-
-const FooterWrap = styled.div`
-  width: 100%;
   z-index: 999;
 `
+
+
+
 
 const FavoriteWrap = styled.div`
   position: absolute;
