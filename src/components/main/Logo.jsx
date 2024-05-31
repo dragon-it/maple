@@ -24,29 +24,31 @@ export const Logo = ({ error, isUserRoute }) => {
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  gap: 3px;
+  font-family: maple-light;
   cursor: pointer;
   height: 100%;
-  
+  width: 90px;
 
   img {
     width: 40px;
     height: 40px;
-    margin-right: 3px;
   }
 `;
 
 const StyledLogoText = styled.span`
-  font-family: maple-light;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: ${({ theme, isUserRoute, error }) => error ? 'black' : (isUserRoute ? theme.logoColor : 'black')};
-  font-size: ${(props) => (props.isUserRoute ? '25px' : '30px')};
+  font-size: 25px;
 
   @media screen and (max-width:1024px) {
     color: black;
   }
 
-  @media screen and (max-width:576px) {
-    font-size: 25px;
-  }
+
 `;
 
