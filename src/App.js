@@ -9,7 +9,7 @@ import { ThemeProvider } from './context/ThemeProvider';
 import ThemeToggleButton from './context/ThemeToggleButton';
 import { GlobalStyle } from './components/theme/GlobalStyles';
 import { Error } from './pages/Error';
-import { Analytics } from "@vercel/analytics/react"
+
 
 
 const UserContainer = styled.div`
@@ -54,7 +54,6 @@ function App() {
         </ThemeToggleWrap>
         <BackgroundImage />
       </Container>
-      <Analytics/>
     </ThemeProvider>
   );
 }
