@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import FooterText from './FooterText';
 
-
 export const Footer = () => {
   return (
     <Container>
-      <FooterTextSpan>{FooterText}</FooterTextSpan>
+      <FooterTextSpan>
+        <FooterText />
+      </FooterTextSpan>
     </Container>
   );
 };
@@ -22,5 +23,4 @@ const Container = styled.div`
 
 const FooterTextSpan = styled.span`
   white-space: pre-line; 
-  
 `;
