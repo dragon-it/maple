@@ -79,5 +79,6 @@ const CharacterNameListItem = styled.div`
 `
 
 const NoFavoriteText = styled.div`
-  text-align: center;
+  display: flex;
+  justify-content: center;
 `
