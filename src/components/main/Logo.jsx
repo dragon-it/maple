@@ -27,6 +27,7 @@ const StyledContainer = styled.div`
   margin-right: 10px;
   cursor: pointer;
   height: 100%;
+  
 
   img {
     width: 40px;

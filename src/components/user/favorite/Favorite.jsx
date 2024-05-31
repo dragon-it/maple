@@ -47,17 +47,18 @@ export const Favorite = () => {
 };
 
 const FavoriteWrap = styled.div`
+  width: 200px;
   padding: 10px;
   color: rgb(255,255,255);
   max-height: 500px;
   font-family: maple-light;
 `
 
-const FavoriteHeader = styled.div`
-  width: 200px;
+const FavoriteHeader = styled.span`
+  display: flex;
+  justify-content: center;
   font-size: 18px;
-  margin-bottom: 20px;
-  text-align: center;
+  margin-bottom: 10px;
 
   @media screen and (max-width:1024px) {
     font-size: 14px;
