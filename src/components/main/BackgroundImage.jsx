@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import whiteBGI from '../../assets/Henesys.webp';
-import darkBGI from '../../assets/Kerning-City.webp';
-import { useTheme } from '../../context/ThemeProvider';
-
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import whiteBGI from "../../assets/Henesys.webp";
+import darkBGI from "../../assets/Kerning-City.webp";
+import { useTheme } from "../../context/ThemeProvider";
 
 export const BackgroundImage = () => {
-  const { theme } = useTheme(); 
-  const [imageSrc, setImageSrc] = useState(theme === 'dark' ? darkBGI : whiteBGI);
+  const { theme } = useTheme();
+  const [imageSrc, setImageSrc] = useState(
+    theme === "dark" ? darkBGI : whiteBGI
+  );
 
   useEffect(() => {
-    setImageSrc(theme === 'dark' ? darkBGI : whiteBGI);
-  }, [theme]); 
+    setImageSrc(theme === "dark" ? darkBGI : whiteBGI);
+  }, [theme]);
 
   return (
     <Container>
@@ -22,7 +23,7 @@ export const BackgroundImage = () => {
 
 const Container = styled.div`
   position: fixed;
-  
+
   img {
     display: block;
     object-fit: cover;

@@ -1,10 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; 
-import logo from '../../assets/Logo.png'
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/Logo.png";
 
 export const Logo = ({ error, isUserRoute }) => {
-  
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -12,11 +11,11 @@ export const Logo = ({ error, isUserRoute }) => {
   };
 
   return (
-    <StyledContainer 
-      onClick={handleClick} 
-      isUserRoute={isUserRoute}>
+    <StyledContainer onClick={handleClick} isUserRoute={isUserRoute}>
       <img src={logo} alt="Logo" />
-      <StyledLogoText isUserRoute={isUserRoute} error={error}>메짱</StyledLogoText>
+      <StyledLogoText isUserRoute={isUserRoute} error={error}>
+        메짱
+      </StyledLogoText>
     </StyledContainer>
   );
 };
@@ -42,13 +41,11 @@ const StyledLogoText = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ theme, isUserRoute, error }) => error ? 'black' : (isUserRoute ? theme.logoColor : 'black')};
+  color: ${({ theme, isUserRoute, error }) =>
+    error ? "black" : isUserRoute ? theme.logoColor : "black"};
   font-size: 25px;
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     color: black;
   }
-
-
 `;
-
