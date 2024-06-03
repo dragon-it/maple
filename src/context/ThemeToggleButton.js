@@ -1,16 +1,19 @@
-import React from 'react';
-import { useTheme } from './ThemeProvider';
-import styled from 'styled-components';
-import dark_theme_icon from '../assets/themeIcons/dark_mode_icon.png'
-import light_theme_icon from '../assets/themeIcons/light_mode_icon3.png'
+import React from "react";
+import { useTheme } from "./ThemeProvider";
+import styled from "styled-components";
+import dark_theme_icon from "../assets/themeIcons/dark_mode_icon.png";
+import light_theme_icon from "../assets/themeIcons/light_mode_icon3.png";
 
 function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
 
   return (
     <ToggleWrapper onClick={toggleTheme}>
-      <Icon src={theme === 'dark' ? light_theme_icon : dark_theme_icon} alt="theme-icon" />
-      <Text>{theme === 'dark' ? 'light' : 'dark'}</Text>
+      <Icon
+        src={theme === "dark" ? light_theme_icon : dark_theme_icon}
+        alt="theme-icon"
+      />
+      <Text>{theme === "dark" ? "light" : "dark"}</Text>
     </ToggleWrapper>
   );
 }
@@ -31,8 +34,7 @@ const ToggleWrapper = styled.button`
   border-radius: 30px;
   cursor: pointer;
 
-
-  @media screen and (max-width: 1024px){
+  @media screen and (max-width: 1024px) {
     width: 60px;
     height: 32px;
     font-size: 15px;
@@ -55,7 +57,7 @@ const Text = styled.span`
 `;
 
 const Icon = styled.img`
-  display: none; 
+  display: none;
   width: 32px;
   height: 32px;
 

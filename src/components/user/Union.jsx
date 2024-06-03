@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { UnionInfo } from './union/UnionInfo'
-import styled from 'styled-components'
-import { UnionArtifact } from './union/UnionArtifact'
+import React, { useState } from "react";
+import { UnionInfo } from "./union/UnionInfo";
+import styled from "styled-components";
+import { UnionArtifact } from "./union/UnionArtifact";
 
 export const Union = ({ result }) => {
   const [showUnionRaider, setShowUnionRaider] = useState(false);
@@ -9,26 +9,26 @@ export const Union = ({ result }) => {
   return (
     <Container>
       <InfoWrap>
-        <UnionArtifact 
-          Data={{ 
-            unionArtiFact: result.getUnionArtiFact, 
-            unionRaider: result.getUnionRaider 
+        <UnionArtifact
+          Data={{
+            unionArtiFact: result.getUnionArtiFact,
+            unionRaider: result.getUnionRaider,
           }}
           showUnionRaider={showUnionRaider}
           setShowUnionRaider={setShowUnionRaider}
         />
-        <UnionInfo 
-          Data={{ 
-            unionArtiFact: result.getUnionArtiFact, 
+        <UnionInfo
+          Data={{
+            unionArtiFact: result.getUnionArtiFact,
             union: result.getUnion,
-            unionRaider: result.getUnionRaider 
+            unionRaider: result.getUnionRaider,
           }}
           showUnionRaider={showUnionRaider}
         />
       </InfoWrap>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   position: relative;
@@ -36,10 +36,9 @@ const Container = styled.div`
   padding-top: 5px;
   font-family: maple-light;
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
   }
-
-`
+`;
 
 const InfoWrap = styled.div`
   display: flex;
@@ -47,11 +46,10 @@ const InfoWrap = styled.div`
   gap: 5px;
   height: 100%;
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     flex-direction: column-reverse;
   }
 
-  @media screen and (max-width:576px) {
-
-}
-`
+  @media screen and (max-width: 576px) {
+  }
+`;

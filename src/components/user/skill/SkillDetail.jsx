@@ -1,18 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 export const SkillDetail = ({ item, clicked, onClose }) => {
-
-  
   if (!item) {
-    return <SelectContainer>스킬을 선택해주세요.</SelectContainer>
+    return <SelectContainer>스킬을 선택해주세요.</SelectContainer>;
   }
 
   return (
     <Container onClick={onClose}>
-      <div style={{ position: 'relative' }}>
-        {clicked && <PinImage />}
-      </div>
+      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
       <SkillNameWrap>
         <h2>
           <SkillName>{item.skill_name}</SkillName>
@@ -41,7 +37,7 @@ const SelectContainer = styled.div`
   align-items: center;
   width: 290px;
   height: 50px;
-  color: white; 
+  color: white;
   padding: 0px 10px;
   background-color: #000000;
   border-radius: 5px;
@@ -49,12 +45,10 @@ const SelectContainer = styled.div`
   outline: 1px solid black;
   font-family: maple-light;
 
-  @media screen and (max-width:1504px) {
+  @media screen and (max-width: 1504px) {
     display: none;
   }
-
-
-`
+`;
 const Container = styled.div`
   position: absolute;
   right: -322px;
@@ -64,11 +58,11 @@ const Container = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   line-height: 16px;
-  color: white; 
+  color: white;
   padding: 0px 10px;
   padding-bottom: 10px;
 
-  @media screen and (max-width:1504px) {
+  @media screen and (max-width: 1504px) {
     position: fixed;
     left: 50%;
     top: 15%;
@@ -76,29 +70,25 @@ const Container = styled.div`
     transform: translateX(-50%);
   }
 
-
-  @media screen and (max-width:380px) {
+  @media screen and (max-width: 380px) {
     width: 292px;
   }
-`
-
+`;
 
 const SkillNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-  h2{
+  h2 {
     font-size: 16px;
     padding: 10px 0;
     line-height: 24px;
     text-align: center;
   }
-`
+`;
 
-const SkillName = styled.div`
-  
-`
+const SkillName = styled.div``;
 
 const IconWrap = styled.div`
   padding: 10px 0;
@@ -106,7 +96,7 @@ const IconWrap = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-`
+`;
 
 const IconImage = styled.div`
   display: flex;
@@ -116,13 +106,12 @@ const IconImage = styled.div`
   height: 60px;
   background-color: white;
   border-radius: 10px;
-  img{
+  img {
     width: 50px;
     height: 50px;
     object-fit: contain;
   }
-
-`
+`;
 
 const PinImage = styled.div`
   position: absolute;
@@ -139,11 +128,10 @@ const PinImage = styled.div`
 const SkillDescriptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-wrap;
-`
+`;
 
 const SkillEffect = styled.div`
   font-size: 13px;
   white-space: pre-wrap;
   ${({ Data }) => Data && `margin-top: 10px;`}
-  
-`
+`;

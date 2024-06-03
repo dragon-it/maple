@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Logo } from './Logo';
-import { useNavigate, useLocation } from 'react-router-dom'; 
-import ThemeToggleButton from '../../context/ThemeToggleButton';
-import serchIcon_big from '../../assets/SearchIcon_big.png';
-import serchIcon_small from '../../assets/SearchIcon_small.png';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Logo } from "./Logo";
+import { useNavigate, useLocation } from "react-router-dom";
+import ThemeToggleButton from "../../context/ThemeToggleButton";
+import serchIcon_big from "../../assets/SearchIcon_big.png";
+import serchIcon_small from "../../assets/SearchIcon_small.png";
 
 export const Search = ({ error }) => {
-  const [searchValue, setSearchValue] = useState('');
-  const navigate = useNavigate(); 
+  const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleSearch = () => {
     if (!searchValue.trim()) {
       return;
     }
-    const processedSearchValue = searchValue.replace(/\s+/g, '');
+    const processedSearchValue = searchValue.replace(/\s+/g, "");
     navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
   };
 
@@ -24,41 +24,36 @@ export const Search = ({ error }) => {
     handleSearch();
   };
 
-  const isUserRoute = location.pathname.startsWith('/user/');
+  const isUserRoute = location.pathname.startsWith("/user/");
 
   return (
     <>
-        <InputContainer isUserRoute={isUserRoute}  onSubmit={handleSubmit}>
-          <Logo 
-          error={error}
-          isUserRoute={isUserRoute}
+      <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
+        <Logo error={error} isUserRoute={isUserRoute} />
+        <InputWrap>
+          <StyledInput
+            type="text"
+            placeholder="캐릭터 닉네임을 입력해주세요."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            isUserRoute={isUserRoute}
           />
-          <InputWrap>
-            <StyledInput
-              type="text"
-              placeholder="캐릭터 닉네임을 입력해주세요."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              isUserRoute={isUserRoute}
+          <StyledButton isUserRoute={isUserRoute}>
+            <img
+              src={isUserRoute ? serchIcon_small : serchIcon_big}
+              alt="검색"
+              width={isUserRoute ? "18" : "23"}
+              height={isUserRoute ? "18" : "23"}
             />
-            <StyledButton isUserRoute={isUserRoute}>
-              <img 
-                src={isUserRoute ? serchIcon_small : serchIcon_big} 
-                alt="검색" 
-                width={isUserRoute ? "18" : "23"} 
-                height={isUserRoute ? "18" : "23"}
-              />
-            </StyledButton>
-          </InputWrap>
-        </InputContainer>
+          </StyledButton>
+        </InputWrap>
+      </InputContainer>
       <ThemeToggleWrap>
-        <ThemeToggleButton /> 
+        <ThemeToggleButton />
       </ThemeToggleWrap>
     </>
   );
 };
-
-
 
 const InputContainer = styled.form`
   display: flex;
@@ -67,7 +62,7 @@ const InputContainer = styled.form`
   width: 100%;
   gap: 5px;
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     flex-direction: column;
   }
 `;
@@ -102,7 +97,7 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
   position: absolute;
   right: 10px;
-  width: ${({ isUserRoute }) => (isUserRoute ? '30px' : '35px')};
+  width: ${({ isUserRoute }) => (isUserRoute ? "30px" : "35px")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,7 +110,7 @@ const ThemeToggleWrap = styled.div`
   display: none;
   margin-left: 10px;
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     display: block;
     position: absolute;
     right: 10px;
