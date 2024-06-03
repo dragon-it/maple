@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import FooterText from './FooterText';
+import React from "react";
+import styled from "styled-components";
+import FooterText from "./FooterText";
 
 export const Footer = () => {
   return (
