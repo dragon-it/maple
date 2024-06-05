@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
 
-export const GuildInformation = () => {
-  return (
-    <div>GuildInformation</div>
-  )
-}
+export const GuildInformation = ({ result }) => {
+  console.log(result);
+  return <div>{result.guild_master_name}</div>;
+};
