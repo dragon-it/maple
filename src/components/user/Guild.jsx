@@ -15,15 +15,14 @@ export const Guild = ({ result }) => {
     <Container>
       <GuildHeader>Guild</GuildHeader>
       <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-        캐릭터 정보
+        길드 정보
       </Tab>
       <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-        캐릭터 장비
+        길드원
       </Tab>
       <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-        스킬
+        길드 스킬
       </Tab>
-
       {activeTab === 1 && <GuildInformation result={result} />}
       {activeTab === 2 && <GuildMember result={result} />}
       {activeTab === 3 && <GuildSkill result={result} />}
