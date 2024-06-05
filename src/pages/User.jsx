@@ -98,7 +98,7 @@ const Container = styled.div`
   margin-top: 40px;
 
   @media screen and (max-width: 1024px) {
-    margin-top: 70px;
+    margin-top: 80px;
   }
 
   @media screen and (max-width: 576px) {
@@ -124,7 +124,7 @@ const SearchWrap = styled.div`
 
   @media screen and (max-width: 1024px) {
     position: absolute;
-    top: -80px;
+    top: -90px;
     left: 0;
     width: 100%;
   }
@@ -138,6 +138,7 @@ const Tabs = styled.div`
   display: flex;
   padding: 10px 0;
   white-space: nowrap;
+  font-family: maple-light;
 `;
 
 const Tab = styled.div`
