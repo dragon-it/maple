@@ -1,55 +1,50 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    onClick(!clicked);
+  };
 
-    const handleItemClick = (item) => {
+  const handleItemHover = (item) => {
+    if (!clicked) {
+      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
       setSelectedItem(item);
-      onClick(!clicked);
-    };
-  
-    const handleItemHover = (item) => {
-      if (!clicked) { // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-        setSelectedItem(item);
-      }
-    };
-    
+    }
+  };
 
   return (
     <Container>
-      {Data.character_link_skill && Data.character_link_skill.length > 0
-      ?
-      <>
-        <SkillHeader>링크 스킬</SkillHeader>
-        <SkillWrap>
-          {Data.character_link_skill.map((item, index) => (
-            <SkillSimpleWrap
-            onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-            onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
-            >
-              <SkillIcon>
-                <img 
-                src={item.skill_icon} 
-                alt={`icon-${index}`}
-              />
-              </SkillIcon>
-              <SkillNameLevelWrap>
-                <SkillName>{item.skill_name}</SkillName>
-                <SkillLevel>Lv.{item.skill_level}</SkillLevel>
-              </SkillNameLevelWrap>
-            </SkillSimpleWrap>
-          ))}
-        </SkillWrap>
-      </>
-      :
-      <>
-        <SkillHeader>링크 스킬</SkillHeader>
-        <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
-      </>
-      }
+      {Data.character_link_skill && Data.character_link_skill.length > 0 ? (
+        <>
+          <SkillHeader>링크 스킬</SkillHeader>
+          <SkillWrap>
+            {Data.character_link_skill.map((item, index) => (
+              <SkillSimpleWrap
+                onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+                onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+              >
+                <SkillIcon>
+                  <img src={item.skill_icon} alt={`icon-${index}`} />
+                </SkillIcon>
+                <SkillNameLevelWrap>
+                  <SkillName>{item.skill_name}</SkillName>
+                  <SkillLevel>Lv.{item.skill_level}</SkillLevel>
+                </SkillNameLevelWrap>
+              </SkillSimpleWrap>
+            ))}
+          </SkillWrap>
+        </>
+      ) : (
+        <>
+          <SkillHeader>링크 스킬</SkillHeader>
+          <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
+        </>
+      )}
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   width: 100%;
@@ -59,53 +54,51 @@ const Container = styled.div`
   outline: 1px solid black;
   color: white;
   padding: 7px;
-`
+`;
 const SkillHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
-  color: rgb(220,252,2);
+  color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
-`
+`;
 const SkillWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
   width: 970px;
   cursor: pointer;
-    color: white;
-  :hover{
+  color: white;
+  :hover {
     background-color: #616161;
-    img{
+    img {
       scale: 1.2;
     }
   }
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     width: auto;
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width: 767px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media screen and (max-width:576px) {
+  @media screen and (max-width: 576px) {
     grid-template-columns: repeat(2, 1fr);
   }
-`
+`;
 
 const SkillIcon = styled.div`
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  img{
+  img {
     width: 32px;
     height: 32px;
   }
-
-
-`
+`;
 
 const SkillSimpleWrap = styled.div`
   display: flex;
@@ -113,25 +106,19 @@ const SkillSimpleWrap = styled.div`
   align-items: center;
   font-size: 12px;
   gap: 5px;
-
-`
+`;
 
 const SkillNameLevelWrap = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const SkillName = styled.div`
-
-  @media screen and (max-width:576px) {
+  @media screen and (max-width: 576px) {
     font-size: 10px;
   }
-`
+`;
 
-const SkillLevel = styled.div`
-  
-`
+const SkillLevel = styled.div``;
 
-const SkillNoDataText = styled.div`
-
-`
+const SkillNoDataText = styled.div``;
