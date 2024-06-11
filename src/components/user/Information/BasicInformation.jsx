@@ -147,6 +147,7 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: rgba(59, 66, 75, 0.9);
 `;
+
 const CharacterHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
@@ -160,7 +161,7 @@ const CharacterBody = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: row;
-  background-color: white;
+  border: 1px solid rgb(36 36 36);
   border-radius: 5px;
   background-size: cover;
   cursor: pointer;

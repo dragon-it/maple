@@ -144,7 +144,7 @@ const Tabs = styled.div`
 const Tab = styled.div`
   cursor: pointer;
   padding: 10px 8px;
-  margin: 0 10px;
+  margin: 0 5px;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
   background-color: ${({ theme, active }) =>
