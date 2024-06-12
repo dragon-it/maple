@@ -55,6 +55,7 @@ const Container = styled.div`
   color: white;
   padding: 7px;
 `;
+
 const SkillHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
@@ -62,6 +63,7 @@ const SkillHeader = styled.div`
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
+
 const SkillWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -121,4 +123,6 @@ const SkillLevel = styled.div`
   }
 `;
 
-const SkillNoDataText = styled.div``;
+const SkillNoDataText = styled.div`
+  font-family: maple-light;
+`;

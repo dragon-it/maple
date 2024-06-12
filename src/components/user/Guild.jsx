@@ -9,7 +9,19 @@ export const Guild = ({ result }) => {
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
-  console.log(result.guildBasicInformation);
+
+  // 데이터 존재 여부 확인
+  if (!result || !result.guildBasicInformation) {
+    return (
+      <Container>
+        <NoDataWrap>
+          <NoDataHeader>GUILD</NoDataHeader>
+          <NoDataText>데이터가 없습니다.</NoDataText>
+        </NoDataWrap>
+      </Container>
+    );
+  }
+
   const guildInfo = result.guildBasicInformation;
 
   return (
@@ -23,15 +35,17 @@ export const Guild = ({ result }) => {
                 src={`data:image/png;base64,${guildInfo.guild_mark}`}
                 alt="GuildIcon"
               />
-            ) : (
+            ) : guildInfo.guild_mark_custom ? (
               <img
                 src={`data:image/png;base64,${guildInfo.guild_mark_custom}`}
                 alt="GuildIcon"
               />
+            ) : (
+              <div>아이콘 없음</div>
             )}
           </Icon>
-          <Name>{guildInfo.guild_name}</Name>
-          <Level>Lv.{guildInfo.guild_level}</Level>
+          <Name>{guildInfo.guild_name || "이름 없음"}</Name>
+          <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
         </GuildBasicInformation>
         <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
           길드 정보
@@ -139,4 +153,18 @@ const TabHeader = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: rgb(200, 175, 137);
+`;
+
+const NoDataWrap = styled.div``;
+
+const NoDataHeader = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220, 252, 2);
+  margin-bottom: 5px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`;
+
+const NoDataText = styled.div`
+  font-family: maple-light;
 `;
