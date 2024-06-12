@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const GuildSkill = () => {
-  return (
-    <div>GuildSkill</div>
-  )
-}
+  return <div></div>;
+};

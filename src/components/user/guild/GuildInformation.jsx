@@ -2,31 +2,35 @@ import React from "react";
 import styled from "styled-components";
 
 export const GuildInformation = ({ result }) => {
-  console.log(result.guildBasicInformation);
+  const {
+    guild_master_name,
+    guild_fame,
+    guild_level,
+    guild_point,
+    guild_member_count,
+  } = result.guildBasicInformation;
+
   return (
     <Container>
-      <GuildMaster>
-        길드 마스터 : {result.guildBasicInformation.guild_master_name}
-      </GuildMaster>
-      <GuildFame>
-        길드 명성치 : {result.guildBasicInformation.guild_fame}
-      </GuildFame>
-      <GuildLevel>
-        길드 레벨 : {result.guildBasicInformation.guild_level}
-      </GuildLevel>
-      <GuildMemberCount>
-        멤버수 : {result.guildBasicInformation.guild_member_count}명
-      </GuildMemberCount>
+      <Master>길드 마스터 : {guild_master_name}</Master>
+      <Fame>길드 명성치 : {guild_fame.toLocaleString()}</Fame>
+      <Level>길드 레벨 : {guild_level}</Level>
+      <Point>길드 포인트 : {guild_point.toLocaleString()}</Point>
+      <MemberCount>
+        멤버수 : {guild_member_count.toLocaleString()}명
+      </MemberCount>
     </Container>
   );
 };
 
 const Container = styled.div``;
 
-const GuildMaster = styled.div``;
+const Master = styled.div``;
 
-const GuildFame = styled.div``;
+const Fame = styled.div``;
 
-const GuildLevel = styled.div``;
+const Level = styled.div``;
 
-const GuildMemberCount = styled.div``;
+const Point = styled.div``;
+
+const MemberCount = styled.div``;
