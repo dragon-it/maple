@@ -1,13 +1,13 @@
-import React from 'react';
-import error_image from '../assets/error_image.png';
-import styled from 'styled-components';
-import { Search } from '../components/main/Search';
+import React from "react";
+import error_image from "../assets/error_image.png";
+import styled from "styled-components";
+import { Search } from "../components/main/Search";
 
 export const Error = ({ errorMessage, error }) => {
   return (
     <ErrorPageWrap>
       <SearchWrap>
-        <Search error={error}/>
+        <Search error={error} />
       </SearchWrap>
       <ErrorImg>
         <img src={error_image} alt="error_image" width="207" height="258" />
@@ -32,7 +32,7 @@ const ErrorPageWrap = styled.div`
 const ErrorText = styled.div`
   font-family: Maple-light;
   font-size: 16px;
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     font-size: 13px;
   }
 `;
@@ -43,19 +43,19 @@ const ErrorImg = styled.div`
   align-items: center;
   width: 207px;
 
-  @media screen and (max-width:1024px) {
-    img{
+  @media screen and (max-width: 1024px) {
+    img {
       width: 160px;
       height: auto;
     }
   }
 
-  @media screen and (max-width:576px) {
-      img{
-        width: 130px;
-      }
+  @media screen and (max-width: 576px) {
+    img {
+      width: 130px;
+    }
   }
-`
+`;
 
 const SearchWrap = styled.div`
   position: absolute;
@@ -66,7 +66,8 @@ const SearchWrap = styled.div`
   top: 0;
   width: 100%;
   height: 100px;
-  @media screen and (max-width:1024px) {
+  color: black;
+  @media screen and (max-width: 1024px) {
     position: absolute;
     top: 0;
   }

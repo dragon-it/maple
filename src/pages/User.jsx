@@ -22,7 +22,7 @@ export const User = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  console.log(result);
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
@@ -45,7 +45,7 @@ export const User = () => {
         <ErrorWrap>
           <Error
             error={error}
-            errorMessage="존재하지 않는 캐릭터 명이거나 오랫동안 갱신되지 않은 캐릭터입니다."
+            errorMessage="존재하지 않는 캐릭터 명이거나 오랫동안 접속하지 않은 캐릭터입니다."
           />
         </ErrorWrap>
       ) : (
