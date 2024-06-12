@@ -22,7 +22,7 @@ export const User = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log(result);
+  // console.log(result);
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
@@ -65,9 +65,9 @@ export const User = () => {
                 <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
                   유니온
                 </Tab>
-                <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
+                {/* <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
                   길드
-                </Tab>
+                </Tab> */}
               </Tabs>
               <SearchWrap>
                 <Search />
@@ -77,7 +77,7 @@ export const User = () => {
             {activeTab === 2 && <Equipment result={result} />}
             {activeTab === 3 && <Skill result={result} />}
             {activeTab === 4 && <Union result={result} />}
-            {activeTab === 5 && <Guild result={result} />}
+            {/* {activeTab === 5 && <Guild result={result} />} */}
           </Container>
           <FooterWrap>
             <Footer />
