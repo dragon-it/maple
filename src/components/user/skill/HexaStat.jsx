@@ -152,4 +152,6 @@ const StatName = styled.div``;
 
 const StatValue = styled.div``;
 
-const SkillNoDataText = styled.div``;
+const SkillNoDataText = styled.div`
+  font-family: maple-light;
+`;
