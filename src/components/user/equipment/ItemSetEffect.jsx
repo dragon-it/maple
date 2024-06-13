@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 export const ItemSetEffect = ({ setinfo }) => {
   const [expandedArray, setExpandedArray] = useState([]);
 
   const extractAll = (setOption) => {
     const patterns = [
-      { regex: /공격력\s*:\s*\+(\d+),\s*마력\s*:\s*\+(\d+)/, replacement: '공격력 / 마력 : +$1' },
-      { regex: /최대 HP\s*:\s*\+(\d+),\s*최대 MP\s*:\s*\+(\d+)/, replacement: '최대 HP / 최대 MP : +$1' },
-      { regex: /최대 HP\s*:\s*\+(\d+)%,\s*최대 MP\s*:\s*\+(\d+)%/, replacement: '최대 HP / 최대 MP : +$1%' } // 백분율을 위한 새로운 패턴
+      {
+        regex: /공격력\s*:\s*\+(\d+),\s*마력\s*:\s*\+(\d+)/,
+        replacement: "공격력 / 마력 : +$1",
+      },
+      {
+        regex: /최대 HP\s*:\s*\+(\d+),\s*최대 MP\s*:\s*\+(\d+)/,
+        replacement: "최대 HP / 최대 MP : +$1",
+      },
+      {
+        regex: /최대 HP\s*:\s*\+(\d+)%,\s*최대 MP\s*:\s*\+(\d+)%/,
+        replacement: "최대 HP / 최대 MP : +$1%",
+      }, // 백분율을 위한 새로운 패턴
     ];
 
     let updatedOption = setOption;
-  
+
     patterns.forEach(({ regex, replacement }) => {
       const regexResult = updatedOption.match(regex);
       if (regexResult) {
@@ -21,8 +30,6 @@ export const ItemSetEffect = ({ setinfo }) => {
     });
     return updatedOption;
   };
-  
-  
 
   const handleSetClick = (index) => {
     setExpandedArray((prevArray) => {
@@ -32,7 +39,6 @@ export const ItemSetEffect = ({ setinfo }) => {
       return newArray;
     });
   };
-
 
   return (
     <Container>
@@ -45,11 +51,18 @@ export const ItemSetEffect = ({ setinfo }) => {
                 <>
                   {effect.set_name ? (
                     <>
-                      <span>{expandedArray[index] ? <span>▼&nbsp;</span> : <span>▶&nbsp;</span>}{effect.set_name}</span> {/* 기존 세트 이름 출력 */}
+                      <span>
+                        {expandedArray[index] ? (
+                          <span>▼&nbsp;</span>
+                        ) : (
+                          <span>▶&nbsp;</span>
+                        )}
+                        {effect.set_name}
+                      </span>{" "}
+                      {/* 기존 세트 이름 출력 */}
                     </>
                   ) : (
-                    <>
-                    </>
+                    <></>
                   )}
                   {effect.set_option}
                   {expandedArray[index] && (
@@ -59,10 +72,12 @@ export const ItemSetEffect = ({ setinfo }) => {
                           {effect.set_effect_info.map((info, infoIndex) => (
                             <li key={infoIndex}>
                               <SetEffectWrap>
-                                <SetEffectHeader>{info.set_count}세트효과</SetEffectHeader>
+                                <SetEffectHeader>
+                                  {info.set_count}세트효과
+                                </SetEffectHeader>
                                 <SetEffectDetail>
                                   {extractAll(info.set_option)
-                                    .split(',')
+                                    .split(",")
                                     .map((option, index) => (
                                       <p key={index}>{option.trim()}</p>
                                     ))}
@@ -90,7 +105,7 @@ const Container = styled.div`
   width: 250px;
   padding: 10px;
   white-space: pre-line;
-  background-color: rgba(0,0,0, 0.9);
+  background-color: rgba(0, 0, 0, 0.9);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
@@ -112,56 +127,53 @@ const Container = styled.div`
     color: #e45b5b;
   }
 
-  @media screen and (max-width:1024px) {
-      position: relative;
-      width: 100%;
-      max-height: fit-content;
-      left: 0%;
-    }
+  @media screen and (max-width: 1024px) {
+    position: relative;
+    width: 100%;
+    max-height: fit-content;
+    left: 0%;
+  }
 `;
 
 const Header = styled.div`
-    font-size: 15px;
+  font-size: 15px;
   font-weight: 700;
-  color: rgb(220,252,2);
+  color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
-`
+`;
 
 const SetEffectName = styled.div`
   &:not(:empty) {
     color: #ffffff;
     border-bottom: 1px dashed #ffffff78;
 
-  span {
-    display: flex;
-    align-items: center;
-    margin: 3px 0;
+    span {
+      display: flex;
+      align-items: center;
+      margin: 3px 0;
+      &:hover {
+        background-color: rgba(104, 103, 103, 0.5);
+      }
+    }
+  }
+  ul {
     &:hover {
       background-color: rgba(104, 103, 103, 0.5);
     }
   }
-}
-  ul {
-    &:hover {
-        background-color: rgba(104, 103, 103, 0.5);
-      }
-  }
 `;
 
-const SetEffectWrap  = styled.div`
+const SetEffectWrap = styled.div`
   font-size: 14px;
-`
+`;
 const SetEffectHeader = styled.div`
   color: #ccff00;
   margin-bottom: 3px;
-`
+`;
 
 const SetEffectDetail = styled.div`
   color: white;
   font-size: 12px;
   line-height: 14px;
-  font-family: sans-serif;
-`
-
-
+`;

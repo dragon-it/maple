@@ -1,34 +1,33 @@
-import Anthill_BG from "../../assets/InfoBgImg/black/Anthill_BG.jpg"
-import Arcana_BG from "../../assets/InfoBgImg/black/Arcana_BG.jpg"
-import El_Nath_BG from "../../assets/InfoBgImg/black/El_Nath_BG.jpg"
-import Kerning_City_BG from "../../assets/InfoBgImg/black/Kerning_City_BG.jpg"
-import Limen_BG from "../../assets/InfoBgImg/black/Limen_BG.jpg"
-import Magatia_BG from "../../assets/InfoBgImg/black/Magatia_BG.jpg"
-import Papulatus_BG from "../../assets/InfoBgImg/black/Papulatus_BG.jpg"
-import Sword_Grave_BG from "../../assets/InfoBgImg/black/Sword_Grave_BG.jpg"
+import Anthill_BG from "../../assets/InfoBgImg/black/Anthill_BG.jpg";
+import Arcana_BG from "../../assets/InfoBgImg/black/Arcana_BG.jpg";
+import El_Nath_BG from "../../assets/InfoBgImg/black/El_Nath_BG.jpg";
+import Kerning_City_BG from "../../assets/InfoBgImg/black/Kerning_City_BG.jpg";
+import Limen_BG from "../../assets/InfoBgImg/black/Limen_BG.jpg";
+import Magatia_BG from "../../assets/InfoBgImg/black/Magatia_BG.jpg";
+import Papulatus_BG from "../../assets/InfoBgImg/black/Papulatus_BG.jpg";
+import Sword_Grave_BG from "../../assets/InfoBgImg/black/Sword_Grave_BG.jpg";
 
-import Aquarium_BG from "../../assets/InfoBgImg/white/Aquarium_BG.jpg"
-import Esfera_BG from "../../assets/InfoBgImg/white/Esfera_BG.jpg"
-import Henesys_BG from "../../assets/InfoBgImg/white/Henesys_BG.jpg"
-import Lien_BG from "../../assets/InfoBgImg/white/Lien_BG.jpg"
-import Lith_Harbor_BG from "../../assets/InfoBgImg/white/Lith_Harbor_BG.jpg"
-import Ludibrium_BG from "../../assets/InfoBgImg/white/Ludibrium_BG.jpg"
-import Mu_Lung_BG from "../../assets/InfoBgImg/white/Mu_Lung_BG.jpg"
-import Orbis_BG from "../../assets/InfoBgImg/white/Orbis_BG.jpg"
+import Aquarium_BG from "../../assets/InfoBgImg/white/Aquarium_BG.jpg";
+import Esfera_BG from "../../assets/InfoBgImg/white/Esfera_BG.jpg";
+import Henesys_BG from "../../assets/InfoBgImg/white/Henesys_BG.jpg";
+import Lien_BG from "../../assets/InfoBgImg/white/Lien_BG.jpg";
+import Lith_Harbor_BG from "../../assets/InfoBgImg/white/Lith_Harbor_BG.jpg";
+import Ludibrium_BG from "../../assets/InfoBgImg/white/Ludibrium_BG.jpg";
+import Mu_Lung_BG from "../../assets/InfoBgImg/white/Mu_Lung_BG.jpg";
+import Orbis_BG from "../../assets/InfoBgImg/white/Orbis_BG.jpg";
 
-import white_BG from '../../assets/Henesys.jpg';
-import dark_BG from '../../assets/Kerning City.jpg';
-
+import white_BG from "../../assets/Henesys.jpg";
+import dark_BG from "../../assets/Kerning City.jpg";
 
 export const ThemeBackground = {
   black: [
     Anthill_BG,
     Arcana_BG,
-    El_Nath_BG, 
+    El_Nath_BG,
     Kerning_City_BG,
-    Limen_BG, 
+    Limen_BG,
     Magatia_BG,
-    Papulatus_BG, 
+    Papulatus_BG,
     Sword_Grave_BG,
   ],
   white: [
@@ -39,11 +38,11 @@ export const ThemeBackground = {
     Lith_Harbor_BG,
     Ludibrium_BG,
     Mu_Lung_BG,
-    Orbis_BG
-  ]
-}
+    Orbis_BG,
+  ],
+};
 
 export const ThemeMainBackground = {
   black: dark_BG,
-  white: white_BG
-}
+  white: white_BG,
+};
