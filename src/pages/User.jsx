@@ -10,7 +10,7 @@ import loadingImg from "../assets/loading.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Footer } from "../components/common/Footer";
-import { Guild } from "../components/user/Guild";
+// import { Guild } from "../components/user/Guild";
 
 export const User = () => {
   const [activeTab, setActiveTab] = useState(1);
