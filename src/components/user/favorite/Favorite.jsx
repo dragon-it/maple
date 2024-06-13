@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import favorite_true from '../../../assets/favoriteIcon/favorite_Star_True.png';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.png";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 export const Favorite = () => {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favoriteCharacters') || '[]');
+    const storedFavorites = JSON.parse(
+      localStorage.getItem("favoriteCharacters") || "[]"
+    );
     setFavoriteCharacters(storedFavorites);
   }, []);
 
   // 즐겨찾기 삭제 함수
   const removeFavorite = (characterName) => {
-    const updatedFavorites = favoriteCharacters.filter(name => name !== characterName);
-    localStorage.setItem('favoriteCharacters', JSON.stringify(updatedFavorites));
+    const updatedFavorites = favoriteCharacters.filter(
+      (name) => name !== characterName
+    );
+    localStorage.setItem(
+      "favoriteCharacters",
+      JSON.stringify(updatedFavorites)
+    );
     setFavoriteCharacters(updatedFavorites);
   };
 
@@ -29,13 +36,21 @@ export const Favorite = () => {
       <FavoriteHeader>즐겨찾기</FavoriteHeader>
       <>
         {favoriteCharacters.length > 0 ? (
-            favoriteCharacters.map((characterName) => (
-              <CharacterNameListItem key={characterName} onClick={() => navigateToCharacter(characterName)}>
+          favoriteCharacters.map((characterName) => (
+            <CharacterNameListItem
+              key={characterName}
+              onClick={() => navigateToCharacter(characterName)}
+            >
               {characterName}
-              <img src={favorite_true} alt="Favorite" style={{ width: '20px' }} onClick={(e) => {
-                e.stopPropagation();
-                removeFavorite(characterName);
-              }} />
+              <img
+                src={favorite_true}
+                alt="Favorite"
+                style={{ width: "20px" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeFavorite(characterName);
+                }}
+              />
             </CharacterNameListItem>
           ))
         ) : (
@@ -47,37 +62,39 @@ export const Favorite = () => {
 };
 
 const FavoriteWrap = styled.div`
-  padding: 10px 0px;
-  color: rgb(255,255,255);
-  max-height: 500px;
-`
-
-const FavoriteHeader = styled.div`
   width: 200px;
-  font-size: 18px;
-  margin-bottom: 20px;
-  text-align: center;
+  padding: 10px 5px;
+  color: rgb(255, 255, 255);
+  max-height: 500px;
+  font-family: maple-light;
+`;
 
-  @media screen and (max-width:1024px) {
+const FavoriteHeader = styled.span`
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+
+  @media screen and (max-width: 1024px) {
     font-size: 14px;
   }
-`
+`;
 
 const CharacterNameListItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 100px;
-  padding: 0px 10px;
+  align-items: end;
   cursor: pointer;
   font-size: 14px;
   margin-bottom: 5px;
+  padding: 0px 5px;
 
-  &:hover{
-    background-color: rgba(162,162,162, 0.25);
+  &:hover {
+    background-color: rgba(162, 162, 162, 0.25);
   }
-`
+`;
 
 const NoFavoriteText = styled.div`
-  text-align: center;
-`
+  display: flex;
+  justify-content: center;
+`;

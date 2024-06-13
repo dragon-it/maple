@@ -1,29 +1,27 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 export const CashItemDetail = ({ item, clicked }) => {
-
-  if (!item) { // 아이템 정보가 없는 경우를 처리
-    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>
+  if (!item) {
+    // 아이템 정보가 없는 경우를 처리
+    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>;
   }
 
   return (
     <Container>
-        <div style={{ position: 'relative' }}>
-          {clicked && (
-            <PinImage/>
-          )}
-        </div>
+      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
       <ItemNameWrap>
-
-      <h2> {/* 아이템 이름 */}
-        <ItemName>{item.cash_item_name}</ItemName>
-        <ItemLabel Label={item.cash_item_label}>{item.cash_item_label}</ItemLabel>
-      </h2>
+        <h2>
+          {/* 아이템 이름 */}
+          <ItemName>{item.cash_item_name}</ItemName>
+          <ItemLabel Label={item.cash_item_label}>
+            {item.cash_item_label}
+          </ItemLabel>
+        </h2>
       </ItemNameWrap>
       <IconWrap>
         <IconImage>
-          <img src={item.cash_item_icon} alt="cash_item" /> 
+          <img src={item.cash_item_icon} alt="cash_item" />
         </IconImage>
       </IconWrap>
       <ItemOptionWrap>
@@ -33,9 +31,8 @@ export const CashItemDetail = ({ item, clicked }) => {
         <div> {item.cash_item_description} </div>
       </ItemDescriptionWrap>
     </Container>
-  )
-}
-
+  );
+};
 
 const SelectContainer = styled.div`
   display: flex;
@@ -43,7 +40,7 @@ const SelectContainer = styled.div`
   align-items: center;
   width: 290px;
   height: 50px;
-  color: white; 
+  color: white;
   padding: 0px 10px;
   background-color: #000000;
   border-radius: 5px;
@@ -51,18 +48,18 @@ const SelectContainer = styled.div`
   outline: 1px solid black;
   font-family: maple-light;
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     width: 200px;
   }
 
-  @media screen and (max-width:768px) {
+  @media screen and (max-width: 768px) {
     width: 460px;
   }
 
-  @media screen and (max-width:576px) {
+  @media screen and (max-width: 576px) {
     width: 100%;
   }
-`
+`;
 
 const Container = styled.div`
   width: 290px;
@@ -70,47 +67,50 @@ const Container = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  color: white; 
+  color: white;
   padding: 0px 10px;
   height: fit-content;
-  font-family: sans-serif;
-    
-  @media screen and (max-width:1024px) {
+
+  @media screen and (max-width: 1024px) {
     width: 300px;
   }
-`
+`;
 const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-  h2{
+  h2 {
     font-size: 16px;
     padding: 10px 0;
     line-height: 24px;
     text-align: center;
   }
-`
-const ItemName = styled.div`
-  
-`
+`;
+const ItemName = styled.div``;
 
 const ItemLabel = styled.div`
-  ${({ Label }) => Label === '블랙라벨' && `
+  ${({ Label }) =>
+    Label === "블랙라벨" &&
+    `
     color: rgb(255,204,0);
   `}
-  ${({ Label }) => Label === '레드라벨' && `
+  ${({ Label }) =>
+    Label === "레드라벨" &&
+    `
     color: rgb(255,0,89);
   `}
-  ${({ Label }) => Label === '마스터라벨' && `
+  ${({ Label }) =>
+    Label === "마스터라벨" &&
+    `
     color: rgb(108,168,192);
   `}
-  ${({ Label }) => Label === '스페셜라벨' && `
+  ${({ Label }) =>
+    Label === "스페셜라벨" &&
+    `
     color: rgb(188,186,187);
   `}
-`
-
-
+`;
 
 const IconWrap = styled.div`
   padding: 10px 0;
@@ -118,7 +118,7 @@ const IconWrap = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
-`
+`;
 
 const IconImage = styled.div`
   display: flex;
@@ -128,13 +128,12 @@ const IconImage = styled.div`
   height: 60px;
   background-color: white;
   border-radius: 10px;
-  img{
+  img {
     width: 50px;
     height: 50px;
     object-fit: contain;
   }
-`
-
+`;
 
 const PinImage = styled.div`
   position: absolute;
@@ -148,18 +147,19 @@ const PinImage = styled.div`
   transform: rotate(45deg);
 `;
 
-
 const ItemOptionWrap = styled.div`
   padding: 5px 0;
   line-height: 16px;
   font-size: 13px;
-`
+`;
 
 const ItemDescriptionWrap = styled.div`
   font-size: 13px;
   white-space: normal;
-  ${({ Value }) => Value && `
+  ${({ Value }) =>
+    Value &&
+    `
     border-top: 2px dotted rgb(55, 56, 58);
     padding: 5px 0;
   `}
-`
+`;
