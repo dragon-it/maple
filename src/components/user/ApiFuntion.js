@@ -17,7 +17,6 @@ import {
   getPetEquipment,
   getAndroidEquipment,
   getLinkSkill,
-  getVMatrix,
   getHexaMatrix,
   getHexaMatrixStat,
 } from "../../api/api";
@@ -41,7 +40,6 @@ const apiFunctions = [
   { name: "getPetEquipment", function: getPetEquipment },
   { name: "getAndroidEquipment", function: getAndroidEquipment },
   { name: "getLinkSkill", function: getLinkSkill },
-  { name: "getVMatrix", function: getVMatrix },
   { name: "getHexaMatrix", function: getHexaMatrix },
   { name: "getHexaMatrixStat", function: getHexaMatrixStat },
 ];
