@@ -20,7 +20,7 @@ import {
   getVMatrix,
   getHexaMatrix,
   getHexaMatrixStat,
-} from '../../api/api';
+} from "../../api/api";
 
 const apiFunctions = [
   { name: "getBasicInformation", function: getBasicInformation },

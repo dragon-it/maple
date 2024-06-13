@@ -1,24 +1,21 @@
-import { createGlobalStyle } from 'styled-components';
-
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.bgColor};
     color: ${({ theme }) => theme.textColor};
-    width: 100%;
-    height: 100%;
-    line-height: 1.5;
+    max-width: 100vw;
+    line-height: 1.2;
     margin: 0 auto;
     font-family:
+      sans-serif,
+      maple-light,
+      "Noto Sans",
+      "Noto Sans CJK KR",
       "Montserrat",
       "Helvetica Neue",
       "NanumSquare",
-      "Noto Sans",
-      "Noto Sans CJK KR",
-      maple-light,
-      maple-bold,
-      sans-serif;
-    font-display: swap;
+      maple-bold;
     word-break: keep-all;
     word-wrap: break-word;
     text-rendering: optimizeLegibility;
