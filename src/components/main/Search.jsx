@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Logo } from "./Logo";
 import { useNavigate, useLocation } from "react-router-dom";
 import ThemeToggleButton from "../../context/ThemeToggleButton";
-import serchIcon_big from "../../assets/SearchIcon_big.png";
-import serchIcon_small from "../../assets/SearchIcon_small.png";
+import serchIcon_big from "../../assets/SearchIcon_big.svg";
+import serchIcon_small from "../../assets/SearchIcon_small.svg";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리
