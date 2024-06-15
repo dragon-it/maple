@@ -32,8 +32,9 @@ const callMapleStoryAPI = async (endpoint, params) => {
 
 // 현재 날짜 함수
 const getFormattedDate = () => {
-  const today = new Date(); // 현재 날짜
-  return today.toISOString().split("T")[0]; // YYYY-MM-DD 형식으로 변환
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday.toISOString().split("T")[0];
 };
 
 // Ocid 함수

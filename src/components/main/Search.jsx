@@ -7,23 +7,27 @@ import serchIcon_big from "../../assets/SearchIcon_big.png";
 import serchIcon_small from "../../assets/SearchIcon_small.png";
 
 export const Search = ({ error }) => {
+  // 검색어 상태 관리
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 검색 함수
   const handleSearch = () => {
     if (!searchValue.trim()) {
-      return;
+      return; // 검색어가 비어있을 경우 아무것도 하지 않음
     }
-    const processedSearchValue = searchValue.replace(/\s+/g, "");
-    navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
+    const processedSearchValue = searchValue.replace(/\s+/g, ""); // 공백 제거
+    navigate(`/user/${encodeURIComponent(processedSearchValue)}`); // 검색어를 URL에 인코딩하여 이동
   };
 
+  // 폼 제출을 처리하는 함수
   const handleSubmit = (e) => {
-    e.preventDefault();
-    handleSearch();
+    e.preventDefault(); // 기본 폼 제출 동작을 막음
+    handleSearch(); // 검색 처리 함수 호출
   };
 
+  // 현재 경로가 /user/로 시작하는지 여부 확인
   const isUserRoute = location.pathname.startsWith("/user/");
 
   return (
