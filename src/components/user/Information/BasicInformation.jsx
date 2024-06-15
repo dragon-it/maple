@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import BasicInfoBackground from "./BasicInfoBackground";
 import { useTheme } from "../../../context/ThemeProvider";
-import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.png";
-import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.png";
+import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
+import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.svg";
 
 export const BasicInformation = ({ BasicInfo }) => {
   const { theme } = useTheme();
