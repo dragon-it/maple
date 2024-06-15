@@ -1,8 +1,8 @@
 import React from "react";
 import { useTheme } from "./ThemeProvider";
 import styled from "styled-components";
-import dark_theme_icon from "../assets/themeIcons/dark_mode_icon.png";
-import light_theme_icon from "../assets/themeIcons/light_mode_icon3.png";
+import dark_theme_icon from "../assets/themeIcons/dark_mode_icon.svg";
+import light_theme_icon from "../assets/themeIcons/light_mode_icon.svg";
 
 function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
