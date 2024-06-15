@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.png";
+import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
