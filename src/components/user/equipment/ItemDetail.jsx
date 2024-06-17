@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 export const ItemDetail = ({ item, clicked }) => {
+  console.log(item.item_exceptional_option);
   if (!item) {
-    // 아이템 정보가 없는 경우를 처리
+    // 아이템 정보가 없는 경우
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>;
   }
 
+  // 옵션 이름을 매핑하는 객체
   const optionNameMap = {
     str: "STR",
     dex: "DEX",
@@ -28,8 +30,19 @@ export const ItemDetail = ({ item, clicked }) => {
     damage: "데미지",
   };
 
+  // 아이템 익셉셔널 스탯 요약 함수형 컴포넌트
   function StatsSummary({ stats }) {
     // 세부 스탯이 모두 동일하고 0이 아닌 값을 가질 경우 해당 값을 반환하는 함수
+    // every 메서드를 이용하여 배열의 모든 요소가 주어진 조건을 만족하는지 검사
+    // 예를 들어, keys의 값이 "str", "dex", "int", "luk"일 때,
+    // keys.every((key) => stats[key] === stats[keys[0]]);를 사용하여
+    // 모든 키의 값이 동일한지 순회하여 확인함.
+    // 예시) keys.every((key) => stats["str"] === stats["str"]);
+    // 만약 모든 키의 값이 동일하면 allEqual은 true가 됨.
+    // 그런 다음, stats[keys[0]] 값이 "0"이 아닌지 확인함.
+    // 두 조건이 모두 true일 때 stats[keys[0]] 값을 반환하고,
+    // 그렇지 않으면 null을 반환함.
+
     const getCommonValue = (...keys) => {
       const allEqual = keys.every((key) => stats[key] === stats[keys[0]]);
       return allEqual && stats[keys[0]] !== "0" ? stats[keys[0]] : null;
@@ -48,10 +61,13 @@ export const ItemDetail = ({ item, clicked }) => {
       </div>
     );
   }
+
+  // 모든 스탯이 0인지 확인하는 함수
   const isAllZero = (stats) => {
     return Object.values(stats).every((value) => value === "0");
   };
 
+  // 옵션 값 수정자를 매핑하는 객체
   const optionValueModifierMap = {
     all_stat: (value) => `+${value}%`,
     equipment_level_decrease: (value) => `-${value}`,
@@ -63,6 +79,7 @@ export const ItemDetail = ({ item, clicked }) => {
     default: (value) => `+${Number(value).toLocaleString()}`,
   };
 
+  // 등급의 첫 글자를 반환하는 함수
   const getInitial = (grade) => {
     switch (grade) {
       case "레어":
@@ -80,24 +97,40 @@ export const ItemDetail = ({ item, clicked }) => {
 
   return (
     <Container>
+      {/* 클릭 시 PinImage를 보여줌 */}
       <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
+
+      {/* 아이템 이름과 별 관련 정보를 보여주는 래퍼 */}
       <ItemNameWrap>
+        {/* StarForce 컴포넌트로 별 표시 */}
         <StarForce
-          noData={item.starforce === 0 || item.starforce === "0"}
-          style={{ display: item.starforce === 0 ? "none" : "block" }}
+          noData={item.starforce === 0 || item.starforce === "0"} // starforce가 0 또는 "0"이면 noData 속성에 true를 전달
+          style={{ display: item.starforce === 0 ? "none" : "block" }} // starforce가 0이면 스타일을 none으로 설정하여 표시하지 않음
         >
           <StartForceFirstLine>
-            {Array.from({ length: Math.min(item.starforce, 15) }, (_, i) =>
-              (i + 1) % 5 === 0 ? "★ " : "★"
+            {/* 첫 번째 줄의 별 (최대 15개) */}
+            {/* 
+            Array.from 메서드를 이용하여 새 배열 생성.
+            첫 번째 인자로 length를 포함한 유사 객체 생성.
+            두 번째 인자로 콜백 함수, 배열의 각 요소에 대해 호출됨. ( _, i ) => ...의 형태로 작성되며, 두 개의 매개변수를 가짐.
+            콜백 함수의 첫 번째 매개변수 _는 배열의 요소 값. 이 경우 배열 요소의 값은 사용되지 않으므로 언더스코어로 표기하여 무시.
+            콜백 함수의 두 번째 매개변수 i는 배열의 인덱스를 나타냄. 0부터 시작하며, 각 요소의 위치를 나타냄.
+             */}
+            {Array.from(
+              { length: Math.min(item.starforce, 15) },
+              (_, i) => ((i + 1) % 5 === 0 ? "★ " : "★") // 별을 5개마다 공백을 추가하여 표시
             )}
           </StartForceFirstLine>
           <StartForceSecondLine>
+            {/* 두 번째 줄의 별 (15개 이상일 때) */}
             {item.starforce > 15 &&
-              Array.from({ length: item.starforce - 15 }, (_, i) =>
-                (i + 1) % 5 === 0 ? "★ " : "★"
+              Array.from(
+                { length: item.starforce - 15 },
+                (_, i) => ((i + 1) % 5 === 0 ? "★ " : "★") // 별을 5개마다 공백을 추가하여 표시
               )}
           </StartForceSecondLine>
         </StarForce>
+
         <h2>
           {/* 아이템 이름 */}
           {item && item.soul_name && (
@@ -106,10 +139,12 @@ export const ItemDetail = ({ item, clicked }) => {
           {item.item_name ? (
             <p>
               <div>
+                {/* 아이템 이름과 스크롤 업그레이드 수치 */}
                 {`${item.item_name}${
                   item.scroll_upgrade > 0 ? ` (+${item.scroll_upgrade})` : ""
                 }`}
               </div>
+              {/* 특수 반지 레벨 표시 */}
               {item.special_ring_level !== 0 && (
                 <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
               )}
@@ -118,20 +153,27 @@ export const ItemDetail = ({ item, clicked }) => {
             <div>{item.android_name}</div>
           ) : null}
         </h2>
+        {/* 잠재 옵션 등급 표시 */}
         {item.potential_option_grade && (
           <p>{`(${item.potential_option_grade} 아이템)`}</p>
         )}
-        {/* 아이템 품질 */}
       </ItemNameWrap>
+
+      {/* 아이콘 래퍼 */}
       <IconWrap>
+        {/* 아이템 아이콘 이미지 */}
         <IconImage grade={item.potential_option_grade}>
           <img src={item.item_icon || item.android_icon} alt="android_icon" />
         </IconImage>
       </IconWrap>
+
+      {/* 아이템 옵션 정보 래퍼 */}
       <ItemOptionWrap>
+        {/* 장비 분류 표시 */}
         {item.item_equipment_part && (
           <div>장비 분류 : {item.item_equipment_part}</div>
         )}
+        {/* 아이템 옵션 정보 표시 */}
         {item.item_total_option &&
           Object.entries(item.item_total_option).map(([key, value]) => {
             if (value !== "0" && value !== 0) {
@@ -141,6 +183,7 @@ export const ItemDetail = ({ item, clicked }) => {
               const add = item.item_add_option[key] || 0;
               const etc = item.item_etc_option[key] || 0;
               const starforce = item.item_starforce_option[key] || 0;
+
               const addPart =
                 add !== undefined && add !== "0" && add !== 0 ? (
                   <span style={{ color: "rgb(204, 255, 0)" }}>
@@ -167,6 +210,7 @@ export const ItemDetail = ({ item, clicked }) => {
                     {`${modifier(etc)}`}
                   </span>
                 ) : null;
+
               let outputPart = null;
               if (basePart && (addPart || starforcePart || etcPart)) {
                 outputPart = (
@@ -182,6 +226,7 @@ export const ItemDetail = ({ item, clicked }) => {
               } else if (basePart) {
                 outputPart = null;
               }
+
               return (
                 <p
                   key={key}
@@ -425,18 +470,14 @@ const OptionInitial = styled.div`
   border-radius: 3px;
   margin-right: 3px;
   ${({ potengrade }) => {
-    switch (potengrade) {
-      case "레어":
-        return "border: 1px solid rgb(255,255,255); background-color: rgb(0,154,255); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-      case "에픽":
-        return "border: 1px solid rgb(255,255,255); background-color: rgb(120,0,239); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-      case "유니크":
-        return "border: 1px solid rgb(255,255,255); background-color: rgb(255,188,0); text-shadow: 0px 0px 1px black, -1px 0px 3px black, 0px -1px 1px black";
-      case "레전드리":
-        return "border: 1px solid rgb(255,255,255); background-color: rgb(120,239,0); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-      default:
-        return "";
-    }
+    if (potengrade === "레어")
+      return "border: 1px solid rgb(255,255,255); background-color: rgb(0,154,255); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
+    if (potengrade === "에픽")
+      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,0,239); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
+    if (potengrade === "유니크")
+      return "border: 1px solid rgb(255,255,255); background-color: rgb(255,188,0); text-shadow: 0px 0px 1px black, -1px 0px 3px black, 0px -1px 1px black";
+    if (potengrade === "레전드리")
+      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,239,0); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
   }}
 `;
 
@@ -457,10 +498,18 @@ const AddiOptionHeader = styled.div`
   flex-direction: row;
   align-items: center;
   ${({ potengrade }) => {
-    if (potengrade === "레어") return "color: rgb(102,225,225);";
-    if (potengrade === "에픽") return "color: rgb(153,91,197);";
-    if (potengrade === "유니크") return "color: rgb(255,204,0);";
-    if (potengrade === "레전드리") return "color: rgb(204,241,20);";
+    switch (potengrade) {
+      case "레어":
+        return "color: rgb(102,225,225);";
+      case "에픽":
+        return "color: rgb(153,91,197);";
+      case "유니크":
+        return "color: rgb(255,204,0);";
+      case "레전드리":
+        return "color: rgb(204,241,20);";
+      default:
+        return "";
+    }
   }}
 `;
 const PotentialOptionWrap = styled.div`

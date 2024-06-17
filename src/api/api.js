@@ -30,7 +30,7 @@ const callMapleStoryAPI = async (endpoint, params) => {
   }
 };
 
-// 현재 날짜 함수
+// 날짜 함수
 const getFormattedDate = () => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
