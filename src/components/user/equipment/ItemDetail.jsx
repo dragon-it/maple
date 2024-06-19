@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 export const ItemDetail = ({ item, clicked }) => {
-  console.log(item.item_exceptional_option);
   if (!item) {
     // 아이템 정보가 없는 경우
     return <SelectContainer>아이템을 선택해주세요.</SelectContainer>;
@@ -273,9 +272,13 @@ export const ItemDetail = ({ item, clicked }) => {
               </OptionInitial>
               <span>잠재옵션</span>
             </PotenOptionHeader>
-            <PotentialItems>{item.potential_option_1}</PotentialItems>
-            <PotentialItems>{item.potential_option_2}</PotentialItems>
-            <PotentialItems>{item.potential_option_3}</PotentialItems>
+            {[
+              item.potential_option_1,
+              item.potential_option_2,
+              item.potential_option_3,
+            ].map((option, index) => (
+              <PotentialItems key={index}>{option}</PotentialItems>
+            ))}
           </PotentialOptionWrap>
         )}
         {item.additional_potential_option_grade && (
@@ -292,11 +295,9 @@ export const ItemDetail = ({ item, clicked }) => {
             </AddiOptionHeader>
             <AdditionalItems>
               {item.additional_potential_option_1}
-            </AdditionalItems>
-            <AdditionalItems>
+              <br />
               {item.additional_potential_option_2}
-            </AdditionalItems>
-            <AdditionalItems>
+              <br />
               {item.additional_potential_option_3}
             </AdditionalItems>
           </AdditionalOptionWrap>
