@@ -6,33 +6,44 @@ export const GuildMember = ({ result }) => {
   const { guild_member } = result.guildBasicInformation;
   const [currentPage, setCurrentPage] = useState(1);
   const [membersData, setMembersData] = useState([]);
-  const membersPerPage = 50;
+  const [cache, setCache] = useState([]);
+  const membersPerPage = 20;
   const totalPages = Math.ceil(guild_member.length / membersPerPage);
 
-  const indexOfLastMember = currentPage * membersPerPage;
-  const indexOfFirstMember = indexOfLastMember - membersPerPage;
-  const currentMembers = guild_member.slice(
-    indexOfFirstMember,
-    indexOfLastMember
-  );
-
   useEffect(() => {
+    const indexOfLastMember = currentPage * membersPerPage;
+    const indexOfFirstMember = indexOfLastMember - membersPerPage;
+    const currentMembers = guild_member.slice(
+      indexOfFirstMember,
+      indexOfLastMember
+    );
+
     const fetchMembersData = async () => {
       const data = await Promise.all(
         currentMembers.map(async (member) => {
+          if (cache[member]) {
+            return cache[member];
+          }
+
           const ocidResult = await getOcidApi(member);
           if (ocidResult) {
-            const basicInfoResult = await getBasicInformation(ocidResult.ocId);
-            return { ...basicInfoResult };
+            const basicInfoResult = await getBasicInformation(ocidResult.ocid);
+            const memberData = { ...basicInfoResult };
+            setCache((prevCache) => ({ ...prevCache, [member]: memberData }));
+            return memberData;
           }
-          return { name: member, image: null };
+
+          const memberData = { name: member, image: null };
+          setCache((prevCache) => ({ ...prevCache, [member]: memberData }));
+          return memberData;
         })
       );
+
       setMembersData(data);
     };
 
     fetchMembersData();
-  }, [currentPage, currentMembers]);
+  }, [currentPage, guild_member, cache]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -51,8 +62,11 @@ export const GuildMember = ({ result }) => {
       <Container>
         {membersData.map((member, index) => (
           <Member key={index}>
-            <img src={member.image} alt={`${member.name}'s avatar`} />
-            <div>{member.name}</div>
+            <MemberImage
+              src={member.character_image || ""}
+              alt={member.character_name}
+            />
+            <MemberName>{member.character_name}</MemberName>
           </Member>
         ))}
       </Container>
@@ -73,13 +87,29 @@ export const GuildMember = ({ result }) => {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 3px;
 `;
 
 const Member = styled.div`
   background-color: #978989;
   min-height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const MemberImage = styled.img`
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 5px;
+`;
+
+const MemberName = styled.div`
+  font-size: 14px;
+  text-align: center;
 `;
 
 const Pagination = styled.div`
