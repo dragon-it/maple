@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/Logo.png";
+import logo from "../../assets/Logo2.png";
 
 export const Logo = ({ error, isUserRoute }) => {
   const navigate = useNavigate();
@@ -23,15 +23,15 @@ export const Logo = ({ error, isUserRoute }) => {
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 3px;
+  flex-direction: column;
   font-family: maple-light;
   cursor: pointer;
   height: 100%;
-  width: 90px;
+  width: 55px;
 
   img {
     width: 40px;
-    height: 40px;
+    height: 25px;
   }
 `;
 
