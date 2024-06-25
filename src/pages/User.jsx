@@ -124,13 +124,13 @@ const SearchWrap = styled.div`
 
   @media screen and (max-width: 1024px) {
     position: absolute;
-    top: -90px;
+    top: -100px;
     left: 0;
     width: 100%;
   }
 
   @media screen and (max-width: 576px) {
-    top: -90px;
+    top: -100px;
   }
 `;
 
