@@ -68,6 +68,7 @@ const InputContainer = styled.form`
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
+    gap: 0;
   }
 `;
 

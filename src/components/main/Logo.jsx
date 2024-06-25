@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/Logo2.png";
+import logo_dark from "../../assets/Logo_dark2.svg";
+import Logo_light from "../../assets/Logo_light2.svg";
+import { useTheme } from "../../context/ThemeProvider";
 
 export const Logo = ({ error, isUserRoute }) => {
+  const { theme } = useTheme();
   const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleClick = () => {
     navigate(`/`);
@@ -12,10 +27,16 @@ export const Logo = ({ error, isUserRoute }) => {
 
   return (
     <StyledContainer onClick={handleClick} isUserRoute={isUserRoute}>
-      <img src={logo} alt="Logo" />
-      <StyledLogoText isUserRoute={isUserRoute} error={error}>
-        메짱
-      </StyledLogoText>
+      <img
+        src={
+          isUserRoute
+            ? windowWidth > 1024 && theme === "dark" && !error
+              ? Logo_light
+              : logo_dark
+            : logo_dark
+        }
+        alt="Logo"
+      />
     </StyledContainer>
   );
 };
@@ -23,29 +44,11 @@ export const Logo = ({ error, isUserRoute }) => {
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
-  font-family: maple-light;
   cursor: pointer;
   height: 100%;
-  width: 55px;
 
   img {
-    width: 40px;
-    height: 25px;
-  }
-`;
-
-const StyledLogoText = styled.span`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme, isUserRoute, error }) =>
-    error ? "black" : isUserRoute ? theme.logoColor : "black"};
-  font-size: 25px;
-
-  @media screen and (max-width: 1024px) {
-    color: black;
+    width: 62px;
+    height: 57px;
   }
 `;
