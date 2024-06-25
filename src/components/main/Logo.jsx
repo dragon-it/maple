@@ -42,10 +42,10 @@ export const Logo = ({ error, isUserRoute }) => {
             : windowWidth <= 1024
             ? theme === "dark"
               ? logo_dark_mobile
-              : logo_light_mobile
+              : logo_dark_mobile
             : theme === "dark"
             ? logo_dark
-            : logo_light
+            : logo_dark
         }
         alt="Logo"
       />
