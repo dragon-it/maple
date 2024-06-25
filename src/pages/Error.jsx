@@ -45,14 +45,14 @@ const ErrorImg = styled.div`
 
   @media screen and (max-width: 1024px) {
     img {
-      width: 160px;
+      max-width: 160px;
       height: auto;
     }
   }
 
   @media screen and (max-width: 576px) {
     img {
-      width: 130px;
+      max-width: 130px;
     }
   }
 `;
