@@ -21,6 +21,6 @@ const FooterTextSpan = styled.span`
   font-family: maple-light;
   z-index: 9999;
 
-  @media screen {
+  @media screen and (max-width: 576px) {
   }
 `;
