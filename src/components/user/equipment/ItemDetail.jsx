@@ -266,12 +266,12 @@ export const ItemDetail = ({ item, clicked }) => {
       >
         {item.potential_option_grade && (
           <PotentialOptionWrap>
-            <PotenOptionHeader potengrade={item.potential_option_grade}>
+            <OptionHeader potengrade={item.potential_option_grade}>
               <OptionInitial potengrade={item.potential_option_grade}>
                 {getInitial(item.potential_option_grade)}
               </OptionInitial>
               <span>잠재옵션</span>
-            </PotenOptionHeader>
+            </OptionHeader>
             {[
               item.potential_option_1,
               item.potential_option_2,
@@ -283,16 +283,14 @@ export const ItemDetail = ({ item, clicked }) => {
         )}
         {item.additional_potential_option_grade && (
           <AdditionalOptionWrap>
-            <AddiOptionHeader
-              potengrade={item.additional_potential_option_grade}
-            >
+            <OptionHeader potengrade={item.additional_potential_option_grade}>
               <OptionInitial
                 potengrade={item.additional_potential_option_grade}
               >
                 {getInitial(item.additional_potential_option_grade)}
               </OptionInitial>
               <span>에디셔널 잠재옵션</span>
-            </AddiOptionHeader>
+            </OptionHeader>
             <AdditionalItems>
               {item.additional_potential_option_1}
               <br />
@@ -482,37 +480,22 @@ const OptionInitial = styled.div`
   }}
 `;
 
-const PotenOptionHeader = styled.div`
+const OptionHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   ${({ potengrade }) => {
-    if (potengrade === "레어") return "color: rgb(102,225,225);";
-    if (potengrade === "에픽") return "color: rgb(153,91,197);";
-    if (potengrade === "유니크") return "color: rgb(255,204,0);";
-    if (potengrade === "레전드리") return "color: rgb(204,241,20);";
+    if (potengrade === "레어")
+      return "color: rgb(102,225,225); margin-bottom: 2px;";
+    if (potengrade === "에픽")
+      return "color: rgb(153,91,197); margin-bottom: 2px;";
+    if (potengrade === "유니크")
+      return "color: rgb(255,204,0); margin-bottom: 2px;";
+    if (potengrade === "레전드리")
+      return "color: rgb(204,241,20); margin-bottom: 2px;";
   }}
 `;
 
-const AddiOptionHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  ${({ potengrade }) => {
-    switch (potengrade) {
-      case "레어":
-        return "color: rgb(102,225,225);";
-      case "에픽":
-        return "color: rgb(153,91,197);";
-      case "유니크":
-        return "color: rgb(255,204,0);";
-      case "레전드리":
-        return "color: rgb(204,241,20);";
-      default:
-        return "";
-    }
-  }}
-`;
 const PotentialOptionWrap = styled.div`
   padding: 2px 0;
 `;
@@ -548,6 +531,7 @@ const ExOptionHeader = styled.div`
   display: flex;
   align-items: center;
   color: rgb(255, 51, 51);
+  margin-bottom: 3px;
 `;
 
 const ExInitial = styled.div`
@@ -555,7 +539,7 @@ const ExInitial = styled.div`
   justify-content: center;
   align-items: center;
   width: 20px;
-  height: 14px;
+  height: auto;
   margin-right: 3px;
   color: white;
   background-color: rgb(255, 51, 51);
