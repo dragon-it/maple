@@ -452,7 +452,6 @@ const ItemOptionWrap = styled.div`
 const OptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-line;
-  padding-bottom: 5px;
   ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
   ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(55, 56, 58);"}
 `;
@@ -497,25 +496,16 @@ const OptionHeader = styled.div`
 `;
 
 const PotentialOptionWrap = styled.div`
-  padding: 2px 0;
+  padding: 5px 0;
 `;
 
 const AdditionalOptionWrap = styled.div`
-  padding: 2px 0;
+  padding: 5px 0;
   border-top: 2px dotted rgb(55, 56, 58);
-`;
-
-const PotentialItems = styled.div`
-  font-size: 12px;
-`;
-
-const AdditionalItems = styled.div`
-  font-size: 12px;
 `;
 
 const SoulOptionWrap = styled.div`
   border-top: 2px dotted rgb(55, 56, 58);
-  padding-bottom: 10px;
   padding-top: 3px;
   :first-child {
     color: rgb(255, 255, 68);
@@ -524,7 +514,15 @@ const SoulOptionWrap = styled.div`
 
 const ExOptionWrap = styled.div`
   border-top: 2px dotted rgb(55, 56, 58);
-  padding-top: 3px;
+  padding-top: 5px;
+`;
+
+const PotentialItems = styled.div`
+  font-size: 12px;
+`;
+
+const AdditionalItems = styled.div`
+  font-size: 12px;
 `;
 
 const ExOptionHeader = styled.div`
