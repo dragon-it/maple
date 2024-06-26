@@ -5,7 +5,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.bgColor};
     color: ${({ theme }) => theme.textColor};
     max-width: 100vw;
-    line-height: 1.2;
+    line-height: 1.25;
     margin: 0 auto;
     font-family:
       sans-serif,
