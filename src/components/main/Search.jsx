@@ -30,6 +30,14 @@ export const Search = ({ error }) => {
   // 현재 경로가 /user/로 시작하는지 여부 확인
   const isUserRoute = location.pathname.startsWith("/user/");
 
+  // 특수 문자 제거 및 상태 업데이트 함수
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    // 특수 문자 제거
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+    setSearchValue(sanitizedValue);
+  };
+
   return (
     <>
       <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
@@ -39,8 +47,9 @@ export const Search = ({ error }) => {
             type="text"
             placeholder="캐릭터 닉네임을 입력해주세요."
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={handleInputChange}
             isUserRoute={isUserRoute}
+            maxLength={15}
           />
           <StyledButton isUserRoute={isUserRoute}>
             <img
