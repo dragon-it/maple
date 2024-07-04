@@ -26,7 +26,10 @@ const getAllCaseCombinations = (str) => {
 // 캐릭터 OCID 함수
 const getOcid = async (characterName) => {
   try {
-    const combinations = getAllCaseCombinations(characterName); // 캐릭터 이름의 모든 대소문자 조합 생성
+    const isKorean = /^[가-힣]+$/.test(characterName); // 한글인지 확인
+    const combinations = isKorean
+      ? [characterName]
+      : getAllCaseCombinations(characterName); // 한글이면 조합 생성 생략
     for (let name of combinations) {
       // 각 조합을 순회
       try {
@@ -57,6 +60,12 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
   if (characterName.trim() !== "") {
     // 캐릭터 이름이 비어있지 않은 경우
     try {
+      // 초성만으로 구성된 문자열인지 확인하는 정규 표현식
+      const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
+      if (isChosung) {
+        throw new Error("초성만으로 검색할 수 없습니다.");
+      }
+
       setLoading(true); // 로딩 상태를 true로 설정
       const ocid = await getOcid(characterName); // OCID를 가져옴
       if (ocid) {

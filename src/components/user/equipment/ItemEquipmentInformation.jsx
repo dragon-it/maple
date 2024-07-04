@@ -13,6 +13,7 @@ import { PetItemDetail } from "./PetItemDetail";
 import { AndroidItemDetail } from "./AndroidItemDetail";
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
+  console.log(EquipData);
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
   const [selectedPreset, setSelectedPreset] = useState(
@@ -27,6 +28,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   // 클릭 설정
   const [clicked, setClicked] = useState(false);
+
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
 
@@ -300,7 +302,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         }
                         alt="ADicon"
                         onMouseOver={() =>
-                          setSelectedItem(
+                          handleItemHover(
                             EquipData.getAndroidEquipment.android_preset_1
                           )
                         }
@@ -403,6 +405,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                 </PresetButtonWrap>
               </EquipWrap>
             )}
+
             {/* 펫탭 처리 */}
             {currentTab === "펫" && (
               <PetEquipWrap>
