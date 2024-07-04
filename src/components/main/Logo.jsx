@@ -1,21 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/Logo.png";
+import logo_dark from "../../assets/Logo_dark.svg";
+import logo_light from "../../assets/Logo_light.svg";
+import logo_dark_mobile from "../../assets/Logo_dark_mobile.svg";
+import { useTheme } from "../../context/ThemeProvider";
 
 export const Logo = ({ error, isUserRoute }) => {
+  const { theme } = useTheme();
   const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // 윈도우 너비 변경 시 상태 업데이트
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth); // 윈도우 너비를 상태로 업데이트
+    };
+
+    window.addEventListener("resize", handleResize); // 윈도우 리사이즈 이벤트 리스너 등록
+    return () => {
+      window.removeEventListener("resize", handleResize); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    };
+  }, []);
+
+  // 로고 클릭 시 홈페이지 이동
   const handleClick = () => {
     navigate(`/`);
   };
 
+  // 로고 이미지 선택 로직
+  const logoSrc = (() => {
+    if (windowWidth <= 1024) {
+      return logo_dark_mobile;
+    }
+    if (theme === "dark") {
+      return isUserRoute && !error ? logo_light : logo_dark;
+    }
+    return logo_dark;
+  })();
+
   return (
     <StyledContainer onClick={handleClick} isUserRoute={isUserRoute}>
-      <img src={logo} alt="Logo" />
-      <StyledLogoText isUserRoute={isUserRoute} error={error}>
-        메짱
-      </StyledLogoText>
+      <img src={logoSrc} alt="Logo" />
     </StyledContainer>
   );
 };
@@ -23,29 +49,11 @@ export const Logo = ({ error, isUserRoute }) => {
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 3px;
-  font-family: maple-light;
   cursor: pointer;
   height: 100%;
-  width: 90px;
 
   img {
-    width: 40px;
-    height: 40px;
-  }
-`;
-
-const StyledLogoText = styled.span`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme, isUserRoute, error }) =>
-    error ? "black" : isUserRoute ? theme.logoColor : "black"};
-  font-size: 25px;
-
-  @media screen and (max-width: 1024px) {
-    color: black;
+    width: 62px;
+    height: 57px;
   }
 `;
