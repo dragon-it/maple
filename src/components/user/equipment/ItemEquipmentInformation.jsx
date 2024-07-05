@@ -13,7 +13,6 @@ import { PetItemDetail } from "./PetItemDetail";
 import { AndroidItemDetail } from "./AndroidItemDetail";
 
 export const ItemEquipmentInformation = ({ EquipData }) => {
-  console.log(EquipData);
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
   const [selectedPreset, setSelectedPreset] = useState(
