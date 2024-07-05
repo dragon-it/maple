@@ -19,7 +19,7 @@ import {
   getLinkSkill,
   getHexaMatrix,
   getHexaMatrixStat,
-} from "../../api/api";
+} from "./api";
 
 const apiFunctions = [
   { name: "getBasicInformation", function: getBasicInformation },
