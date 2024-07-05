@@ -11,7 +11,7 @@ const BASE_URL = "https://open.api.nexon.com";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    // axios를 사용하여 GET 요청을 보냅니다.
+    // axios를 사용하여 GET 요청을 보냄.
     const response = await axios.get(`${BASE_URL}/maplestory/v1/${endpoint}`, {
       params: {
         ...params, // 전달받은 파라미터 설정

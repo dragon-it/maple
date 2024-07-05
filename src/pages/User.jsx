@@ -22,7 +22,6 @@ export const User = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // console.log(result);
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
