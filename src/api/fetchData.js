@@ -1,5 +1,5 @@
 import { getGuildBasicInformation, getOcidApi, getOguildId } from "./api";
-import apiFunctions from "../components/user/ApiFuntion";
+import apiFunctions from "./ApiFuntion";
 
 /**
  * 주어진 문자열의 모든 대소문자 조합을 생성하는 함수
