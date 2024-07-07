@@ -47,6 +47,6 @@ const NoblesseSkillWrap = styled.div`
 const SkillName = styled.div``;
 const SkillIcon = styled.div``;
 const SkillLevel = styled.div`
-  color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,104)" : "white")};
+  color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
   font-size: 13px;
 `;
