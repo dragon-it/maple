@@ -8,6 +8,20 @@ export const GuildSkill = ({ result }) => {
 
   return (
     <Container>
+      {/* 길드 일반 스킬 */}
+      <SkillWrap>
+        {result.guildBasicInformation &&
+          result.guildBasicInformation.guild_skill.map((guildSkill, index) => (
+            <BasicSkillWrap key={index}>
+              <SkillIcon>
+                <img src={guildSkill.skill_icon} alt="guildSkill" />
+              </SkillIcon>
+              <SkillName>{guildSkill.skill_name}</SkillName>
+              <SkillLevel>{guildSkill.skill_level}</SkillLevel>
+            </BasicSkillWrap>
+          ))}
+      </SkillWrap>
+      {/* 길드 노블레스 스킬 */}
       <SkillWrap>
         {result.guildBasicInformation &&
           result.guildBasicInformation.guild_noblesse_skill.map(
@@ -33,19 +47,32 @@ export const GuildSkill = ({ result }) => {
 const Container = styled.div`
   width: 100%;
   font-family: maple-light;
+  color: white;
 `;
 const SkillWrap = styled.div`
   display: flex;
   gap: 10px;
 `;
+
+const BasicSkillWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  align-items: center;
+  text-align: center;
+`;
+
 const NoblesseSkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 50px;
   align-items: center;
 `;
+
 const SkillName = styled.div``;
+
 const SkillIcon = styled.div``;
+
 const SkillLevel = styled.div`
   color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
   font-size: 13px;
