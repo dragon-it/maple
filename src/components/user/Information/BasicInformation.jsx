@@ -242,7 +242,7 @@ const Experience = styled.div`
   background-color: rgb(170, 204, 0);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   font-size: 13px;
-  padding: 5px;
+  padding: 4px;
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
 `;
