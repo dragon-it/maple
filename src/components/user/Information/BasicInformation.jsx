@@ -69,7 +69,11 @@ export const BasicInformation = ({ BasicInfo }) => {
 
   return (
     <Container>
-      <CharacterHeader>CHARACTER INFO</CharacterHeader>
+      <HeaderWrap>
+        <CharacterHeader>CHARACTER INFO</CharacterHeader>
+        <UpdateTime>갱신 시간: 실시간</UpdateTime>
+      </HeaderWrap>
+
       <CharacterBody
         id="CharacterBody"
         style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -148,12 +152,24 @@ const Container = styled.div`
   background-color: rgba(59, 66, 75, 0.9);
 `;
 
+const HeaderWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 const CharacterHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
   color: rgb(220, 252, 2);
-  margin-bottom: 7px;
+  margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`;
+
+const UpdateTime = styled.div`
+  display: flex;
+  align-items: center;
+  font-family: maple-light;
 `;
 
 const CharacterBody = styled.div`
