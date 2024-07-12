@@ -42,7 +42,9 @@ export const Guild = ({ result }) => {
                 alt="GuildIcon"
               />
             ) : (
-              <div>아이콘 없음</div>
+              // api 수정으로 임시 빈칸
+              // <div>아이콘 없음</div>
+              <></>
             )}
           </Icon>
           <Name>{guildInfo.guild_name || "이름 없음"}</Name>
