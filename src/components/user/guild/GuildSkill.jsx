@@ -23,6 +23,8 @@ export const GuildSkill = ({ result }) => {
               <TableCell key={rowIndex}>
                 {rowIndex === 0 ? (
                   <Level>{row[colIndex]}</Level>
+                ) : row[colIndex] === "→" ? (
+                  "→"
                 ) : (
                   sortedGuildSkills
                     .filter((skill) => skill.skill_name === row[colIndex])
@@ -45,7 +47,7 @@ export const GuildSkill = ({ result }) => {
       </Table>
       {/* 길드 노블레스 스킬 */}
       <NoblesseSkillWrap>
-        <SkillHeader>노블레스 스킬</SkillHeader>
+        <SkillHeader>노블레스 길드 스킬</SkillHeader>
         <SkillContainer>
           {result.guildBasicInformation &&
             result.guildBasicInformation.guild_noblesse_skill.map(
@@ -74,27 +76,12 @@ export const GuildSkill = ({ result }) => {
 
 const Container = styled.div`
   width: 100%;
-  font-family: maple-light;
   color: white;
 `;
 const SkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-// 공통 스타일 컴포넌트
-const SkillName = styled.div``;
-
-const SkillIcon = styled.div``;
-
-const SkillLevel = styled.div`
-  color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
-  font-size: 13px;
-`;
-
-const SkillHeader = styled.div`
-  margin-bottom: 5px;
 `;
 
 const BasicSkillWrap = styled.div`
@@ -104,11 +91,7 @@ const BasicSkillWrap = styled.div`
   text-align: center;
 `;
 
-const NoblesseSkillWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const NoblesseSkillWrap = styled.div``;
 
 const SkillContainer = styled.div`
   display: flex;
@@ -118,13 +101,14 @@ const SkillContainer = styled.div`
 const Table = styled.div`
   display: flex;
   width: 100%;
+  justify-content: center;
   margin-bottom: 10px;
 `;
 
 const TableColumn = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const TableCell = styled.div`
@@ -132,11 +116,31 @@ const TableCell = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid white;
-  width: 70px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 90px;
   height: 70px;
   &:first-child {
     height: 20px;
   }
 `;
 const Level = styled.div``;
+
+// 공통 스타일 컴포넌트
+const SkillName = styled.div``;
+
+const SkillIcon = styled.div`
+  width: 32px;
+  height: 32px;
+`;
+
+const SkillLevel = styled.div`
+  color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
+  font-size: 13px;
+`;
+
+const SkillHeader = styled.div`
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(200, 175, 137);
+`;
