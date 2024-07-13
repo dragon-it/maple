@@ -30,12 +30,10 @@ export const Search = ({ error }) => {
   // 현재 경로가 /user/로 시작하는지 여부 확인
   const isUserRoute = location.pathname.startsWith("/user/");
 
-  // 특수 문자 제거 및 상태 업데이트 함수
+  // 상태 업데이트 함수
   const handleInputChange = (e) => {
     const value = e.target.value;
-    // 특수 문자는 제거하지만 천지인 키보드의 점(·)은 허용
-    const sanitizedValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣·]/g, "");
-    setSearchValue(sanitizedValue);
+    setSearchValue(value);
   };
 
   return (
