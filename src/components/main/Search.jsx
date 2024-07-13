@@ -33,8 +33,8 @@ export const Search = ({ error }) => {
   // 특수 문자 제거 및 상태 업데이트 함수
   const handleInputChange = (e) => {
     const value = e.target.value;
-    // 특수 문자 제거
-    const sanitizedValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/g, "");
+    // 특수 문자는 제거하지만 천지인 키보드의 점(·)은 허용
+    const sanitizedValue = value.replace(/[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣·]/g, "");
     setSearchValue(sanitizedValue);
   };
 
