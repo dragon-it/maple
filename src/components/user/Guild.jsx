@@ -64,7 +64,7 @@ export const Guild = ({ result }) => {
         <TabHeader>
           {activeTab === 1 && "길드 정보"}
           {activeTab === 2 && "길드원"}
-          {activeTab === 3 && "길드 스킬"}
+          {activeTab === 3 && "일반 길드 스킬"}
         </TabHeader>
         {activeTab === 1 && <GuildInformation result={result} />}
         {activeTab === 2 && <GuildMember result={result} />}
@@ -153,7 +153,8 @@ const TabHeaderWrap = styled.div`
 `;
 
 const TabHeader = styled.div`
-  font-size: 20px;
+  margin-bottom: 5px;
+  font-size: 18px;
   font-weight: 700;
   color: rgb(200, 175, 137);
 `;
