@@ -21,7 +21,7 @@ export const User = () => {
   const { characterName } = useParams();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);

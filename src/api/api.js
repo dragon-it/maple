@@ -46,6 +46,7 @@ const getOcidApi = async (characterName) => {
 const getBasicInformation = async (ocid) => {
   return callMapleStoryAPI("character/basic", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -53,6 +54,7 @@ const getBasicInformation = async (ocid) => {
 const getCharacterStat = async (ocid) => {
   return callMapleStoryAPI("character/stat", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -60,6 +62,7 @@ const getCharacterStat = async (ocid) => {
 const getCharacterPopularity = async (ocid) => {
   return callMapleStoryAPI("character/popularity", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -67,6 +70,7 @@ const getCharacterPopularity = async (ocid) => {
 const getHyperStat = async (ocid) => {
   return callMapleStoryAPI("character/hyper-stat", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -74,6 +78,7 @@ const getHyperStat = async (ocid) => {
 const getPropensity = async (ocid) => {
   return callMapleStoryAPI("character/propensity", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -81,6 +86,7 @@ const getPropensity = async (ocid) => {
 const getAbility = async (ocid) => {
   return callMapleStoryAPI("character/ability", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -88,6 +94,7 @@ const getAbility = async (ocid) => {
 const getItemEquipment = async (ocid) => {
   return callMapleStoryAPI("character/item-equipment", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -95,6 +102,7 @@ const getItemEquipment = async (ocid) => {
 const getCashItemEquipment = async (ocid) => {
   return callMapleStoryAPI("character/cashitem-equipment", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -102,6 +110,7 @@ const getCashItemEquipment = async (ocid) => {
 const getSymbolEquipment = async (ocid) => {
   return callMapleStoryAPI("character/symbol-equipment", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -109,6 +118,7 @@ const getSymbolEquipment = async (ocid) => {
 const getSetEffect = async (ocid) => {
   return callMapleStoryAPI("character/set-effect", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -116,6 +126,7 @@ const getSetEffect = async (ocid) => {
 const getBeautyEquipment = async (ocid) => {
   return callMapleStoryAPI("character/beauty-equipment", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -123,6 +134,7 @@ const getBeautyEquipment = async (ocid) => {
 const getAndroidEquipment = async (ocid) => {
   return callMapleStoryAPI("character/android-equipment", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -130,6 +142,7 @@ const getAndroidEquipment = async (ocid) => {
 const getPetEquipment = async (ocid) => {
   return callMapleStoryAPI("character/pet-equipment", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -138,12 +151,14 @@ const getSkill = async (ocid) => {
   // character_skill_grade 값으로 5를 사용한 API 호출
   const resultForGrade5 = await callMapleStoryAPI("character/skill", {
     ocid,
+    date: getFormattedDate(),
     character_skill_grade: 5,
   });
 
   // character_skill_grade 값으로 6을 사용한 API 호출
   const resultForGrade6 = await callMapleStoryAPI("character/skill", {
     ocid,
+    date: getFormattedDate(),
     character_skill_grade: 6,
   });
 
@@ -158,6 +173,7 @@ const getSkill = async (ocid) => {
 const getLinkSkill = async (ocid) => {
   return callMapleStoryAPI("character/link-skill", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -165,6 +181,7 @@ const getLinkSkill = async (ocid) => {
 const getHexaMatrix = async (ocid) => {
   return callMapleStoryAPI("character/hexamatrix", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -172,6 +189,7 @@ const getHexaMatrix = async (ocid) => {
 const getHexaMatrixStat = async (ocid) => {
   return callMapleStoryAPI("character/hexamatrix-stat", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -185,15 +203,14 @@ const getDojang = async (ocid) => {
 
 // 유니온 함수
 const getUnion = async (ocid) => {
-  return callMapleStoryAPI("user/union", {
-    ocid,
-  });
+  return callMapleStoryAPI("user/union", { ocid, date: getFormattedDate() });
 };
 
 // 유니온 아티팩트 함수
 const getUnionArtiFact = async (ocid) => {
   return callMapleStoryAPI("user/union-artifact", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
@@ -201,6 +218,7 @@ const getUnionArtiFact = async (ocid) => {
 const getUnionRaider = async (ocid) => {
   return callMapleStoryAPI("user/union-raider", {
     ocid,
+    date: getFormattedDate(),
   });
 };
 
