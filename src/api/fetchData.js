@@ -62,8 +62,12 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
     try {
       // 초성만으로 구성된 문자열인지 확인하는 정규 표현식
       const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
+      // 특수문자 체크 정규식
+      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/g;
       if (isChosung) {
         throw new Error("초성만으로 검색할 수 없습니다.");
+      } else if (specialCharRegex.test(characterName)) {
+        throw new Error("특수문자가 포함된 닉네임은 검색할 수 없습니다.");
       }
 
       setLoading(true); // 로딩 상태를 true로 설정
@@ -81,8 +85,6 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
           throw new Error("기본 정보가 없습니다."); // 기본 정보가 없는 경우 오류 발생
         }
         // 객체 구조 분해 할당
-        // character_guild_name = resultObject.getBasicInformation.character_guild_name
-        // world_name = resultObject.getBasicInformation.world_name
         const { character_guild_name, world_name } =
           resultObject.getBasicInformation;
 

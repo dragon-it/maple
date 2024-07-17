@@ -17,6 +17,7 @@ export const Search = ({ error }) => {
     if (!searchValue.trim()) {
       return; // 검색어가 비어있을 경우 아무것도 하지 않음
     }
+
     const processedSearchValue = searchValue.replace(/\s+/g, ""); // 공백 제거
     navigate(`/user/${encodeURIComponent(processedSearchValue)}`); // 검색어를 URL에 인코딩하여 이동
   };
