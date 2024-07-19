@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import nobleSkillNameMapping from "./SkillData";
 import nobleSkills from "./SkillData";
 
 export const GuildSkill = ({ result }) => {
@@ -60,7 +59,11 @@ export const GuildSkill = ({ result }) => {
                     />
                   </SkillIcon>
                   <SkillName>
-                    {nobleSkillNameMapping[noblesseSkill.skill_name]}
+                    {
+                      nobleSkills.nobleSkillNameMapping[
+                        noblesseSkill.skill_name
+                      ]
+                    }
                   </SkillName>
                   <SkillLevel isMaxLevel={noblesseSkill.skill_level === 15}>
                     {noblesseSkill.skill_level}/15
@@ -103,12 +106,15 @@ const Table = styled.div`
   width: 100%;
   justify-content: center;
   margin-bottom: 10px;
+  background-color: rgb(39, 39, 39);
+  border: 1px solid rgba(255, 255, 255, 0.575);
+  border-radius: 5px;
+  outline: 1px solid rgb(197, 194, 194);
 `;
 
 const TableColumn = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const TableCell = styled.div`
@@ -116,11 +122,12 @@ const TableCell = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
   width: 90px;
   height: 70px;
   &:first-child {
     height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 `;
 const Level = styled.div``;
@@ -139,7 +146,7 @@ const SkillLevel = styled.div`
 `;
 
 const SkillHeader = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 18px;
   font-weight: 700;
   color: rgb(200, 175, 137);
