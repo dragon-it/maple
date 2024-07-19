@@ -153,7 +153,7 @@ const TabHeaderWrap = styled.div`
 `;
 
 const TabHeader = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 18px;
   font-weight: 700;
   color: rgb(200, 175, 137);
