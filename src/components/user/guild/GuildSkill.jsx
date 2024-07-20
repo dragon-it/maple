@@ -8,8 +8,8 @@ export const GuildSkill = ({ result }) => {
 
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
-      nobleSkills.skillOrder.indexOf(a.skill_name) -
-      nobleSkills.skillOrder.indexOf(b.skill_name)
+      nobleSkills.skillOrder.findIndex((skill) => skill.name === a.skill_name) -
+      nobleSkills.skillOrder.findIndex((skill) => skill.name === b.skill_name)
   );
 
   return (
@@ -27,17 +27,29 @@ export const GuildSkill = ({ result }) => {
                 ) : (
                   sortedGuildSkills
                     .filter((skill) => skill.skill_name === row[colIndex])
-                    .map((guildSkill, index) => (
-                      <BasicSkillWrap key={index}>
-                        <SkillIcon>
-                          <img
-                            src={guildSkill.skill_icon}
-                            alt={guildSkill.skill_name}
-                          />
-                        </SkillIcon>
-                        <SkillLevel>{guildSkill.skill_level}</SkillLevel>
-                      </BasicSkillWrap>
-                    ))
+                    .map((guildSkill, index) => {
+                      const skillInfo = nobleSkills.skillOrder.find(
+                        (skill) => skill.name === guildSkill.skill_name
+                      );
+                      return (
+                        <BasicSkillWrap key={index}>
+                          <SkillIcon>
+                            <img
+                              src={guildSkill.skill_icon}
+                              alt={guildSkill.skill_name}
+                            />
+                          </SkillIcon>
+                          <SkillName>{skillInfo.name}</SkillName>
+                          <SkillLevel
+                            isMaxLevel={
+                              guildSkill.skill_level === skillInfo.maxLevel
+                            }
+                          >
+                            {guildSkill.skill_level}/{skillInfo.maxLevel}
+                          </SkillLevel>
+                        </BasicSkillWrap>
+                      );
+                    })
                 )}
               </TableCell>
             ))}
@@ -91,7 +103,10 @@ const BasicSkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const NoblesseSkillWrap = styled.div``;
@@ -106,7 +121,7 @@ const Table = styled.div`
   width: 100%;
   justify-content: center;
   margin-bottom: 10px;
-  background-color: rgb(39, 39, 39);
+  background-color: rgb(57, 57, 57);
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
   outline: 1px solid rgb(197, 194, 194);
@@ -122,18 +137,23 @@ const TableCell = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  width: 90px;
-  height: 70px;
+  width: 130px;
+  height: 80px;
   &:first-child {
     height: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
   }
 `;
 const Level = styled.div``;
 
 // 공통 스타일 컴포넌트
-const SkillName = styled.div``;
+const SkillName = styled.div`
+  font-size: 11px;
+  width: 100%;
+  text-align: center;
+  overflow-wrap: break-word;
+`;
 
 const SkillIcon = styled.div`
   width: 32px;
