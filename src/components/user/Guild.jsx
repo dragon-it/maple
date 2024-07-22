@@ -27,6 +27,7 @@ export const Guild = ({ result }) => {
 
   return (
     <Container>
+    <InfoWrap>
       <TabWrap>
         <GuildHeader>GUILD</GuildHeader>
         <GuildBasicInformation>
@@ -70,23 +71,29 @@ export const Guild = ({ result }) => {
         {activeTab === 2 && <GuildMember result={result} />}
         {activeTab === 3 && <GuildSkill result={result} />}
       </TabHeaderWrap>
+    </InfoWrap>
     </Container>
   );
 };
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
+  width: 100%;
   position: relative;
   padding: 10px;
-  margin: 10px;
-  margin-top: 5px;
+`;
+
+const InfoWrap = styled.div`
+    display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  padding: 10px;
   gap: 10px;
   background-color: rgb(51, 51, 51);
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
-`;
+`
 
 const GuildHeader = styled.div`
   font-size: 15px;
