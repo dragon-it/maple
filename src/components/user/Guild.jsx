@@ -166,7 +166,14 @@ const TabHeader = styled.div`
   color: rgb(200, 175, 137);
 `;
 
-const NoDataWrap = styled.div``;
+const NoDataWrap = styled.div`
+  width: 100%;
+  position: relative;
+  padding: 10px;  
+  background-color: rgb(51, 51, 51);
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 5px;
+  outline: 1px solid rgb(141, 141, 141);`;
 
 const NoDataHeader = styled.div`
   font-size: 15px;
