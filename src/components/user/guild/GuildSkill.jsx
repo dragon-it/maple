@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import nobleSkills from "./SkillData";
+import rightArrow from "../../../assets/guild/guildSkill/Right_arrow.svg"
 
 export const GuildSkill = ({ result }) => {
   console.log(result.guildBasicInformation.guild_noblesse_skill);
@@ -23,7 +24,7 @@ export const GuildSkill = ({ result }) => {
                 {rowIndex === 0 ? (
                   <Level>{row[colIndex]}</Level>
                 ) : row[colIndex] === "→" ? (
-                  "→"
+                  <RightArrow src={rightArrow} alt={rightArrow}/>
                 ) : (
                   sortedGuildSkills
                     .filter((skill) => skill.skill_name === row[colIndex])
@@ -137,15 +138,20 @@ const TableCell = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 130px;
   height: 80px;
+  padding: 0px 10px;
   &:first-child {
     height: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     margin-bottom: 10px;
   }
 `;
 const Level = styled.div``;
+
+const RightArrow = styled.img`
+    width: 50px;
+    height: 40px;
+`
 
 // 공통 스타일 컴포넌트
 const SkillName = styled.div`
