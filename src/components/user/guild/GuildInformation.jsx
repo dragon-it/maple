@@ -2,41 +2,53 @@ import React from "react";
 import styled from "styled-components";
 
 export const GuildInformation = ({ result }) => {
-  const { guild_master_name, guild_fame, guild_point, guild_member_count,guild_name } =
-    result.guildBasicInformation;
+  const {
+    guild_master_name,
+    guild_fame,
+    guild_point,
+    guild_member_count,
+    guild_name,
+  } = result.guildBasicInformation;
 
   return (
     <Container>
-      <Items>
-        <InfoHeader>길드명</InfoHeader>{guild_name}
-      </Items>
-      <Items>
+      <HeaderWrap>
+        <InfoHeader>길드명</InfoHeader>
         <InfoHeader>명성치</InfoHeader>
-        {guild_fame.toLocaleString()}
-      </Items>
-      <Items>
         <InfoHeader>길드 포인트</InfoHeader>
-        {guild_point.toLocaleString()}
-      </Items>
-      <Items>
         <InfoHeader>길드 인원수</InfoHeader>
-        {guild_member_count.toLocaleString()}명
-      </Items>
-      <Items>
         <InfoHeader>길드 마스터</InfoHeader>
-        {guild_master_name}
-      </Items>
+      </HeaderWrap>
+      <ValueWrap>
+        <Value>{guild_name}</Value>
+        <Value>{guild_fame.toLocaleString()}</Value>
+        <Value>{guild_point.toLocaleString()}</Value>
+        <Value>{guild_member_count.toLocaleString()}</Value>
+        <Value>{guild_master_name}</Value>
+      </ValueWrap>
     </Container>
   );
 };
 
-const Container = styled.div``;
-
-const Items = styled.div`
+const Container = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 20px;
+  font-family: maple-light;
+  font-size: 15px;
 `;
 
-const InfoHeader = styled.div`
-  
-`
+const Value = styled.div``;
+
+const HeaderWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+`;
+const ValueWrap = styled.div`
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+`;
+
+const InfoHeader = styled.div``;
