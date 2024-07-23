@@ -30,11 +30,27 @@ const callMapleStoryAPI = async (endpoint, params) => {
   }
 };
 
-// 날짜 함수
-const getFormattedDate = () => {
+const getYesterDayFormatted = () => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   return yesterday.toISOString().split("T")[0];
+};
+
+const getTodayFormatted = () => {
+  const today = new Date();
+  return today.toISOString().split("T")[0];
+};
+
+const getFormattedDate = () => {
+  const now = new Date();
+  const hour = now.getHours();
+  const minutes = now.getMinutes();
+
+  if (hour < 8 || (hour === 8 && minutes < 30)) {
+    return getYesterDayFormatted();
+  } else {
+    return getTodayFormatted();
+  }
 };
 
 // Ocid 함수
@@ -179,7 +195,7 @@ const getHexaMatrixStat = async (ocid) => {
 const getDojang = async (ocid) => {
   return callMapleStoryAPI("character/dojang", {
     ocid,
-    date: getFormattedDate(),
+    date: getYesterDayFormatted(),
   });
 };
 
@@ -216,13 +232,46 @@ const getOguildId = async (guildName, worldName) => {
 const getGuildBasicInformation = async (oguildId) => {
   return callMapleStoryAPI("guild/basic", {
     oguild_id: oguildId,
-    date: getFormattedDate(),
   });
+};
+
+// 길드 랭킹 함수
+const getGuildRanking = async (ocid, guildName, worldName) => {
+  // 주간 명성치 랭킹
+  const resultFameRanking = await callMapleStoryAPI("ranking/guild", {
+    ocid,
+    date: getFormattedDate(),
+    ranking_type: 0,
+    guild_name: guildName,
+    world_name: worldName,
+  });
+  // 플래그 랭킹
+  const resultFlagRanking = await callMapleStoryAPI("ranking/guild", {
+    ocid,
+    date: getFormattedDate(),
+    ranking_type: 1,
+    guild_name: guildName,
+    world_name: worldName,
+  });
+  // 수로 랭킹
+  const resultSuroRanking = await callMapleStoryAPI("ranking/guild", {
+    ocid,
+    date: getFormattedDate(),
+    ranking_type: 2,
+    guild_name: guildName,
+    world_name: worldName,
+  });
+
+  return {
+    FameRanking: resultFameRanking,
+    FlagRanking: resultFlagRanking,
+    SuroRanking: resultSuroRanking,
+  };
 };
 
 export {
   callMapleStoryAPI,
-  getFormattedDate,
+  getYesterDayFormatted,
   getOcidApi,
   getBasicInformation,
   getCharacterStat,
@@ -247,4 +296,5 @@ export {
   getUnionRaider,
   getOguildId,
   getGuildBasicInformation,
+  getGuildRanking,
 };

@@ -1,4 +1,9 @@
-import { getGuildBasicInformation, getOcidApi, getOguildId } from "./api";
+import {
+  getGuildBasicInformation,
+  getGuildRanking,
+  getOcidApi,
+  getOguildId,
+} from "./api";
 import apiFunctions from "./ApiFuntion";
 
 /**
@@ -93,8 +98,14 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
           oguildId.oguild_id
         );
 
+        const guildRankInformation = await getGuildRanking(
+          ocid,
+          character_guild_name,
+          world_name
+        );
         // 결과 객체에 길드 정보 추가
         resultObject.guildBasicInformation = guildBasicInformation;
+        resultObject.guildRankInformation = guildRankInformation;
 
         setResult(resultObject);
       } else {
