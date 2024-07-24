@@ -27,51 +27,51 @@ export const Guild = ({ result }) => {
 
   return (
     <Container>
-    <InfoWrap>
-      <TabWrap>
-        <GuildHeader>GUILD</GuildHeader>
-        <GuildBasicInformation>
-          <Icon>
-            {guildInfo.guild_mark ? (
-              <img
-                src={`data:image/png;base64,${guildInfo.guild_mark}`}
-                alt="GuildIcon"
-              />
-            ) : guildInfo.guild_mark_custom ? (
-              <img
-                src={`data:image/png;base64,${guildInfo.guild_mark_custom}`}
-                alt="GuildIcon"
-              />
-            ) : (
-              // api 수정으로 임시 빈칸
-              // <div>아이콘 없음</div>
-              <></>
-            )}
-          </Icon>
-          <Name>{guildInfo.guild_name || "이름 없음"}</Name>
-          <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
-        </GuildBasicInformation>
-        <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-          길드 정보
-        </Tab>
-        <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-          길드원
-        </Tab>
-        <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-          길드 스킬
-        </Tab>
-      </TabWrap>
-      <TabHeaderWrap>
-        <TabHeader>
-          {activeTab === 1 && "길드 정보"}
-          {activeTab === 2 && "길드원"}
-          {activeTab === 3 && "일반 길드 스킬"}
-        </TabHeader>
-        {activeTab === 1 && <GuildInformation result={result} />}
-        {activeTab === 2 && <GuildMember result={result} />}
-        {activeTab === 3 && <GuildSkill result={result} />}
-      </TabHeaderWrap>
-    </InfoWrap>
+      <InfoWrap>
+        <TabWrap>
+          <GuildHeader>GUILD</GuildHeader>
+          <GuildBasicInformation>
+            <Icon>
+              {guildInfo.guild_mark ? (
+                <img
+                  src={`data:image/png;base64,${guildInfo.guild_mark}`}
+                  alt="GuildIcon"
+                />
+              ) : guildInfo.guild_mark_custom ? (
+                <img
+                  src={`data:image/png;base64,${guildInfo.guild_mark_custom}`}
+                  alt="GuildIcon"
+                />
+              ) : (
+                // api 수정으로 임시 빈칸
+                // <div>아이콘 없음</div>
+                <></>
+              )}
+            </Icon>
+            <Name>{guildInfo.guild_name || "이름 없음"}</Name>
+            <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
+          </GuildBasicInformation>
+          <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+            길드 정보
+          </Tab>
+          <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+            길드원
+          </Tab>
+          <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+            길드 스킬
+          </Tab>
+        </TabWrap>
+        <TabHeaderWrap>
+          <TabHeader>
+            {activeTab === 1 && "길드 정보"}
+            {activeTab === 2 && "길드원"}
+            {activeTab === 3 && "일반 길드 스킬"}
+          </TabHeader>
+          {activeTab === 1 && <GuildInformation result={result} />}
+          {activeTab === 2 && <GuildMember result={result} />}
+          {activeTab === 3 && <GuildSkill result={result} />}
+        </TabHeaderWrap>
+      </InfoWrap>
     </Container>
   );
 };
@@ -83,7 +83,7 @@ const Container = styled.div`
 `;
 
 const InfoWrap = styled.div`
-    display: flex;
+  display: flex;
   flex-direction: row;
   width: 100%;
   position: relative;
@@ -93,7 +93,7 @@ const InfoWrap = styled.div`
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
-`
+`;
 
 const GuildHeader = styled.div`
   font-size: 15px;
@@ -160,20 +160,21 @@ const TabHeaderWrap = styled.div`
 `;
 
 const TabHeader = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-size: 18px;
-  font-weight: 700;
   color: rgb(200, 175, 137);
+  font-family: maple-light;
 `;
 
 const NoDataWrap = styled.div`
   width: 100%;
   position: relative;
-  padding: 10px;  
+  padding: 10px;
   background-color: rgb(51, 51, 51);
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
-  outline: 1px solid rgb(141, 141, 141);`;
+  outline: 1px solid rgb(141, 141, 141);
+`;
 
 const NoDataHeader = styled.div`
   font-size: 15px;

@@ -93,6 +93,7 @@ export const GuildSkill = ({ result }) => {
 const Container = styled.div`
   width: 100%;
   color: white;
+  font-family: maple-light;
 `;
 const SkillWrap = styled.div`
   display: flex;
@@ -116,6 +117,10 @@ const SkillContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+  background-color: rgb(57, 57, 57);
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.575);
+  border-radius: 5px;
 `;
 const Table = styled.div`
   display: flex;
@@ -125,7 +130,6 @@ const Table = styled.div`
   background-color: rgb(57, 57, 57);
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
-  outline: 1px solid rgb(197, 194, 194);
 `;
 
 const TableColumn = styled.div`
@@ -172,8 +176,7 @@ const SkillLevel = styled.div`
 `;
 
 const SkillHeader = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-size: 18px;
-  font-weight: 700;
   color: rgb(200, 175, 137);
 `;
