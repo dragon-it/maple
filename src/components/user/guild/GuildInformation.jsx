@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import flag_icon from "../../../assets/guild/ranking/Flag_ranking_icon.svg";
+import fame_icon from "../../../assets/guild/ranking/Fame_ranking_icon.svg";
+import suro_icon from "../../../assets/guild/ranking/Suro_ranking_icon.svg";
 
 export const GuildInformation = ({ result }) => {
   // 구조 분해 할당 & 기본값 설정
@@ -40,7 +43,10 @@ export const GuildInformation = ({ result }) => {
         <GuildRankHeader>길드 랭킹</GuildRankHeader>
         <ItemWrap>
           <RankingItem>
-            <RankingHeader>주간 명성 랭킹</RankingHeader>
+            <RankingHeader>
+              <RankingIcon src={fame_icon} alt="fame_icon" />
+              <div>주간 명성</div>
+            </RankingHeader>
             <RankingValue>
               {fameRanking[0].ranking === 0
                 ? "순위 없음"
@@ -48,7 +54,10 @@ export const GuildInformation = ({ result }) => {
             </RankingValue>
           </RankingItem>
           <RankingItem>
-            <RankingHeader>플래그 랭킹</RankingHeader>
+            <RankingHeader>
+              <RankingIcon src={flag_icon} alt="flag_icon" />
+              <div>플래그</div>
+            </RankingHeader>
             <RankingValue>
               {flagRanking[0].ranking === 0
                 ? "순위 없음"
@@ -56,7 +65,10 @@ export const GuildInformation = ({ result }) => {
             </RankingValue>
           </RankingItem>
           <RankingItem>
-            <RankingHeader>수로 랭킹</RankingHeader>
+            <RankingHeader>
+              <RankingIcon src={suro_icon} alt="suro_icon" />
+              <div>지하 수로</div>
+            </RankingHeader>
             <RankingValue>
               {suroRanking[0].ranking === 0
                 ? "순위 없음"
@@ -79,7 +91,7 @@ const BasicInfoSection = styled.div`
   gap: 25px;
   font-size: 15px;
   margin-bottom: 20px;
-  padding: 5px;
+  padding: 10px;
   background-color: rgb(25, 25, 25);
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
@@ -129,9 +141,14 @@ const ItemWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 20px;
-  padding: 5px;
+  gap: 25px;
+  padding: 10px;
   background-color: rgb(25, 25, 25);
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
+`;
+
+const RankingIcon = styled.img`
+  width: 30px;
+  height: 30px;
 `;
