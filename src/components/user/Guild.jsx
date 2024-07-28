@@ -93,6 +93,11 @@ const InfoWrap = styled.div`
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
+  min-width: 600px;
+
+  @media screen and (max-width: 576px) {
+    min-width: 0;
+  }
 `;
 
 const GuildHeader = styled.div`

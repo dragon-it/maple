@@ -105,7 +105,7 @@ const BasicSkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
   text-align: center;
   width: 100%;
   height: 100%;
@@ -122,11 +122,13 @@ const SkillContainer = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
 `;
+
 const Table = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
   margin-bottom: 10px;
+  padding-bottom: 10px;
   background-color: rgb(57, 57, 57);
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
@@ -147,7 +149,6 @@ const TableCell = styled.div`
   &:first-child {
     height: 20px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    margin-bottom: 10px;
   }
 `;
 const Level = styled.div``;
