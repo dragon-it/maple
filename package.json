@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^14.5.2",
     "antd": "^5.19.1",
     "axios": "^1.7.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
@@ -19,8 +20,9 @@
     "web-vitals": "^4.2.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "start": "node proxyServer.js",
+    "dev": "concurrently \"node proxyServer.js\" \"react-scripts start\"",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -43,9 +45,11 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "globals": "^15.8.0",
     "typescript": "^5.5.3",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }
