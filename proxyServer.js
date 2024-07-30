@@ -62,7 +62,7 @@ app.post("/api/id", async (req, res) => {
     console.log(`response: ${JSON.stringify(data)}`);
 
     if (!data || !data.ocid) {
-      console.log("No data or ocid is missing"); // 추가 로그
+      console.log("No data or ocid is missing");
       return res
         .status(500)
         .json({ error: "Failed to fetch data or ocid is missing" });
@@ -77,6 +77,10 @@ app.post("/api/id", async (req, res) => {
   }
 });
 
+// app.post("/api/character/basic", async (req, res)=>{
+//   const
+// })
+
 // Combined 엔드포인트
 app.post("/api/character", async (req, res) => {
   const { ocid } = req.body;
@@ -86,7 +90,6 @@ app.post("/api/character", async (req, res) => {
   }
 
   try {
-    // Fetch all related data using the OCID
     const [
       basicData,
       stat,
@@ -109,6 +112,7 @@ app.post("/api/character", async (req, res) => {
       union,
       unionArtifact,
       unionRaider,
+      dojang,
     ] = await Promise.all([
       callMapleStoryAPI("character/basic", { ocid }),
       callMapleStoryAPI("character/stat", { ocid }),
@@ -131,33 +135,35 @@ app.post("/api/character", async (req, res) => {
       callMapleStoryAPI("user/union", { ocid }),
       callMapleStoryAPI("user/union-artifact", { ocid }),
       callMapleStoryAPI("user/union-raider", { ocid }),
+      callMapleStoryAPI("character/dojang", { ocid }),
     ]);
 
-    // Construct the combined response
+    // 응답 데이터 구조
     res.json({
-      characterBasicInfo: basicData,
-      characterStat: stat,
-      characterPopularity: popularity,
-      hyperStat: hyperStat,
-      propensity: propensity,
-      ability: ability,
-      itemEquipment: itemEquipment,
-      cashItemEquipment: cashItemEquipment,
-      symbolEquipment: symbolEquipment,
-      setEffect: setEffect,
+      getBasicInformation: basicData,
+      getCharacterStat: stat,
+      getCharacterPopularity: popularity,
+      getHyperStat: hyperStat,
+      getPropensity: propensity,
+      getAbility: ability,
+      getItemEquipment: itemEquipment,
+      getCashItemEquipment: cashItemEquipment,
+      getSymbolEquipment: symbolEquipment,
+      getSetEffect: setEffect,
       beautyEquipment: beautyEquipment,
-      androidEquipment: androidEquipment,
-      petEquipment: petEquipment,
-      skill: {
+      getAndroidEquipment: androidEquipment,
+      getPetEquipment: petEquipment,
+      getSkill: {
         grade5: skillGrade5,
         grade6: skillGrade6,
       },
-      linkSkill: linkSkill,
-      hexaMatrix: hexaMatrix,
-      hexaMatrixStat: hexaMatrixStat,
-      union: union,
-      unionArtifact: unionArtifact,
-      unionRaider: unionRaider,
+      getLinkSkill: linkSkill,
+      getHexaMatrix: hexaMatrix,
+      getHexaMatrixStat: hexaMatrixStat,
+      getUnion: union,
+      getUnionArtiFact: unionArtifact,
+      getUnionRaider: unionRaider,
+      getDojang: dojang,
     });
   } catch (error) {
     console.error("Combined API error:", error.message);

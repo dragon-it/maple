@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getBasicInformation, getOcidApi } from "../../../api/api";
 
 export const GuildMember = ({ result }) => {
   const { guild_member } = result.guildBasicInformation;
@@ -25,8 +24,10 @@ export const GuildMember = ({ result }) => {
             return cache[member];
           }
 
+          // eslint-disable-next-line no-undef
           const ocidResult = await getOcidApi(member);
           if (ocidResult) {
+            // eslint-disable-next-line no-undef
             const basicInfoResult = await getBasicInformation(ocidResult.ocid);
             const memberData = { ...basicInfoResult };
             setCache((prevCache) => ({ ...prevCache, [member]: memberData }));
