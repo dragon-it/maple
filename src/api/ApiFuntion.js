@@ -19,6 +19,7 @@ import {
   getLinkSkill,
   getHexaMatrix,
   getHexaMatrixStat,
+  getCombinedData,
 } from "./api";
 
 const apiFunctions = [
@@ -42,6 +43,7 @@ const apiFunctions = [
   { name: "getLinkSkill", function: getLinkSkill },
   { name: "getHexaMatrix", function: getHexaMatrix },
   { name: "getHexaMatrixStat", function: getHexaMatrixStat },
+  { name: "getCombinedData", function: getCombinedData },
 ];
 
 export default apiFunctions;
