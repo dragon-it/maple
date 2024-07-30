@@ -3,6 +3,7 @@ import {
   getGuildRanking,
   getOcidApi,
   getOguildId,
+  getCombinedData, // 추가
 } from "./api";
 import apiFunctions from "./ApiFuntion";
 
@@ -11,8 +12,6 @@ import apiFunctions from "./ApiFuntion";
  * @param {string} str - 입력 문자열
  * @returns {string[]} - 대소문자 조합 배열
  */
-
-// 주어진 문자열의 모든 대소문자 조합 생성 함수
 const getAllCaseCombinations = (str) => {
   if (str.length === 0) return [""]; // 문자열이 빈 경우, 빈 문자열 배열 반환
 
@@ -60,7 +59,6 @@ const getOcid = async (characterName) => {
  * @param {function} setLoading - 로딩 상태를 설정하는 함수
  * @param {function} setError - 오류 메시지를 설정하는 함수
  */
-
 const fetchData = async (characterName, setResult, setLoading, setError) => {
   if (characterName.trim() !== "") {
     // 캐릭터 이름이 비어있지 않은 경우
@@ -81,15 +79,13 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         const resultObject = Object.fromEntries(
           apiFunctions.map(({ name }, index) => [name, results[index]])
         );
-
-        if (!resultObject.getBasicInformation) {
+        console.log(resultObject);
+        if (!resultObject.getCombinedData.getBasicInformation) {
           throw new Error("기본 정보가 없습니다."); // 기본 정보가 없는 경우 오류 발생
         }
-        // 객체 구조 분해 할당
-        // character_guild_name = resultObject.getBasicInformation.character_guild_name
-        // world_name = resultObject.getBasicInformation.world_name
+
         const { character_guild_name, world_name } =
-          resultObject.getBasicInformation;
+          resultObject.getCombinedData.getBasicInformation;
 
         // OguildId 가져오기
         const oguildId = await getOguildId(character_guild_name, world_name);
@@ -103,9 +99,14 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
           character_guild_name,
           world_name
         );
+
         // 결과 객체에 길드 정보 추가
         resultObject.guildBasicInformation = guildBasicInformation;
         resultObject.guildRankInformation = guildRankInformation;
+
+        // getCombinedData 호출 및 로그 출력
+        const combinedData = await getCombinedData(ocid);
+        console.log("getCombinedData response:", combinedData);
 
         setResult(resultObject);
       } else {

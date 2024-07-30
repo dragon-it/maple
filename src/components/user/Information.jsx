@@ -48,30 +48,32 @@ const Information = ({ result }) => {
 
   return (
     <Container>
-      {result && result.getBasicInformation && (
+      {result && result.getCombinedData.getBasicInformation && (
         <InfoWrap>
           <SynthesisWrap>
             <StatWrap>
               <BasicWrap>
                 <BasicInformation
                   BasicInfo={{
-                    getBasicInformation: result.getBasicInformation,
-                    getCharacterPopularity: result.getCharacterPopularity,
-                    getDojang: result.getDojang,
-                    getUnion: result.getUnion,
+                    getBasicInformation:
+                      result.getCombinedData.getBasicInformation,
+                    getCharacterPopularity:
+                      result.getCombinedData.getCharacterPopularity,
+                    getDojang: result.getCombinedData.getDojang,
+                    getUnion: result.getCombinedData.getUnion,
                   }}
                 ></BasicInformation>
                 <StatInformation
-                  statInfo={result.getCharacterStat}
+                  statInfo={result.getCombinedData.getCharacterStat}
                 ></StatInformation>
               </BasicWrap>
               <AbilWrap>
                 <AbilContainer>
                   <AbilityInformation
-                    AbilityInfo={result.getAbility}
+                    AbilityInfo={result.getCombinedData.getAbility}
                   ></AbilityInformation>
                   <HyperStatInformation
-                    HyperStatInfo={result.getHyperStat}
+                    HyperStatInfo={result.getCombinedData.getHyperStat}
                     onHeightChange={handleHeightChange}
                   ></HyperStatInformation>
                   <ImgWrap>
@@ -95,7 +97,7 @@ const Information = ({ result }) => {
           </SynthesisWrap>
           <ProWrap>
             <PropensityInformation
-              propensityData={result.getPropensity}
+              propensityData={result.getCombinedData.getPropensity}
             ></PropensityInformation>
           </ProWrap>
         </InfoWrap>
