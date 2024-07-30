@@ -1,49 +1,5 @@
-import {
-  getBasicInformation,
-  getCharacterStat,
-  getHyperStat,
-  getAbility,
-  getItemEquipment,
-  getDojang,
-  getCharacterPopularity,
-  getPropensity,
-  getSetEffect,
-  getUnionArtiFact,
-  getUnion,
-  getUnionRaider,
-  getSymbolEquipment,
-  getSkill,
-  getCashItemEquipment,
-  getPetEquipment,
-  getAndroidEquipment,
-  getLinkSkill,
-  getHexaMatrix,
-  getHexaMatrixStat,
-  getCombinedData,
-} from "./api";
+import { getCombinedData } from "./api";
 
-const apiFunctions = [
-  { name: "getBasicInformation", function: getBasicInformation },
-  { name: "getCharacterStat", function: getCharacterStat },
-  { name: "getHyperStat", function: getHyperStat },
-  { name: "getAbility", function: getAbility },
-  { name: "getItemEquipment", function: getItemEquipment },
-  { name: "getDojang", function: getDojang },
-  { name: "getCharacterPopularity", function: getCharacterPopularity },
-  { name: "getPropensity", function: getPropensity },
-  { name: "getSetEffect", function: getSetEffect },
-  { name: "getUnionArtiFact", function: getUnionArtiFact },
-  { name: "getUnion", function: getUnion },
-  { name: "getUnionRaider", function: getUnionRaider },
-  { name: "getSymbolEquipment", function: getSymbolEquipment },
-  { name: "getSkill", function: getSkill },
-  { name: "getCashItemEquipment", function: getCashItemEquipment },
-  { name: "getPetEquipment", function: getPetEquipment },
-  { name: "getAndroidEquipment", function: getAndroidEquipment },
-  { name: "getLinkSkill", function: getLinkSkill },
-  { name: "getHexaMatrix", function: getHexaMatrix },
-  { name: "getHexaMatrixStat", function: getHexaMatrixStat },
-  { name: "getCombinedData", function: getCombinedData },
-];
+const apiFunctions = [{ name: "getCombinedData", function: getCombinedData }];
 
 export default apiFunctions;
