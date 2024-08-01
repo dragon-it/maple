@@ -6,16 +6,19 @@ import axios from "axios";
  * @param {object} params - API 호출 시 전달할 파라미터
  * @returns {object|boolean} - API 응답 데이터 또는 실패 시 false 반환
  */
-
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
     const response = await axios.post(`/api/${endpoint}`, params);
     if (response.status === 200) {
       return response.data;
     } else {
+      console.error(
+        `API call to /api/${endpoint} failed with status: ${response.status}`
+      );
       return false;
     }
   } catch (error) {
+    console.error(`Error in API call to /api/${endpoint}:`, error.message);
     return false;
   }
 };
@@ -45,13 +48,24 @@ const getFormattedDate = () => {
 
 // Ocid 함수
 const getOcidApi = async (characterName) => {
-  return callMapleStoryAPI("id", { character_name: characterName });
+  return callMapleStoryAPI("ocid", { character_name: characterName });
+};
+
+// 길드 id
+const getOguildId = async (guildName, worldName) => {
+  console.log(
+    `getOguildId called with guildName: ${guildName}, worldName: ${worldName}`
+  );
+  return callMapleStoryAPI("guild/id", {
+    guild_name: guildName,
+    world_name: worldName,
+  });
 };
 
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
   try {
-    const response = await axios.post(`/api/character`, { ocid });
+    const response = await axios.post(`/api/character/information`, { ocid });
 
     if (response.status === 200) {
       return response.data;
@@ -63,14 +77,6 @@ const getCombinedData = async (ocid) => {
     console.error("Error fetching combined data:", error);
     return false;
   }
-};
-
-// 길드 OguildId 취득 함수
-const getOguildId = async (guildName, worldName) => {
-  return callMapleStoryAPI("guild/id", {
-    guild_name: guildName,
-    world_name: worldName,
-  });
 };
 
 // 길드 정보 함수

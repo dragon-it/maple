@@ -2,8 +2,8 @@ import {
   getGuildBasicInformation,
   getGuildRanking,
   getOcidApi,
-  getOguildId,
-  getCombinedData, // 추가
+  getCombinedData,
+  getOguildId, // 추가
 } from "./api";
 import apiFunctions from "./ApiFuntion";
 
@@ -48,6 +48,7 @@ const getOcid = async (characterName) => {
     }
     return null; // 모든 조합을 시도한 후에도 OCID를 찾지 못한 경우 null 반환
   } catch (error) {
+    console.error(`getOcid error: ${error.message}`);
     return null; // 예기치 않은 오류 발생 시 null 반환
   }
 };
@@ -72,13 +73,16 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
       setLoading(true); // 로딩 상태를 true로 설정
       const ocid = await getOcid(characterName); // OCID를 가져옴
       if (ocid) {
-        const results = await Promise.all(
+        const apiResults = await Promise.all(
           apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
         );
+        console.log(apiResults);
 
-        const resultObject = Object.fromEntries(
-          apiFunctions.map(({ name }, index) => [name, results[index]])
-        );
+        const resultObject = {};
+        apiFunctions.forEach(({ name }, index) => {
+          resultObject[name] = apiResults[index];
+        });
+
         console.log(resultObject);
         if (!resultObject.getCombinedData.getBasicInformation) {
           throw new Error("기본 정보가 없습니다."); // 기본 정보가 없는 경우 오류 발생
@@ -87,8 +91,12 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         const { character_guild_name, world_name } =
           resultObject.getCombinedData.getBasicInformation;
 
+        console.log(character_guild_name);
+        console.log(world_name);
+
         // OguildId 가져오기
         const oguildId = await getOguildId(character_guild_name, world_name);
+        console.log(oguildId);
 
         const guildBasicInformation = await getGuildBasicInformation(
           oguildId.oguild_id
@@ -100,19 +108,27 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
           world_name
         );
 
+        console.log(oguildId);
+        console.log(guildBasicInformation);
+        console.log(guildRankInformation);
+
         // 결과 객체에 길드 정보 추가
         resultObject.guildBasicInformation = guildBasicInformation;
         resultObject.guildRankInformation = guildRankInformation;
+        console.log(guildBasicInformation);
+        console.log(guildRankInformation);
 
         // getCombinedData 호출 및 로그 출력
         const combinedData = await getCombinedData(ocid);
         console.log("getCombinedData response:", combinedData);
 
         setResult(resultObject);
+        console.log(resultObject);
       } else {
         setError("OCID 가져오기 오류"); // OCID를 가져오지 못한 경우 오류 메시지
       }
     } catch (error) {
+      console.error(`fetchData error: ${error.message}`);
       setError(`검색 중 오류 발생: ${error.message}`);
     } finally {
       setLoading(false); // 로딩 상태를 false로 설정
