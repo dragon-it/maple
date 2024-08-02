@@ -103,7 +103,6 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         );
 
         const guildRankInformation = await getGuildRanking(
-          ocid,
           character_guild_name,
           world_name
         );

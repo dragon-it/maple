@@ -29,23 +29,6 @@ const getYesterDayFormatted = () => {
   return yesterday.toISOString().split("T")[0];
 };
 
-const getTodayFormatted = () => {
-  const today = new Date();
-  return today.toISOString().split("T")[0];
-};
-
-const getFormattedDate = () => {
-  const now = new Date();
-  const hour = now.getHours();
-  const minutes = now.getMinutes();
-
-  if (hour < 8 || (hour === 8 && minutes < 30)) {
-    return getYesterDayFormatted();
-  } else {
-    return getTodayFormatted();
-  }
-};
-
 // Ocid 함수
 const getOcidApi = async (characterName) => {
   return callMapleStoryAPI("ocid", { character_name: characterName });
@@ -69,6 +52,10 @@ const getGuildBasicInformation = async (oguildId) => {
   });
 };
 
+const getGuildMembers = async (guildMembers) => {
+  return callMapleStoryAPI("guild/members", { guildMembers });
+};
+
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
   try {
@@ -87,37 +74,11 @@ const getCombinedData = async (ocid) => {
 };
 
 // 길드 랭킹 함수
-const getGuildRanking = async (ocid, guildName, worldName) => {
-  // 주간 명성치 랭킹
-  const resultFameRanking = await callMapleStoryAPI("ranking/guild", {
-    ocid,
-    date: getFormattedDate(),
-    ranking_type: 0,
+const getGuildRanking = async (guildName, worldName) => {
+  return callMapleStoryAPI("ranking/guild", {
     guild_name: guildName,
     world_name: worldName,
   });
-  // 플래그 랭킹
-  const resultFlagRanking = await callMapleStoryAPI("ranking/guild", {
-    ocid,
-    date: getFormattedDate(),
-    ranking_type: 1,
-    guild_name: guildName,
-    world_name: worldName,
-  });
-  // 수로 랭킹
-  const resultSuroRanking = await callMapleStoryAPI("ranking/guild", {
-    ocid,
-    date: getFormattedDate(),
-    ranking_type: 2,
-    guild_name: guildName,
-    world_name: worldName,
-  });
-
-  return {
-    FameRanking: resultFameRanking,
-    FlagRanking: resultFlagRanking,
-    SuroRanking: resultSuroRanking,
-  };
 };
 
 export {
@@ -128,4 +89,5 @@ export {
   getGuildBasicInformation,
   getGuildRanking,
   getCombinedData,
+  getGuildMembers,
 };
