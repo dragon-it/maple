@@ -78,11 +78,32 @@ app.post("/api/guild/id", async (req, res) => {
       world_name: worldName,
     });
     if (!data) {
-      return res.status(500).json({ error: "Failed to fetch data" });
+      return res.status(500).json({ error: "Failed to guild/id data" });
     }
     res.json(data);
   } catch (error) {
     console.log(`Error during API call: ${error}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// 길드 정보
+app.post("/api/guild/basic", async (req, res) => {
+  const { oguild_id } = req.body;
+
+  if (!oguild_id) {
+    return res.status(400).json({ error: "oguild is required" });
+  }
+
+  try {
+    const data = await callMapleStoryAPI("guild/basic", {
+      oguild_id,
+    });
+    if (!data) {
+      return res.status(500).json({ error: "Failed to guild/basic data" });
+    }
+    res.json(data);
+  } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 });
