@@ -62,6 +62,13 @@ const getOguildId = async (guildName, worldName) => {
   });
 };
 
+// 길드 정보 함수
+const getGuildBasicInformation = async (oguildId) => {
+  return callMapleStoryAPI("guild/basic", {
+    oguild_id: oguildId,
+  });
+};
+
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
   try {
@@ -77,13 +84,6 @@ const getCombinedData = async (ocid) => {
     console.error("Error fetching combined data:", error);
     return false;
   }
-};
-
-// 길드 정보 함수
-const getGuildBasicInformation = async (oguildId) => {
-  return callMapleStoryAPI("guild/basic", {
-    oguild_id: oguildId,
-  });
 };
 
 // 길드 랭킹 함수

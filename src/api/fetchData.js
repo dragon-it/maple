@@ -3,7 +3,7 @@ import {
   getGuildRanking,
   getOcidApi,
   getCombinedData,
-  getOguildId, // 추가
+  getOguildId,
 } from "./api";
 import apiFunctions from "./ApiFuntion";
 
