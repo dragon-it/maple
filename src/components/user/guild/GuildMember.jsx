@@ -1,87 +1,86 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getGuildMembers } from "../../../api/api";
 
 export const GuildMember = ({ result }) => {
   const { guild_member } = result.guildBasicInformation;
-  const [currentPage, setCurrentPage] = useState(1);
   const [membersData, setMembersData] = useState([]);
-  const [cache, setCache] = useState([]);
-  const membersPerPage = 20;
-  const totalPages = Math.ceil(guild_member.length / membersPerPage);
+  const [cache, setCache] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const indexOfLastMember = currentPage * membersPerPage;
-    const indexOfFirstMember = indexOfLastMember - membersPerPage;
-    const currentMembers = guild_member.slice(
-      indexOfFirstMember,
-      indexOfLastMember
-    );
-
     const fetchMembersData = async () => {
-      const data = await Promise.all(
-        currentMembers.map(async (member) => {
-          if (cache[member]) {
-            return cache[member];
+      setLoading(true);
+      const membersToFetch = guild_member.filter((member) => !cache[member]);
+      console.log(membersToFetch);
+
+      if (membersToFetch.length > 0) {
+        try {
+          const fetchedMembersData = await getGuildMembers(membersToFetch);
+          console.log(fetchedMembersData);
+
+          if (!Array.isArray(fetchedMembersData)) {
+            console.error(
+              "Expected an array from getGuildMembers, but got:",
+              fetchedMembersData
+            );
+            return;
           }
 
-          // eslint-disable-next-line no-undef
-          const ocidResult = await getOcidApi(member);
-          if (ocidResult) {
-            // eslint-disable-next-line no-undef
-            const basicInfoResult = await getBasicInformation(ocidResult.ocid);
-            const memberData = { ...basicInfoResult };
-            setCache((prevCache) => ({ ...prevCache, [member]: memberData }));
-            return memberData;
-          }
+          const newCache = { ...cache };
+          fetchedMembersData.forEach((memberData, index) => {
+            newCache[membersToFetch[index]] = memberData;
+          });
+          setCache(newCache);
+          console.log(newCache);
 
-          const memberData = { name: member, image: null };
-          setCache((prevCache) => ({ ...prevCache, [member]: memberData }));
-          return memberData;
-        })
-      );
+          setMembersData(
+            guild_member.map((member) => newCache[member] || cache[member])
+          );
+        } catch (error) {
+          console.error("Failed to fetch members data", error);
+        }
+      } else {
+        setMembersData(guild_member.map((member) => cache[member]));
+      }
 
-      setMembersData(data);
+      setLoading(false);
     };
 
     fetchMembersData();
-  }, [currentPage, guild_member, cache]);
+  }, [guild_member, cache]);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  const populatedMembers = membersData.filter(
+    (member) => member && member.character_name
+  );
+  const emptyMembers = membersData.filter(
+    (member) => !member || !member.character_name
+  );
 
   return (
     <div>
       <Container>
-        {membersData.map((member, index) => (
-          <Member key={index}>
-            <MemberImage
-              src={member.character_image || ""}
-              alt={member.character_name}
-            />
-            <MemberName>{member.character_name}</MemberName>
-          </Member>
-        ))}
+        {loading ? (
+          <LoadingMessage>Loading...</LoadingMessage>
+        ) : (
+          <>
+            {populatedMembers.map((member, index) => (
+              <Member key={index}>
+                <MemberImage
+                  src={member.character_image || ""}
+                  alt={member.character_name}
+                />
+                <MemberName>{member.character_name}</MemberName>
+              </Member>
+            ))}
+            {emptyMembers.map((member, index) => (
+              <Member key={index}>
+                <MemberName>{guild_member[index]}</MemberName>
+              </Member>
+            ))}
+          </>
+        )}
       </Container>
-      <Pagination>
-        <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-          {"<"}
-        </Button>
-        <PageInfo>
-          {currentPage} / {totalPages}
-        </PageInfo>
-        <Button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          {">"}
-        </Button>
-      </Pagination>
     </div>
   );
 };
@@ -90,6 +89,8 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 3px;
+  max-height: 500px;
+  overflow-y: scroll;
 `;
 
 const Member = styled.div`
@@ -113,24 +114,9 @@ const MemberName = styled.div`
   text-align: center;
 `;
 
-const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-`;
-
-const Button = styled.button`
-  margin: 0 5px;
-  padding: 5px 10px;
-  background-color: #ccc;
-  border: none;
-  cursor: pointer;
-  &:disabled {
-    background-color: #eee;
-  }
-`;
-
-const PageInfo = styled.span`
-  margin: 0 10px;
+const LoadingMessage = styled.div`
+  font-size: 18px;
+  text-align: center;
+  padding: 20px;
+  color: #333;
 `;
