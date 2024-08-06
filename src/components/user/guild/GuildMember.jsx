@@ -2,16 +2,32 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getGuildMembers } from "../../../api/api";
 
+const CACHE_EXPIRY_TIME = 15 * 60 * 1000; // 15분 (밀리초)
+
 export const GuildMember = ({ result }) => {
   const { guild_member } = result.guildBasicInformation;
   const [membersData, setMembersData] = useState([]);
-  const [cache, setCache] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMembersData = async () => {
       setLoading(true);
-      const membersToFetch = guild_member.filter((member) => !cache[member]);
+
+      // 로컬 스토리지에서 캐시된 데이터 가져오기
+      let cachedData =
+        JSON.parse(localStorage.getItem("guildMembersCache")) || {};
+      const now = Date.now();
+
+      // 캐시 데이터의 유효성을 검사하고, 유효하지 않은 데이터는 삭제
+      Object.keys(cachedData).forEach((key) => {
+        if (now - cachedData[key].timestamp > CACHE_EXPIRY_TIME) {
+          delete cachedData[key];
+        }
+      });
+
+      const membersToFetch = guild_member.filter(
+        (member) => !cachedData[member]
+      );
       console.log(membersToFetch);
 
       if (membersToFetch.length > 0) {
@@ -27,28 +43,32 @@ export const GuildMember = ({ result }) => {
             return;
           }
 
-          const newCache = { ...cache };
+          // 새로운 데이터를 캐시에 저장
           fetchedMembersData.forEach((memberData, index) => {
-            newCache[membersToFetch[index]] = memberData;
+            cachedData[membersToFetch[index]] = {
+              ...memberData,
+              timestamp: now,
+            };
           });
-          setCache(newCache);
-          console.log(newCache);
 
-          setMembersData(
-            guild_member.map((member) => newCache[member] || cache[member])
-          );
+          // 로컬 스토리지에 캐시 업데이트
+          localStorage.setItem("guildMembersCache", JSON.stringify(cachedData));
+
+          // 캐시된 데이터를 상태에 설정
+          setMembersData(guild_member.map((member) => cachedData[member]));
         } catch (error) {
           console.error("Failed to fetch members data", error);
         }
       } else {
-        setMembersData(guild_member.map((member) => cache[member]));
+        // 캐시된 데이터를 상태에 설정
+        setMembersData(guild_member.map((member) => cachedData[member]));
       }
 
       setLoading(false);
     };
 
     fetchMembersData();
-  }, [guild_member, cache]);
+  }, [guild_member]);
 
   const populatedMembers = membersData.filter(
     (member) => member && member.character_name
