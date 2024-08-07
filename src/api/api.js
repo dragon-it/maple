@@ -52,6 +52,7 @@ const getGuildBasicInformation = async (oguildId) => {
   });
 };
 
+// 길드 멤버 정보 함수
 const getGuildMembers = async (guildMembers) => {
   return callMapleStoryAPI("guild/members", { guildMembers });
 };

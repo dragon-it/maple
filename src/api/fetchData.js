@@ -4,6 +4,7 @@ import {
   getOcidApi,
   getCombinedData,
   getOguildId,
+  getGuildMembers,
 } from "./api";
 import apiFunctions from "./ApiFuntion";
 
@@ -70,8 +71,8 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         throw new Error("초성만으로 검색할 수 없습니다.");
       }
 
-      setLoading(true); // 로딩 상태를 true로 설정
-      const ocid = await getOcid(characterName); // OCID를 가져옴
+      setLoading(true);
+      const ocid = await getOcid(characterName);
       if (ocid) {
         const apiResults = await Promise.all(
           apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
@@ -85,18 +86,13 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
 
         console.log(resultObject);
         if (!resultObject.getCombinedData.getBasicInformation) {
-          throw new Error("기본 정보가 없습니다."); // 기본 정보가 없는 경우 오류 발생
+          throw new Error("기본 정보가 없습니다.");
         }
 
         const { character_guild_name, world_name } =
           resultObject.getCombinedData.getBasicInformation;
 
-        console.log(character_guild_name);
-        console.log(world_name);
-
-        // OguildId 가져오기
         const oguildId = await getOguildId(character_guild_name, world_name);
-        console.log(oguildId);
 
         const guildBasicInformation = await getGuildBasicInformation(
           oguildId.oguild_id
@@ -107,15 +103,74 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
           world_name
         );
 
-        console.log(oguildId);
-        console.log(guildBasicInformation);
-        console.log(guildRankInformation);
+        if (guildBasicInformation) {
+          const { guild_member } = guildBasicInformation;
+          const CACHE_EXPIRY_TIME = 15 * 60 * 1000; // 15분
+
+          // 길드 멤버 정보 가져오기
+          const cachedData =
+            JSON.parse(localStorage.getItem("guildMembersCache")) || {};
+          const now = Date.now();
+
+          // 캐시 데이터 유효성 검사 및 삭제
+          Object.keys(cachedData).forEach((key) => {
+            if (now - cachedData[key].timestamp > CACHE_EXPIRY_TIME) {
+              delete cachedData[key];
+            }
+          });
+
+          const membersToFetch = guild_member.filter(
+            (member) => !cachedData[member]
+          );
+
+          if (membersToFetch.length > 0) {
+            try {
+              const fetchedMembersData = await getGuildMembers(membersToFetch);
+
+              if (!Array.isArray(fetchedMembersData)) {
+                console.error(fetchedMembersData);
+                throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
+              }
+
+              fetchedMembersData.forEach((memberData, index) => {
+                cachedData[membersToFetch[index]] = {
+                  ...memberData,
+                  timestamp: now,
+                };
+              });
+
+              // 로컬 스토리지에 캐시 업데이트
+              localStorage.setItem(
+                "guildMembersCache",
+                JSON.stringify(cachedData)
+              );
+            } catch (error) {
+              console.error("Failed to fetch members data", error);
+              // 호출 실패한 경우에도 닉네임만 저장
+              membersToFetch.forEach((member) => {
+                cachedData[member] = {
+                  character_name: member,
+                  character_level: null,
+                  character_image: null,
+                  timestamp: now,
+                };
+              });
+              localStorage.setItem(
+                "guildMembersCache",
+                JSON.stringify(cachedData)
+              );
+            }
+          }
+
+          // 결과 객체에 길드 멤버 정보 추가
+          resultObject.guildMembersData = guild_member.map(
+            (member) => cachedData[member] || { character_name: member }
+          );
+        }
 
         // 결과 객체에 길드 정보 추가
         resultObject.guildBasicInformation = guildBasicInformation;
         resultObject.guildRankInformation = guildRankInformation;
-        console.log(guildBasicInformation);
-        console.log(guildRankInformation);
 
         // getCombinedData 호출 및 로그 출력
         const combinedData = await getCombinedData(ocid);
@@ -124,13 +179,13 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         setResult(resultObject);
         console.log(resultObject);
       } else {
-        setError("OCID 가져오기 오류"); // OCID를 가져오지 못한 경우 오류 메시지
+        setError("OCID 가져오기 오류");
       }
     } catch (error) {
       console.error(`fetchData error: ${error.message}`);
       setError(`검색 중 오류 발생: ${error.message}`);
     } finally {
-      setLoading(false); // 로딩 상태를 false로 설정
+      setLoading(false);
     }
   }
 };
