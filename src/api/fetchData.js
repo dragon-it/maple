@@ -105,67 +105,40 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
 
         if (guildBasicInformation) {
           const { guild_member } = guildBasicInformation;
-          const CACHE_EXPIRY_TIME = 15 * 60 * 1000; // 15분
 
           // 길드 멤버 정보 가져오기
-          const cachedData =
-            JSON.parse(localStorage.getItem("guildMembersCache")) || {};
-          const now = Date.now();
+          let fetchedMembersData = [];
+          try {
+            fetchedMembersData = await getGuildMembers(guild_member);
 
-          // 캐시 데이터 유효성 검사 및 삭제
-          Object.keys(cachedData).forEach((key) => {
-            if (now - cachedData[key].timestamp > CACHE_EXPIRY_TIME) {
-              delete cachedData[key];
+            if (!Array.isArray(fetchedMembersData)) {
+              console.error(fetchedMembersData);
+              throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
             }
-          });
-
-          const membersToFetch = guild_member.filter(
-            (member) => !cachedData[member]
-          );
-
-          if (membersToFetch.length > 0) {
-            try {
-              const fetchedMembersData = await getGuildMembers(membersToFetch);
-
-              if (!Array.isArray(fetchedMembersData)) {
-                console.error(fetchedMembersData);
-                throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
-              }
-
-              fetchedMembersData.forEach((memberData, index) => {
-                cachedData[membersToFetch[index]] = {
-                  ...memberData,
-                  timestamp: now,
-                };
-              });
-
-              // 로컬 스토리지에 캐시 업데이트
-              localStorage.setItem(
-                "guildMembersCache",
-                JSON.stringify(cachedData)
-              );
-            } catch (error) {
-              console.error("Failed to fetch members data", error);
-              // 호출 실패한 경우에도 닉네임만 저장
-              membersToFetch.forEach((member) => {
-                cachedData[member] = {
-                  character_name: member,
-                  character_level: null,
-                  character_image: null,
-                  timestamp: now,
-                };
-              });
-              localStorage.setItem(
-                "guildMembersCache",
-                JSON.stringify(cachedData)
-              );
-            }
+          } catch (error) {
+            console.error("Failed to fetch members data", error);
+            // 호출 실패한 경우에도 닉네임만 저장
+            fetchedMembersData = guild_member.map((member) => ({
+              character_name: member,
+              character_level: null,
+              character_image: null,
+            }));
           }
 
+          // 빈 객체로 나오는 멤버 정보 처리
+          fetchedMembersData = fetchedMembersData.map((memberData, index) => {
+            if (Object.keys(memberData).length === 0) {
+              return {
+                character_name: guild_member[index],
+                character_level: null,
+                character_image: null,
+              };
+            }
+            return memberData;
+          });
+
           // 결과 객체에 길드 멤버 정보 추가
-          resultObject.guildMembersData = guild_member.map(
-            (member) => cachedData[member] || { character_name: member }
-          );
+          resultObject.guildMembersData = fetchedMembersData;
         }
 
         // 결과 객체에 길드 정보 추가
