@@ -1,76 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-
-const CACHE_EXPIRY_TIME = 15 * 60 * 1000; // 15분
 
 export const GuildMember = ({ result }) => {
   const guildMembersData = result.guildMembersData;
-  const [membersData, setMembersData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchMembersData = async () => {
-      setLoading(true);
+  console.log(result);
 
-      const now = Date.now();
-
-      // 캐시 데이터 유효성 검사 및 유효하지 않은 데이터 삭제
-      let cachedData =
-        JSON.parse(localStorage.getItem("guildMembersCache")) || {};
-      Object.keys(cachedData).forEach((key) => {
-        if (now - cachedData[key].timestamp > CACHE_EXPIRY_TIME) {
-          delete cachedData[key];
-        }
-      });
-      console.log(cachedData);
-
-      // 캐시된 데이터를 상태에 설정
-      const validCachedData = guildMembersData.map(
-        (member) => cachedData[member.character_name]
-      );
-
-      console.log(validCachedData);
-
-      setMembersData(validCachedData);
-      setLoading(false);
-    };
-
-    fetchMembersData();
-  }, [guildMembersData]);
-
-  const populatedMembers = membersData.filter(
-    (member) => member && member.character_name
+  const populatedMembers = guildMembersData.filter(
+    (member) => member && member.character_image
   );
 
-  const emptyMembers = membersData.filter(
-    (member) => !member || !member.character_name
+  console.log(populatedMembers);
+
+  const emptyMembers = guildMembersData.filter(
+    (member) => !member || !member.character_image
   );
+
+  console.log(emptyMembers);
 
   return (
     <div>
       <Container>
-        {loading ? (
-          <LoadingMessage>Loading...</LoadingMessage>
-        ) : (
-          <>
-            {populatedMembers.map((member, index) => (
-              <Member key={index}>
-                <MemberImage
-                  src={member.character_image || ""}
-                  alt={member.character_name}
-                />
-                <MemberName>{member.character_name}</MemberName>
-              </Member>
-            ))}
-            {emptyMembers.map((member, index) => (
-              <Member key={index}>
-                <MemberName>
-                  {guildMembersData[index]?.character_name}
-                </MemberName>
-              </Member>
-            ))}
-          </>
-        )}
+        <>
+          {populatedMembers.map((member, index) => (
+            <Member key={index}>
+              <MemberImage
+                src={member.character_image || ""}
+                alt={"character_name"}
+              />
+              <MemberName>{member.character_name}</MemberName>
+            </Member>
+          ))}
+          {emptyMembers.map((member, index) => (
+            <Member key={index}>
+              <MemberName>{member.character_name}</MemberName>
+            </Member>
+          ))}
+        </>
       </Container>
     </div>
   );
@@ -82,6 +48,8 @@ const Container = styled.div`
   gap: 3px;
   max-height: 500px;
   overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff rgba(104, 103, 103, 0.5);
 `;
 
 const Member = styled.div`
@@ -103,11 +71,4 @@ const MemberImage = styled.img`
 const MemberName = styled.div`
   font-size: 14px;
   text-align: center;
-`;
-
-const LoadingMessage = styled.div`
-  font-size: 18px;
-  text-align: center;
-  padding: 20px;
-  color: #333;
 `;
