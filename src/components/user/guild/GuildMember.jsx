@@ -47,9 +47,8 @@ const Container = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 3px;
   max-height: 500px;
+  padding-right: 5px;
   overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: #ffffff rgba(104, 103, 103, 0.5);
 `;
 
 const Member = styled.div`
