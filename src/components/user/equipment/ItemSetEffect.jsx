@@ -118,8 +118,6 @@ const Container = styled.div`
   color: white;
   max-height: 600px;
   overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: #ffffff rgba(104, 103, 103, 0.5);
 
   ul {
     list-style: none;
