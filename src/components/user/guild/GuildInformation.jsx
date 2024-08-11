@@ -15,11 +15,17 @@ export const GuildInformation = ({ result }) => {
       guild_name = "Unknown",
     } = {},
     guildRankInformation: {
-      FameRanking: { ranking: fameRanking = [{ ranking: 0 }] } = {},
-      FlagRanking: { ranking: flagRanking = [{ ranking: 0 }] } = {},
-      SuroRanking: { ranking: suroRanking = [{ ranking: 0 }] } = {},
+      FameRanking: { ranking: fameRanking = [] } = {},
+      FlagRanking: { ranking: flagRanking = [] } = {},
+      SuroRanking: { ranking: suroRanking = [] } = {},
     } = {},
   } = result || {};
+
+  const getRankingText = (rankingArray) => {
+    return rankingArray.length > 0 && rankingArray[0].ranking !== undefined
+      ? `${rankingArray[0].ranking}위`
+      : "순위 없음";
+  };
 
   return (
     <Container>
@@ -47,33 +53,21 @@ export const GuildInformation = ({ result }) => {
               <RankingIcon src={fame_icon} alt="fame_icon" />
               <div>주간 명성</div>
             </RankingHeader>
-            <RankingValue>
-              {fameRanking[0].ranking === 0
-                ? "순위 없음"
-                : `${fameRanking[0].ranking}위`}
-            </RankingValue>
+            <RankingValue>{getRankingText(fameRanking)}</RankingValue>
           </RankingItem>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={flag_icon} alt="flag_icon" />
               <div>플래그</div>
             </RankingHeader>
-            <RankingValue>
-              {flagRanking[0].ranking === 0
-                ? "순위 없음"
-                : `${flagRanking[0].ranking}위`}
-            </RankingValue>
+            <RankingValue>{getRankingText(flagRanking)}</RankingValue>
           </RankingItem>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={suro_icon} alt="suro_icon" />
               <div>지하 수로</div>
             </RankingHeader>
-            <RankingValue>
-              {suroRanking[0].ranking === 0
-                ? "순위 없음"
-                : `${suroRanking[0].ranking}위`}
-            </RankingValue>
+            <RankingValue>{getRankingText(suroRanking)}</RankingValue>
           </RankingItem>
         </ItemWrap>
       </RankingSection>
