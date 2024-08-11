@@ -2,20 +2,41 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 export const GuildMember = ({ result }) => {
-  const guildMembersData = result.guildMembersData;
   const [isDetail, setIsDetail] = useState(true);
+  const [sortType, setSortType] = useState("character_name");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const toggleDetail = () => {
     setIsDetail(!isDetail);
   };
 
-  console.log(result);
+  const handleSort = (type) => {
+    if (sortType === type) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortType(type);
+      setSortOrder("asc");
+    }
+  };
 
-  const populatedMembers = guildMembersData.filter(
+  const sortedMembers = [...result.guildMembersData].sort((a, b) => {
+    if (!a || !b) return 0;
+
+    const valueA = a[sortType] || "";
+    const valueB = b[sortType] || "";
+
+    if (sortOrder === "asc") {
+      return valueA > valueB ? 1 : -1;
+    } else {
+      return valueA < valueB ? 1 : -1;
+    }
+  });
+
+  const populatedMembers = sortedMembers.filter(
     (member) => member && member.character_image
   );
 
-  const emptyMembers = guildMembersData.filter(
+  const emptyMembers = sortedMembers.filter(
     (member) => !member || !member.character_image
   );
 
@@ -30,9 +51,15 @@ export const GuildMember = ({ result }) => {
           )}
         </Toggle>
         <SortingWrap>
-          <SortingItems>닉네임</SortingItems>
-          <SortingItems>직업</SortingItems>
-          <SortingItems>레벨</SortingItems>
+          <SortingItems onClick={() => handleSort("character_name")}>
+            닉네임
+          </SortingItems>
+          <SortingItems onClick={() => handleSort("character_class")}>
+            직업
+          </SortingItems>
+          <SortingItems onClick={() => handleSort("character_level")}>
+            레벨
+          </SortingItems>
         </SortingWrap>
 
         {isDetail ? (
@@ -49,9 +76,10 @@ export const GuildMember = ({ result }) => {
                 </DetailMember>
               ))}
               {emptyMembers.map((member, index) => (
-                <Member key={index}>
+                <DetailMember key={index}>
+                  <EmptylImage></EmptylImage>
                   <DetailName>{member.character_name}</DetailName>
-                </Member>
+                </DetailMember>
               ))}
             </DetailChracterWrap>
           </>
@@ -67,7 +95,9 @@ export const GuildMember = ({ result }) => {
               ))}
               {emptyMembers.map((member, index) => (
                 <SimpleMember key={index}>
-                  <Name>{member.character_name}</Name>
+                  <SimpleItems>{member.character_name}</SimpleItems>
+                  <SimpleItems>미접속 캐릭터</SimpleItems>
+                  <SimpleItems></SimpleItems>
                 </SimpleMember>
               ))}
             </SimpleChracterWrap>
@@ -91,15 +121,6 @@ const DetailChracterWrap = styled.div`
   border-radius: 5px;
 `;
 
-const Member = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3px 3px 5px 3px;
-  min-height: 30px;
-  border-radius: 3px;
-`;
-
 const DetailMember = styled.div`
   display: flex;
   flex-direction: column;
@@ -120,19 +141,19 @@ const DetailImage = styled.img`
   border-radius: 5px;
 `;
 
+const EmptylImage = styled.div`
+  width: 80px;
+  height: 80px;
+  background-color: #636363ea;
+  border-radius: 5px;
+`;
+
 const DetailName = styled.div`
   font-size: 14px;
 `;
 
 const DetailLevel = styled.div`
   font-size: 12px;
-`;
-
-const Name = styled.div`
-  font-size: 13px;
-  color: rgb(248, 248, 248);
-  text-align: left;
-  width: 20%;
 `;
 
 const SimpleItems = styled.div`
@@ -176,6 +197,14 @@ const ToggleBtn = styled.div`
   position: absolute;
   right: 0;
   top: -27px;
+  font-family: maple-light;
+  border: 1px solid rgb(0, 0, 0);
+  background-color: rgb(94, 94, 93);
+  border-radius: 5px;
+  padding: 2px;
+  &:hover {
+    background-color: rgb(137, 198, 255);
+  }
 `;
 
 const SimpleChracterWrap = styled.div`
