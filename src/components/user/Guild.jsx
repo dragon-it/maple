@@ -80,6 +80,7 @@ const Container = styled.div`
   width: 100%;
   position: relative;
   padding: 10px;
+  color: rgb(220, 220, 220);
 `;
 
 const InfoWrap = styled.div`
