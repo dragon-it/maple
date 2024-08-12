@@ -79,7 +79,7 @@ export const Guild = ({ result }) => {
 const Container = styled.div`
   width: 100%;
   position: relative;
-  padding: 10px;
+  padding: 0px 10px 10px 10px;
   color: rgb(220, 220, 220);
 `;
 
@@ -94,6 +94,10 @@ const InfoWrap = styled.div`
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const GuildHeader = styled.div`
@@ -103,6 +107,10 @@ const GuildHeader = styled.div`
   text-align: center;
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+
+  @media screen and (max-width: 768px) {
+    text-align: left;
+  }
 `;
 
 const GuildBasicInformation = styled.div`

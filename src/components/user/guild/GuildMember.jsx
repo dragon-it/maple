@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import sort_icon from "../../../assets/guild/member/Sort_member_icon2.svg";
 
 export const GuildMember = ({ result }) => {
   const [isDetail, setIsDetail] = useState(true);
@@ -51,20 +52,23 @@ export const GuildMember = ({ result }) => {
       <Container>
         <Toggle onClick={toggleDetail}>
           {isDetail ? (
-            <ToggleBtn>간략하게 보기</ToggleBtn>
+            <ToggleBtn>텍스트로 보기</ToggleBtn>
           ) : (
-            <ToggleBtn>자세히 보기</ToggleBtn>
+            <ToggleBtn>이미지로 보기</ToggleBtn>
           )}
         </Toggle>
         <SortingWrap>
           <SortingItems onClick={() => handleSort("character_name")}>
             닉네임
+            <SortIcon src={sort_icon} alt={"sort_icon"} />
           </SortingItems>
           <SortingItems onClick={() => handleSort("character_class")}>
             직업
+            <SortIcon src={sort_icon} alt={"sort_icon"} />
           </SortingItems>
           <SortingItems onClick={() => handleSort("character_level")}>
             레벨
+            <SortIcon src={sort_icon} alt={"sort_icon"} />
           </SortingItems>
         </SortingWrap>
 
@@ -81,9 +85,11 @@ export const GuildMember = ({ result }) => {
                     alt={"character_name"}
                   />
                   <DetailName>{member.character_name}</DetailName>
+                  <DetailLevel>{member.character_class}</DetailLevel>
                   <DetailLevel>Lv. {member.character_level}</DetailLevel>
                 </DetailMember>
               ))}
+              {/* <!-- 이미지 보기 미접속 캐릭터 명단 --> */}
               {emptyMembers.map((member, index) => (
                 <DetailMember key={index}>
                   <EmptyImage></EmptyImage>
@@ -105,6 +111,7 @@ export const GuildMember = ({ result }) => {
                   <SimpleItems>Lv. {member.character_level}</SimpleItems>
                 </SimpleMember>
               ))}
+              {/* <!-- 텍스트 보기 미접속 캐릭터 명단 --> */}
               {emptyMembers.map((member, index) => (
                 <SimpleMember key={index}>
                   <SimpleItems>{member.character_name}</SimpleItems>
@@ -125,12 +132,21 @@ const Container = styled.div``;
 const DetailChracterWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  width: 100%;
   gap: 3px;
   max-height: 580px;
   padding: 5px;
   overflow-y: scroll;
   background-color: #424242;
   border-radius: 5px;
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media screen and (max-width: 576px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const DetailMember = styled.div`
@@ -138,7 +154,7 @@ const DetailMember = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3px 3px 5px 3px;
-  background-color: #a0a0a0ea;
+  background-color: #a3a3a3ea;
   color: #020202;
   border-radius: 5px;
   min-height: 30px;
@@ -164,9 +180,7 @@ const EmptyImage = styled.div`
   border-radius: 5px;
 `;
 
-const DetailName = styled.div`
-  font-size: 14px;
-`;
+const DetailName = styled.div``;
 
 const DetailLevel = styled.div`
   font-size: 12px;
@@ -179,6 +193,14 @@ const SimpleItems = styled.div`
   text-align: left;
   width: 20%;
   padding: 2px 0;
+
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    width: 25%;
+    &:nth-child(3) {
+      width: 17%;
+    }
+  }
 `;
 
 const SortingWrap = styled.div`
@@ -195,13 +217,19 @@ const SortingWrap = styled.div`
 `;
 
 const SortingItems = styled.div`
-  font-size: 14px;
+  display: flex;
+  align-items: center;
   line-height: 11px;
   text-align: left;
   font-weight: bold;
   color: rgb(248, 248, 248);
   width: 18%;
   cursor: pointer;
+`;
+
+const SortIcon = styled.img`
+  width: 15px;
+  height: 15px;
 `;
 
 const Toggle = styled.div`
@@ -213,14 +241,14 @@ const ToggleBtn = styled.div`
   cursor: pointer;
   position: absolute;
   right: 0;
-  top: -27px;
+  top: -31px;
   font-family: maple-light;
   border: 1px solid rgb(0, 0, 0);
   background-color: rgb(94, 94, 93);
   border-radius: 5px;
-  padding: 2px;
+  padding: 3px 4px;
   &:hover {
-    background-color: rgb(137, 198, 255);
+    background-color: rgb(17, 119, 136);
   }
 `;
 
