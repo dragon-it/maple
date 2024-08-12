@@ -202,7 +202,7 @@ app.post("/api/guild/members", async (req, res) => {
       return res.status(400).json({ error: "Invalid data format" });
     }
 
-    const batchSize = 50; // 한 번에 처리할 멤버 수
+    const batchSize = 30; // 한 번에 처리할 멤버 수
     const delayMs = 200; // 각 배치 사이 지연 시간
     const membersData = [];
 

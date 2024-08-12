@@ -189,6 +189,7 @@ const ImgWrap = styled.div`
     }
   }
 `;
+
 const SpiritText = styled.div`
   position: absolute;
   bottom: 40px;
