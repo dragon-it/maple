@@ -3,9 +3,17 @@ import styled from "styled-components";
 import flag_icon from "../../../assets/guild/ranking/Flag_ranking_icon.svg";
 import fame_icon from "../../../assets/guild/ranking/Fame_ranking_icon.svg";
 import suro_icon from "../../../assets/guild/ranking/Suro_ranking_icon.svg";
+import { useNavigate } from "react-router-dom";
 
 export const GuildInformation = ({ result }) => {
   // 구조 분해 할당 & 기본값 설정
+
+  const navigate = useNavigate();
+
+  const handleMasterInfoPortal = (characterName) => {
+    navigate(`/user/${encodeURIComponent(characterName)}`);
+  };
+
   const {
     guildBasicInformation: {
       guild_master_name = "Unknown",
@@ -42,7 +50,9 @@ export const GuildInformation = ({ result }) => {
           <Value>{guild_fame.toLocaleString()}</Value>
           <Value>{guild_point.toLocaleString()}</Value>
           <Value>{guild_member_count.toLocaleString()}</Value>
-          <Value>{guild_master_name}</Value>
+          <MasterName onclick={handleMasterInfoPortal}>
+            {guild_master_name}
+          </MasterName>
         </ValueColumn>
       </BasicInfoSection>
       <RankingSection>
@@ -107,6 +117,13 @@ const ValueColumn = styled.div`
 const Header = styled.div``;
 
 const Value = styled.div``;
+
+const MasterName = styled.div`
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(78, 78, 78);
+  }
+`;
 
 const RankingSection = styled.div`
   width: 100%;
