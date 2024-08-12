@@ -178,8 +178,7 @@ const ImgWrap = styled.div`
   user-select: none;
   img {
     width: 100%;
-    max-height: 220px;
-    max-width: 345px;
+    max-height: 200px;
     border: 1px solid rgb(80, 92, 101);
     outline: 1px solid rgb(42, 49, 58);
     border-radius: 5px;
