@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export const GuildMember = ({ result }) => {
@@ -6,10 +7,11 @@ export const GuildMember = ({ result }) => {
   const [sortType, setSortType] = useState("character_name");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  const navigate = useNavigate();
+
   const toggleDetail = () => {
     setIsDetail(!isDetail);
   };
-
   const handleSort = (type) => {
     if (sortType === type) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -17,6 +19,10 @@ export const GuildMember = ({ result }) => {
       setSortType(type);
       setSortOrder("asc");
     }
+  };
+
+  const handleMemberPortal = (characterName) => {
+    navigate(`/user/${encodeURIComponent(characterName)}`);
   };
 
   const sortedMembers = [...result.guildMembersData].sort((a, b) => {
@@ -66,7 +72,10 @@ export const GuildMember = ({ result }) => {
           <>
             <DetailChracterWrap>
               {populatedMembers.map((member, index) => (
-                <DetailMember key={index}>
+                <DetailMember
+                  key={index}
+                  onClick={() => handleMemberPortal(member.character_name)}
+                >
                   <DetailImage
                     src={member.character_image || ""}
                     alt={"character_name"}
@@ -77,7 +86,7 @@ export const GuildMember = ({ result }) => {
               ))}
               {emptyMembers.map((member, index) => (
                 <DetailMember key={index}>
-                  <EmptylImage></EmptylImage>
+                  <EmptyImage></EmptyImage>
                   <DetailName>{member.character_name}</DetailName>
                 </DetailMember>
               ))}
@@ -87,7 +96,10 @@ export const GuildMember = ({ result }) => {
           <>
             <SimpleChracterWrap>
               {populatedMembers.map((member, index) => (
-                <SimpleMember key={index}>
+                <SimpleMember
+                  key={index}
+                  onClick={() => handleMemberPortal(member.character_name)}
+                >
                   <SimpleItems>{member.character_name}</SimpleItems>
                   <SimpleItems>{member.character_class}</SimpleItems>
                   <SimpleItems>Lv. {member.character_level}</SimpleItems>
@@ -131,6 +143,10 @@ const DetailMember = styled.div`
   border-radius: 5px;
   min-height: 30px;
   font-family: maple-light;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(131, 131, 131);
+  }
 `;
 
 const DetailImage = styled.img`
@@ -141,7 +157,7 @@ const DetailImage = styled.img`
   border-radius: 5px;
 `;
 
-const EmptylImage = styled.div`
+const EmptyImage = styled.div`
   width: 80px;
   height: 80px;
   background-color: #636363ea;
@@ -182,6 +198,7 @@ const SortingItems = styled.div`
   font-size: 14px;
   line-height: 11px;
   text-align: left;
+  font-weight: bold;
   color: rgb(248, 248, 248);
   width: 18%;
   cursor: pointer;
@@ -223,4 +240,8 @@ const SimpleMember = styled.div`
   width: 100%;
   border-bottom: 1px solid rgba(195, 196, 194, 0.2);
   min-height: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(78, 78, 78);
+  }
 `;
