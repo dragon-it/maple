@@ -63,7 +63,13 @@ export const ItemDetail = ({ item, clicked }) => {
 
   // 모든 스탯이 0인지 확인하는 함수
   const isAllZero = (stats) => {
-    return Object.values(stats).every((value) => value === "0");
+    // stats가 null이거나 undefined일 경우 false를 반환
+    if (!stats || typeof stats !== "object") return false;
+
+    // exceptional_upgrade도 체크
+    return Object.entries(stats).every(
+      ([key, value]) => value === "0" || value === 0
+    );
   };
 
   // 옵션 값 수정자를 매핑하는 객체
@@ -307,7 +313,7 @@ export const ItemDetail = ({ item, clicked }) => {
           </SoulOptionWrap>
         )}
         {item.item_exceptional_option &&
-          isAllZero(item.item_exceptional_option) && (
+          !isAllZero(item.item_exceptional_option) && (
             <ExOptionWrap>
               <ExOptionHeader>
                 <ExInitial>EX</ExInitial>익셉셔널
