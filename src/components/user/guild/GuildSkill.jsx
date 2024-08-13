@@ -132,6 +132,10 @@ const Table = styled.div`
   background-color: rgb(57, 57, 57);
   border: 1px solid rgba(255, 255, 255, 0.575);
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    justify-content: space-around;
+  }
 `;
 
 const TableColumn = styled.div`
@@ -146,9 +150,20 @@ const TableCell = styled.div`
   justify-content: center;
   height: 80px;
   padding: 0px 10px;
+
   &:first-child {
     height: 20px;
     border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  @media screen and (max-width: 1024px) {
+    justify-content: flex-start;
+    height: 50px;
+    padding: 0px 1px;
+    &:first-child {
+      margin: 5px 0;
+      border-radius: 5px;
+    }
   }
 `;
 const Level = styled.div``;
@@ -164,6 +179,10 @@ const SkillName = styled.div`
   width: 100%;
   text-align: center;
   overflow-wrap: break-word;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const SkillIcon = styled.div`

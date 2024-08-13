@@ -18,6 +18,7 @@ app.use(cors());
  * @param {object} params - API 호출 시 전달할 파라미터
  * @returns {object|boolean} - API 응답 데이터 또는 실패 시 false 반환
  */
+
 const callMapleStoryAPI = async (endpoint, params) => {
   const url = `${BASE_URL}/maplestory/v1/${endpoint}`;
   try {

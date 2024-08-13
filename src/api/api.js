@@ -6,6 +6,7 @@ import axios from "axios";
  * @param {object} params - API 호출 시 전달할 파라미터
  * @returns {object|boolean} - API 응답 데이터 또는 실패 시 false 반환
  */
+
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
     const response = await axios.post(`/api/${endpoint}`, params);
