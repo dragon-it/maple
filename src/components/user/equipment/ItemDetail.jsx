@@ -307,7 +307,7 @@ export const ItemDetail = ({ item, clicked }) => {
           </SoulOptionWrap>
         )}
         {item.item_exceptional_option &&
-          !isAllZero(item.item_exceptional_option) && (
+          isAllZero(item.item_exceptional_option) && (
             <ExOptionWrap>
               <ExOptionHeader>
                 <ExInitial>EX</ExInitial>익셉셔널
