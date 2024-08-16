@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import nobleSkills from "./SkillData";
 import rightArrow from "../../../assets/guild/guildSkill/Right_arrow.svg";
+import { GuildSkillDetail } from "./GuildSkillDetail";
 
 export const GuildSkill = ({ result }) => {
-  console.log(result.guildBasicInformation.guild_noblesse_skill);
-  console.log(result.guildBasicInformation.guild_skill);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [clicked, setClicked] = useState(false);
+  const [isCloseClick, setIsCloseClick] = useState(false);
+
+  const handleCloseClick = () => {
+    setClicked(false);
+    setSelectedItem(null);
+    setIsCloseClick(true);
+  };
+
+  const handleItemHover = (item) => {
+    if (!clicked) {
+      setSelectedItem(item);
+    }
+  };
+
+  console.log(clicked);
+  console.log(isCloseClick);
 
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
@@ -28,25 +45,26 @@ export const GuildSkill = ({ result }) => {
                 ) : (
                   sortedGuildSkills
                     .filter((skill) => skill.skill_name === row[colIndex])
-                    .map((guildSkill, index) => {
+                    .map((item, index) => {
                       const skillInfo = nobleSkills.skillOrder.find(
-                        (skill) => skill.name === guildSkill.skill_name
+                        (skill) => skill.name === item.skill_name
                       );
                       return (
-                        <BasicSkillWrap key={index}>
+                        <BasicSkillWrap
+                          key={index}
+                          setSelectedItem={setSelectedItem}
+                          onClick={setClicked}
+                          clicked={clicked}
+                          onMouseOver={() => handleItemHover(item)}
+                        >
                           <SkillIcon>
-                            <img
-                              src={guildSkill.skill_icon}
-                              alt={guildSkill.skill_name}
-                            />
+                            <img src={item.skill_icon} alt={item.skill_name} />
                           </SkillIcon>
                           <SkillName>{skillInfo.name}</SkillName>
                           <SkillLevel
-                            isMaxLevel={
-                              guildSkill.skill_level === skillInfo.maxLevel
-                            }
+                            isMaxLevel={item.skill_level === skillInfo.maxLevel}
                           >
-                            {guildSkill.skill_level}/{skillInfo.maxLevel}
+                            {item.skill_level}/{skillInfo.maxLevel}
                           </SkillLevel>
                         </BasicSkillWrap>
                       );
@@ -63,29 +81,35 @@ export const GuildSkill = ({ result }) => {
         <SkillContainer>
           {result.guildBasicInformation &&
             result.guildBasicInformation.guild_noblesse_skill.map(
-              (noblesseSkill, index) => (
-                <SkillWrap key={index}>
+              (item, index) => (
+                <SkillWrap
+                  key={index}
+                  setSelectedItem={setSelectedItem}
+                  onClick={setClicked}
+                  clicked={clicked}
+                  onMouseOver={() => handleItemHover(item)}
+                >
                   <SkillIcon>
-                    <img
-                      src={noblesseSkill.skill_icon}
-                      alt={noblesseSkill.skill_name}
-                    />
+                    <img src={item.skill_icon} alt={item.skill_name} />
                   </SkillIcon>
                   <SkillName>
-                    {
-                      nobleSkills.nobleSkillNameMapping[
-                        noblesseSkill.skill_name
-                      ]
-                    }
+                    {nobleSkills.nobleSkillNameMapping[item.skill_name]}
                   </SkillName>
-                  <SkillLevel isMaxLevel={noblesseSkill.skill_level === 15}>
-                    {noblesseSkill.skill_level}/15
+                  <SkillLevel isMaxLevel={item.skill_level === 15}>
+                    {item.skill_level}/15
                   </SkillLevel>
                 </SkillWrap>
               )
             )}
         </SkillContainer>
       </NoblesseSkillWrap>
+      <GuildSkillDetail
+        item={selectedItem}
+        clicked={clicked}
+        onClick={setClicked}
+        closeClick={isCloseClick}
+        onClose={handleCloseClick}
+      />
     </Container>
   );
 };
@@ -163,6 +187,7 @@ const TableCell = styled.div`
     &:first-child {
       margin: 5px 0;
       border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
   }
 `;
