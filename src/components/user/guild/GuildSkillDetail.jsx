@@ -31,7 +31,7 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
 
 const SelectContainer = styled.div`
   position: absolute;
-  right: -292px;
+  right: -302px;
   top: 0;
   display: flex;
   justify-content: center;
@@ -51,7 +51,7 @@ const SelectContainer = styled.div`
 `;
 const Container = styled.div`
   position: absolute;
-  right: -322px;
+  right: -332px;
   width: 320px;
   top: 0;
   background-color: #000000;
