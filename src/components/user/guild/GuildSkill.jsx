@@ -7,22 +7,27 @@ import { GuildSkillDetail } from "./GuildSkillDetail";
 export const GuildSkill = ({ result }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [clicked, setClicked] = useState(false);
-  const [isCloseClick, setIsCloseClick] = useState(false);
 
-  const handleCloseClick = () => {
-    setClicked(false);
-    setSelectedItem(null);
-    setIsCloseClick(true);
-  };
-
-  const handleItemHover = (item) => {
-    if (!clicked) {
+  const handleClick = (item) => {
+    if (selectedItem === item) {
+      setClicked(!clicked);
+    } else {
       setSelectedItem(item);
+      setClicked(true);
     }
   };
 
+  const handleItemHover = (item) => {
+    if (!clicked) setSelectedItem(item);
+  };
+
+  const handleDetailClick = () => {
+    setSelectedItem(null);
+    setClicked(false);
+  };
+
   console.log(clicked);
-  console.log(isCloseClick);
+  console.log(selectedItem);
 
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
@@ -30,48 +35,51 @@ export const GuildSkill = ({ result }) => {
       nobleSkills.skillOrder.findIndex((skill) => skill.name === b.skill_name)
   );
 
+  const skillNameToItemMap = sortedGuildSkills.reduce((acc, item) => {
+    acc[item.skill_name] = item;
+    return acc;
+  }, {});
+
   return (
     <Container>
       {/* 길드 일반 스킬 */}
       <Table>
         {nobleSkills.skillGrid[0].map((level, colIndex) => (
           <TableColumn key={colIndex}>
-            {nobleSkills.skillGrid.map((row, rowIndex) => (
-              <TableCell key={rowIndex}>
-                {rowIndex === 0 ? (
-                  <Level>{row[colIndex]}</Level>
-                ) : row[colIndex] === "→" ? (
-                  <RightArrow src={rightArrow} alt={rightArrow} />
-                ) : (
-                  sortedGuildSkills
-                    .filter((skill) => skill.skill_name === row[colIndex])
-                    .map((item, index) => {
-                      const skillInfo = nobleSkills.skillOrder.find(
-                        (skill) => skill.name === item.skill_name
-                      );
-                      return (
-                        <BasicSkillWrap
-                          key={index}
-                          setSelectedItem={setSelectedItem}
-                          onClick={setClicked}
-                          clicked={clicked}
-                          onMouseOver={() => handleItemHover(item)}
-                        >
-                          <SkillIcon>
-                            <img src={item.skill_icon} alt={item.skill_name} />
-                          </SkillIcon>
-                          <SkillName>{skillInfo.name}</SkillName>
-                          <SkillLevel
-                            isMaxLevel={item.skill_level === skillInfo.maxLevel}
-                          >
-                            {item.skill_level}/{skillInfo.maxLevel}
-                          </SkillLevel>
-                        </BasicSkillWrap>
-                      );
-                    })
-                )}
-              </TableCell>
-            ))}
+            {nobleSkills.skillGrid.map((row, rowIndex) => {
+              const skillName = row[colIndex];
+              const item = skillNameToItemMap[skillName];
+              const skillInfo =
+                item &&
+                nobleSkills.skillOrder.find(
+                  (skill) => skill.name === skillName
+                );
+
+              return (
+                <TableCell key={rowIndex}>
+                  {rowIndex === 0 ? (
+                    <Level>{skillName}</Level>
+                  ) : skillName === "→" ? (
+                    <RightArrow src={rightArrow} alt={rightArrow} />
+                  ) : item ? (
+                    <BasicSkillWrap
+                      onClick={() => handleClick(item)}
+                      onMouseOver={() => handleItemHover(item)}
+                    >
+                      <SkillIcon>
+                        <img src={item.skill_icon} alt={skillName} />
+                      </SkillIcon>
+                      <SkillName>{skillInfo.name}</SkillName>
+                      <SkillLevel
+                        isMaxLevel={item.skill_level === skillInfo.maxLevel}
+                      >
+                        {item.skill_level}/{skillInfo.maxLevel}
+                      </SkillLevel>
+                    </BasicSkillWrap>
+                  ) : null}
+                </TableCell>
+              );
+            })}
           </TableColumn>
         ))}
       </Table>
@@ -84,9 +92,7 @@ export const GuildSkill = ({ result }) => {
               (item, index) => (
                 <SkillWrap
                   key={index}
-                  setSelectedItem={setSelectedItem}
-                  onClick={setClicked}
-                  clicked={clicked}
+                  onClick={() => handleClick(item)}
                   onMouseOver={() => handleItemHover(item)}
                 >
                   <SkillIcon>
@@ -106,9 +112,7 @@ export const GuildSkill = ({ result }) => {
       <GuildSkillDetail
         item={selectedItem}
         clicked={clicked}
-        onClick={setClicked}
-        closeClick={isCloseClick}
-        onClose={handleCloseClick}
+        onClose={handleDetailClick}
       />
     </Container>
   );
@@ -119,10 +123,12 @@ const Container = styled.div`
   color: white;
   font-family: maple-light;
 `;
+
 const SkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 `;
 
 const BasicSkillWrap = styled.div`
@@ -133,6 +139,7 @@ const BasicSkillWrap = styled.div`
   text-align: center;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `;
 
 const NoblesseSkillWrap = styled.div``;
