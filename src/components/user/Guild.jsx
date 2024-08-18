@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { GuildInformation } from "./guild/GuildInformation";
 import { GuildMember } from "./guild/GuildMember";
 import { GuildSkill } from "./guild/GuildSkill";
+import { GuildStatistics } from "./guild/GuildStatistics";
 
 export const Guild = ({ result }) => {
   console.log(result);
@@ -60,16 +61,21 @@ export const Guild = ({ result }) => {
           <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
             길드 스킬
           </Tab>
+          <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+            길드 통계
+          </Tab>
         </TabWrap>
         <TabHeaderWrap>
           <TabHeader>
             {activeTab === 1 && "길드 정보"}
             {activeTab === 2 && "길드원"}
             {activeTab === 3 && "일반 길드 스킬"}
+            {activeTab === 4 && "길드 통계"}
           </TabHeader>
           {activeTab === 1 && <GuildInformation result={result} />}
           {activeTab === 2 && <GuildMember result={result} />}
           {activeTab === 3 && <GuildSkill result={result} />}
+          {activeTab === 4 && <GuildStatistics result={result} />}
         </TabHeaderWrap>
       </InfoWrap>
     </Container>

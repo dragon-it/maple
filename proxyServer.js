@@ -41,6 +41,51 @@ const callMapleStoryAPI = async (endpoint, params) => {
   }
 };
 
+// 선데이메이플
+app.get("/notice-event", async (req, res) => {
+  try {
+    // callMapleStoryAPI 함수 호출 시 파라미터 없이 호출
+    const data = await callMapleStoryAPI("notice-event", {});
+
+    if (!data) {
+      return res.status(500).json({ error: "Failed to fetch notice data" });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error(`Error during API call: ${error.message}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// 선데이메이플 디테일
+app.get("/notice-event/detail", async (req, res) => {
+  const { notice_id } = req.query;
+
+  if (!notice_id) {
+    return res.status(400).json({ error: "notice_id is required" });
+  }
+
+  try {
+    const data = await callMapleStoryAPI("notice-event/detail", {
+      notice_id,
+    });
+    console.log(data);
+    if (!data) {
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch data or notice_id is missing" });
+    }
+
+    console.log(`Fetched data: ${JSON.stringify(data)}`); // API 응답 데이터 로그
+
+    res.json(data);
+  } catch (error) {
+    console.error(`Error during API call: ${error.message}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // 캐릭터 OCID API
 app.post("/api/ocid", async (req, res) => {
   const { character_name } = req.body;

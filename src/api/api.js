@@ -35,6 +35,18 @@ const getOcidApi = async (characterName) => {
   return callMapleStoryAPI("ocid", { character_name: characterName });
 };
 
+// 선데이메이플 공지
+const getNotice = async () => {
+  return callMapleStoryAPI("notice-event");
+};
+
+// 선데이메이플 공지 디테일
+const getNoticeDetail = async (notice_id) => {
+  return callMapleStoryAPI("notice-event/detail", {
+    notice_id,
+  });
+};
+
 // 길드 id
 const getOguildId = async (guildName, worldName) => {
   console.log(
@@ -92,4 +104,6 @@ export {
   getGuildRanking,
   getCombinedData,
   getGuildMembers,
+  getNotice,
+  getNoticeDetail,
 };
