@@ -3,6 +3,7 @@ import { Search } from "../components/main/Search";
 import styled from "styled-components";
 import { Footer } from "../components/common/Footer";
 import { Favorite } from "../components/user/favorite/Favorite";
+import { SundayMaple } from "../components/main/SundayMaple";
 
 export const Main = () => {
   return (
@@ -13,6 +14,7 @@ export const Main = () => {
           <Favorite />
         </FavoriteWrap>
       </SearchWrap>
+      <SundayMaple />
       <Footer />
     </Container>
   );
