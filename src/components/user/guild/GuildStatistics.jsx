@@ -1,6 +1,14 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export const GuildStatistics = ({ result }) => {
   const classDistribution = useMemo(() => {
@@ -43,26 +51,29 @@ export const GuildStatistics = ({ result }) => {
 
   return (
     <StatisticsContainer>
-      <BarChart
-        width={600}
-        height={400}
-        data={classDistribution}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="class"
-          interval={0}
-          angle={-45}
-          textAnchor="end"
-          tick={{ fontSize: 12 }}
-          stroke="#ffffff"
-          height={80}
-        />
-        <YAxis stroke="#ffffff" />
-        <Tooltip />
-        <Bar dataKey="count" fill="#8884d8" />
-      </BarChart>
+      <ChartWrap>
+        <h3>top 10</h3>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart
+            data={classDistribution}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="class"
+              interval={0}
+              angle={-45}
+              textAnchor="end"
+              tick={{ fontSize: 12 }}
+              stroke="#ffffff"
+              height={80}
+            />
+            <YAxis stroke="#ffffff" />
+            <Tooltip />
+            <Bar dataKey="count" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      </ChartWrap>
       <TopClassesContainer>
         <h3>Top 3</h3>
         {top3Classes.map((item, index) => (
@@ -86,6 +97,29 @@ const StatisticsContainer = styled.div`
   border-radius: 10px;
   width: 100%;
   color: rgb(255, 25, 25);
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const ChartWrap = styled.div`
+  font-family: maple-light;
+  width: 100%;
+  max-width: 600px;
+  h3 {
+    text-align: center;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  @media screen and (max-width: 768px) {
+    min-width: 100%;
+  }
+
+  @media screen and (max-width: 576px) {
+    flex-direction: column;
+  }
 `;
 
 const TopClassesContainer = styled.div`
@@ -107,6 +141,7 @@ const TopClassesContainer = styled.div`
 
 const ClassItem = styled.div`
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #555;
