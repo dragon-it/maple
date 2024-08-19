@@ -53,7 +53,8 @@ export const GuildStatistics = ({ result }) => {
     <StatisticsContainer>
       <ChartWrap>
         <h3>top 10</h3>
-        <ResponsiveContainer width="100%" height={400}>
+
+        <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={classDistribution}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
@@ -100,6 +101,7 @@ const StatisticsContainer = styled.div`
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    gap: 30px;
   }
 `;
 
@@ -107,18 +109,28 @@ const ChartWrap = styled.div`
   font-family: maple-light;
   width: 100%;
   max-width: 600px;
+
   h3 {
     text-align: center;
     font-size: 20px;
     color: #fff;
   }
 
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    flex-direction: column;
+    height: 300px;
+  }
+
   @media screen and (max-width: 768px) {
-    min-width: 100%;
+    width: 100%;
+    flex-direction: column;
+    height: 300px;
   }
 
   @media screen and (max-width: 576px) {
-    flex-direction: column;
+    width: 125%;
+    height: 200px;
   }
 `;
 
@@ -136,6 +148,10 @@ const TopClassesContainer = styled.div`
     text-align: center;
     margin-bottom: 15px;
     font-size: 18px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    font-size: 14px;
   }
 `;
 
