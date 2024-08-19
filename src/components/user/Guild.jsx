@@ -52,18 +52,20 @@ export const Guild = ({ result }) => {
             <Name>{guildInfo.guild_name || "이름 없음"}</Name>
             <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
           </GuildBasicInformation>
-          <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-            길드 정보
-          </Tab>
-          <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-            길드원
-          </Tab>
-          <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-            길드 스킬
-          </Tab>
-          <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
-            길드 통계
-          </Tab>
+          <Wd>
+            <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+              길드 정보
+            </Tab>
+            <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+              길드원
+            </Tab>
+            <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+              길드 스킬
+            </Tab>
+            <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+              길드 통계
+            </Tab>
+          </Wd>
         </TabWrap>
         <TabHeaderWrap>
           <TabHeader>
@@ -87,6 +89,16 @@ const Container = styled.div`
   position: relative;
   padding: 0px 10px 10px 10px;
   color: rgb(220, 220, 220);
+`;
+
+const Wd = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const InfoWrap = styled.div`
@@ -155,6 +167,10 @@ const Tab = styled.span`
   font-family: maple-light;
   &:hover {
     background-color: rgb(117, 117, 117);
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 24%;
   }
 `;
 
