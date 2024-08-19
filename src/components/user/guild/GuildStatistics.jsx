@@ -27,7 +27,18 @@ export const GuildStatistics = ({ result }) => {
 
   // 상위 3개의 클래스 추출
   const top3Classes = useMemo(() => {
-    return [...classDistribution].slice(0, 3);
+    const sorted = [...classDistribution];
+    let rank = 1;
+
+    return sorted
+      .map((item, index) => {
+        if (index > 0 && sorted[index - 1].count > item.count) {
+          rank = index + 1;
+        }
+
+        return { ...item, rank };
+      })
+      .slice(0, 3);
   }, [classDistribution]);
 
   return (
@@ -56,8 +67,9 @@ export const GuildStatistics = ({ result }) => {
         <h3>Top 3</h3>
         {top3Classes.map((item, index) => (
           <ClassItem key={index}>
+            <ClassRank>{item.rank}위</ClassRank>
             <ClassName>{item.class}</ClassName>
-            <ClassCount>{item.count} 명</ClassCount>
+            <ClassCount>{item.count}명</ClassCount>
           </ClassItem>
         ))}
       </TopClassesContainer>
@@ -82,7 +94,10 @@ const TopClassesContainer = styled.div`
   padding: 20px;
   background-color: #424242;
   border-radius: 10px;
+  border: 1px solid rgb(177, 177, 177);
   margin-left: 20px;
+  font-size: 16px;
+  font-family: maple-light;
   h3 {
     text-align: center;
     margin-bottom: 15px;
@@ -97,11 +112,10 @@ const ClassItem = styled.div`
   border-bottom: 1px solid #555;
 `;
 
-const ClassName = styled.span`
-  font-weight: bold;
-  font-size: 16px;
+const ClassRank = styled.span`
+  margin-right: 10px;
 `;
 
-const ClassCount = styled.span`
-  font-size: 16px;
-`;
+const ClassName = styled.span``;
+
+const ClassCount = styled.span``;
