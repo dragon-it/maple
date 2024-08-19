@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 export const GuildStatistics = ({ result }) => {
-  // 캐릭터 클래스 분포를 계산합니다.
   const classDistribution = useMemo(() => {
     const distribution = {};
 
@@ -35,7 +34,7 @@ export const GuildStatistics = ({ result }) => {
     <StatisticsContainer>
       <BarChart
         width={600}
-        height={300}
+        height={400}
         data={classDistribution}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
@@ -46,13 +45,15 @@ export const GuildStatistics = ({ result }) => {
           angle={-45}
           textAnchor="end"
           tick={{ fontSize: 12 }}
+          stroke="#ffffff"
+          height={80}
         />
-        <YAxis />
+        <YAxis stroke="#ffffff" />
         <Tooltip />
         <Bar dataKey="count" fill="#8884d8" />
       </BarChart>
       <TopClassesContainer>
-        <h3>Top 3 Classes</h3>
+        <h3>Top 3</h3>
         {top3Classes.map((item, index) => (
           <ClassItem key={index}>
             <ClassName>{item.class}</ClassName>
@@ -72,6 +73,7 @@ const StatisticsContainer = styled.div`
   background-color: #2e2e2e;
   border-radius: 10px;
   width: 100%;
+  color: rgb(255, 25, 25);
 `;
 
 const TopClassesContainer = styled.div`
