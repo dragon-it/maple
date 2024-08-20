@@ -27,7 +27,7 @@ export const SundayMaple = () => {
   useEffect(() => {
     if (notice && notice.event_notice) {
       const sundayMapleNotices = notice.event_notice.filter(
-        (item) => item.title === "썬데이 메이플"
+        (item) => item.title === "고브의 선물"
       );
 
       if (sundayMapleNotices.length > 0) {
@@ -73,10 +73,12 @@ export const SundayMaple = () => {
 
   return (
     <Container>
-      <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>{" "}
       {/* X 버튼 추가 */}
       {desiredHtmlContent && (
-        <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
+        <ContentsWrap>
+          <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
+          <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
+        </ContentsWrap>
       )}
     </Container>
   );
@@ -84,32 +86,54 @@ export const SundayMaple = () => {
 
 const Container = styled.div`
   z-index: 999999999999999;
-  position: relative;
+  position: absolute;
+  width: 100%;
+  top: 90px;
+  display: flex;
+  justify-content: center;
 `;
 
 const Contents = styled.div`
-  margin: 0px auto;
-  padding: 0px 20px;
-  height: 100%;
-  width: 85%;
+  padding: 10px;
+  width: 80%;
   position: relative;
-  max-width: 100%;
-  border-radius: 15px;
+  max-width: 876px;
+  border: 1px solid rgb(30, 38, 47);
+  outline: 1px solid rgb(56, 87, 106);
+  background-color: rgb(43, 53, 62);
+  border-radius: 20px;
   overflow: hidden;
   object-fit: cover;
+  margin-bottom: 10px;
 
   img {
     width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 15px;
+    border-radius: 20px;
   }
+
+  @media screen and (max-width: 768px) {
+    padding: 5px;
+  }
+
+  @media screen and (max-width: 576px) {
+    width: 90%;
+  }
+`;
+
+const ContentsWrap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 0;
   background-color: red;
   color: white;
   border: none;
