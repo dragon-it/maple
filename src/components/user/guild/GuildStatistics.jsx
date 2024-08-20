@@ -23,6 +23,7 @@ export const GuildStatistics = ({ result }) => {
       }
     });
 
+    console.log(distribution);
     // 클래스 분포를 내림차순으로 정렬하고 상위 10개 추출
     return Object.keys(distribution)
       .map((key) => ({
@@ -52,7 +53,7 @@ export const GuildStatistics = ({ result }) => {
   return (
     <StatisticsContainer>
       <ChartWrap>
-        <h3>top 10</h3>
+        <h3>top {classDistribution.length}</h3>
 
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -107,9 +108,8 @@ const StatisticsContainer = styled.div`
 
 const ChartWrap = styled.div`
   font-family: maple-light;
-  width: 100%;
-  max-width: 600px;
-
+  width: 500px;
+  height: 300px;
   h3 {
     text-align: center;
     font-size: 20px;
@@ -119,18 +119,12 @@ const ChartWrap = styled.div`
   @media screen and (max-width: 1024px) {
     width: 100%;
     flex-direction: column;
-    height: 300px;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    flex-direction: column;
-    height: 300px;
   }
 
   @media screen and (max-width: 576px) {
     width: 125%;
     height: 200px;
+    padding-right: 20px;
   }
 `;
 
