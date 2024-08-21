@@ -8,6 +8,16 @@ export const SundayMaple = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
+    const skipWeek = localStorage.getItem("skipWeek");
+    if (skipWeek) {
+      const skipUntil = new Date(skipWeek);
+      if (skipUntil > new Date()) {
+        setIsVisible(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchNotice = async () => {
       try {
         const response = await axios.get("/notice-event");
@@ -62,6 +72,19 @@ export const SundayMaple = () => {
     return desiredContent ? desiredContent.outerHTML : "";
   };
 
+  // 이버ㄴ 주 보지 않기
+  const handleSkipWeek = () => {
+    const skipUntil = new Date();
+    skipUntil.setDate(skipUntil.getDate() + 4); // 4일동안 보지 않기
+    localStorage.setItem("skipWeek", skipUntil.toISOString());
+    setIsVisible(false);
+  };
+
+  // 화면 최상단 이동
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (!notice || !notice.event_notice || !isVisible) {
     // isVisible 상태에 따라 렌더링 여부 결정
     return null;
@@ -78,6 +101,10 @@ export const SundayMaple = () => {
         <ContentsWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
           <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
+          <SkipWeekButton onClick={handleSkipWeek}>
+            이번 주 보지 않기
+          </SkipWeekButton>
+          <ScrollTopButton onClick={scrollToTop}>화면 최상단</ScrollTopButton>
         </ContentsWrap>
       )}
     </Container>
@@ -95,7 +122,7 @@ const Container = styled.div`
 
 const Contents = styled.div`
   padding: 10px;
-  width: 80%;
+  width: 100%;
   position: relative;
   max-width: 876px;
   border: 1px solid rgb(30, 38, 47);
@@ -118,16 +145,16 @@ const Contents = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 90%;
+    padding: 3px;
   }
 `;
 
 const ContentsWrap = styled.div`
   position: relative;
-  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
+  margin: 10px;
 `;
 
 const CloseButton = styled.button`
@@ -144,6 +171,42 @@ const CloseButton = styled.button`
   z-index: 1000000000000000;
 
   &:hover {
-    background-color: darkred;
+    background-color: #dd9090;
+  }
+`;
+
+const SkipWeekButton = styled.div`
+  position: absolute;
+  top: 100px;
+  right: 0;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1000000000000000;
+
+  &:hover {
+    background-color: #dd9090;
+  }
+`;
+
+const ScrollTopButton = styled.div`
+  position: absolute;
+  top: 300px;
+  right: 0;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1000000000000000;
+
+  &:hover {
+    background-color: #dd9090;
   }
 `;
