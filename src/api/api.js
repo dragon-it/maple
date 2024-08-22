@@ -3,13 +3,12 @@ import axios from "axios";
 /**
  * MapleStory API를 호출하는 함수
  * @param {string} endpoint - API의 엔드포인트
- * @param {object} params - API 호출 시 전달할 파라미터
+ * @param {object} params - API 호출 시 전달할 쿼리 파라미터
  * @returns {object|boolean} - API 응답 데이터 또는 실패 시 false 반환
  */
-
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.get(`/api/${endpoint}`, params);
+    const response = await axios.get(`/api/${endpoint}`, { params }); // GET 요청 시 params를 쿼리로 전달
     if (response.status === 200) {
       return response.data;
     } else {
@@ -42,9 +41,7 @@ const getNotice = async () => {
 
 // 선데이메이플 공지 디테일
 const getNoticeDetail = async (notice_id) => {
-  return callMapleStoryAPI("notice-event/detail", {
-    notice_id,
-  });
+  return callMapleStoryAPI("notice-event/detail", { notice_id });
 };
 
 // 길드 id
@@ -57,9 +54,7 @@ const getOguildId = async (guildName, worldName) => {
 
 // 길드 정보 함수
 const getGuildBasicInformation = async (oguildId) => {
-  return callMapleStoryAPI("guild/basic", {
-    oguild_id: oguildId,
-  });
+  return callMapleStoryAPI("guild/basic", { oguild_id: oguildId });
 };
 
 // 길드 멤버 정보 함수
@@ -69,19 +64,7 @@ const getGuildMembers = async (guildMembers) => {
 
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
-  try {
-    const response = await axios.get(`/api/character/information`, { ocid });
-
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      console.error("Failed to fetch combined data");
-      return false;
-    }
-  } catch (error) {
-    console.error("Error fetching combined data:", error);
-    return false;
-  }
+  return callMapleStoryAPI("character/information", { ocid }); // endpoint 경로 확인
 };
 
 // 길드 랭킹 함수
