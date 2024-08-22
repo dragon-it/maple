@@ -9,7 +9,14 @@ import axios from "axios";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.get(`/api/${endpoint}`, params);
+    const response = await axios.get(`/api/${endpoint}`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        "x-nxopen-api-key": process.env.NEXON_API_KEY,
+      },
+    });
     if (response.status === 200) {
       return response.data;
     } else {
