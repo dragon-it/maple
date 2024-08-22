@@ -32,6 +32,7 @@ const getOcid = async (characterName) => {
       if (ocidData) {
         return ocidData.ocid;
       }
+      console.log(ocidData);
     } catch (error) {
       console.log(
         `Direct search failed for ${characterName}, trying combinations...`
@@ -74,7 +75,7 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         const apiResults = await Promise.all(
           apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
         );
-
+        console.log(apiResults);
         const resultObject = {};
         apiFunctions.forEach(({ name }, index) => {
           resultObject[name] = apiResults[index];
@@ -135,6 +136,7 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         resultObject.guildRankInformation = guildRankInformation;
 
         setResult(resultObject);
+        console.log(resultObject);
       } else {
         setError("OCID 가져오기 오류");
       }
