@@ -70,14 +70,11 @@ app.get("/notice-event/detail", async (req, res) => {
     const data = await callMapleStoryAPI("notice-event/detail", {
       notice_id,
     });
-    console.log(data);
     if (!data) {
       return res
         .status(500)
         .json({ error: "Failed to fetch data or notice_id is missing" });
     }
-
-    console.log(`Fetched data: ${JSON.stringify(data)}`); // API 응답 데이터 로그
 
     res.json(data);
   } catch (error) {

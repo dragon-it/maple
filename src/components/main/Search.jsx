@@ -121,13 +121,12 @@ const StyledButton = styled.button`
 `;
 
 const ThemeToggleWrap = styled.div`
-  display: none;
+  display: block;
   margin-left: 10px;
 
   @media screen and (max-width: 1024px) {
     display: block;
     position: absolute;
     right: 10px;
-    top: 5px;
   }
 `;
