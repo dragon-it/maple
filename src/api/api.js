@@ -49,9 +49,6 @@ const getNoticeDetail = async (notice_id) => {
 
 // 길드 id
 const getOguildId = async (guildName, worldName) => {
-  console.log(
-    `getOguildId called with guildName: ${guildName}, worldName: ${worldName}`
-  );
   return callMapleStoryAPI("guild/id", {
     guild_name: guildName,
     world_name: worldName,
