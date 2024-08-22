@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const BASE_URL = "https://open.api.nexon.com";
-
 /**
  * MapleStory API를 호출하는 함수
  * @param {string} endpoint - API의 엔드포인트
@@ -11,21 +9,17 @@ const BASE_URL = "https://open.api.nexon.com";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    // axios를 사용하여 GET 요청을 보냄.
-    const response = await axios.get(`${BASE_URL}/maplestory/v1/${endpoint}`, {
-      params: {
-        ...params, // 전달받은 파라미터 설정
-      },
-      headers: {
-        "x-nxopen-api-key": process.env.REACT_APP_API_KEY, // API 키를 헤더에 포함.
-      },
-    });
+    const response = await axios.post(`/api/${endpoint}`, params);
     if (response.status === 200) {
       return response.data;
     } else {
+      console.error(
+        `API call to /api/${endpoint} failed with status: ${response.status}`
+      );
       return false;
     }
   } catch (error) {
+    console.error(`Error in API call to /api/${endpoint}:`, error.message);
     return false;
   }
 };
