@@ -1,11 +1,11 @@
-// 선데이메이플 디테일
-import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
+import { callMapleStoryAPI } from "../../src/utils/apiEndPoint"; // 경로 수정
 
 export default async function handler(req, res) {
   // GET 요청인지 확인
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+
   const { notice_id } = req.query;
 
   if (!notice_id) {
@@ -16,13 +16,8 @@ export default async function handler(req, res) {
     const data = await callMapleStoryAPI("notice-event/detail", {
       notice_id,
     });
-    if (!data) {
-      return res
-        .status(500)
-        .json({ error: "Failed to fetch data or notice_id is missing" });
-    }
 
-    res.json(data);
+    res.status(200).json(data);
   } catch (error) {
     console.error(`Error during API call: ${error.message}`);
     res.status(500).json({ error: "Internal server error" });
