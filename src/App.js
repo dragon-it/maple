@@ -6,7 +6,6 @@ import { User } from "./pages/User";
 import { BackgroundImage } from "./components/main/BackgroundImage";
 import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider";
-import ThemeToggleButton from "./context/ThemeToggleButton";
 import { GlobalStyle } from "./components/theme/GlobalStyles";
 import { Error } from "./pages/Error";
 
@@ -50,9 +49,6 @@ function App() {
             />
           </Routes>
         </Router>
-        <ThemeToggleWrap>
-          <ThemeToggleButton />
-        </ThemeToggleWrap>
         <BackgroundImage />
       </Container>
     </ThemeProvider>
@@ -64,10 +60,4 @@ export default App;
 const Container = styled.div`
   height: 100vh;
   position: relative;
-`;
-
-const ThemeToggleWrap = styled.div`
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
