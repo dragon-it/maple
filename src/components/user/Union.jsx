@@ -36,8 +36,6 @@ const Container = styled.div`
   padding-top: 5px;
   font-family: maple-light;
 
-  @media screen and (max-width: 1024px) {
-  }
 `;
 
 const InfoWrap = styled.div`
@@ -50,6 +48,4 @@ const InfoWrap = styled.div`
     flex-direction: column-reverse;
   }
 
-  @media screen and (max-width: 576px) {
-  }
 `;
