@@ -9,7 +9,7 @@ import axios from "axios";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.get(`/${endpoint}`, params);
+    const response = await axios.get(`/api/${endpoint}`, params);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -32,8 +32,23 @@ const getYesterDayFormatted = () => {
 
 // Ocid 함수
 const getOcidApi = async (characterName) => {
-  return callMapleStoryAPI("ocid", { character_name: characterName });
+  try {
+    console.log(`Calling API for character: ${characterName}`); // API 호출 전에 로그 출력
+
+    const response = await callMapleStoryAPI("ocid", {
+      character_name: characterName,
+    });
+
+    console.log("API response:", response); // API 호출 후 로그 출력
+
+    return response;
+  } catch (error) {
+    console.error("Error in getOcidApi:", error.message); // 오류 발생 시 로그 출력
+    throw error; // 오류를 다시 던져 호출하는 곳에서 처리할 수 있도록 함
+  }
 };
+
+export default getOcidApi;
 
 // 선데이메이플 공지
 const getNotice = async () => {
