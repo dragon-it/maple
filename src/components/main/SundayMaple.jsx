@@ -24,7 +24,7 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNotice = async () => {
       try {
-        const response = await axios.get("/notice-event");
+        const response = await axios.get("/api/notice-event");
         if (response.status === 200) {
           setNotice(response.data);
         } else {
@@ -49,7 +49,7 @@ export const SundayMaple = () => {
 
         const fetchNoticeDetail = async () => {
           try {
-            const response = await axios.get("/notice-event/detail", {
+            const response = await axios.get("/api/notice-event/detail", {
               params: { notice_id: sundayMapleNoticeId },
             });
             if (response.status === 200) {
