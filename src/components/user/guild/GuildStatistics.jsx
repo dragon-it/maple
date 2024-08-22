@@ -16,14 +16,17 @@ export const GuildStatistics = ({ result }) => {
 
     result.guildMembersData.forEach((member) => {
       const characterClass = member.character_class;
-      if (distribution[characterClass]) {
-        distribution[characterClass]++;
-      } else {
-        distribution[characterClass] = 1;
+
+      // class가 undefined인 경우 제외
+      if (characterClass) {
+        if (distribution[characterClass]) {
+          distribution[characterClass]++;
+        } else {
+          distribution[characterClass] = 1;
+        }
       }
     });
 
-    console.log(distribution);
     // 클래스 분포를 내림차순으로 정렬하고 상위 10개 추출
     return Object.keys(distribution)
       .map((key) => ({
@@ -77,7 +80,7 @@ export const GuildStatistics = ({ result }) => {
         </ResponsiveContainer>
       </ChartWrap>
       <TopClassesContainer>
-        <h3>Top 3</h3>
+        <h3>Top {top3Classes.length}</h3>
         {top3Classes.map((item, index) => (
           <ClassItem key={index}>
             <ClassRank>{item.rank}위</ClassRank>
