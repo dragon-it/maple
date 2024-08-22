@@ -9,7 +9,7 @@ import axios from "axios";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.post(`/api/${endpoint}`, params);
+    const response = await axios.get(`/${endpoint}`, params);
     if (response.status === 200) {
       return response.data;
     } else {
