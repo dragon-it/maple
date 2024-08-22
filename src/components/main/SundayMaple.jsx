@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import dark_to_top_icon from "../../assets/sundayMaple/dark_to_top.svg";
+import light_to_top_icon from "../../assets/sundayMaple/light_to_top.svg";
+import { useTheme } from "../../context/ThemeProvider";
 
 export const SundayMaple = () => {
+  const { theme } = useTheme();
   const [notice, setNotice] = useState(null);
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -37,7 +41,7 @@ export const SundayMaple = () => {
   useEffect(() => {
     if (notice && notice.event_notice) {
       const sundayMapleNotices = notice.event_notice.filter(
-        (item) => item.title === "고브의 선물"
+        (item) => item.title === "썬데이 메이플"
       );
 
       if (sundayMapleNotices.length > 0) {
@@ -80,6 +84,11 @@ export const SundayMaple = () => {
     setIsVisible(false);
   };
 
+  // 화면 최상단 이동
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (!notice || !notice.event_notice || !isVisible) {
     // isVisible 상태에 따라 렌더링 여부 결정
     return null;
@@ -91,14 +100,22 @@ export const SundayMaple = () => {
 
   return (
     <Container>
-      {/* X 버튼 추가 */}
       {desiredHtmlContent && (
         <ContentsWrap>
+          <ButtonWrap>
+            <SkipWeekButton onClick={handleSkipWeek}>
+              이번 주 보지 않기
+            </SkipWeekButton>
+            <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
+          </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
-          <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
-          <SkipWeekButton onClick={handleSkipWeek}>
-            이번 주 보지 않기
-          </SkipWeekButton>
+          <ScrollTopButton onClick={scrollToTop}>
+            <ToTopIcon
+              onClick={scrollToTop}
+              src={theme === "dark" ? dark_to_top_icon : light_to_top_icon}
+              alt="to-top-icon"
+            />
+          </ScrollTopButton>
         </ContentsWrap>
       )}
     </Container>
@@ -106,16 +123,19 @@ export const SundayMaple = () => {
 };
 
 const Container = styled.div`
-  z-index: 99999;
-  position: absolute;
+  position: relative;
   width: 100%;
-  top: 90px;
   display: flex;
   justify-content: center;
+  z-index: 95;
+  margin-bottom: 20px;
 `;
 
-const Contents = styled.div`
-  padding: 10px;
+const Contents = styled.div``;
+
+const ContentsWrap = styled.div`
+  padding: 3px 10px 10px 10px;
+  margin: 10px;
   width: 100%;
   position: relative;
   max-width: 876px;
@@ -125,11 +145,9 @@ const Contents = styled.div`
   border-radius: 20px;
   overflow: hidden;
   object-fit: cover;
-  margin-bottom: 10px;
 
   img {
     width: 100%;
-    height: auto;
     object-fit: contain;
     border-radius: 20px;
   }
@@ -143,47 +161,72 @@ const Contents = styled.div`
   }
 `;
 
-const ContentsWrap = styled.div`
-  position: relative;
-  height: 100%;
+const ButtonWrap = styled.div`
   display: flex;
-  justify-content: center;
-  margin: 10px;
+  flex-direction: row;
+  justify-content: end;
+  gap: 10px;
+  margin: 0 5px 5px 0;
 `;
 
 const CloseButton = styled.button`
-  position: fixed;
-  top: 0;
-  right: 0;
-  background-color: rgb(221, 187, 139);
-  color: white;
-  border: none;
-  width: fit-content;
-  height: 30px;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  padding: 3px;
+  width: 25px;
+  height: 25px;
   border-radius: 7px;
   cursor: pointer;
-  z-index: 99999;
-
   &:hover {
-    background-color: rgb(212, 173, 119);
+    background-color: rgb(136, 136, 136);
   }
 `;
 
-const SkipWeekButton = styled.div`
-  position: fixed;
-  top: 40px;
-  right: 0;
-  background-color: rgb(221, 187, 139);
-  color: white;
-  border: none;
+const SkipWeekButton = styled.button`
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.35);
+  padding: 2px;
+  color: #ffffff;
   width: fit-content;
-  height: 30px;
+  height: 25px;
   border-radius: 7px;
   font-size: 13px;
   cursor: pointer;
-  z-index: 99999;
 
   &:hover {
-    background-color: rgb(212, 173, 119);
+    background-color: rgb(136, 136, 136);
+  }
+`;
+
+const ScrollTopButton = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 24px;
+  right: 125px;
+  width: 50px;
+  height: 50px;
+  background-color: ${({ theme }) => theme.toggleBgColor};
+  border: ${({ theme }) => theme.toggleBorderColor};
+  color: ${({ theme }) => theme.toggleColor};
+  border-radius: 20px;
+  cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    right: 1px;
+    width: 25px;
+    height: 25px;
+  }
+`;
+
+const ToTopIcon = styled.img`
+  width: 32px;
+  height: 32px;
+
+  @media screen and (max-width: 768px) {
+    width: 16px;
+    height: 16px;
   }
 `;

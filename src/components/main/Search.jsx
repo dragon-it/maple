@@ -74,6 +74,7 @@ const InputContainer = styled.form`
   justify-content: center;
   width: 100%;
   gap: 5px;
+  z-index: 99999999999;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
@@ -121,9 +122,8 @@ const StyledButton = styled.button`
 `;
 
 const ThemeToggleWrap = styled.div`
-  display: block;
   margin-left: 10px;
-
+  z-index: 99999;
   @media screen and (max-width: 1024px) {
     display: block;
     position: absolute;
