@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
 
 const getYesterDayFormatted = () => {
   const yesterday = new Date();
