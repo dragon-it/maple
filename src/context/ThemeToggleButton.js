@@ -8,23 +8,23 @@ function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <ToggleWrapper onClick={toggleTheme}>
-      <Icon
-        src={theme === "dark" ? light_theme_icon : dark_theme_icon}
-        alt="theme-icon"
-      />
-      <Text>{theme === "dark" ? "light" : "dark"}</Text>
-    </ToggleWrapper>
+    <>
+      <ToggleWrapper onClick={toggleTheme}>
+        <Icon
+          src={theme === "dark" ? light_theme_icon : dark_theme_icon}
+          alt="theme-icon"
+        />
+        <Text>{theme === "dark" ? "light" : "dark"}</Text>
+      </ToggleWrapper>
+    </>
   );
 }
 
-export default ThemeToggleButton;
-
 const ToggleWrapper = styled.button`
   position: fixed;
-  z-index: 999999;
-  bottom: 4%;
-  right: 3%;
+  z-index: 99999999 !important;
+  bottom: 24px;
+  right: 24px;
   background-color: ${({ theme }) => theme.toggleBgColor};
   border: ${({ theme }) => theme.toggleBorderColor};
   color: ${({ theme }) => theme.toggleColor};
@@ -33,12 +33,6 @@ const ToggleWrapper = styled.button`
   height: 48px;
   border-radius: 30px;
   cursor: pointer;
-
-  @media screen and (max-width: 1024px) {
-    width: 60px;
-    height: 32px;
-    font-size: 15px;
-  }
 
   @media screen and (max-width: 768px) {
     position: relative;
@@ -67,3 +61,5 @@ const Icon = styled.img`
     align-items: center;
   }
 `;
+
+export default ThemeToggleButton;
