@@ -36,7 +36,14 @@ const getOcidApi = async (characterName) => {
 
 // 선데이메이플 공지
 const getNotice = async () => {
-  return callMapleStoryAPI("notice-event");
+  try {
+    const result = await callMapleStoryAPI("notice-event");
+    console.log("Notice data received:", result);
+    return result;
+  } catch (error) {
+    console.error("Error fetching notice data:", error.message);
+    throw error;
+  }
 };
 
 // 선데이메이플 공지 디테일
