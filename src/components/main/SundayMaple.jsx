@@ -27,6 +27,7 @@ export const SundayMaple = () => {
         const response = await axios.get("/notice-event");
         if (response.status === 200) {
           setNotice(response.data);
+          console.log(response);
         } else {
           console.error("Failed to fetch notice data");
         }
