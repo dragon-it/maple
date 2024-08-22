@@ -1,24 +1,31 @@
 import axios from "axios";
 
+const BASE_URL = "https://open.api.nexon.com";
+
 /**
  * MapleStory API를 호출하는 함수
  * @param {string} endpoint - API의 엔드포인트
- * @param {object} params - API 호출 시 전달할 쿼리 파라미터
+ * @param {object} params - API 호출 시 전달할 파라미터
  * @returns {object|boolean} - API 응답 데이터 또는 실패 시 false 반환
  */
+
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.get(`/api/${endpoint}`, { params }); // GET 요청 시 params를 쿼리로 전달
+    // axios를 사용하여 GET 요청을 보냄.
+    const response = await axios.get(`${BASE_URL}/maplestory/v1/${endpoint}`, {
+      params: {
+        ...params, // 전달받은 파라미터 설정
+      },
+      headers: {
+        "x-nxopen-api-key": process.env.REACT_APP_API_KEY, // API 키를 헤더에 포함.
+      },
+    });
     if (response.status === 200) {
       return response.data;
     } else {
-      console.error(
-        `API call to /api/${endpoint} failed with status: ${response.status}`
-      );
       return false;
     }
   } catch (error) {
-    console.error(`Error in API call to /api/${endpoint}:`, error.message);
     return false;
   }
 };
