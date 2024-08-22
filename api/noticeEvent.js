@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   try {
     const data = await callMapleStoryAPI("notice-event", {});
-
+    console.log(data);
     if (!data) {
       return res.status(500).json({ error: "Failed to fetch notice data" });
     }
