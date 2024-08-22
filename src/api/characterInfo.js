@@ -1,12 +1,12 @@
 import { callMapleStoryAPI } from "../utils/apiEndPoint";
 
 export default async function handler(req, res) {
-  // POST 요청인지 확인
-  if (req.method !== "POST") {
+  // GET 요청인지 확인
+  if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { ocid } = req.body;
+  const { ocid } = req.query;
 
   if (!ocid) {
     return res.status(400).json({ error: "ocid is required" });
