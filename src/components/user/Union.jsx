@@ -11,17 +11,17 @@ export const Union = ({ result }) => {
       <InfoWrap>
         <UnionArtifact
           Data={{
-            unionArtiFact: result.getUnionArtiFact,
-            unionRaider: result.getUnionRaider,
+            unionArtiFact: result.getCombinedData.getUnionArtiFact,
+            unionRaider: result.getCombinedData.getUnionRaider,
           }}
           showUnionRaider={showUnionRaider}
           setShowUnionRaider={setShowUnionRaider}
         />
         <UnionInfo
           Data={{
-            unionArtiFact: result.getUnionArtiFact,
-            union: result.getUnion,
-            unionRaider: result.getUnionRaider,
+            unionArtiFact: result.getCombinedData.getUnionArtiFact,
+            union: result.getCombinedData.getUnion,
+            unionRaider: result.getCombinedData.getUnionRaider,
           }}
           showUnionRaider={showUnionRaider}
         />
@@ -35,7 +35,6 @@ const Container = styled.div`
   padding: 10px;
   padding-top: 5px;
   font-family: maple-light;
-
 `;
 
 const InfoWrap = styled.div`
@@ -47,5 +46,4 @@ const InfoWrap = styled.div`
   @media screen and (max-width: 1024px) {
     flex-direction: column-reverse;
   }
-
 `;
