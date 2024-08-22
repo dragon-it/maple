@@ -1,5 +1,5 @@
 // 선데이메이플 디테일
-import { callMapleStoryAPI } from "../utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
 
 export default async function handler(req, res) {
   // GET 요청인지 확인

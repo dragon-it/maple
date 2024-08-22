@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
 
 // 지연 함수
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
