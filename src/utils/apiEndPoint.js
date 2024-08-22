@@ -1,7 +1,4 @@
 import axios from "axios";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const BASE_URL = "https://open.api.nexon.com";
 
@@ -13,16 +10,16 @@ export const callMapleStoryAPI = async (endpoint, params) => {
         ...params,
       },
       headers: {
-        "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
+        "x-nxopen-api-key": process.env.NEXON_API_KEY,
       },
     });
     if (response.status === 200) {
       return response.data;
     } else {
-      return false;
+      throw new Error(`API responded with status ${response.status}`);
     }
   } catch (error) {
     console.error(`API call failed for ${endpoint}: ${error.message}`);
-    return false;
+    throw error; // 오류를 던지기
   }
 };
