@@ -61,7 +61,6 @@ export const SundayMaple = () => {
             console.error("Error fetching notice detail data:", error.message);
           }
         };
-
         fetchNoticeDetail();
       }
     }

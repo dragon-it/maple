@@ -6,7 +6,6 @@ import { GuildSkill } from "./guild/GuildSkill";
 import { GuildStatistics } from "./guild/GuildStatistics";
 
 export const Guild = ({ result }) => {
-  console.log(result);
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);

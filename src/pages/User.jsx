@@ -20,7 +20,6 @@ export const User = () => {
 
   const { characterName } = useParams();
   const [result, setResult] = useState(null);
-  console.log(result);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   useEffect(() => {
