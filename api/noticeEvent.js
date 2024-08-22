@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
 
 // 이벤트 공지
 export default async function handler(req, res) {

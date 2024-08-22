@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
 
 // 캐릭터 OCID API
 export default async function handler(req, res) {
