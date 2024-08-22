@@ -5,8 +5,12 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // 길드 멤버 정보
 export default async function handler(req, res) {
+  // GET 요청인지 확인
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
   try {
-    const { guildMembers } = req.body;
+    const { guildMembers } = req.query;
 
     if (!Array.isArray(guildMembers)) {
       return res.status(400).json({ error: "Invalid data format" });

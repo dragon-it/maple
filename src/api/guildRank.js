@@ -60,7 +60,11 @@ const getGuildRanking = async (guildName, worldName) => {
 
 // 길드 랭킹 엔드포인트 추가
 export default async function handler(req, res) {
-  const { guild_name: guildName, world_name: worldName } = req.body;
+  // GET 요청인지 확인
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+  const { guild_name: guildName, world_name: worldName } = req.query;
 
   if (!guildName || !worldName) {
     return res
