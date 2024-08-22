@@ -35,18 +35,31 @@ const getOcid = async (characterName) => {
     const combinations = isKorean
       ? [characterName]
       : getAllCaseCombinations(characterName); // 한글이면 조합 생성 생략
+
+    // 1. 입력한 이름 그대로 먼저 시도
+    try {
+      const ocidData = await getOcidApi(characterName); // OCID API 호출
+      if (ocidData) {
+        return ocidData.ocid; // OCID 반환
+      }
+    } catch (error) {
+      console.log(
+        `Direct search failed for ${characterName}, trying combinations...`
+      );
+    }
+
+    // 2. 대소문자 조합 시도
     for (let name of combinations) {
-      // 각 조합을 순회
       try {
         const ocidData = await getOcidApi(name); // OCID API 호출
         if (ocidData) {
-          // OCID 데이터를 성공적으로 받은 경우
           return ocidData.ocid; // OCID 반환
         }
       } catch (error) {
         continue; // 오류 발생 시 다음 조합으로 넘어감
       }
     }
+
     return null; // 모든 조합을 시도한 후에도 OCID를 찾지 못한 경우 null 반환
   } catch (error) {
     console.error(`getOcid error: ${error.message}`);
