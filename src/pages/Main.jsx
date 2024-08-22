@@ -3,6 +3,7 @@ import { Search } from "../components/main/Search";
 import styled from "styled-components";
 import { Footer } from "../components/common/Footer";
 import { Favorite } from "../components/user/favorite/Favorite";
+import { SundayMaple } from "../components/main/SundayMaple";
 
 export const Main = () => {
   return (
@@ -13,6 +14,7 @@ export const Main = () => {
           <Favorite />
         </FavoriteWrap>
       </SearchWrap>
+      <SundayMaple />
       <Footer />
     </Container>
   );
@@ -33,8 +35,7 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100px;
-  z-index: 999;
+  min-height: 100px;
 `;
 
 const FavoriteWrap = styled.div`
@@ -43,7 +44,7 @@ const FavoriteWrap = styled.div`
   height: auto;
   background-color: rgba(0, 0, 0, 0.53);
   border-radius: 5px;
-
+  z-index: 50;
   @media screen and (max-width: 768px) {
     top: 130px;
   }
