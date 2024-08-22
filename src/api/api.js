@@ -8,7 +8,7 @@ import axios from "axios";
  */
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.get(`/${endpoint}`, { params }); // GET 요청 시 params를 쿼리로 전달
+    const response = await axios.get(`/api/${endpoint}`, { params }); // GET 요청 시 params를 쿼리로 전달
     if (response.status === 200) {
       return response.data;
     } else {
