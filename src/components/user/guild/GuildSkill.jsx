@@ -26,9 +26,6 @@ export const GuildSkill = ({ result }) => {
     setClicked(false);
   };
 
-  console.log(clicked);
-  console.log(selectedItem);
-
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
       nobleSkills.skillOrder.findIndex((skill) => skill.name === a.skill_name) -
@@ -42,78 +39,86 @@ export const GuildSkill = ({ result }) => {
 
   return (
     <Container>
-      {/* 길드 일반 스킬 */}
-      <Table>
-        {nobleSkills.skillGrid[0].map((level, colIndex) => (
-          <TableColumn key={colIndex}>
-            {nobleSkills.skillGrid.map((row, rowIndex) => {
-              const skillName = row[colIndex];
-              const item = skillNameToItemMap[skillName];
-              const skillInfo =
-                item &&
-                nobleSkills.skillOrder.find(
-                  (skill) => skill.name === skillName
-                );
-
-              return (
-                <TableCell key={rowIndex}>
-                  {rowIndex === 0 ? (
-                    <Level>{skillName}</Level>
-                  ) : skillName === "→" ? (
-                    <RightArrow src={rightArrow} alt={rightArrow} />
-                  ) : item ? (
-                    <BasicSkillWrap
+      {result.guildBasicInformation.guild_skill &&
+      result.guildBasicInformation.guild_skill.length > 0 ? (
+        <>
+          {/* 길드 일반 스킬 */}
+          <Table>
+            {nobleSkills.skillGrid[0].map((level, colIndex) => (
+              <TableColumn key={colIndex}>
+                {nobleSkills.skillGrid.map((row, rowIndex) => {
+                  const skillName = row[colIndex];
+                  const item = skillNameToItemMap[skillName];
+                  const skillInfo =
+                    item &&
+                    nobleSkills.skillOrder.find(
+                      (skill) => skill.name === skillName
+                    );
+                  return (
+                    <TableCell key={rowIndex}>
+                      {rowIndex === 0 ? (
+                        <Level>{skillName}</Level>
+                      ) : skillName === "→" ? (
+                        <RightArrow src={rightArrow} alt={rightArrow} />
+                      ) : item ? (
+                        <BasicSkillWrap
+                          onClick={() => handleClick(item)}
+                          onMouseOver={() => handleItemHover(item)}
+                        >
+                          <SkillIcon>
+                            <img src={item.skill_icon} alt={skillName} />
+                          </SkillIcon>
+                          <SkillName>{skillInfo.name}</SkillName>
+                          <SkillLevel
+                            isMaxLevel={item.skill_level === skillInfo.maxLevel}
+                          >
+                            {item.skill_level}/{skillInfo.maxLevel}
+                          </SkillLevel>
+                        </BasicSkillWrap>
+                      ) : null}
+                    </TableCell>
+                  );
+                })}
+              </TableColumn>
+            ))}
+          </Table>
+          {/* 길드 노블레스 스킬 */}
+          <NoblesseSkillWrap>
+            <SkillHeader>노블레스 길드 스킬</SkillHeader>
+            <SkillContainer>
+              {result.guildBasicInformation &&
+                result.guildBasicInformation.guild_noblesse_skill.map(
+                  (item, index) => (
+                    <SkillWrap
+                      key={index}
                       onClick={() => handleClick(item)}
                       onMouseOver={() => handleItemHover(item)}
                     >
                       <SkillIcon>
-                        <img src={item.skill_icon} alt={skillName} />
+                        <img src={item.skill_icon} alt={item.skill_name} />
                       </SkillIcon>
-                      <SkillName>{skillInfo.name}</SkillName>
-                      <SkillLevel
-                        isMaxLevel={item.skill_level === skillInfo.maxLevel}
-                      >
-                        {item.skill_level}/{skillInfo.maxLevel}
+                      <SkillName>
+                        {nobleSkills.nobleSkillNameMapping[item.skill_name]}
+                      </SkillName>
+                      <SkillLevel isMaxLevel={item.skill_level === 15}>
+                        {item.skill_level}/15
                       </SkillLevel>
-                    </BasicSkillWrap>
-                  ) : null}
-                </TableCell>
-              );
-            })}
-          </TableColumn>
-        ))}
-      </Table>
-      {/* 길드 노블레스 스킬 */}
-      <NoblesseSkillWrap>
-        <SkillHeader>노블레스 길드 스킬</SkillHeader>
-        <SkillContainer>
-          {result.guildBasicInformation &&
-            result.guildBasicInformation.guild_noblesse_skill.map(
-              (item, index) => (
-                <SkillWrap
-                  key={index}
-                  onClick={() => handleClick(item)}
-                  onMouseOver={() => handleItemHover(item)}
-                >
-                  <SkillIcon>
-                    <img src={item.skill_icon} alt={item.skill_name} />
-                  </SkillIcon>
-                  <SkillName>
-                    {nobleSkills.nobleSkillNameMapping[item.skill_name]}
-                  </SkillName>
-                  <SkillLevel isMaxLevel={item.skill_level === 15}>
-                    {item.skill_level}/15
-                  </SkillLevel>
-                </SkillWrap>
-              )
-            )}
-        </SkillContainer>
-      </NoblesseSkillWrap>
-      <GuildSkillDetail
-        item={selectedItem}
-        clicked={clicked}
-        onClose={handleDetailClick}
-      />
+                    </SkillWrap>
+                  )
+                )}
+            </SkillContainer>
+          </NoblesseSkillWrap>
+          <GuildSkillDetail
+            item={selectedItem}
+            clicked={clicked}
+            onClose={handleDetailClick}
+          />
+        </>
+      ) : (
+        <>
+          <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
+        </>
+      )}
     </Container>
   );
 };
@@ -231,4 +236,8 @@ const SkillHeader = styled.div`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
+`;
+
+const SkillNoDataText = styled.div`
+  font-family: maple-light;
 `;
