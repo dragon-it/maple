@@ -80,11 +80,6 @@ export const SundayMaple = () => {
     setIsVisible(false);
   };
 
-  // 화면 최상단 이동
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   if (!notice || !notice.event_notice || !isVisible) {
     // isVisible 상태에 따라 렌더링 여부 결정
     return null;
@@ -104,7 +99,6 @@ export const SundayMaple = () => {
           <SkipWeekButton onClick={handleSkipWeek}>
             이번 주 보지 않기
           </SkipWeekButton>
-          <ScrollTopButton onClick={scrollToTop}>화면 최상단</ScrollTopButton>
         </ContentsWrap>
       )}
     </Container>
@@ -112,7 +106,7 @@ export const SundayMaple = () => {
 };
 
 const Container = styled.div`
-  z-index: 999999999999999;
+  z-index: 99999;
   position: absolute;
   width: 100%;
   top: 90px;
@@ -158,55 +152,38 @@ const ContentsWrap = styled.div`
 `;
 
 const CloseButton = styled.button`
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
-  background-color: red;
+  background-color: rgb(221, 187, 139);
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 30px;
+  width: fit-content;
   height: 30px;
+  border-radius: 7px;
   cursor: pointer;
-  z-index: 1000000000000000;
+  z-index: 99999;
 
   &:hover {
-    background-color: #dd9090;
+    background-color: rgb(212, 173, 119);
   }
 `;
 
 const SkipWeekButton = styled.div`
-  position: absolute;
-  top: 100px;
+  position: fixed;
+  top: 40px;
   right: 0;
-  background-color: red;
+  background-color: rgb(221, 187, 139);
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 30px;
+  width: fit-content;
   height: 30px;
+  border-radius: 7px;
+  font-size: 13px;
   cursor: pointer;
-  z-index: 1000000000000000;
+  z-index: 99999;
 
   &:hover {
-    background-color: #dd9090;
-  }
-`;
-
-const ScrollTopButton = styled.div`
-  position: absolute;
-  top: 300px;
-  right: 0;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  z-index: 1000000000000000;
-
-  &:hover {
-    background-color: #dd9090;
+    background-color: rgb(212, 173, 119);
   }
 `;
