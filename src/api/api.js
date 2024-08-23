@@ -74,7 +74,11 @@ const getGuildBasicInformation = async (oguildId) => {
 
 // 길드 멤버 정보 함수
 const getGuildMembers = async (guildMembers) => {
-  return callMapleStoryAPI("guild-member", { guildMembers });
+  const query = new URLSearchParams({
+    guildMembers: JSON.stringify(guildMembers),
+  }).toString();
+
+  return callMapleStoryAPI(`guild-member?${query}`);
 };
 
 // Combined API 호출 함수
@@ -84,7 +88,7 @@ const getCombinedData = async (ocid) => {
 
 // 길드 랭킹 함수
 const getGuildRanking = async (guildName, worldName) => {
-  return callMapleStoryAPI("ranking-guild", {
+  return callMapleStoryAPI("guild-rank", {
     guild_name: guildName,
     world_name: worldName,
   });

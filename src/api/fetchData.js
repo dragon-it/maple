@@ -35,6 +35,20 @@ const getOcid = async (characterName) => {
     const combinations = isKorean
       ? [characterName]
       : getAllCaseCombinations(characterName); // 한글이면 조합 생성 생략
+
+    // 1. 입력한 이름 그대로 먼저 시도
+    try {
+      const ocidData = await getOcidApi(characterName); // OCID API 호출
+      if (ocidData) {
+        return ocidData.ocid; // OCID 반환
+      }
+    } catch (error) {
+      console.log(
+        `Direct search failed for ${characterName}, trying combinations...`
+      );
+    }
+
+    // 2. 대소문자 조합 시도
     for (let name of combinations) {
       // 각 조합을 순회
       try {
@@ -61,11 +75,10 @@ const getOcid = async (characterName) => {
  * @param {function} setLoading - 로딩 상태를 설정하는 함수
  * @param {function} setError - 오류 메시지를 설정하는 함수
  */
+
 const fetchData = async (characterName, setResult, setLoading, setError) => {
   if (characterName.trim() !== "") {
-    // 캐릭터 이름이 비어있지 않은 경우
     try {
-      // 초성만으로 구성된 문자열인지 확인하는 정규 표현식
       const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
       if (isChosung) {
         throw new Error("초성만으로 검색할 수 없습니다.");
@@ -77,14 +90,12 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         const apiResults = await Promise.all(
           apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
         );
-        console.log(apiResults);
 
         const resultObject = {};
         apiFunctions.forEach(({ name }, index) => {
           resultObject[name] = apiResults[index];
         });
 
-        console.log(resultObject);
         if (!resultObject.getCombinedData.getBasicInformation) {
           throw new Error("기본 정보가 없습니다.");
         }
@@ -106,51 +117,44 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         if (guildBasicInformation) {
           const { guild_member } = guildBasicInformation;
 
-          // 길드 멤버 정보 가져오기
           let fetchedMembersData = [];
           try {
             fetchedMembersData = await getGuildMembers(guild_member);
 
+            // 데이터 구조 확인 및 조정
             if (!Array.isArray(fetchedMembersData)) {
-              console.error(fetchedMembersData);
               throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
             }
+
+            // 길드 멤버 데이터가 빈 객체인 경우 처리
+            fetchedMembersData = guild_member.map((member, index) => {
+              const memberData = fetchedMembersData[index] || {};
+              return {
+                character_name: member,
+                character_level: memberData.character_level || null,
+                character_image: memberData.character_image || null,
+                character_class: memberData.character_class || null,
+              };
+            });
           } catch (error) {
             console.error("Failed to fetch members data", error);
-            // 호출 실패한 경우에도 닉네임만 저장
             fetchedMembersData = guild_member.map((member) => ({
               character_name: member,
+              character_class: null,
               character_level: null,
               character_image: null,
             }));
           }
 
-          // 빈 객체로 나오는 멤버 정보 처리
-          fetchedMembersData = fetchedMembersData.map((memberData, index) => {
-            if (Object.keys(memberData).length === 0) {
-              return {
-                character_name: guild_member[index],
-                character_level: null,
-                character_image: null,
-              };
-            }
-            return memberData;
-          });
-
-          // 결과 객체에 길드 멤버 정보 추가
           resultObject.guildMembersData = fetchedMembersData;
         }
 
-        // 결과 객체에 길드 정보 추가
         resultObject.guildBasicInformation = guildBasicInformation;
         resultObject.guildRankInformation = guildRankInformation;
 
-        // getCombinedData 호출 및 로그 출력
         const combinedData = await getCombinedData(ocid);
-        console.log("getCombinedData response:", combinedData);
 
         setResult(resultObject);
-        console.log(resultObject);
       } else {
         setError("OCID 가져오기 오류");
       }
