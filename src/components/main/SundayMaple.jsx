@@ -31,7 +31,6 @@ export const SundayMaple = () => {
         });
         if (response.status === 200) {
           setNotice(response.data);
-          console.log(response);
         } else {
           console.error("Failed to fetch notice data");
         }
