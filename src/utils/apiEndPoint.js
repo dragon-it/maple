@@ -20,6 +20,6 @@ export const callMapleStoryAPI = async (endpoint, params) => {
     }
   } catch (error) {
     console.error(`API call failed for ${endpoint}: ${error.message}`);
-    throw error; // 오류를 던지기
+    throw error;
   }
 };
