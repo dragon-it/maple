@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../../src/utils/apiEndPoint"; // 경로 수정
+import { callMapleStoryAPI } from "../../src/utils/apiEndPoint.js";
 
 export default async function handler(req, res) {
   // GET 요청인지 확인

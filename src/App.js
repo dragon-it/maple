@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { Main } from "./pages/Main";
-import { User } from "./pages/User";
-import { BackgroundImage } from "./components/main/BackgroundImage";
+import { Main } from "./pages/Main.jsx";
+import { User } from "./pages/User.jsx";
+import { BackgroundImage } from "./components/main/BackgroundImage.jsx";
 import styled from "styled-components";
-import { ThemeProvider } from "./context/ThemeProvider";
-import { GlobalStyle } from "./components/theme/GlobalStyles";
-import { Error } from "./pages/Error";
+import { ThemeProvider } from "./context/ThemeProvider.js";
+import { GlobalStyle } from "./components/theme/GlobalStyles.js";
+import { Error } from "./pages/Error.jsx";
 
 const UserContainer = styled.div`
   width: 100%;

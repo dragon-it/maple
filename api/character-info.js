@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint.js";
 
 export default async function handler(req, res) {
   // GET 요청인지 확인
@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   }
 
   const { ocid } = req.query;
-
   if (!ocid) {
     return res.status(400).json({ error: "ocid is required" });
   }

@@ -18,14 +18,14 @@
   },
   "include": [
     "src",
-    "api/noticeEventDetail.js",
-    "api/noticeEvent.js",
-    "api/guildRank.js",
-    "api/guildMember.js",
-    "api/guildId.js",
-    "api/guildBasicInfo.js",
-    "api/characterOcid.js",
-    "api/characterInfo.js",
+    "api/notice-event/detail.js",
+    "api/notice-event.js",
+    "api/guild-rank.js",
+    "api/guild-member.js",
+    "api/guild-id.js",
+    "api/guild-basic.js",
+    "api/id.js",
+    "api/character-info.js",
     "api/index.js"
   ]
 }
