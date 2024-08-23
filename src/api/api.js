@@ -14,7 +14,7 @@ const callMapleStoryAPI = async (endpoint, params) => {
         ...params,
       },
       headers: {
-        "x-nxopen-api-key": process.env.NEXON_API_KEY,
+        "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
       },
     });
     if (response.status === 200) {
@@ -39,23 +39,8 @@ const getYesterDayFormatted = () => {
 
 // Ocid 함수
 const getOcidApi = async (characterName) => {
-  try {
-    console.log(`Calling API for character: ${characterName}`); // API 호출 전에 로그 출력
-
-    const response = await callMapleStoryAPI("ocid", {
-      character_name: characterName,
-    });
-
-    console.log("API response:", response); // API 호출 후 로그 출력
-
-    return response;
-  } catch (error) {
-    console.error("Error in getOcidApi:", error.message); // 오류 발생 시 로그 출력
-    throw error; // 오류를 다시 던져 호출하는 곳에서 처리할 수 있도록 함
-  }
+  return callMapleStoryAPI("id", { character_name: characterName });
 };
-
-export default getOcidApi;
 
 // 선데이메이플 공지
 const getNotice = async () => {
@@ -76,7 +61,7 @@ const getNoticeDetail = async (notice_id) => {
 
 // 길드 id
 const getOguildId = async (guildName, worldName) => {
-  return callMapleStoryAPI("guild/id", {
+  return callMapleStoryAPI("guild-id", {
     guild_name: guildName,
     world_name: worldName,
   });
@@ -84,22 +69,22 @@ const getOguildId = async (guildName, worldName) => {
 
 // 길드 정보 함수
 const getGuildBasicInformation = async (oguildId) => {
-  return callMapleStoryAPI("guild/basic", { oguild_id: oguildId });
+  return callMapleStoryAPI("guild-basic", { oguild_id: oguildId });
 };
 
 // 길드 멤버 정보 함수
 const getGuildMembers = async (guildMembers) => {
-  return callMapleStoryAPI("guild/members", { guildMembers });
+  return callMapleStoryAPI("guild-member", { guildMembers });
 };
 
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
-  return callMapleStoryAPI("character/information", { ocid }); // endpoint 경로 확인
+  return callMapleStoryAPI("character-info", { ocid });
 };
 
 // 길드 랭킹 함수
 const getGuildRanking = async (guildName, worldName) => {
-  return callMapleStoryAPI("ranking/guild", {
+  return callMapleStoryAPI("ranking-guild", {
     guild_name: guildName,
     world_name: worldName,
   });

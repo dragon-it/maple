@@ -24,7 +24,11 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNotice = async () => {
       try {
-        const response = await axios.get("/api/notice-event");
+        const response = await axios.get("/api/notice-event", {
+          headers: {
+            "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
+          },
+        });
         if (response.status === 200) {
           setNotice(response.data);
           console.log(response);
@@ -42,7 +46,7 @@ export const SundayMaple = () => {
   useEffect(() => {
     if (notice && notice.event_notice) {
       const sundayMapleNotices = notice.event_notice.filter(
-        (item) => item.title === "고브의 선물"
+        (item) => item.title === "썬데이 메이플"
       );
 
       if (sundayMapleNotices.length > 0) {

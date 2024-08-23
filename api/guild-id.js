@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint.js";
 
 // 길드 oguildId 취득
 export default async function handler(req, res) {
