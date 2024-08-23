@@ -1,4 +1,4 @@
-import { callMapleStoryAPI } from "../src/utils/apiEndPoint";
+import { callMapleStoryAPI } from "../src/utils/apiEndPoint.js";
 
 // 지연 함수
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -9,19 +9,22 @@ export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
-  try {
-    const { guildMembers } = req.query;
 
-    if (!Array.isArray(guildMembers)) {
-      return res.status(400).json({ error: "Invalid data format" });
+  try {
+    // URL 쿼리에서 guildMembers를 배열로 변환
+    const { guildMembers } = req.query;
+    const members = Array.isArray(guildMembers) ? guildMembers : [guildMembers];
+
+    if (!members.length) {
+      return res.status(400).json({ error: "No guild members provided" });
     }
 
     const batchSize = 40; // 한 번에 처리할 멤버 수
     const delayMs = 100; // 각 배치 사이 지연 시간
     const membersData = [];
 
-    for (let i = 0; i < guildMembers.length; i += batchSize) {
-      const batch = guildMembers.slice(i, i + batchSize);
+    for (let i = 0; i < members.length; i += batchSize) {
+      const batch = members.slice(i, i + batchSize);
 
       const batchData = await Promise.all(
         batch.map(async (member) => {
@@ -64,7 +67,7 @@ export default async function handler(req, res) {
 
       membersData.push(...batchData);
 
-      if (i + batchSize < guildMembers.length) {
+      if (i + batchSize < members.length) {
         await delay(delayMs); // 배치 사이의 지연 시간 추가
       }
     }
