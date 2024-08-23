@@ -11,11 +11,32 @@ export default async function handler(req, res) {
   }
 
   try {
-    // URL 쿼리에서 guildMembers를 배열로 변환
-    const { guildMembers } = req.query;
-    const members = Array.isArray(guildMembers) ? guildMembers : [guildMembers];
+    // 쿼리 파라미터 출력
+    console.log("Query parameters:", req.query);
 
-    if (!members.length) {
+    // URL 쿼리에서 guildMembers를 배열로 변환
+    let guildMembers = req.query.guildMembers;
+    console.log("guildMembers raw:", guildMembers); // 추가된 로그
+
+    // guildMembers가 문자열이면 JSON으로 파싱
+    if (typeof guildMembers === "string") {
+      try {
+        guildMembers = JSON.parse(guildMembers);
+      } catch (error) {
+        return res
+          .status(400)
+          .json({ error: "Invalid JSON format for guildMembers" });
+      }
+    }
+
+    // guildMembers가 배열인지 확인
+    if (!Array.isArray(guildMembers)) {
+      return res.status(400).json({ error: "guildMembers should be an array" });
+    }
+
+    console.log("Parsed members:", guildMembers); // 추가된 로그
+
+    if (guildMembers.length === 0) {
       return res.status(400).json({ error: "No guild members provided" });
     }
 
@@ -23,8 +44,8 @@ export default async function handler(req, res) {
     const delayMs = 100; // 각 배치 사이 지연 시간
     const membersData = [];
 
-    for (let i = 0; i < members.length; i += batchSize) {
-      const batch = members.slice(i, i + batchSize);
+    for (let i = 0; i < guildMembers.length; i += batchSize) {
+      const batch = guildMembers.slice(i, i + batchSize);
 
       const batchData = await Promise.all(
         batch.map(async (member) => {
@@ -38,10 +59,10 @@ export default async function handler(req, res) {
                 ocid: ocidData.ocid,
               });
               return {
-                character_name: basicInfoData.character_name,
-                character_level: basicInfoData.character_level,
-                character_image: basicInfoData.character_image,
-                character_class: basicInfoData.character_class,
+                character_name: basicInfoData.character_name || member,
+                character_level: basicInfoData.character_level || null,
+                character_image: basicInfoData.character_image || null,
+                character_class: basicInfoData.character_class || null,
               };
             } else {
               return {
@@ -67,7 +88,7 @@ export default async function handler(req, res) {
 
       membersData.push(...batchData);
 
-      if (i + batchSize < members.length) {
+      if (i + batchSize < guildMembers.length) {
         await delay(delayMs); // 배치 사이의 지연 시간 추가
       }
     }
