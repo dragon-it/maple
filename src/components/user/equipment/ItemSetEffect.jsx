@@ -4,20 +4,21 @@ import styled from "styled-components";
 export const ItemSetEffect = ({ setinfo }) => {
   const [expandedArray, setExpandedArray] = useState([]);
 
+  // 옵션 문자열에서 특정 패턴을 추출하고 대체하는 함수
   const extractAll = (setOption) => {
     const patterns = [
       {
-        regex: /공격력\s*:\s*\+(\d+),\s*마력\s*:\s*\+(\d+)/,
+        regex: /공격력\s*:\s*\+(\d+),\s*마력\s*:\s*\+(\d+)/, // 공격력과 마력을 추출하는 정규식
         replacement: "공격력 / 마력 : +$1",
       },
       {
-        regex: /최대 HP\s*:\s*\+(\d+),\s*최대 MP\s*:\s*\+(\d+)/,
+        regex: /최대 HP\s*:\s*\+(\d+),\s*최대 MP\s*:\s*\+(\d+)/, // 최대 HP와 MP를 추출하는 정규식
         replacement: "최대 HP / 최대 MP : +$1",
       },
       {
-        regex: /최대 HP\s*:\s*\+(\d+)%,\s*최대 MP\s*:\s*\+(\d+)%/,
+        regex: /최대 HP\s*:\s*\+(\d+)%,\s*최대 MP\s*:\s*\+(\d+)%/, // 백분율 형태의 최대 HP와 MP를 추출하는 정규식
         replacement: "최대 HP / 최대 MP : +$1%",
-      }, // 백분율을 위한 새로운 패턴
+      },
     ];
 
     let updatedOption = setOption;
@@ -34,8 +35,7 @@ export const ItemSetEffect = ({ setinfo }) => {
   const handleSetClick = (index) => {
     setExpandedArray((prevArray) => {
       const newArray = [...prevArray];
-      // 토글된 상태를 현재 상태에 반대로 설정합니다.
-      newArray[index] = !newArray[index]; // 불리언 값을 토글합니다.
+      newArray[index] = !newArray[index]; // 불리언 값을 토글.
       return newArray;
     });
   };
@@ -43,11 +43,13 @@ export const ItemSetEffect = ({ setinfo }) => {
   return (
     <Container>
       <Header>SET EFFECT</Header>
+      {/* setinfo.set_effect가 존재하고 배열인 경우에만 렌더링 */}
       {setinfo.set_effect && Array.isArray(setinfo.set_effect) && (
         <ul>
           {setinfo.set_effect.map((effect, index) => (
             <SetEffectName key={index} onClick={() => handleSetClick(index)}>
-              {effect.set_effect_info.length > 0 && ( // set_effect_info가 비어있지 않은 경우에만 출력
+              {/* set_effect_info가 비어있지 않은 경우에만 출력. */}
+              {effect.set_effect_info.length > 0 && (
                 <>
                   {effect.set_name ? (
                     <>
@@ -58,13 +60,13 @@ export const ItemSetEffect = ({ setinfo }) => {
                           <span>▶&nbsp;</span>
                         )}
                         {effect.set_name}
-                      </span>{" "}
-                      {/* 기존 세트 이름 출력 */}
+                      </span>
                     </>
                   ) : (
                     <></>
                   )}
                   {effect.set_option}
+                  {/* 확장된 상태일 때만 세트 효과 정보를 표시 */}
                   {expandedArray[index] && (
                     <div>
                       {effect.set_effect_info.length > 0 && (
@@ -76,6 +78,7 @@ export const ItemSetEffect = ({ setinfo }) => {
                                   {info.set_count}세트효과
                                 </SetEffectHeader>
                                 <SetEffectDetail>
+                                  {/* 옵션 문자열을 추출하고 줄바꿈하여 표시 */}
                                   {extractAll(info.set_option)
                                     .split(",")
                                     .map((option, index) => (
@@ -112,8 +115,6 @@ const Container = styled.div`
   color: white;
   max-height: 600px;
   overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: #ffffff rgba(104, 103, 103, 0.5);
 
   ul {
     list-style: none;

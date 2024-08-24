@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "types": ["styled-components"],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,7 +17,15 @@
     "jsx": "react"
   },
   "include": [
-    "src"
+    "src",
+    "api/notice-event/detail.js",
+    "api/notice-event.js",
+    "api/guild-rank.js",
+    "api/guild-member.js",
+    "api/guild-id.js",
+    "api/guild-basic.js",
+    "api/id.js",
+    "api/character-info.js",
+    "api/index.js"
   ]
 }
-
