@@ -20,5 +20,22 @@ export const GlobalStyle = createGlobalStyle`
     word-wrap: break-word;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+
+
+/* 스크롤바 전체 영역 */
+    ::-webkit-scrollbar {
+      width: 10px;
+      border: 2px solid rgb(84,84,84);
+      border-radius: 12px 12px 12px 12px;
+    }
+    ::-webkit-scrollbar-thumb {
+    background: rgb(187,187,187);
+    border: 3px solid rgb(100,100,100);
+    border-radius: 12px 12px 12px 12px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgb(160, 160, 165);
+      cursor: pointer;
+    }
   }
 `;
