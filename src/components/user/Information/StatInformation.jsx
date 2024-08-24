@@ -1,8 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 export const StatInformation = ({ statInfo }) => {
   const formatNumber = (value) => {
+    if (value === null || value === undefined) {
+      return <span>데이터 없음</span>;
+    }
     if (value >= 100000000) {
       const 억 = Math.floor(value / 100000000);
       const remainder = value % 100000000;
@@ -27,159 +30,180 @@ export const StatInformation = ({ statInfo }) => {
       return <span>{value}</span>;
     }
   };
+
   const formatNumberWithCommas = (value) => {
-    // value가 null이나 undefined인 경우, 빈 문자열로 처리합니다.
     if (value === null || value === undefined) {
-      return '0';
+      return "데이터 없음";
     }
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-  
+
+  const getStatValue = (index) => {
+    return statInfo.final_stat && statInfo.final_stat[index]
+      ? statInfo.final_stat[index].stat_value
+      : "데이터 없음";
+  };
+
+  const getStatName = (index) => {
+    return statInfo.final_stat && statInfo.final_stat[index]
+      ? statInfo.final_stat[index].stat_name
+      : "데이터 없음";
+  };
 
   return (
     <Container>
       <AllStatWrap>
         <CombatpowerWrap>
-            <CombatpowerHeader>
-              {statInfo.final_stat[42].stat_name}
-            </CombatpowerHeader>
-            <p>{formatNumber(statInfo.final_stat[42].stat_value)}</p>
+          <CombatpowerHeader>
+            {statInfo.final_stat[42]
+              ? statInfo.final_stat[42].stat_name
+              : "데이터 없음"}
+          </CombatpowerHeader>
+          <p>{formatNumber(getStatValue(42))}</p>
         </CombatpowerWrap>
         <StatWrap>
-            <StatLeftWrap>
-              <div>
-                <StatHeader>{statInfo.final_stat[20].stat_name}</StatHeader>
-                <StatValue>{formatNumberWithCommas(statInfo.final_stat[20].stat_value)}</StatValue>
-              </div>
-              <div>
-                <StatHeader>{statInfo.final_stat[16].stat_name}</StatHeader>
-                <StatValue>{formatNumberWithCommas(statInfo.final_stat[16].stat_value)}</StatValue>
-              </div>
-              <div>
-                <StatHeader>{statInfo.final_stat[18].stat_name}</StatHeader>
-                <StatValue>{formatNumberWithCommas(statInfo.final_stat[18].stat_value)}</StatValue>
-              </div>
-            </StatLeftWrap>
-            <StatRightWrap>
-              <div>
-                <StatHeader>{statInfo.final_stat[21].stat_name}</StatHeader>
-                <StatValue>{formatNumberWithCommas(statInfo.final_stat[21].stat_value)}</StatValue>
-              </div>
-              <div>
-                <StatHeader>{statInfo.final_stat[17].stat_name}</StatHeader>
-                <StatValue>{formatNumberWithCommas(statInfo.final_stat[17].stat_value)}</StatValue>
-              </div>
-              <div>
-                <StatHeader>{statInfo.final_stat[19].stat_name}</StatHeader>
-                <StatValue>{formatNumberWithCommas(statInfo.final_stat[19].stat_value)}</StatValue>
-              </div>
-            </StatRightWrap>
+          <StatLeftWrap>
+            <div>
+              <StatHeader>{getStatName(20)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(20))}</StatValue>
+            </div>
+            <div>
+              <StatHeader>{getStatName(16)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(16))}</StatValue>
+            </div>
+            <div>
+              <StatHeader>{getStatName(18)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(18))}</StatValue>
+            </div>
+          </StatLeftWrap>
+          <StatRightWrap>
+            <div>
+              <StatHeader>{getStatName(21)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(21))}</StatValue>
+            </div>
+            <div>
+              <StatHeader>{getStatName(17)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(17))}</StatValue>
+            </div>
+            <div>
+              <StatHeader>{getStatName(19)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(19))}</StatValue>
+            </div>
+          </StatRightWrap>
         </StatWrap>
         <AttackFontWrap>
           <TextLeft>
             <p>
               <StatHeader>스탯 공격력</StatHeader>
-              <StatValue>{formatNumber(statInfo.final_stat[1].stat_value)}</StatValue>
+              <StatValue>{formatNumber(getStatValue(1))}</StatValue>
             </p>
             <p>
-              <StatHeader>{statInfo.final_stat[4].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[4].stat_value}%</StatValue></p>
-            <p>
-              <StatHeader>{statInfo.final_stat[5].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[5].stat_value}%</StatValue></p>
-            <p>
-              <StatHeader>{statInfo.final_stat[40].stat_name}</StatHeader>
-              <StatValue>{formatNumberWithCommas(statInfo.final_stat[40].stat_value)}</StatValue>
+              <StatHeader>{getStatName(4)}</StatHeader>
+              <StatValue>{getStatValue(4)}%</StatValue>
             </p>
             <p>
-              <StatHeader>{statInfo.final_stat[41].stat_name}</StatHeader>
-              <StatValue>{formatNumberWithCommas(statInfo.final_stat[41].stat_value)}</StatValue>
+              <StatHeader>{getStatName(5)}</StatHeader>
+              <StatValue>{getStatValue(5)}%</StatValue>
+            </p>
+            <p>
+              <StatHeader>{getStatName(40)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(40))}</StatValue>
+            </p>
+            <p>
+              <StatHeader>{getStatName(41)}</StatHeader>
+              <StatValue>{formatNumberWithCommas(getStatValue(41))}</StatValue>
             </p>
             <p>
               <StatHeader>재사용 대기시간 감소</StatHeader>
-              <StatValue>{statInfo.final_stat[33].stat_value}초 / {statInfo.final_stat[34].stat_value}%</StatValue>
+              <StatValue>
+                {getStatValue(33)}초 / {getStatValue(34)}%
+              </StatValue>
             </p>
             <p>
-              <StatHeader>{statInfo.final_stat[35].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[35].stat_value}%</StatValue>
+              <StatHeader>{getStatName(35)}</StatHeader>
+              <StatValue>{getStatValue(35)}%</StatValue>
             </p>
             <p>
-              <StatHeader>{statInfo.final_stat[37].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[37].stat_value}%</StatValue>
+              <StatHeader>{getStatName(37)}</StatHeader>
+              <StatValue>{getStatValue(37)}%</StatValue>
             </p>
           </TextLeft>
           <TextRight>
-          {statInfo.final_stat[2] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[2].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[2].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[3] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[3].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[3].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[32] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[32].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[32].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[6] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[6].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[6].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[7] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[7].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[7].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[30] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[30].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[30].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[36] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[36].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[36].stat_value}%</StatValue>
-            </p>
-          )}
-          {statInfo.final_stat[43] && (
-            <p>
-              <StatHeader>{statInfo.final_stat[43].stat_name}</StatHeader>
-              <StatValue>{statInfo.final_stat[43].stat_value}%</StatValue>
-            </p>
-          )}
+            {statInfo.final_stat[2] && (
+              <p>
+                <StatHeader>{getStatName(2)}</StatHeader>
+                <StatValue>{getStatValue(2)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[3] && (
+              <p>
+                <StatHeader>{getStatName(3)}</StatHeader>
+                <StatValue>{getStatValue(3)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[32] && (
+              <p>
+                <StatHeader>{getStatName(32)}</StatHeader>
+                <StatValue>{getStatValue(32)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[6] && (
+              <p>
+                <StatHeader>{getStatName(6)}</StatHeader>
+                <StatValue>{getStatValue(6)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[7] && (
+              <p>
+                <StatHeader>{getStatName(7)}</StatHeader>
+                <StatValue>{getStatValue(7)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[30] && (
+              <p>
+                <StatHeader>{getStatName(30)}</StatHeader>
+                <StatValue>{getStatValue(30)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[36] && (
+              <p>
+                <StatHeader>{getStatName(36)}</StatHeader>
+                <StatValue>{getStatValue(36)}%</StatValue>
+              </p>
+            )}
+            {statInfo.final_stat[43] && (
+              <p>
+                <StatHeader>{getStatName(43)}</StatHeader>
+                <StatValue>{getStatValue(43)}%</StatValue>
+              </p>
+            )}
           </TextRight>
         </AttackFontWrap>
         <EtcStatWrap>
           <EtcTextWrap>
             <StatLeftWrap>
-              {[29, 28, 39].map((index) => (
-                statInfo.final_stat[index] && (
-                  <div key={index}>
-                    <StatHeader>{statInfo.final_stat[index].stat_name}</StatHeader>
-                    <StatValue>{statInfo.final_stat[index].stat_value}%</StatValue>
-                  </div>
-                )
-              ))}
+              {[29, 28, 39].map(
+                (index) =>
+                  statInfo.final_stat &&
+                  statInfo.final_stat[index] && (
+                    <div key={index}>
+                      <StatHeader>{getStatName(index)}</StatHeader>
+                      <StatValue>{getStatValue(index)}%</StatValue>
+                    </div>
+                  )
+              )}
             </StatLeftWrap>
             <StatRightWrap>
-              {statInfo.final_stat.slice(13, 16).map((stat, index) => (
-                stat && (
-                  <div key={index}>
-                    <StatHeader>{stat.stat_name}</StatHeader>
-                    <StatValue>{stat.stat_value}</StatValue>
-                  </div>
-                )
-              ))}
+              {statInfo.final_stat &&
+                statInfo.final_stat.slice(13, 16).map(
+                  (stat, index) =>
+                    stat && (
+                      <div key={index}>
+                        <StatHeader>{stat.stat_name}</StatHeader>
+                        <StatValue>{stat.stat_value}</StatValue>
+                      </div>
+                    )
+                )}
             </StatRightWrap>
           </EtcTextWrap>
         </EtcStatWrap>
@@ -188,19 +212,17 @@ export const StatInformation = ({ statInfo }) => {
   );
 };
 
-
-
 const Container = styled.div`
-  position: relative; 
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  border: 1px solid rgb(80,92,101);
-  outline: 1px solid rgb(42,49,58);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgb(80, 92, 101);
+  outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
-  background-color: rgba(59,66,75, 0.9);
+  background-color: rgba(59, 66, 75, 0.9);
 `;
 
 const AllStatWrap = styled.div`
@@ -208,7 +230,7 @@ const AllStatWrap = styled.div`
   flex-direction: column;
   gap: 5px;
   padding: 5px;
-`
+`;
 
 const CombatpowerWrap = styled.div`
   color: rgb(255, 250, 210);
@@ -221,18 +243,18 @@ const CombatpowerWrap = styled.div`
   height: 40px;
   font-size: 20px;
   font-weight: bold;
-  background-color: rgb(62,96,118);
+  background-color: rgb(62, 96, 118);
   border-radius: 5px;
 `;
 
 const CombatpowerHeader = styled.div`
   width: 20%;
-`
+`;
 
 const StatWrap = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: rgba(134,148,158, 0.8);
+  background-color: rgba(134, 148, 158, 0.8);
   padding: 8px;
   gap: 10px;
   border-radius: 5px;
@@ -243,39 +265,39 @@ const StatLeftWrap = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 54%;
-  div{
+  div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 768px) {
     width: 50%;
   }
-`
+`;
 
 const StatRightWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 50%;
-  div{
+  div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
-`
+`;
 
 const StatHeader = styled.div`
   align-items: flex-start;
   font-size: 14px;
   color: white;
-`
+`;
 const StatValue = styled.div`
   align-items: flex-end;
   font-size: 14px;
   color: white;
-`
+`;
 
 const AttackFontWrap = styled.div`
   display: flex;
@@ -283,10 +305,10 @@ const AttackFontWrap = styled.div`
   justify-content: space-between;
   padding: 8px;
   gap: 10px;
-  background-color: rgb(108,120,134);
+  background-color: rgb(108, 120, 134);
   border-radius: 5px;
   white-space: nowrap;
-  p{
+  p {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -294,17 +316,15 @@ const AttackFontWrap = styled.div`
     gap: 25px;
   }
 
-
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width: 1024px) {
     justify-content: center;
   }
 
-  @media screen and (max-width:576px) {
+  @media screen and (max-width: 576px) {
     flex-direction: column;
     gap: 10px;
   }
 `;
-
 
 const TextRight = styled.div`
   display: flex;
@@ -314,9 +334,6 @@ const TextRight = styled.div`
   font-size: 14px;
   color: white;
   gap: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
 `;
 
 const TextLeft = styled.div`
@@ -327,18 +344,13 @@ const TextLeft = styled.div`
   font-size: 14px;
   color: white;
   gap: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
 `;
-
-
 
 const EtcStatWrap = styled.div`
   display: flex;
   flex-direction: row;
   top: 75px;
-  background-color: rgba(134,148,158, 0.8);
+  background-color: rgba(134, 148, 158, 0.8);
   padding: 8px;
   gap: 10px;
   border-radius: 5px;
@@ -351,7 +363,5 @@ const EtcTextWrap = styled.div`
   justify-content: flex-end;
   gap: 10px;
 `;
-
-
 
 export default StatInformation;

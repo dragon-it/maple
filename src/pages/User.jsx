@@ -10,7 +10,7 @@ import loadingImg from "../assets/loading.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Footer } from "../components/common/Footer";
-// import { Guild } from "../components/user/Guild";
+import { Guild } from "../components/user/Guild";
 
 export const User = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -21,7 +21,8 @@ export const User = () => {
   const { characterName } = useParams();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
@@ -64,9 +65,9 @@ export const User = () => {
                 <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
                   유니온
                 </Tab>
-                {/* <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
+                <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
                   길드
-                </Tab> */}
+                </Tab>
               </Tabs>
               <SearchWrap>
                 <Search />
@@ -76,7 +77,7 @@ export const User = () => {
             {activeTab === 2 && <Equipment result={result} />}
             {activeTab === 3 && <Skill result={result} />}
             {activeTab === 4 && <Union result={result} />}
-            {/* {activeTab === 5 && <Guild result={result} />} */}
+            {activeTab === 5 && <Guild result={result} />}
           </Container>
           <FooterWrap>
             <Footer />
@@ -98,6 +99,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     margin-top: 80px;
+    width: 90%;
   }
 
   @media screen and (max-width: 576px) {
@@ -113,6 +115,10 @@ const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 3px 10px;
+  min-width: 750px;
+  @media screen and (max-width: 1024px) {
+    min-width: 0;
+  }
 `;
 
 const SearchWrap = styled.div`
@@ -193,5 +199,5 @@ const ErrorWrap = styled.div`
 const FooterWrap = styled.div`
   bottom: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 9;
 `;
