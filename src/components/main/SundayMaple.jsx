@@ -43,31 +43,35 @@ export const SundayMaple = () => {
   }, []);
 
   useEffect(() => {
-    if (notice && notice.event_notice) {
-      const sundayMapleNotices = notice.event_notice.filter(
-        (item) => item.title === "썬데이 메이플"
-      );
+    const fetchNoticeAndDetail = async () => {
+      if (notice && notice.event_notice) {
+        const sundayMapleNotices = notice.event_notice.filter(
+          (item) => item.title === "썬데이 메이플"
+        );
 
-      if (sundayMapleNotices.length > 0) {
-        const sundayMapleNoticeId = Number(sundayMapleNotices[0].notice_id);
+        if (sundayMapleNotices.length > 0) {
+          const sundayMapleNoticeId = Number(sundayMapleNotices[0].notice_id);
 
-        const fetchNoticeDetail = async () => {
           try {
-            const response = await axios.get("/api/notice-event/detail", {
-              params: { notice_id: sundayMapleNoticeId },
-            });
-            if (response.status === 200) {
-              setSundayMapleNoticeDetail(response.data);
+            const [noticeDetailResponse] = await Promise.all([
+              axios.get("/api/notice-event/detail", {
+                params: { notice_id: sundayMapleNoticeId },
+              }),
+            ]);
+
+            if (noticeDetailResponse.status === 200) {
+              setSundayMapleNoticeDetail(noticeDetailResponse.data);
             } else {
               console.error("Failed to fetch notice detail data");
             }
           } catch (error) {
             console.error("Error fetching notice detail data:", error.message);
           }
-        };
-        fetchNoticeDetail();
+        }
       }
-    }
+    };
+
+    fetchNoticeAndDetail();
   }, [notice]);
 
   const extractDesiredContent = (htmlString) => {
@@ -79,7 +83,6 @@ export const SundayMaple = () => {
     return desiredContent ? desiredContent.outerHTML : "";
   };
 
-  // 이버ㄴ 주 보지 않기
   const handleSkipWeek = () => {
     const skipUntil = new Date();
     skipUntil.setDate(skipUntil.getDate() + 4); // 4일동안 보지 않기
@@ -87,13 +90,11 @@ export const SundayMaple = () => {
     setIsVisible(false);
   };
 
-  // 화면 최상단 이동
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (!notice || !notice.event_notice || !isVisible) {
-    // isVisible 상태에 따라 렌더링 여부 결정
     return null;
   }
 
