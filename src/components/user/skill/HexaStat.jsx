@@ -23,7 +23,7 @@ const findStatData = (name, level, type = "main", characterClass) => {
     return {
       [`${type}_stat_level`]: level,
       [`${type}_stat_name`]: name,
-      value: "정보 없음",
+      value: "0",
     };
   }
 
