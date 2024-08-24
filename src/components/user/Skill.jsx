@@ -14,8 +14,7 @@ export const Skill = ({ result }) => {
   const handleCloseClick = () => {
     setClicked(false);
     setSelectedItem(null);
-    setIsCloseClick(true); // 필요에 따라 이 상태를 업데이트
-    // setIsCloseClick(false)를 어딘가에서 호출해줘야 할 수도 있습니다.
+    setIsCloseClick(true);
   };
 
   const handleItemHover = (item) => {
@@ -28,23 +27,23 @@ export const Skill = ({ result }) => {
   return (
     <Container>
       <SkillWrap>
-        <HexaStat Data={result.getHexaMatrixStat} />
+        <HexaStat Data={result.getCombinedData.getHexaMatrixStat} />
         <SkillGrade6
-          Data={result.getSkill.grade6}
+          Data={result.getCombinedData.getSkill.grade6}
           setSelectedItem={setSelectedItem}
           onClick={setClicked}
           clicked={clicked}
           onMouseOver={handleItemHover}
         />
         <SkillGrade5
-          Data={result.getSkill.grade5}
+          Data={result.getCombinedData.getSkill.grade5}
           setSelectedItem={setSelectedItem}
           onClick={setClicked}
           clicked={clicked}
           onMouseOver={handleItemHover}
         />
         <SkillLinks
-          Data={result.getLinkSkill}
+          Data={result.getCombinedData.getLinkSkill}
           setSelectedItem={setSelectedItem}
           onClick={setClicked}
           clicked={clicked}

@@ -5,15 +5,15 @@ import { ItemEquipmentInformation } from "./equipment/ItemEquipmentInformation";
 export const Equipment = ({ result }) => {
   return (
     <Container>
-      {result && result.getItemEquipment && (
+      {result && result.getCombinedData.getItemEquipment && (
         <ItemEquipmentInformation
           EquipData={{
-            ...result.getItemEquipment,
-            getSetEffect: result.getSetEffect,
-            getSymbol: result.getSymbolEquipment,
-            getCashItemEquipment: result.getCashItemEquipment,
-            getPetEquipment: result.getPetEquipment,
-            getAndroidEquipment: result.getAndroidEquipment,
+            ...result.getCombinedData.getItemEquipment,
+            getSetEffect: result.getCombinedData.getSetEffect,
+            getSymbol: result.getCombinedData.getSymbolEquipment,
+            getCashItemEquipment: result.getCombinedData.getCashItemEquipment,
+            getPetEquipment: result.getCombinedData.getPetEquipment,
+            getAndroidEquipment: result.getCombinedData.getAndroidEquipment,
           }}
         />
       )}
