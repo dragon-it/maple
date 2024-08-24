@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
-import { dark, light } from "../components/theme/Theme";
+import { dark, light } from "../components/theme/Theme.js";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  // 로컬 스토리지에서 현재 테마 상태를 읽어와서 초기값으로 설정합니다.
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light"; // 수정된 부분
   });
