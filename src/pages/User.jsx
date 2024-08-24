@@ -22,6 +22,7 @@ export const User = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
@@ -198,5 +199,5 @@ const ErrorWrap = styled.div`
 const FooterWrap = styled.div`
   bottom: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 9;
 `;

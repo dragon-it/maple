@@ -15,8 +15,6 @@ export default async function handler(req, res) {
 
   try {
     const data = await callMapleStoryAPI("id", { character_name });
-    console.log("API Response:", data);
-    console.log("API Response:", character_name);
     if (!data || !data.ocid) {
       return res
         .status(500)
