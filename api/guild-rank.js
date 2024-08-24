@@ -27,29 +27,28 @@ const getFormattedDate = () => {
 const getGuildRanking = async (guildName, worldName) => {
   const date = getFormattedDate();
 
-  // 주간 명성치 랭킹
-  const resultFameRanking = await callMapleStoryAPI("ranking/guild", {
-    date,
-    ranking_type: 0,
-    guild_name: guildName,
-    world_name: worldName,
-  });
-
-  // 플래그 랭킹
-  const resultFlagRanking = await callMapleStoryAPI("ranking/guild", {
-    date,
-    ranking_type: 1,
-    guild_name: guildName,
-    world_name: worldName,
-  });
-
-  // 수로 랭킹
-  const resultSuroRanking = await callMapleStoryAPI("ranking/guild", {
-    date,
-    ranking_type: 2,
-    guild_name: guildName,
-    world_name: worldName,
-  });
+  // 병렬로 랭킹 데이터 가져오기
+  const [resultFameRanking, resultFlagRanking, resultSuroRanking] =
+    await Promise.all([
+      callMapleStoryAPI("ranking/guild", {
+        date,
+        ranking_type: 0,
+        guild_name: guildName,
+        world_name: worldName,
+      }),
+      callMapleStoryAPI("ranking/guild", {
+        date,
+        ranking_type: 1,
+        guild_name: guildName,
+        world_name: worldName,
+      }),
+      callMapleStoryAPI("ranking/guild", {
+        date,
+        ranking_type: 2,
+        guild_name: guildName,
+        world_name: worldName,
+      }),
+    ]);
 
   return {
     FameRanking: resultFameRanking,

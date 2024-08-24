@@ -87,9 +87,11 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
       setLoading(true);
       const ocid = await getOcid(characterName);
       if (ocid) {
-        const apiResults = await Promise.all(
-          apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
+        const apiPromises = apiFunctions.map(({ function: apiFunction }) =>
+          apiFunction(ocid)
         );
+
+        const apiResults = await Promise.all(apiPromises);
 
         const resultObject = {};
         apiFunctions.forEach(({ name }, index) => {
@@ -103,16 +105,25 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
         const { character_guild_name, world_name } =
           resultObject.getCombinedData.getBasicInformation;
 
-        const oguildId = await getOguildId(character_guild_name, world_name);
+        // 병렬로 실행할 Promise 배열 생성
+        const promises = [
+          getOguildId(character_guild_name, world_name), // 길드 ID 가져오기
+        ];
 
-        const guildBasicInformation = await getGuildBasicInformation(
-          oguildId.oguild_id
-        );
+        let oguildId, guildBasicInformation, guildRankInformation;
 
-        const guildRankInformation = await getGuildRanking(
-          character_guild_name,
-          world_name
-        );
+        try {
+          // 길드 정보와 랭킹 정보도 병렬로 처리
+          [oguildId] = await Promise.all(promises);
+
+          // 길드 기본 정보와 랭킹 정보 병렬 호출
+          [guildBasicInformation, guildRankInformation] = await Promise.all([
+            getGuildBasicInformation(oguildId.oguild_id),
+            getGuildRanking(character_guild_name, world_name),
+          ]);
+        } catch (error) {
+          throw new Error("길드 정보 또는 랭킹 정보를 가져오는 중 오류 발생");
+        }
 
         if (guildBasicInformation) {
           const { guild_member } = guildBasicInformation;
@@ -121,12 +132,10 @@ const fetchData = async (characterName, setResult, setLoading, setError) => {
           try {
             fetchedMembersData = await getGuildMembers(guild_member);
 
-            // 데이터 구조 확인 및 조정
             if (!Array.isArray(fetchedMembersData)) {
               throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
             }
 
-            // 길드 멤버 데이터가 빈 객체인 경우 처리
             fetchedMembersData = guild_member.map((member, index) => {
               const memberData = fetchedMembersData[index] || {};
               return {

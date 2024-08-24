@@ -44,10 +44,13 @@ export default async function handler(req, res) {
     const delayMs = 100; // 각 배치 사이 지연 시간
     const membersData = [];
 
+    // 모든 배치에 대해 병렬 처리
+    const batchPromises = [];
+
     for (let i = 0; i < guildMembers.length; i += batchSize) {
       const batch = guildMembers.slice(i, i + batchSize);
 
-      const batchData = await Promise.all(
+      const batchPromise = Promise.all(
         batch.map(async (member) => {
           try {
             const ocidData = await callMapleStoryAPI("id", {
@@ -86,12 +89,19 @@ export default async function handler(req, res) {
         })
       );
 
-      membersData.push(...batchData);
+      batchPromises.push(batchPromise);
 
-      if (i + batchSize < guildMembers.length) {
-        await delay(delayMs); // 배치 사이의 지연 시간 추가
-      }
+      // 배치 사이의 지연 시간을 추가하지만 병렬성을 유지하기 위해 promise를 사용
+      await delay(delayMs);
     }
+
+    // 모든 배치 완료를 기다림
+    const allBatchData = await Promise.all(batchPromises);
+
+    // 모든 배치 데이터를 합침
+    allBatchData.forEach((batchData) => {
+      membersData.push(...batchData);
+    });
 
     res.json(membersData);
   } catch (error) {
