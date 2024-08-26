@@ -6,9 +6,6 @@ import suro_icon from "../../../assets/guild/ranking/Suro_ranking_icon.svg";
 import { useNavigate } from "react-router-dom";
 
 export const GuildInformation = ({ result }) => {
-  // 구조 분해 할당 & 기본값 설정
-  console.log(result);
-
   const navigate = useNavigate();
 
   const handleMasterInfoPortal = (characterName) => {
