@@ -170,7 +170,7 @@ const SubjectItems = styled.div`
     background-color: rgb(106, 214, 241);
     color: white;
     font-weight: 700;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
   }
 `;
@@ -214,7 +214,7 @@ const PropensityName = styled.div`
     background-color: rgb(106, 214, 241);
     color: white;
     font-weight: 700;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
   }
