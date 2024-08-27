@@ -248,7 +248,7 @@ const ToggleBtn = styled.div`
   border-radius: 5px;
   padding: 3px 4px;
   &:hover {
-    background-color: rgb(17, 119, 136);
+    background-color: rgb(19, 130, 149);
   }
 `;
 
