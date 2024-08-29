@@ -46,7 +46,7 @@ export const SundayMaple = () => {
     const fetchNoticeAndDetail = async () => {
       if (notice && notice.event_notice) {
         const sundayMapleNotices = notice.event_notice.filter(
-          (item) => item.title === "고브의 선물"
+          (item) => item.title === "썬데이 메이플"
         );
 
         if (sundayMapleNotices.length > 0) {
