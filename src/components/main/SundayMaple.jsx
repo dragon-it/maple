@@ -10,6 +10,7 @@ export const SundayMaple = () => {
   const [notice, setNotice] = useState(null);
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     const skipWeek = localStorage.getItem("skipWeek");
@@ -83,11 +84,14 @@ export const SundayMaple = () => {
     return desiredContent ? desiredContent.outerHTML : "";
   };
 
-  const handleSkipWeek = () => {
-    const skipUntil = new Date();
-    skipUntil.setDate(skipUntil.getDate() + 4); // 4일동안 보지 않기
-    localStorage.setItem("skipWeek", skipUntil.toISOString());
-    setIsVisible(false);
+  const handleSkipDay = () => {
+    setIsChecked(!isChecked);
+    if (!isChecked) {
+      const skipUntil = new Date();
+      skipUntil.setDate(skipUntil.getDate() + 1); // 하루동안 보지 않기
+      localStorage.setItem("skipDay", skipUntil.toISOString());
+      setIsVisible(false);
+    }
   };
 
   const scrollToTop = () => {
@@ -107,9 +111,16 @@ export const SundayMaple = () => {
       {desiredHtmlContent && (
         <ContentsWrap>
           <ButtonWrap>
-            <SkipWeekButton onClick={handleSkipWeek}>
-              이번 주 보지 않기
-            </SkipWeekButton>
+            <SkipWeekCheckboxWrapper>
+              <input
+                type="checkbox"
+                id="skip-week-checkbox"
+                checked={isChecked}
+                onChange={handleSkipDay}
+              />
+              <label for="skip-week-checkbox">오늘 하루 보지 않기</label>
+            </SkipWeekCheckboxWrapper>
+
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
@@ -169,7 +180,7 @@ const ButtonWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: end;
-  gap: 10px;
+  gap: 15px;
   margin: 0 5px 5px 0;
 `;
 
@@ -187,22 +198,18 @@ const CloseButton = styled.button`
   }
 `;
 
-const SkipWeekButton = styled.button`
-  position: relative;
+const SkipWeekCheckboxWrapper = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.35);
-  padding: 2px;
+  font-family: maple-light;
   color: #ffffff;
-  width: fit-content;
-  height: 25px;
-  border-radius: 7px;
-  font-size: 13px;
-  cursor: pointer;
 
-  &:hover {
-    background-color: rgb(136, 136, 136);
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
   }
 `;
 
