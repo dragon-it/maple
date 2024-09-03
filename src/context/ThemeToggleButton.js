@@ -21,8 +21,11 @@ function ThemeToggleButton() {
 }
 
 const ToggleWrapper = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  z-index: 99999999 !important;
   bottom: 24px;
   right: 24px;
   background-color: ${({ theme }) => theme.toggleBgColor};
@@ -33,14 +36,15 @@ const ToggleWrapper = styled.button`
   height: 48px;
   border-radius: 30px;
   cursor: pointer;
+  z-index: 99999999 !important;
 
   @media screen and (max-width: 768px) {
     position: relative;
     width: 32px;
     height: 32px;
-    left: 0;
     background-color: transparent;
     border: none;
+    bottom: 0;
   }
 `;
 
