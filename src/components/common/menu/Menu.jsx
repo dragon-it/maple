@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import hamburger_bar_dark from "../../../assets/menu/hamburger_dark.svg";
 import hamburger_bar_light from "../../../assets/menu/hamburger_light.svg";
+import close_Btn from "../../../assets/menu/Close_Btn.svg";
 import { useTheme } from "../../../context/ThemeProvider";
 
 export const Menu = () => {
@@ -23,7 +24,11 @@ export const Menu = () => {
       </Container>
       <MenuContainer isClicked={isClicked}>
         <p>Menu</p>
-        <MenuCloseBtn onClick={handleClicked}></MenuCloseBtn>
+        <MenuCloseBtn
+          onClick={handleClicked}
+          src={close_Btn}
+          alt="close_Button"
+        ></MenuCloseBtn>
       </MenuContainer>
     </>
   );
@@ -64,4 +69,20 @@ const MenuContainer = styled.div`
     isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
 `;
 
-const MenuCloseBtn = styled.button``;
+const MenuCloseBtn = styled.img`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  right: 24px;
+  top: 24px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(56, 56, 56, 0.65);
+  }
+`;
