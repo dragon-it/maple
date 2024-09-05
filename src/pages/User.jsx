@@ -9,7 +9,7 @@ import fetchData from "../api/fetchData";
 import loadingImg from "../assets/loading.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
-import { Footer } from "../components/common/Footer";
+import { Footer } from "../components/common/footer/Footer";
 import { Guild } from "../components/user/Guild";
 
 export const User = () => {
