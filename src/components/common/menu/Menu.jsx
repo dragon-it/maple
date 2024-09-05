@@ -44,7 +44,9 @@ const HamburgerImg = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  width: 40px;
+  height: 40px;
+  padding: 5px;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.15);
@@ -74,15 +76,17 @@ const MenuCloseBtn = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  width: 35px;
+  height: 35px;
+  padding: 5px;
   right: 24px;
   top: 24px;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(129, 129, 129, 0.15);
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(56, 56, 56, 0.65);
+    background-color: rgba(201, 201, 201, 0.65);
   }
 `;
