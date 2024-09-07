@@ -6,7 +6,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import serchIcon_big from "../../assets/SearchIcon_big.svg";
 import serchIcon_small from "../../assets/SearchIcon_small.svg";
 import ThemeToggleButton from "../../context/ThemeToggleButton";
-import { Menu } from "../common/menu/Menu";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리
@@ -61,7 +60,6 @@ export const Search = ({ error }) => {
             />
           </StyledButton>
         </InputWrap>
-        <Menu />
       </InputContainer>
       <ThemeToggleWrap>
         <ThemeToggleButton />

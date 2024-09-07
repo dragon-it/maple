@@ -35,9 +35,14 @@ export const Menu = () => {
 };
 
 const Container = styled.div`
+  display: none;
   position: absolute;
   right: 24px;
   top: 24px;
+
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
 `;
 
 const HamburgerImg = styled.img`
