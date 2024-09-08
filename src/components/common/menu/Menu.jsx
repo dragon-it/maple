@@ -39,6 +39,7 @@ const Container = styled.div`
   position: absolute;
   right: 24px;
   top: 24px;
+  z-index: 9999999;
 
   @media screen and (max-width: 767px) {
     display: block;
@@ -74,6 +75,8 @@ const MenuContainer = styled.div`
   padding: 20px;
   box-shadow: ${({ isClicked }) =>
     isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
+
+  z-index: 9999999;
 `;
 
 const MenuCloseBtn = styled.img`
