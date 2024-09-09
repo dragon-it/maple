@@ -222,7 +222,7 @@ const GuildWorldGroup = styled.div`
 
 const Level = styled.div`
   text-align: center;
-  background-color: rgb(154, 163, 172);
+  background-color: rgba(202, 204, 206, 0.9);
   padding: 3px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px;
@@ -257,14 +257,14 @@ const Experience = styled.div`
   align-items: center;
   background-color: rgb(170, 204, 0);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  font-size: 13px;
-  padding: 4px;
+  font-size: 11px;
+  padding: 1px;
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
 `;
 
 const Job = styled.div`
-  background-color: rgb(154, 163, 172);
+  background-color: rgba(202, 204, 206, 0.9);
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   width: 110px;
@@ -280,7 +280,7 @@ const Job = styled.div`
 `;
 
 const Contents = styled.div`
-  background-color: rgb(202, 204, 206);
+  background-color: rgba(202, 204, 206, 0.8);
   width: 110px;
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
