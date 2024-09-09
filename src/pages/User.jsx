@@ -158,7 +158,7 @@ const Tab = styled.div`
 
   &:hover {
     background-color: ${({ theme, active }) =>
-      active ? theme.tabNotHoverColor : theme.tabHoverColor};
+      active ? "transparents" : theme.tabHoverColor};
   }
 
   @media screen and (max-width: 576px) {
