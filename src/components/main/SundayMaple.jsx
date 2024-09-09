@@ -214,9 +214,9 @@ const ScrollTopButton = styled.div`
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
-    right: 1px;
-    width: 25px;
-    height: 25px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
   }
 `;
 
@@ -225,7 +225,7 @@ const ToTopIcon = styled.img`
   height: 32px;
 
   @media screen and (max-width: 768px) {
-    width: 16px;
-    height: 16px;
+    width: 25px;
+    height: 25px;
   }
 `;

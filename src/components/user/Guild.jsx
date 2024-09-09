@@ -158,14 +158,15 @@ const Tab = styled.span`
   justify-content: center;
   align-items: center;
   background-color: ${(props) =>
-    props.active ? "rgb(17, 119, 136)" : "rgb(85, 85, 85)"};
+    props.active ? "rgb(19, 130, 149)" : "rgb(85, 85, 85)"};
   cursor: pointer;
   border-radius: 3px;
   min-height: 25px;
   font-size: 15px;
   font-family: maple-light;
   &:hover {
-    background-color: rgb(117, 117, 117);
+    background-color: ${(props) =>
+      props.active ? "transparents" : "rgb(117, 117, 117)"};
   }
 
   @media screen and (max-width: 768px) {
