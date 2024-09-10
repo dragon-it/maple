@@ -22,12 +22,12 @@ export const BackgroundImage = () => {
 };
 
 const Container = styled.div`
-  position: fixed;
+  position: absolute;
 
   img {
     display: block;
     object-fit: cover;
-    width: 100vw;
+    width: 100%;
     height: auto;
     min-height: 100vh;
   }
