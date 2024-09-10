@@ -10,6 +10,7 @@ export const SundayMaple = () => {
   const [notice, setNotice] = useState(null);
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     const skipWeek = localStorage.getItem("skipWeek");
@@ -24,7 +25,11 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNotice = async () => {
       try {
-        const response = await axios.get("/notice-event");
+        const response = await axios.get("/api/notice-event", {
+          headers: {
+            "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
+          },
+        });
         if (response.status === 200) {
           setNotice(response.data);
         } else {
@@ -39,31 +44,35 @@ export const SundayMaple = () => {
   }, []);
 
   useEffect(() => {
-    if (notice && notice.event_notice) {
-      const sundayMapleNotices = notice.event_notice.filter(
-        (item) => item.title === "썬데이 메이플"
-      );
+    const fetchNoticeAndDetail = async () => {
+      if (notice && notice.event_notice) {
+        const sundayMapleNotices = notice.event_notice.filter(
+          (item) => item.title === "썬데이 메이플"
+        );
 
-      if (sundayMapleNotices.length > 0) {
-        const sundayMapleNoticeId = Number(sundayMapleNotices[0].notice_id);
+        if (sundayMapleNotices.length > 0) {
+          const sundayMapleNoticeId = Number(sundayMapleNotices[0].notice_id);
 
-        const fetchNoticeDetail = async () => {
           try {
-            const response = await axios.get("/notice-event/detail", {
-              params: { notice_id: sundayMapleNoticeId },
-            });
-            if (response.status === 200) {
-              setSundayMapleNoticeDetail(response.data);
+            const [noticeDetailResponse] = await Promise.all([
+              axios.get("/api/notice-event/detail", {
+                params: { notice_id: sundayMapleNoticeId },
+              }),
+            ]);
+
+            if (noticeDetailResponse.status === 200) {
+              setSundayMapleNoticeDetail(noticeDetailResponse.data);
             } else {
               console.error("Failed to fetch notice detail data");
             }
           } catch (error) {
             console.error("Error fetching notice detail data:", error.message);
           }
-        };
-        fetchNoticeDetail();
+        }
       }
-    }
+    };
+
+    fetchNoticeAndDetail();
   }, [notice]);
 
   const extractDesiredContent = (htmlString) => {
@@ -75,21 +84,21 @@ export const SundayMaple = () => {
     return desiredContent ? desiredContent.outerHTML : "";
   };
 
-  // 이버ㄴ 주 보지 않기
-  const handleSkipWeek = () => {
-    const skipUntil = new Date();
-    skipUntil.setDate(skipUntil.getDate() + 4); // 4일동안 보지 않기
-    localStorage.setItem("skipWeek", skipUntil.toISOString());
-    setIsVisible(false);
+  const handleSkipDay = () => {
+    setIsChecked(!isChecked);
+    if (!isChecked) {
+      const skipUntil = new Date();
+      skipUntil.setDate(skipUntil.getDate() + 1); // 하루동안 보지 않기
+      localStorage.setItem("skipDay", skipUntil.toISOString());
+      setIsVisible(false);
+    }
   };
 
-  // 화면 최상단 이동
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (!notice || !notice.event_notice || !isVisible) {
-    // isVisible 상태에 따라 렌더링 여부 결정
     return null;
   }
 
@@ -102,9 +111,16 @@ export const SundayMaple = () => {
       {desiredHtmlContent && (
         <ContentsWrap>
           <ButtonWrap>
-            <SkipWeekButton onClick={handleSkipWeek}>
-              이번 주 보지 않기
-            </SkipWeekButton>
+            <SkipWeekCheckboxWrapper>
+              <input
+                type="checkbox"
+                id="skip-week-checkbox"
+                checked={isChecked}
+                onChange={handleSkipDay}
+              />
+              <label for="skip-week-checkbox">오늘 하루 보지 않기</label>
+            </SkipWeekCheckboxWrapper>
+
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
@@ -164,7 +180,7 @@ const ButtonWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: end;
-  gap: 10px;
+  gap: 15px;
   margin: 0 5px 5px 0;
 `;
 
@@ -182,19 +198,18 @@ const CloseButton = styled.button`
   }
 `;
 
-const SkipWeekButton = styled.button`
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.35);
-  padding: 2px;
+const SkipWeekCheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  font-family: maple-light;
   color: #ffffff;
-  width: fit-content;
-  height: 25px;
-  border-radius: 7px;
-  font-size: 13px;
-  cursor: pointer;
 
-  &:hover {
-    background-color: rgb(136, 136, 136);
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
   }
 `;
 
