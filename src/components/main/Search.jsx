@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Logo } from "./Logo";
 import { useNavigate, useLocation } from "react-router-dom";
-import ThemeToggleButton from "../../context/ThemeToggleButton";
+
 import serchIcon_big from "../../assets/SearchIcon_big.svg";
 import serchIcon_small from "../../assets/SearchIcon_small.svg";
+import ThemeToggleButton from "../../context/ThemeToggleButton";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리
@@ -73,7 +74,8 @@ const InputContainer = styled.form`
   justify-content: center;
   width: 100%;
   gap: 5px;
-  z-index: ${({ isUserRoute }) => (isUserRoute ? "1" : "99999999999")};
+  z-index: ${({ isUserRoute }) => (isUserRoute ? "1" : "99999")};
+
   @media screen and (max-width: 1024px) {
     flex-direction: column;
   }

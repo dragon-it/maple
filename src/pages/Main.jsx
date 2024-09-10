@@ -1,7 +1,7 @@
 import React from "react";
 import { Search } from "../components/main/Search";
 import styled from "styled-components";
-import { Footer } from "../components/common/Footer";
+import { Footer } from "../components/common/footer/Footer";
 import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
 
@@ -10,10 +10,10 @@ export const Main = () => {
     <Container>
       <SearchWrap>
         <Search />
-        <FavoriteWrap>
-          <Favorite />
-        </FavoriteWrap>
       </SearchWrap>
+      <FavoriteWrap>
+        <Favorite />
+      </FavoriteWrap>
       <SundayMaple />
       <Footer />
     </Container>
@@ -40,10 +40,12 @@ const SearchWrap = styled.div`
 
 const FavoriteWrap = styled.div`
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   top: 110px;
   height: auto;
-  background-color: rgba(0, 0, 0, 0.53);
-  border-radius: 5px;
   z-index: 50;
   @media screen and (max-width: 768px) {
     top: 130px;
