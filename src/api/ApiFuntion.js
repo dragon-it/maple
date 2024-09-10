@@ -1,4 +1,4 @@
-import { getCombinedData } from "./api";
+import { getCombinedData } from "./api.js";
 
 const apiFunctions = [{ name: "getCombinedData", function: getCombinedData }];
 

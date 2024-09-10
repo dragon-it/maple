@@ -41,4 +41,8 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 효과 제거 */
     }
   }
+
+  * {
+  -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 효과 제거 */
+}
 `;

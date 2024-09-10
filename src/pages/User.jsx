@@ -9,7 +9,7 @@ import fetchData from "../api/fetchData";
 import loadingImg from "../assets/loading.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
-import { Footer } from "../components/common/Footer";
+import { Footer } from "../components/common/footer/Footer";
 import { Guild } from "../components/user/Guild";
 
 export const User = () => {
@@ -22,6 +22,7 @@ export const User = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
@@ -198,5 +199,5 @@ const ErrorWrap = styled.div`
 const FooterWrap = styled.div`
   bottom: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 9;
 `;
