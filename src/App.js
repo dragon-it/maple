@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider.js";
 import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
-import { Header } from "./components/common/header/Header.jsx";
+// import { Header } from "./components/common/header/Header.jsx";
 
 const UserContainer = styled.div`
   width: 100%;
