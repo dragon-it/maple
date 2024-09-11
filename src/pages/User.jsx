@@ -6,13 +6,16 @@ import { Equipment } from "../components/user/Equipment";
 import { Skill } from "../components/user/Skill";
 import { useParams } from "react-router-dom";
 import fetchData from "../api/fetchData";
-import loadingImg from "../assets/loading.gif";
+import loadingImg_light from "../assets/loading.gif";
+import loadingImg_dark from "../assets/loading2.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Footer } from "../components/common/footer/Footer";
 import { Guild } from "../components/user/Guild";
+import { useTheme } from "../context/ThemeProvider";
 
 export const User = () => {
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -39,7 +42,10 @@ export const User = () => {
     <>
       {loading ? (
         <LoadingWrap>
-          <img src={loadingImg} alt="로딩 중..." />
+          <img
+            src={theme === "dark" ? loadingImg_dark : loadingImg_light}
+            alt="로딩 중..."
+          />
         </LoadingWrap>
       ) : error ? (
         <ErrorWrap>
@@ -174,6 +180,10 @@ const LoadingWrap = styled.div`
   width: 100%;
   height: 100%;
   z-index: 999;
+
+  img {
+    width: 100px;
+  }
 
   @media screen and (max-width: 1024px) {
     img {
