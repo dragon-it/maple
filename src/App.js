@@ -33,7 +33,7 @@ function App() {
     <ThemeProvider>
       <GlobalStyle />
       <Container>
-        <Header />
+        {/* <Header /> */}
         <Router>
           <Routes>
             <Route path="/" element={<Main />} />
