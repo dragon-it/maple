@@ -13,7 +13,6 @@ const cors = require("cors");
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
 const BASE_URL = "https://open.api.nexon.com";
 
 app.use(express.json());
@@ -396,8 +395,4 @@ app.get("/api/character/information", async (req, res) => {
     console.error("Combined API error:", error.message);
     res.status(500).json({ error: "Failed to fetch combined data" });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Proxy server is running on port ${PORT}`);
 });
