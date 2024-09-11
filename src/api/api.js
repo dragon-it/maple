@@ -9,7 +9,7 @@ import axios from "axios";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.post(`/api/${endpoint}`, params);
+    const response = await axios.get(`/api/${endpoint}`, { params });
     if (response.status === 200) {
       return response.data;
     } else {
@@ -70,7 +70,9 @@ const getGuildMembers = async (guildMembers) => {
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
   try {
-    const response = await axios.post(`/api/character/information`, { ocid });
+    const response = await axios.get(`/api/character/information`, {
+      params: { ocid },
+    });
 
     if (response.status === 200) {
       return response.data;
