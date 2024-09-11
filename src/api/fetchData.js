@@ -8,29 +8,33 @@ import {
 import apiFunctions from "./ApiFuntion";
 
 const getAllCaseCombinations = (str) => {
-  if (str.length === 0) return [""];
-  const firstChar = str[0];
-  const rest = getAllCaseCombinations(str.slice(1));
+  if (str.length === 0) return [""]; // 문자열이 빈 경우, 빈 문자열 배열 반환
 
-  const combinations = [];
+  const firstChar = str[0]; // 문자열의 첫 번째 문자
+  const rest = getAllCaseCombinations(str.slice(1)); // 첫 번째 문자를 제외한 나머지 문자열의 조합을 재귀적으로 계산
+
+  const combinations = []; // 조합을 저장할 배열
   for (let sub of rest) {
-    combinations.push(firstChar.toLowerCase() + sub);
-    combinations.push(firstChar.toUpperCase() + sub);
+    // 나머지 문자열의 조합을 순회
+    combinations.push(firstChar.toLowerCase() + sub); // 첫 번째 문자를 소문자로 결합한 조합 추가
+    combinations.push(firstChar.toUpperCase() + sub); // 첫 번째 문자를 대문자로 결합한 조합 추가
   }
-  return combinations;
+  return combinations; // 모든 조합을 반환
 };
 
+// 캐릭터 OCID 함수
 const getOcid = async (characterName) => {
   try {
-    const isKorean = /^[가-힣]+$/.test(characterName);
+    const isKorean = /^[가-힣]+$/.test(characterName); // 한글인지 확인
     const combinations = isKorean
       ? [characterName]
-      : getAllCaseCombinations(characterName);
+      : getAllCaseCombinations(characterName); // 한글이면 조합 생성 생략
 
+    // 1. 입력한 이름 그대로 먼저 시도
     try {
-      const ocidData = await getOcidApi(characterName);
+      const ocidData = await getOcidApi(characterName); // OCID API 호출
       if (ocidData) {
-        return ocidData.ocid;
+        return ocidData.ocid; // OCID 반환
       }
     } catch (error) {
       console.log(
@@ -38,21 +42,22 @@ const getOcid = async (characterName) => {
       );
     }
 
+    // 2. 대소문자 조합 시도
     for (let name of combinations) {
       try {
-        const ocidData = await getOcidApi(name);
+        const ocidData = await getOcidApi(name); // OCID API 호출
         if (ocidData) {
-          return ocidData.ocid;
+          return ocidData.ocid; // OCID 반환
         }
       } catch (error) {
-        continue;
+        continue; // 오류 발생 시 다음 조합으로 넘어감
       }
     }
 
-    return null;
+    return null; // 모든 조합을 시도한 후에도 OCID를 찾지 못한 경우 null 반환
   } catch (error) {
     console.error(`getOcid error: ${error.message}`);
-    return null;
+    return null; // 예기치 않은 오류 발생 시 null 반환
   }
 };
 
