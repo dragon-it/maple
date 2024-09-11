@@ -113,7 +113,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 90px;
+    margin-top: 100px;
   }
 `;
 
@@ -135,13 +135,13 @@ const SearchWrap = styled.div`
 
   @media screen and (max-width: 1024px) {
     position: absolute;
-    top: -100px;
+    top: -110px;
     left: 0;
     width: 100%;
+    margin-bottom: 10px;
   }
 
   @media screen and (max-width: 576px) {
-    top: -100px;
   }
 `;
 
