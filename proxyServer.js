@@ -233,10 +233,9 @@ app.post("/api/ranking/guild", async (req, res) => {
   }
 });
 
-// 지연 함수
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// 딜레이를 위한 sleep 함수
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// 길드 멤버 정보
 app.post("/api/guild/members", async (req, res) => {
   try {
     const { guildMembers } = req.body;
@@ -246,15 +245,17 @@ app.post("/api/guild/members", async (req, res) => {
     }
 
     const batchSize = 40; // 한 번에 처리할 멤버 수
-    const delayMs = 100; // 각 배치 사이 지연 시간
     const membersData = [];
 
     for (let i = 0; i < guildMembers.length; i += batchSize) {
       const batch = guildMembers.slice(i, i + batchSize);
 
       const batchData = await Promise.all(
-        batch.map(async (member) => {
+        batch.map(async (member, index) => {
           try {
+            // API 요청 전에 지연 추가 (예: 10ms 딜레이)
+            await sleep(10 * index);
+
             const ocidData = await callMapleStoryAPI("id", {
               character_name: member,
             });
@@ -292,10 +293,6 @@ app.post("/api/guild/members", async (req, res) => {
       );
 
       membersData.push(...batchData);
-
-      if (i + batchSize < guildMembers.length) {
-        await delay(delayMs); // 배치 사이의 지연 시간 추가
-      }
     }
 
     res.json(membersData);
