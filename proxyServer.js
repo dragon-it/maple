@@ -84,8 +84,8 @@ app.get("/notice-event/detail", async (req, res) => {
 });
 
 // 캐릭터 OCID API
-app.post("/api/ocid", async (req, res) => {
-  const { character_name } = req.body;
+app.get("/api/ocid", async (req, res) => {
+  const { character_name } = req.query;
 
   if (!character_name) {
     return res.status(400).json({ error: "character_name is required" });
@@ -108,8 +108,8 @@ app.post("/api/ocid", async (req, res) => {
 });
 
 // 길드 oguildId 취득
-app.post("/api/guild/id", async (req, res) => {
-  const { guild_name: guildName, world_name: worldName } = req.body;
+app.get("/api/guild/id", async (req, res) => {
+  const { guild_name: guildName, world_name: worldName } = req.query;
   if (!guildName || !worldName) {
     return res
       .status(400)
@@ -131,8 +131,8 @@ app.post("/api/guild/id", async (req, res) => {
 });
 
 // 길드 정보
-app.post("/api/guild/basic", async (req, res) => {
-  const { oguild_id } = req.body;
+app.get("/api/guild/basic", async (req, res) => {
+  const { oguild_id } = req.query;
 
   if (!oguild_id) {
     return res.status(400).json({ error: "oguild is required" });
@@ -210,8 +210,8 @@ const getGuildRanking = async (guildName, worldName) => {
 };
 
 // 길드 랭킹 엔드포인트 추가
-app.post("/api/ranking/guild", async (req, res) => {
-  const { guild_name: guildName, world_name: worldName } = req.body;
+app.get("/api/ranking/guild", async (req, res) => {
+  const { guild_name: guildName, world_name: worldName } = req.query;
 
   if (!guildName || !worldName) {
     return res
@@ -236,9 +236,9 @@ app.post("/api/ranking/guild", async (req, res) => {
 // 딜레이를 위한 sleep 함수
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-app.post("/api/guild/members", async (req, res) => {
+app.get("/api/guild/members", async (req, res) => {
   try {
-    const { guildMembers } = req.body;
+    const { guildMembers } = req.query;
 
     if (!Array.isArray(guildMembers)) {
       return res.status(400).json({ error: "Invalid data format" });
@@ -303,8 +303,8 @@ app.post("/api/guild/members", async (req, res) => {
 });
 
 // Combined 엔드포인트
-app.post("/api/character/information", async (req, res) => {
-  const { ocid } = req.body;
+app.get("/api/character/information", async (req, res) => {
+  const { ocid } = req.query;
 
   if (!ocid) {
     return res.status(400).json({ error: "ocid is required" });
