@@ -1,12 +1,19 @@
 const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
+app.listen(3001, () => console.log("Server ready on port 3001."));
+
+module.exports = app;
+
 const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const BASE_URL = "https://open.api.nexon.com";
 
 app.use(express.json());
