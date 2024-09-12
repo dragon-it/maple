@@ -20,8 +20,8 @@
     "web-vitals": "^4.2.1"
   },
   "scripts": {
-    "start": "node api/index.js",
-    "dev": "concurrently \"node api/index.js\" \"react-scripts start\"",
+    "start": "node proxyServer.js",
+    "dev": "concurrently \"node proxyServer.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,5 +51,5 @@
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3001"
 }
