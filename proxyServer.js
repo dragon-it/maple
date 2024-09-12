@@ -9,8 +9,20 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const BASE_URL = "https://open.api.nexon.com";
 
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
+
 app.use(express.json());
 app.use(cors());
+
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
 
 /**
  * MapleStory API를 호출하는 함수
