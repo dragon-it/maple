@@ -25,7 +25,7 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNotice = async () => {
       try {
-        const response = await axios.get("notice-event", {
+        const response = await axios.get("/notice-event", {
           headers: {
             "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
           },
