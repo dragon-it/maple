@@ -13,21 +13,6 @@ const BASE_URL = "https://open.api.nexon.com";
 app.use(express.json());
 app.use(cors());
 
-// 빌드된 정적 파일을 서빙하는 미들웨어 설정
-app.use(express.static(path.join(__dirname, "build")));
-
-// API가 아닌 모든 요청을 빌드된 index.html로 리다이렉트
-app.get("*", (req, res) => {
-  if (!req.url.startsWith("/api")) {
-    // API 경로가 아닌 경우에만 index.html을 리턴
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
 /**
  * MapleStory API를 호출하는 함수
  * @param {string} endpoint - API의 엔드포인트
@@ -405,4 +390,19 @@ app.get("/api/character/information", async (req, res) => {
     console.error("Combined API error:", error.message);
     res.status(500).json({ error: "Failed to fetch combined data" });
   }
+});
+
+// 빌드된 정적 파일을 서빙하는 미들웨어 설정
+app.use(express.static(path.join(__dirname, "build")));
+
+// API가 아닌 모든 요청을 빌드된 index.html로 리다이렉트
+app.get("*", (req, res) => {
+  if (!req.url.startsWith("/api")) {
+    // API 경로가 아닌 경우에만 index.html을 리턴
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
