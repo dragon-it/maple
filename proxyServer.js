@@ -2,6 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path");
 
 dotenv.config();
 
@@ -11,6 +12,14 @@ const BASE_URL = "https://open.api.nexon.com";
 
 app.use(express.json());
 app.use(cors());
+
+// 빌드된 정적 파일을 서빙하는 미들웨어 설정
+app.use(express.static(path.join(__dirname, "build")));
+
+// 모든 요청을 빌드된 index.html로 리다이렉트
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
