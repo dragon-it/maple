@@ -3,6 +3,7 @@ import { useTheme } from "./ThemeProvider.js";
 import styled from "styled-components";
 import dark_theme_icon from "../assets/themeIcons/dark_mode_icon.svg";
 import light_theme_icon from "../assets/themeIcons/light_mode_icon.svg";
+import { Menu } from "../components/common/menu/Menu.jsx";
 
 function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
@@ -15,6 +16,7 @@ function ThemeToggleButton() {
           alt="theme-icon"
         />
         <Text>{theme === "dark" ? "light" : "dark"}</Text>
+        <Menu />
       </ToggleWrapper>
     </>
   );
@@ -44,7 +46,7 @@ const ToggleWrapper = styled.button`
     height: 32px;
     background-color: transparent;
     border: none;
-    bottom: 0;
+    right: 0;
   }
 `;
 
