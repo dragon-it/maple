@@ -35,23 +35,23 @@ function App() {
       <GlobalStyle />
       <BackgroundImage />
       <Container>
-        <Header />
         <Router>
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route
-                path="/user/:characterName"
-                element={
-                  <UserContainer>
-                    <User />
-                  </UserContainer>
-                }
-              />
-              <Route
-                path="*"
-                element={<Error errorMessage="페이지를 찾을 수 없습니다." />}
-              />
-            </Routes>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route
+              path="/user/:characterName"
+              element={
+                <UserContainer>
+                  <User />
+                </UserContainer>
+              }
+            />
+            <Route
+              path="*"
+              element={<Error errorMessage="페이지를 찾을 수 없습니다." />}
+            />
+          </Routes>
         </Router>
       </Container>
     </ThemeProvider>
