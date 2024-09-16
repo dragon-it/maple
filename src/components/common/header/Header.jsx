@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import logo from "../../../assets/Component 39.svg"
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -16,21 +17,22 @@ export const Header = () => {
     <>
       <PcHeaderContainer>
         <HeaderLogo
-          src={"" || "default-logo.png"}
+          src={logo}
           alt="로고"
           onClick={() => navigate(routes.home)}
         />
 
         <ItemContainer>
-          <Items onClick={() => navigate(routes.home)}>캐릭터 검색</Items>
+          <Items onClick={() => navigate(routes.home)}><p>캐릭터 검색</p></Items>
           <Items onClick={() => navigate(routes.findCharacter)}>
-            본캐 찾기
+            <p>본캐 찾기</p>
           </Items>
-          <Items onClick={() => navigate(routes.searchGuild)}>길드 검색</Items>
+          <Items onClick={() => navigate(routes.searchGuild)}><p>길드 검색</p></Items>
           <Items onClick={() => navigate(routes.sundayMaple)}>
-            썬데이 메이플
+            <p>썬데이 메이플</p>
           </Items>
         </ItemContainer>
+        <SpaceField></SpaceField>
       </PcHeaderContainer>
     </>
   );
@@ -40,11 +42,13 @@ const PcHeaderContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  gap: 50px;
   padding: 0 20px;
   width: 100%;
   min-height: 40px;
   font-family: maple-light;
   background: ${({ theme }) => theme.headerBgColor};
+  white-space: nowrap;
 
   @media screen and (max-width: 767px) {
     display: none;
@@ -52,6 +56,8 @@ const PcHeaderContainer = styled.div`
 `;
 
 const HeaderLogo = styled.img`
+    width: 62px;
+    height: 57px;
   cursor: pointer;
 `;
 
@@ -60,16 +66,29 @@ const ItemContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 5px;
   flex: 1 1;
   height: 50px;
 `;
+
 const Items = styled.div`
+
   flex: 1 1;
   text-align: center;
-  cursor: pointer;
+  gap: 5px;
+
+  border-radius: 5px;
   padding: 10px;
-  transition: background-color 0.2s ease;
-  &:hover {
-    background-color: ${({ theme }) => theme.tabHoverColor};
-  }
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+    &:hover {
+      background-color: ${({ theme }) => theme.tabHoverColor};
+
+    }
+
 `;
+
+const SpaceField = styled.div`
+  flex: 1 1;
+  max-width: 400px;
+`
