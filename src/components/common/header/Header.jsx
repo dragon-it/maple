@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../../../assets/Component 39.svg"
+import logo from "../../../assets/Component 39.svg";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -23,11 +23,15 @@ export const Header = () => {
         />
 
         <ItemContainer>
-          <Items onClick={() => navigate(routes.home)}><p>캐릭터 검색</p></Items>
+          <Items onClick={() => navigate(routes.home)}>
+            <p>캐릭터 검색</p>
+          </Items>
           <Items onClick={() => navigate(routes.findCharacter)}>
             <p>본캐 찾기</p>
           </Items>
-          <Items onClick={() => navigate(routes.searchGuild)}><p>길드 검색</p></Items>
+          <Items onClick={() => navigate(routes.searchGuild)}>
+            <p>길드 검색</p>
+          </Items>
           <Items onClick={() => navigate(routes.sundayMaple)}>
             <p>썬데이 메이플</p>
           </Items>
@@ -56,8 +60,8 @@ const PcHeaderContainer = styled.div`
 `;
 
 const HeaderLogo = styled.img`
-    width: 62px;
-    height: 57px;
+  width: 62px;
+  height: 57px;
   cursor: pointer;
 `;
 
@@ -67,12 +71,11 @@ const ItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
-  flex: 1 1;
+
   height: 50px;
 `;
 
 const Items = styled.div`
-
   flex: 1 1;
   text-align: center;
   gap: 5px;
@@ -81,14 +84,12 @@ const Items = styled.div`
   padding: 10px;
   transition: background-color 0.15s ease;
   cursor: pointer;
-    &:hover {
-      background-color: ${({ theme }) => theme.tabHoverColor};
-
-    }
-
+  &:hover {
+    background-color: ${({ theme }) => theme.tabHoverColor};
+  }
 `;
 
 const SpaceField = styled.div`
   flex: 1 1;
   max-width: 400px;
-`
+`;
