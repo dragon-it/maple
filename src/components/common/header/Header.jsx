@@ -63,6 +63,7 @@ const HeaderLogo = styled.img`
   width: 62px;
   height: 57px;
   cursor: pointer;
+  margin-top: 3px;
 `;
 
 const ItemContainer = styled.div`
@@ -70,16 +71,11 @@ const ItemContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-
-  height: 50px;
+  gap: 10px;
+  height: 100%;
 `;
 
 const Items = styled.div`
-  flex: 1 1;
-  text-align: center;
-  gap: 5px;
-
   border-radius: 5px;
   padding: 10px;
   transition: background-color 0.15s ease;
