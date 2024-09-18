@@ -51,22 +51,34 @@ export const SundayMaple = () => {
         );
 
         if (sundayMapleNotices.length > 0) {
-          const sundayMapleNoticeId = Number(sundayMapleNotices[0].notice_id);
+          const sundayMapleNotice = sundayMapleNotices[0];
+          const sundayMapleNoticeId = Number(sundayMapleNotice.notice_id);
+          const eventEndTime = new Date(sundayMapleNotice.date_event_end);
 
-          try {
-            const [noticeDetailResponse] = await Promise.all([
-              axios.get("/notice-event/detail", {
-                params: { notice_id: sundayMapleNoticeId },
-              }),
-            ]);
+          // 현재 시간과 종료 시간 비교
+          const currentTime = new Date();
+          if (eventEndTime > currentTime) {
+            try {
+              const [noticeDetailResponse] = await Promise.all([
+                axios.get("/notice-event/detail", {
+                  params: { notice_id: sundayMapleNoticeId },
+                }),
+              ]);
 
-            if (noticeDetailResponse.status === 200) {
-              setSundayMapleNoticeDetail(noticeDetailResponse.data);
-            } else {
-              console.error("Failed to fetch notice detail data");
+              if (noticeDetailResponse.status === 200) {
+                setSundayMapleNoticeDetail(noticeDetailResponse.data);
+              } else {
+                console.error("Failed to fetch notice detail data");
+              }
+            } catch (error) {
+              console.error(
+                "Error fetching notice detail data:",
+                error.message
+              );
             }
-          } catch (error) {
-            console.error("Error fetching notice detail data:", error.message);
+          } else {
+            // 이벤트 종료 시간이 현재보다 이전인 경우, 공지 표시 안함
+            setIsVisible(false);
           }
         }
       }
@@ -118,7 +130,7 @@ export const SundayMaple = () => {
                 checked={isChecked}
                 onChange={handleSkipDay}
               />
-              <label for="skip-week-checkbox">오늘 하루 보지 않기</label>
+              <label htmlFor="skip-week-checkbox">오늘 하루 보지 않기</label>
             </SkipWeekCheckboxWrapper>
 
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
@@ -165,6 +177,7 @@ const ContentsWrap = styled.div`
     width: 100%;
     object-fit: contain;
     border-radius: 20px;
+    border: 2px solid rgb(167, 167, 167);
   }
 
   @media screen and (max-width: 768px) {

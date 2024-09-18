@@ -10,7 +10,7 @@ export const light = {
   tabActiveColor: "rgb(0,123,255)",
   tabActiveTextColor: "rgb(255,255,255)",
   tabNotActiveColor: "rgb(224, 224, 224)",
-  tabHoverColor: "rgba(224, 224, 224)",
+  tabHoverColor: "rgba(255,255,255, 0.65)",
   tabNotHoverColor: "rgb(0, 86, 179)",
   headerBgColor: "rgba(255,255,255, 0.35)",
 };
