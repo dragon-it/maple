@@ -60,8 +60,7 @@ const PcHeaderContainer = styled.div`
 `;
 
 const HeaderLogo = styled.img`
-  width: 62px;
-  height: 57px;
+  width: 55px;
   cursor: pointer;
   margin-top: 3px;
 `;

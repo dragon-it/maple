@@ -10,6 +10,9 @@ import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
 import { Header } from "./components/common/header/Header.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
+import { FindMain } from "./pages/FindMain";
+import { SearchGuild } from "./pages/SearchGuild";
+import { SundayMaple } from "./pages/SundayMaple";
 
 const UserContainer = styled.div`
   width: 100%;
@@ -19,14 +22,6 @@ const UserContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
-  @media screen and (max-width: 1024px) {
-    padding: 20px;
-  }
-
-  @media screen and (max-width: 576px) {
-    padding: 5px;
-  }
 `;
 
 function App() {
@@ -47,6 +42,9 @@ function App() {
                 </UserContainer>
               }
             />
+            <Route path="/find-main/:Name" element={<FindMain />} />
+            <Route path="/search-guild/:Name" element={<SearchGuild />} />
+            <Route path="/sunday-maple" element={<SundayMaple />} />
             <Route
               path="*"
               element={<Error errorMessage="페이지를 찾을 수 없습니다." />}
