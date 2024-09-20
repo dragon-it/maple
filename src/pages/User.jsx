@@ -5,7 +5,7 @@ import Information from "../components/user/Information";
 import { Equipment } from "../components/user/Equipment";
 import { Skill } from "../components/user/Skill";
 import { useParams } from "react-router-dom";
-import fetchData from "../api/fetchData";
+import UserApi from "../api/userApi";
 import loadingImg_light from "../assets/loading.gif";
 import loadingImg_dark from "../assets/loading2.gif";
 import { Error } from "./Error";
@@ -29,9 +29,9 @@ export const User = () => {
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
-      setError(null); // 오류 상태 초기화
+      setError(null);
       setActiveTab(1);
-      await fetchData(characterName, setResult, setLoading, setError);
+      await UserApi(characterName, setResult, setLoading, setError);
       setLoading(false);
     };
 

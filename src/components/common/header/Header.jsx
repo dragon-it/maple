@@ -10,9 +10,10 @@ export const Header = () => {
     home: "/",
     findCharacter: "/find-main",
     searchGuild: "/guild-search",
-    sundayMaple: "/sunday-maple",
   };
 
+  const sundayMapleUrl = localStorage.getItem("sundayMaple") || "#"; // 기본 URL 설정
+  console.log(sundayMapleUrl);
   return (
     <>
       <PcHeaderContainer>
@@ -32,8 +33,15 @@ export const Header = () => {
           <Items onClick={() => navigate(routes.searchGuild)}>
             <p>길드 검색</p>
           </Items>
-          <Items onClick={() => navigate(routes.sundayMaple)}>
-            <p>썬데이 메이플</p>
+          <Items>
+            <a
+              href={sundayMapleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              썬데이 메이플<OfficialHome>(공홈)</OfficialHome>
+            </a>
           </Items>
         </ItemContainer>
         <SpaceField></SpaceField>
@@ -68,23 +76,38 @@ const HeaderLogo = styled.img`
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   gap: 10px;
   height: 100%;
 `;
 
 const Items = styled.div`
   border-radius: 5px;
+  height: 100%;
   padding: 10px;
   transition: background-color 0.15s ease;
   cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.tabHoverColor};
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+
+    &:hover {
+      border-bottom: 1px solid ${({ theme }) => theme.tabHoverColor};
+    }
   }
 `;
 
 const SpaceField = styled.div`
   flex: 1 1;
   max-width: 400px;
+`;
+
+const OfficialHome = styled.div`
+  margin-left: 3px;
+  font-size: 12px;
+  display: inline-block;
 `;
