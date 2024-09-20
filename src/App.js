@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Main } from "./pages/Main.jsx";
 import { User } from "./pages/User.jsx";
-
 import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider.js";
 import { GlobalStyle } from "./components/theme/GlobalStyles.js";
@@ -28,9 +27,9 @@ function App() {
   return (
     <ThemeProvider>
       <GlobalStyle />
-      <BackgroundImage />
       <Container>
         <Router>
+          <BackgroundImage />
           <Header />
           <Routes>
             <Route path="/" element={<Main />} />
@@ -42,8 +41,8 @@ function App() {
                 </UserContainer>
               }
             />
-            <Route path="/find-main/:Name" element={<FindMain />} />
-            <Route path="/search-guild/:Name" element={<SearchGuild />} />
+            <Route path="/find-main" element={<FindMain />} />
+            <Route path="/guild-search" element={<SearchGuild />} />
             <Route path="/sunday-maple" element={<SundayMaple />} />
             <Route
               path="*"
