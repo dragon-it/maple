@@ -13,9 +13,9 @@ export const SundayMaple = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    const skipWeek = localStorage.getItem("skipWeek");
-    if (skipWeek) {
-      const skipUntil = new Date(skipWeek);
+    const skipDay = localStorage.getItem("skipDay");
+    if (skipDay) {
+      const skipUntil = new Date(skipDay);
       if (skipUntil > new Date()) {
         setIsVisible(false);
       }
@@ -67,6 +67,8 @@ export const SundayMaple = () => {
 
               if (noticeDetailResponse.status === 200) {
                 setSundayMapleNoticeDetail(noticeDetailResponse.data);
+                const sundayMapleUrl = noticeDetailResponse.data.url;
+                localStorage.setItem("sundayMaple", sundayMapleUrl);
               } else {
                 console.error("Failed to fetch notice detail data");
               }
@@ -123,15 +125,15 @@ export const SundayMaple = () => {
       {desiredHtmlContent && (
         <ContentsWrap>
           <ButtonWrap>
-            <SkipWeekCheckboxWrapper>
+            <SkipDayCheckboxWrapper>
               <input
                 type="checkbox"
-                id="skip-week-checkbox"
+                id="skip-day-checkbox"
                 checked={isChecked}
                 onChange={handleSkipDay}
               />
-              <label htmlFor="skip-week-checkbox">오늘 하루 보지 않기</label>
-            </SkipWeekCheckboxWrapper>
+              <label htmlFor="skip-day-checkbox">오늘 하루 보지 않기</label>
+            </SkipDayCheckboxWrapper>
 
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
@@ -158,7 +160,14 @@ const Container = styled.div`
   margin-bottom: 20px;
 `;
 
-const Contents = styled.div``;
+const Contents = styled.div`
+  img {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    border: 1px solid rgb(119, 119, 119);
+  }
+`;
 
 const ContentsWrap = styled.div`
   padding: 3px 10px 10px 10px;
@@ -167,18 +176,11 @@ const ContentsWrap = styled.div`
   position: relative;
   max-width: 876px;
   border: 1px solid rgb(30, 38, 47);
-  outline: 1px solid rgb(56, 87, 106);
+  outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
   border-radius: 20px;
   overflow: hidden;
   object-fit: cover;
-
-  img {
-    width: 100%;
-    object-fit: contain;
-    border-radius: 20px;
-    border: 2px solid rgb(167, 167, 167);
-  }
 
   @media screen and (max-width: 768px) {
     padding: 5px;
@@ -211,11 +213,12 @@ const CloseButton = styled.button`
   }
 `;
 
-const SkipWeekCheckboxWrapper = styled.div`
+const SkipDayCheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
   font-family: maple-light;
-  color: #ffffff;
+
+  color: rgb(216, 216, 216);
 
   input[type="checkbox"] {
     cursor: pointer;
@@ -223,6 +226,9 @@ const SkipWeekCheckboxWrapper = styled.div`
 
   label {
     cursor: pointer;
+    &:hover {
+      color: rgb(255, 255, 255);
+    }
   }
 `;
 

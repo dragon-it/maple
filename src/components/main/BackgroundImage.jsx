@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import whiteBGI from "../../assets/Henesys.webp";
-import darkBGI from "../../assets/Kerning-City.webp";
+import mainLightBGI from "../../assets/Henesys.webp";
+import mainDarkBGI from "../../assets/Kerning-City.webp";
+import findMainLightBGI from "../../assets/dd.webp";
+import findMainDarkBGI from "../../assets/dd.webp";
+import searchGuildDarkBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_dark.webp";
+import searchGuildLightBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_light.webp";
 import { useTheme } from "../../context/ThemeProvider";
 
 export const BackgroundImage = () => {
   const { theme } = useTheme();
+  const location = useLocation();
   const [imageSrc, setImageSrc] = useState(
-    theme === "dark" ? darkBGI : whiteBGI
+    getBackgroundImage(theme, location.pathname)
   );
 
+  // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
+  function getBackgroundImage(theme, pathname) {
+    switch (pathname) {
+      case "/find-main":
+        return theme === "dark" ? findMainDarkBGI : findMainLightBGI;
+      case "/guild-search":
+        return theme === "dark" ? searchGuildDarkBGI : searchGuildLightBGI;
+      default:
+        return theme === "dark" ? mainDarkBGI : mainLightBGI;
+    }
+  }
+
   useEffect(() => {
-    setImageSrc(theme === "dark" ? darkBGI : whiteBGI);
-  }, [theme]);
+    setImageSrc(getBackgroundImage(theme, location.pathname));
+  }, [location.pathname, theme]);
 
   return (
     <Container>
@@ -22,7 +40,7 @@ export const BackgroundImage = () => {
 };
 
 const Container = styled.div`
-  width: 100% ;
+  width: 100%;
   position: fixed;
 
   img {
