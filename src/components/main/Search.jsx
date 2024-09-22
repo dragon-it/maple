@@ -121,7 +121,6 @@ const StyledButton = styled.button`
 `;
 
 const ThemeToggleWrap = styled.div`
-  margin-left: 10px;
   z-index: 99999;
   @media screen and (max-width: 1024px) {
     display: block;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import logo from "../../../assets/Component 39.svg";
 
 export const Header = () => {
@@ -12,43 +12,47 @@ export const Header = () => {
     searchGuild: "/guild-search",
   };
 
-  const sundayMapleUrl = localStorage.getItem("sundayMaple") || "#"; // 기본 URL 설정
-  console.log(sundayMapleUrl);
+  const sundayMapleUrl = localStorage.getItem("sundayMaple") || "#";
   return (
-    <>
-      <PcHeaderContainer>
-        <HeaderLogo
-          src={logo}
-          alt="로고"
-          onClick={() => navigate(routes.home)}
-        />
+    <PcHeaderContainer>
+      <HeaderLogo src={logo} alt="로고" onClick={() => navigate(routes.home)} />
 
-        <ItemContainer>
-          <Items onClick={() => navigate(routes.home)}>
-            <p>캐릭터 검색</p>
-          </Items>
-          <Items onClick={() => navigate(routes.findCharacter)}>
-            <p>본캐 찾기</p>
-          </Items>
-          <Items onClick={() => navigate(routes.searchGuild)}>
-            <p>길드 검색</p>
-          </Items>
-          <Items>
-            <a
-              href={sundayMapleUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              썬데이 메이플<OfficialHome>(공홈)</OfficialHome>
-            </a>
-          </Items>
-        </ItemContainer>
-        <SpaceField></SpaceField>
-      </PcHeaderContainer>
-    </>
+      <ItemContainer>
+        <Items onClick={() => navigate(routes.home)}>
+          <p>캐릭터 검색</p>
+        </Items>
+        <Items onClick={() => navigate(routes.findCharacter)}>
+          <p>본캐 찾기</p>
+        </Items>
+        <Items onClick={() => navigate(routes.searchGuild)}>
+          <p>길드 검색</p>
+        </Items>
+        <ItemsToHome
+          href={sundayMapleUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <p>
+            썬데이 메이플<OfficialHome>(공홈)</OfficialHome>
+          </p>
+        </ItemsToHome>
+      </ItemContainer>
+      <SpaceField></SpaceField>
+    </PcHeaderContainer>
   );
 };
+
+const itemStyles = css`
+  height: 100%;
+  padding: 10px;
+  transition: 0.15s ease;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+
+  &:hover {
+    border-bottom-color: ${({ theme }) => theme.headerHoverColor};
+  }
+`;
 
 const PcHeaderContainer = styled.div`
   position: relative;
@@ -81,24 +85,13 @@ const ItemContainer = styled.div`
 `;
 
 const Items = styled.div`
-  border-radius: 5px;
-  height: 100%;
-  padding: 10px;
-  transition: background-color 0.15s ease;
-  cursor: pointer;
+  ${itemStyles};
+`;
 
-  a {
-    color: inherit;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    cursor: pointer;
-
-    &:hover {
-      border-bottom: 1px solid ${({ theme }) => theme.tabHoverColor};
-    }
-  }
+const ItemsToHome = styled.a`
+  ${itemStyles};
+  text-decoration: none;
+  color: inherit;
 `;
 
 const SpaceField = styled.div`

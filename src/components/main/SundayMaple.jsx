@@ -134,7 +134,6 @@ export const SundayMaple = () => {
               />
               <label htmlFor="skip-day-checkbox">오늘 하루 보지 않기</label>
             </SkipDayCheckboxWrapper>
-
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
@@ -217,8 +216,12 @@ const SkipDayCheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
   font-family: maple-light;
-
   color: rgb(216, 216, 216);
+
+  :hover {
+    background: rgba(184, 184, 184, 0.24);
+    border-radius: 5px;
+  }
 
   input[type="checkbox"] {
     cursor: pointer;
@@ -226,6 +229,7 @@ const SkipDayCheckboxWrapper = styled.div`
 
   label {
     cursor: pointer;
+    padding: 4px;
     &:hover {
       color: rgb(255, 255, 255);
     }
