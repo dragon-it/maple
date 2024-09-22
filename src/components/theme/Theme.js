@@ -13,6 +13,7 @@ export const light = {
   tabHoverColor: "rgba(255,255,255, 0.65)",
   tabNotHoverColor: "rgb(0, 86, 179)",
   headerBgColor: "rgba(255,255,255, 0.35)",
+  headerHoverColor: "rgba(38,38,38, 0.85)",
 };
 
 export const dark = {
@@ -29,6 +30,7 @@ export const dark = {
   tabHoverColor: "rgba(255,255,255, 0.15)",
   tabNotHoverColor: "rgba(255,255,255, 0.1)",
   headerBgColor: "rgba(38,38,38, 0.85)",
+  headerHoverColor: "rgba(255,255,255, 0.35)",
 };
 
 export const theme = {
