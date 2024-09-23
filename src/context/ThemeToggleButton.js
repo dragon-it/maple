@@ -9,57 +9,27 @@ function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <>
-      <ToggleWrapper onClick={toggleTheme}>
-        <Icon
-          src={theme === "dark" ? light_theme_icon : dark_theme_icon}
-          alt="theme-icon"
-        />
-        <Text>{theme === "dark" ? "light" : "dark"}</Text>
-        <Menu />
-      </ToggleWrapper>
-    </>
+    <ToggleWrapper>
+      <Icon
+        src={theme === "dark" ? light_theme_icon : dark_theme_icon}
+        alt="theme-icon"
+        onClick={toggleTheme}
+      />
+      <Menu />
+    </ToggleWrapper>
   );
 }
 
-const ToggleWrapper = styled.button`
+const ToggleWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background-color: ${({ theme }) => theme.toggleBgColor};
-  border: ${({ theme }) => theme.toggleBorderColor};
-  color: ${({ theme }) => theme.toggleColor};
-  font-size: 20px;
-  width: 96px;
-  height: 48px;
-  border-radius: 30px;
-  cursor: pointer;
-  z-index: 99999999 !important;
-
-  @media screen and (max-width: 768px) {
-    position: relative;
-    width: 32px;
-    height: 32px;
-    background-color: transparent;
-    border: none;
-    right: 0;
-  }
-`;
-
-const Text = styled.span`
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
+  background: transparent;
 `;
 
 const Icon = styled.img`
-  display: none;
   width: 32px;
   height: 32px;
+  cursor: pointer;
 
   @media screen and (max-width: 768px) {
     display: flex;

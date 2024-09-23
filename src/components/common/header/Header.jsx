@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import logo from "../../../assets/Component 39.svg";
+import ThemeToggleButton from "../../../context/ThemeToggleButton";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ export const Header = () => {
         </ItemsToHome>
       </ItemContainer>
       <SpaceField></SpaceField>
+      <ThemeToggleWrap>
+        <ThemeToggleButton />
+      </ThemeToggleWrap>
     </PcHeaderContainer>
   );
 };
@@ -104,3 +108,5 @@ const OfficialHome = styled.div`
   font-size: 12px;
   display: inline-block;
 `;
+
+const ThemeToggleWrap = styled.div``;

@@ -34,17 +34,7 @@ export const Menu = () => {
   );
 };
 
-const Container = styled.div`
-  display: none;
-  position: absolute;
-  right: 24px;
-  top: 24px;
-  z-index: 9999999;
-
-  @media screen and (max-width: 767px) {
-    display: block;
-  }
-`;
+const Container = styled.div``;
 
 const HamburgerImg = styled.img`
   display: flex;
