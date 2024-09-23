@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Logo } from "./Logo";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import serchIcon_big from "../../assets/SearchIcon_big.svg";
 import serchIcon_small from "../../assets/SearchIcon_small.svg";
-import ThemeToggleButton from "../../context/ThemeToggleButton";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리
@@ -39,32 +37,27 @@ export const Search = ({ error }) => {
   };
 
   return (
-    <>
-      <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
-        <Logo error={error} isUserRoute={isUserRoute} />
-        <InputWrap>
-          <StyledInput
-            type="text"
-            placeholder="캐릭터 닉네임을 입력해주세요."
-            value={searchValue}
-            onChange={handleInputChange}
-            isUserRoute={isUserRoute}
-            maxLength={15}
+    <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
+      <Logo error={error} isUserRoute={isUserRoute} />
+      <InputWrap>
+        <StyledInput
+          type="text"
+          placeholder="캐릭터 닉네임을 입력해주세요."
+          value={searchValue}
+          onChange={handleInputChange}
+          isUserRoute={isUserRoute}
+          maxLength={15}
+        />
+        <StyledButton isUserRoute={isUserRoute}>
+          <img
+            src={isUserRoute ? serchIcon_small : serchIcon_big}
+            alt="검색"
+            width={isUserRoute ? "18" : "23"}
+            height={isUserRoute ? "18" : "23"}
           />
-          <StyledButton isUserRoute={isUserRoute}>
-            <img
-              src={isUserRoute ? serchIcon_small : serchIcon_big}
-              alt="검색"
-              width={isUserRoute ? "18" : "23"}
-              height={isUserRoute ? "18" : "23"}
-            />
-          </StyledButton>
-        </InputWrap>
-      </InputContainer>
-      <ThemeToggleWrap>
-        <ThemeToggleButton />
-      </ThemeToggleWrap>
-    </>
+        </StyledButton>
+      </InputWrap>
+    </InputContainer>
   );
 };
 
@@ -118,13 +111,4 @@ const StyledButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-`;
-
-const ThemeToggleWrap = styled.div`
-  z-index: 99999;
-  @media screen and (max-width: 1024px) {
-    display: block;
-    position: absolute;
-    right: 10px;
-  }
 `;
