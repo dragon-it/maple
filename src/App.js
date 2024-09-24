@@ -12,16 +12,9 @@ import { BackgroundImage } from "./components/main/BackgroundImage";
 import { FindMain } from "./pages/FindMain";
 import { SearchGuild } from "./pages/SearchGuild";
 import { SundayMaple } from "./pages/SundayMaple";
+import { Footer } from "./components/common/footer/Footer";
 
-const UserContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-`;
+const UserContainer = styled.div``;
 
 function App() {
   return (
@@ -33,6 +26,9 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Main />} />
+            {/* /find-main 경로에서 characterName이 없는 경우 처리 */}
+            <Route path="/find-main" element={<FindMain />} />
+            <Route path="/find-main/:characterName" element={<FindMain />} />
             <Route
               path="/user/:characterName"
               element={
@@ -41,7 +37,6 @@ function App() {
                 </UserContainer>
               }
             />
-            <Route path="/find-main" element={<FindMain />} />
             <Route path="/guild-search" element={<SearchGuild />} />
             <Route path="/sunday-maple" element={<SundayMaple />} />
             <Route
@@ -49,6 +44,7 @@ function App() {
               element={<Error errorMessage="페이지를 찾을 수 없습니다." />}
             />
           </Routes>
+          <Footer />
         </Router>
       </Container>
     </ThemeProvider>
@@ -58,6 +54,12 @@ function App() {
 export default App;
 
 const Container = styled.div`
+  position: relative;
+  width: 100%;
   height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 `;
