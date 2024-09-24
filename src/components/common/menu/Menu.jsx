@@ -34,7 +34,13 @@ export const Menu = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    display: block;
+  }
+`;
 
 const HamburgerImg = styled.img`
   display: flex;
@@ -45,11 +51,11 @@ const HamburgerImg = styled.img`
   padding: 5px;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.1);
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(56, 56, 56, 0.65);
+    background-color: rgba(56, 56, 56, 0.25);
   }
 `;
 
@@ -65,7 +71,6 @@ const MenuContainer = styled.div`
   padding: 20px;
   box-shadow: ${({ isClicked }) =>
     isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
-
   z-index: 9999999;
 `;
 

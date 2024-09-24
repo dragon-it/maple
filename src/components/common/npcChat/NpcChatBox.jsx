@@ -15,7 +15,7 @@ const ChatBoxWrapper = styled.div`
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    max-width: 120px;
+    max-width: 150px;
     word-wrap: break-word;
   }
 

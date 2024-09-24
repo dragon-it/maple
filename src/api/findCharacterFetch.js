@@ -1,10 +1,4 @@
-import {
-  getGuildBasicInformation,
-  getGuildRanking,
-  getOcidApi,
-  getOguildId,
-  getGuildMembers,
-} from "./api";
+import { getGuildBasicInformation, getOcidApi, getOguildId } from "./api";
 import apiFunctions from "./ApiFuntion";
 
 const getAllCaseCombinations = (str) => {
@@ -61,7 +55,12 @@ const getOcid = async (characterName) => {
   }
 };
 
-const UserApi = async (characterName, setResult, setLoading, setError) => {
+const FindCharacterFetch = async (
+  characterName,
+  setResult,
+  setLoading,
+  setError
+) => {
   if (characterName.trim() !== "") {
     try {
       const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
@@ -95,46 +94,11 @@ const UserApi = async (characterName, setResult, setLoading, setError) => {
         // 길드 관련 정보 병렬 처리
         const [oguildId, guildRankInformation] = await Promise.all([
           getOguildId(character_guild_name, world_name),
-          getGuildRanking(character_guild_name, world_name),
         ]);
 
         const guildBasicInformation = await getGuildBasicInformation(
           oguildId.oguild_id
         );
-
-        if (guildBasicInformation) {
-          const { guild_member } = guildBasicInformation;
-
-          // 길드 멤버 정보 병렬 처리
-          let fetchedMembersData = [];
-          try {
-            fetchedMembersData = await getGuildMembers(guild_member);
-            if (!Array.isArray(fetchedMembersData)) {
-              console.error(fetchedMembersData);
-              throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
-            }
-          } catch (error) {
-            console.error("Failed to fetch members data", error);
-            fetchedMembersData = guild_member.map((member) => ({
-              character_name: member,
-              character_level: null,
-              character_image: null,
-            }));
-          }
-
-          fetchedMembersData = fetchedMembersData.map((memberData, index) => {
-            if (Object.keys(memberData).length === 0) {
-              return {
-                character_name: guild_member[index],
-                character_level: null,
-                character_image: null,
-              };
-            }
-            return memberData;
-          });
-
-          resultObject.guildMembersData = fetchedMembersData;
-        }
 
         resultObject.guildBasicInformation = guildBasicInformation;
         resultObject.guildRankInformation = guildRankInformation;
@@ -151,4 +115,4 @@ const UserApi = async (characterName, setResult, setLoading, setError) => {
   }
 };
 
-export default UserApi;
+export default FindCharacterFetch;
