@@ -10,7 +10,6 @@ import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
-import { Footer } from "../components/common/footer/Footer";
 import { Guild } from "../components/user/Guild";
 import { useTheme } from "../context/ThemeProvider";
 
@@ -85,9 +84,6 @@ export const User = () => {
             {activeTab === 4 && <Union result={result} />}
             {activeTab === 5 && <Guild result={result} />}
           </Container>
-          <FooterWrap>
-            <Footer />
-          </FooterWrap>
         </>
       )}
     </>
@@ -203,11 +199,4 @@ const ErrorWrap = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
-`;
-
-const FooterWrap = styled.div`
-  bottom: 0;
-  width: 100%;
-  z-index: 9;
 `;

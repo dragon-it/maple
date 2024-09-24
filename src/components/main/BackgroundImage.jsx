@@ -18,13 +18,12 @@ export const BackgroundImage = () => {
 
   // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
   function getBackgroundImage(theme, pathname) {
-    switch (pathname) {
-      case "/find-main":
-        return theme === "dark" ? findMainDarkBGI : findMainLightBGI;
-      case "/guild-search":
-        return theme === "dark" ? searchGuildDarkBGI : searchGuildLightBGI;
-      default:
-        return theme === "dark" ? mainDarkBGI : mainLightBGI;
+    if (pathname.startsWith("/find-main")) {
+      return theme === "dark" ? findMainDarkBGI : findMainLightBGI;
+    } else if (pathname.startsWith("/guild-search")) {
+      return theme === "dark" ? searchGuildDarkBGI : searchGuildLightBGI;
+    } else {
+      return theme === "dark" ? mainDarkBGI : mainLightBGI;
     }
   }
 

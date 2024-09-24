@@ -13,13 +13,17 @@ export const Footer = () => {
 };
 
 const FooterTextSpan = styled.span`
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  padding: 3px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 70px;
   font-family: maple-light;
-  
+  background: rgba(0, 0, 0, 0.15);
+
   @media screen and (max-width: 576px) {
   }
 `;

@@ -2,6 +2,7 @@ import React from "react";
 import error_image from "../assets/error_image.png";
 import styled from "styled-components";
 import { Search } from "../components/main/Search";
+import { NpcChatBox } from "../components/common/npcChat/NpcChatBox";
 
 export const Error = ({ errorMessage, error }) => {
   return (
@@ -10,15 +11,15 @@ export const Error = ({ errorMessage, error }) => {
         <Search error={error} />
       </SearchWrap>
       <ErrorImg>
+        <NpcChatBox text={errorMessage}></NpcChatBox>
         <img src={error_image} alt="error_image" width="207" height="258" />
       </ErrorImg>
-      <ErrorText>{errorMessage}</ErrorText>
     </ErrorPageWrap>
   );
 };
 
 const ErrorPageWrap = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,6 +40,7 @@ const ErrorText = styled.div`
 
 const ErrorImg = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 207px;
@@ -58,7 +60,7 @@ const ErrorImg = styled.div`
 `;
 
 const SearchWrap = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,7 +70,6 @@ const SearchWrap = styled.div`
   height: 100px;
   color: black;
   @media screen and (max-width: 1024px) {
-    position: absolute;
     top: 0;
   }
 `;

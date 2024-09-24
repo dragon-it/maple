@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import { NpcChatBox } from "../common/npcChat/NpcChatBox";
 
-export const FindRenderingBox = () => {
+import { useTheme } from "../../context/ThemeProvider";
+
+export const FindRenderingBox = ({ result }) => {
+  console.log(result);
+  const { theme } = useTheme();
   return (
     <Container>
-      <NpcChatBox text="연속으로 실패할 놈들..." />
+      <MainCharacterWrap>asdasd</MainCharacterWrap>
+      {/* <UiImg
+        src={theme === "dark" ? character_ui_dark : character_ui_light}
+        alt="chracter-ui"
+      ></UiImg> */}
     </Container>
   );
 };
@@ -18,3 +25,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+const UiImg = styled.img`
+  position: relative;
+  height: 100vh;
+`;
+
+const MainCharacterWrap = styled.div``;
