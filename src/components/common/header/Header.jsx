@@ -17,7 +17,6 @@ export const Header = () => {
   return (
     <PcHeaderContainer>
       <HeaderLogo src={logo} alt="로고" onClick={() => navigate(routes.home)} />
-
       <ItemContainer>
         <Items onClick={() => navigate(routes.home)}>
           <p>캐릭터 검색</p>
@@ -38,7 +37,7 @@ export const Header = () => {
           </p>
         </ItemsToHome>
       </ItemContainer>
-      <SpaceField></SpaceField>
+      <SpaceField />
       <ThemeToggleWrap>
         <ThemeToggleButton />
       </ThemeToggleWrap>
@@ -55,6 +54,7 @@ const itemStyles = css`
 
   &:hover {
     border-bottom-color: ${({ theme }) => theme.headerHoverColor};
+    transform: scale(1.05);
   }
 `;
 
@@ -62,9 +62,10 @@ const PcHeaderContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  gap: 50px;
-  padding: 0 20px;
+  justify-content: space-between;
+  padding: 0 30px;
   width: 100%;
+  gap: 20px;
   min-height: 40px;
   font-family: maple-light;
   background: ${({ theme }) => theme.headerBgColor};
@@ -85,7 +86,6 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  height: 100%;
 `;
 
 const Items = styled.div`
@@ -100,7 +100,7 @@ const ItemsToHome = styled.a`
 
 const SpaceField = styled.div`
   flex: 1 1;
-  max-width: 400px;
+  max-width: 1000px;
 `;
 
 const OfficialHome = styled.div`

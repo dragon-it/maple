@@ -24,18 +24,21 @@ const ToggleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   background: transparent;
+  gap: 10px;
 `;
 
 const Icon = styled.img`
-  width: 32px;
-  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-
-  @media screen and (max-width: 768px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  padding: 5px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 `;
 
 export default ThemeToggleButton;

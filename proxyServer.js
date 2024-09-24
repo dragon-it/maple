@@ -334,6 +334,7 @@ app.get("/api/character/information", async (req, res) => {
       union,
       unionArtifact,
       unionRaider,
+      unionLanking,
       dojang,
     ] = await Promise.all([
       callMapleStoryAPI("character/basic", { ocid }),
@@ -358,6 +359,7 @@ app.get("/api/character/information", async (req, res) => {
       callMapleStoryAPI("user/union-artifact", { ocid }),
       callMapleStoryAPI("user/union-raider", { ocid }),
       callMapleStoryAPI("character/dojang", { ocid }),
+      callMapleStoryAPI("ranking/union", { ocid, date: "2024-09-23" }),
     ]);
 
     res.json({
@@ -384,6 +386,7 @@ app.get("/api/character/information", async (req, res) => {
       getUnion: union,
       getUnionArtiFact: unionArtifact,
       getUnionRaider: unionRaider,
+      getUnionRanking: unionLanking,
       getDojang: dojang,
     });
   } catch (error) {
@@ -402,6 +405,12 @@ app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "build", "index.html"));
   }
 });
+
+///////////////////////////////////////////////////////////////////////////////
+// 캐릭터 목록 api
+
+// GET
+// /maplestory/v1/character/list
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
