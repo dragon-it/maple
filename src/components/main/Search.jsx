@@ -18,7 +18,12 @@ export const Search = ({ error }) => {
     }
 
     const processedSearchValue = searchValue.replace(/\s+/g, ""); // 공백 제거
-    navigate(`/user/${encodeURIComponent(processedSearchValue)}`); // 검색어를 URL에 인코딩하여 이동
+
+    if (location.pathname.startsWith("/find-main")) {
+      navigate(`/find-main/${encodeURIComponent(processedSearchValue)}`);
+    } else {
+      navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
+    }
   };
 
   // 폼 제출을 처리하는 함수
