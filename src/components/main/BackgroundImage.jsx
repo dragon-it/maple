@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import mainLightBGI from "../../assets/Henesys.webp";
+import mainLightBGI from "../../assets/Henesys2.webp";
 import mainDarkBGI from "../../assets/Kerning-City.webp";
 import findMainLightBGI from "../../assets/backgruondImg/findMain/search_guild_BGI_light.webp";
 import findMainDarkBGI from "../../assets/backgruondImg/findMain/search_guild_BGI_dark.webp";
