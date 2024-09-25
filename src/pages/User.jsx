@@ -92,12 +92,13 @@ export const User = () => {
 
 const Container = styled.div`
   position: relative;
+  width: fit-content;
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
   z-index: 99;
-  margin-top: 40px;
+  margin-top: 10px;
 
   @media screen and (max-width: 1024px) {
     margin-top: 80px;
@@ -170,6 +171,7 @@ const Tab = styled.div`
 `;
 
 const LoadingWrap = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
