@@ -62,13 +62,14 @@ export const FindMain = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 3px 10px;
-  min-width: 750px;
+  flex-direction: column;
   @media screen and (max-width: 1024px) {
     min-width: 0;
   }
