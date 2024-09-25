@@ -30,14 +30,6 @@ const ErrorPageWrap = styled.div`
   z-index: 1;
 `;
 
-const ErrorText = styled.div`
-  font-family: Maple-light;
-  font-size: 16px;
-  @media screen and (max-width: 1024px) {
-    font-size: 13px;
-  }
-`;
-
 const ErrorImg = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,7 +61,4 @@ const SearchWrap = styled.div`
   width: 100%;
   height: 100px;
   color: black;
-  @media screen and (max-width: 1024px) {
-    top: 0;
-  }
 `;
