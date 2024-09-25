@@ -14,7 +14,7 @@ export const Footer = () => {
 
 const FooterTextSpan = styled.span`
   position: relative;
-  bottom: 0;
+  bottom: -58px;
   width: 100%;
   padding: 3px 0;
   margin-top: 10px;
@@ -23,8 +23,5 @@ const FooterTextSpan = styled.span`
   align-items: center;
   text-align: center;
   font-family: maple-light;
-  background: rgba(0, 0, 0, 0.15);
-
-  @media screen and (max-width: 576px) {
-  }
+  background: ${({ theme }) => theme.footerBgColor};
 `;
