@@ -17,6 +17,7 @@ const FooterTextSpan = styled.span`
   bottom: 0;
   width: 100%;
   padding: 3px 0;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
