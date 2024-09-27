@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { NpcChatBox } from "../common/npcChat/NpcChatBox";
 import { formatPowerStat } from "../common/powerStat/PowerStat";
 import npc_Chat_Box from "../../assets/npc/npc_Chat_Box.png";
+import html2canvas from "html2canvas";
 
 const StyledLine = styled.p`
   margin: 2px 0;
@@ -70,9 +70,23 @@ export const FindRenderingBox = ({ result }) => {
     `길드: ${character_guild_name || "길드 없음"}`,
     `전투력: ${formatPowerStat(powerValue) || "전투력 없음"}`,
   ];
+
+  // 이미지를 저장하는 함수
+  const saveAsImage = () => {
+    const element = document.getElementById("main-character-wrap"); // 요소를 찾음
+    html2canvas(element, {
+      useCORS: true,
+    }).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = "character_info.png"; // 다운로드할 파일명
+      link.href = canvas.toDataURL("image/png"); // 이미지를 데이터 URL로 변환
+      link.click(); // 링크 클릭 시 다운로드
+    });
+  };
+
   return (
     <Container>
-      <MainCharacterWrap>
+      <MainCharacterWrap id="main-character-wrap">
         <NpcBox src={npc_Chat_Box} alt="대화박스" />
         <CharacterInfo>
           <NpcWrap>
@@ -84,6 +98,7 @@ export const FindRenderingBox = ({ result }) => {
           </NpcText>
         </CharacterInfo>
       </MainCharacterWrap>
+      <SaveButton onClick={saveAsImage}>이미지로 저장</SaveButton>{" "}
     </Container>
   );
 };
@@ -99,7 +114,6 @@ const Container = styled.div`
 const MainCharacterWrap = styled.div`
   width: fit-content;
   position: relative;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -113,6 +127,7 @@ const Image = styled.img`
   transform: scaleX(-1);
   position: relative;
   top: 7px;
+  z-index: 99;
 `;
 
 const NpcBox = styled.img`
@@ -198,5 +213,19 @@ const NpcText = styled.div`
   @media screen and (max-width: 519px) {
     white-space: nowrap;
     font-size: 2.6vw;
+  }
+`;
+
+const SaveButton = styled.button`
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #45a049;
   }
 `;
