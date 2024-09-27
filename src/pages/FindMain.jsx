@@ -64,15 +64,19 @@ export const FindMain = () => {
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
 `;
 
 const HeaderWrap = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-direction: column;
-  @media screen and (max-width: 1024px) {
-    min-width: 0;
-  }
 `;
 
 const LoadingWrap = styled.div`
