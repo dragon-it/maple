@@ -1,38 +1,21 @@
-import React from "react";
+export const formatPowerStat = (powerValue) => {
+  if (powerValue === null || powerValue === undefined) {
+    return "데이터 없음";
+  }
+  if (powerValue >= 100000000) {
+    const 억 = Math.floor(powerValue / 100000000);
+    const remainder = powerValue % 100000000;
+    const 만 = Math.floor(remainder / 10000);
 
-export const PowerStat = ({ powerValue }) => {
-  const formatNumber = (value) => {
-    if (value === null || value === undefined) {
-      return <span>데이터 없음</span>;
-    }
-    if (value >= 100000000) {
-      const 억 = Math.floor(value / 100000000);
-      const remainder = value % 100000000;
-      const 만 = Math.floor(remainder / 10000);
-
-      return (
-        <>
-          {억 > 0 && <span>{억}억&nbsp;</span>}
-          {만 > 0 && <span>{만}만&nbsp;</span>}
-          {remainder % 10000 > 0 && <span>{remainder % 10000}</span>}
-        </>
-      );
-    } else if (value >= 10000) {
-      const 만 = Math.floor(value / 10000);
-      return (
-        <>
-          {만 > 0 && <span>{만}만&nbsp;</span>}
-          {value % 10000 > 0 && <span>{value % 10000}</span>}
-        </>
-      );
-    } else {
-      return <span>{value}</span>;
-    }
-  };
-
-  return (
-    <div>
-      <p>전투력: {formatNumber(powerValue)}</p>
-    </div>
-  );
+    return `${억 > 0 ? `${억}억 ` : ""}${만 > 0 ? `${만}만 ` : ""}${
+      remainder % 10000 > 0 ? remainder % 10000 : ""
+    }`;
+  } else if (powerValue >= 10000) {
+    const 만 = Math.floor(powerValue / 10000);
+    return `${만 > 0 ? `${만}만 ` : ""}${
+      powerValue % 10000 > 0 ? powerValue % 10000 : ""
+    }`;
+  } else {
+    return `${powerValue}`;
+  }
 };
