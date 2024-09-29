@@ -24,6 +24,9 @@ const getOcid = async (characterName) => {
       ? [characterName]
       : getAllCaseCombinations(characterName); // 한글이면 조합 생성 생략
 
+    // 조합에서 최대 10개까지만 시도하도록 제한
+    const limitedCombinations = combinations.slice(0, 20);
+
     // 1. 입력한 이름 그대로 먼저 시도
     try {
       const ocidData = await getOcidApi(characterName); // OCID API 호출
@@ -36,14 +39,15 @@ const getOcid = async (characterName) => {
       );
     }
 
-    // 2. 대소문자 조합 시도
-    for (let name of combinations) {
+    // 2. 제한된 대소문자 조합 시도 (10개까지만)
+    for (let name of limitedCombinations) {
       try {
         const ocidData = await getOcidApi(name); // OCID API 호출
         if (ocidData) {
           return ocidData.ocid; // OCID 반환
         }
       } catch (error) {
+        console.log(`Failed for ${name}: ${error.message}`);
         continue; // 오류 발생 시 다음 조합으로 넘어감
       }
     }

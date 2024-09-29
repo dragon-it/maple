@@ -59,38 +59,84 @@ export const FindRenderingBox = ({ result }) => {
     world_name,
   } = result?.getCombinedData?.getBasicInformation || {};
 
+  console.log(character_image);
   const { stat_value: powerValue } = result?.getCombinedData?.getCharacterStat
     ?.final_stat?.[42] || { stat_value: 0 };
 
   const characterInfoLines = [
     `닉네임: ${character_name || "이름 없음"}`,
     `레벨: ${character_level || "레벨 정보 없음"}`,
+    `전투력: ${formatPowerStat(powerValue) || "전투력 없음"}`,
     `직업: ${character_class || "직업 없음"}`,
     `월드: ${world_name || "월드 정보 없음"}`,
-    `길드: ${character_guild_name || "길드 없음"}`,
-    `전투력: ${formatPowerStat(powerValue) || "전투력 없음"}`,
+    character_guild_name ? `길드: ${character_guild_name}` : "",
   ];
 
-  // 이미지를 저장하는 함수
-  const saveAsImage = () => {
-    const element = document.getElementById("main-character-wrap"); // 요소를 찾음
-    html2canvas(element, {
+  const [imageSrc, setImageSrc] = useState(character_image || "");
+
+  const fetchImageFromProxy = async (imageUrl) => {
+    try {
+      const response = await fetch(
+        `/api/image-proxy?imageUrl=${encodeURIComponent(imageUrl)}`
+      );
+      if (!response.ok) {
+        throw new Error("프록시 요청 실패");
+      }
+      const blob = await response.blob();
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("프록시를 통한 이미지 로드 오류:", error);
+      throw error; // 오류를 다시 던져서 처리할 수 있도록 함
+    }
+  };
+  useEffect(() => {
+    const loadImage = async () => {
+      if (character_image) {
+        try {
+          const proxyImageUrl = await fetchImageFromProxy(character_image);
+          setImageSrc(proxyImageUrl);
+        } catch (error) {
+          console.error("이미지 로드 오류:", error);
+        }
+      }
+    };
+    loadImage();
+  }, [character_image]);
+
+  const modifyImageSrc = (element) => {
+    const images = element.getElementsByTagName("img");
+    for (let img of images) {
+      if (img.src.startsWith("https://open.api.nexon.com")) {
+        img.src = `/api/image-proxy?imageUrl=${encodeURIComponent(img.src)}`;
+      }
+    }
+  };
+
+  const saveAsImage = async () => {
+    const element = document.getElementById("main-character-wrap");
+
+    modifyImageSrc(element); // 이미지 src 변경
+
+    const canvas = await html2canvas(element, {
+      allowTaint: true,
       useCORS: true,
-    }).then((canvas) => {
-      const link = document.createElement("a");
-      link.download = "character_info.png"; // 다운로드할 파일명
-      link.href = canvas.toDataURL("image/png"); // 이미지를 데이터 URL로 변환
-      link.click(); // 링크 클릭 시 다운로드
+      backgroundColor: null,
+      scale: 1.3,
     });
+
+    const link = document.createElement("a");
+    link.download = "캐릭터NPC.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
   };
 
   return (
     <Container>
-      <MainCharacterWrap id="main-character-wrap">
+      <MainCharacterWrap id="main-character-wrap" crossOrigin="anonymous">
         <NpcBox src={npc_Chat_Box} alt="대화박스" />
         <CharacterInfo>
           <NpcWrap>
-            <Image src={character_image} alt="캐릭터 이미지" />
+            <Image src={imageSrc} alt="캐릭터 이미지" />
             <NickName>{character_name}</NickName>
           </NpcWrap>
           <NpcText>
@@ -174,24 +220,7 @@ const NickName = styled.div`
   border-radius: 7px;
   text-align: center;
   font-size: 1em;
-
-  &::after {
-    content: "";
-    display: inline-block;
-    background: rgb(230, 230, 230);
-    box-shadow: 0 0 0 3px rgb(230, 230, 230), 0 0 0 4px #494949;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    border-radius: 7px;
-    z-index: -1;
-  }
-
-  @media screen and (max-width: 519px) {
-    font-size: 2.3vw;
-  }
+  box-shadow: 0 0 0 3px rgb(230, 230, 230), 0 0 0 4px #494949;
 `;
 
 const NpcWrap = styled.div`
