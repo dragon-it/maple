@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import mainLightBGI from "../../assets/Henesys2.webp";
+import mainLightBGI from "../../assets/Henesys.webp";
 import mainDarkBGI from "../../assets/Kerning-City.webp";
-import findMainLightBGI from "../../assets/backgruondImg/findMain/search_guild_BGI_light.webp";
-import findMainDarkBGI from "../../assets/backgruondImg/findMain/search_guild_BGI_dark.webp";
+import findMainLightBGI from "../../assets/backgruondImg/characterCapture/character_capture_light.webp";
+import findMainDarkBGI from "../../assets/backgruondImg/characterCapture/character_capture_dark.webp";
 import searchGuildDarkBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_dark.webp";
 import searchGuildLightBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_light.webp";
 import { useTheme } from "../../context/ThemeProvider";
@@ -18,7 +18,7 @@ export const BackgroundImage = () => {
 
   // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
   function getBackgroundImage(theme, pathname) {
-    if (pathname.startsWith("/find-main")) {
+    if (pathname.startsWith("/character-capture")) {
       return theme === "dark" ? findMainDarkBGI : findMainLightBGI;
     } else if (pathname.startsWith("/guild-search")) {
       return theme === "dark" ? searchGuildDarkBGI : searchGuildLightBGI;
