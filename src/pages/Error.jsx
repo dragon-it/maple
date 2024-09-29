@@ -1,10 +1,14 @@
 import React from "react";
 import error_image from "../assets/error_image.png";
+import error_image_fish from "../assets/npc/npc_fish_error.png";
 import styled from "styled-components";
 import { Search } from "../components/main/Search";
 import { NpcChatBox } from "../components/common/npcChat/NpcChatBox";
 
 export const Error = ({ errorMessage, error }) => {
+  const currentPath = window.location.pathname;
+  const isCapturePage = currentPath.includes("/character-capture");
+
   return (
     <ErrorPageWrap>
       <SearchWrap>
@@ -12,7 +16,10 @@ export const Error = ({ errorMessage, error }) => {
       </SearchWrap>
       <ErrorImg>
         <NpcChatBox text={errorMessage}></NpcChatBox>
-        <img src={error_image} alt="error_image" width="207" height="258" />
+        <img
+          src={isCapturePage ? error_image_fish : error_image}
+          alt="error_image"
+        />
       </ErrorImg>
     </ErrorPageWrap>
   );
@@ -35,7 +42,12 @@ const ErrorImg = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 5px;
   width: 207px;
+
+  img {
+    width: 100%;
+  }
 
   @media screen and (max-width: 1024px) {
     img {

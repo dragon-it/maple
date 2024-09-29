@@ -334,8 +334,8 @@ app.get("/api/character/information", async (req, res) => {
       union,
       unionArtifact,
       unionRaider,
-      unionLanking,
       dojang,
+      unionLanking,
     ] = await Promise.all([
       callMapleStoryAPI("character/basic", { ocid }),
       callMapleStoryAPI("character/stat", { ocid }),
@@ -359,7 +359,12 @@ app.get("/api/character/information", async (req, res) => {
       callMapleStoryAPI("user/union-artifact", { ocid }),
       callMapleStoryAPI("user/union-raider", { ocid }),
       callMapleStoryAPI("character/dojang", { ocid }),
-      callMapleStoryAPI("ranking/union", { ocid, date: "2024-09-23" }),
+      callMapleStoryAPI("ranking/union", {
+        ocid,
+        date: "2024-09-23",
+        page: 1,
+        world_name: "리부트",
+      }),
     ]);
 
     res.json({
@@ -389,6 +394,7 @@ app.get("/api/character/information", async (req, res) => {
       getUnionRanking: unionLanking,
       getDojang: dojang,
     });
+    console.log(unionLanking);
   } catch (error) {
     console.error("Combined API error:", error.message);
     res.status(500).json({ error: "Failed to fetch combined data" });

@@ -9,10 +9,11 @@ import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
 import { Header } from "./components/common/header/Header.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
-import { FindMain } from "./pages/FindMain";
+
 import { SearchGuild } from "./pages/SearchGuild";
 import { SundayMaple } from "./pages/SundayMaple";
 import { Footer } from "./components/common/footer/Footer";
+import { CharacterCapture } from "./pages/CharacterCapture";
 
 function Layout({ children }) {
   return (
@@ -40,18 +41,18 @@ function App() {
               }
             />
             <Route
-              path="/find-main"
+              path="/character-capture"
               element={
                 <Layout>
-                  <FindMain />
+                  <CharacterCapture />
                 </Layout>
               }
             />
             <Route
-              path="/find-main/:characterName"
+              path="/character-capture/:characterName"
               element={
                 <Layout>
-                  <FindMain />
+                  <CharacterCapture />
                 </Layout>
               }
             />
