@@ -9,7 +9,7 @@ export const Header = () => {
 
   const routes = {
     home: "/",
-    findCharacter: "/find-main",
+    characterCapture: "/character-capture",
     searchGuild: "/guild-search",
   };
 
@@ -21,8 +21,8 @@ export const Header = () => {
         <Items onClick={() => navigate(routes.home)}>
           <p>캐릭터 검색</p>
         </Items>
-        <Items onClick={() => navigate(routes.findCharacter)}>
-          <p>본캐 찾기</p>
+        <Items onClick={() => navigate(routes.characterCapture)}>
+          <p>캐릭터 캡처</p>
         </Items>
         <Items onClick={() => navigate(routes.searchGuild)}>
           <p>길드 검색</p>
@@ -66,7 +66,7 @@ const PcHeaderContainer = styled.div`
   padding: 0 30px;
   width: 100%;
   gap: 20px;
-  min-height: 40px;
+  max-height: 50px;
   font-family: maple-light;
   background: ${({ theme }) => theme.headerBgColor};
   white-space: nowrap;
