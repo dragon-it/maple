@@ -395,6 +395,21 @@ app.get("/api/character/information", async (req, res) => {
   }
 });
 
+app.get("/api/image-proxy", async (req, res) => {
+  const { imageUrl } = req.query;
+  try {
+    const response = await axios.get(imageUrl, {
+      responseType: "arraybuffer",
+    });
+    const buffer = Buffer.from(response.data, "binary");
+    res.set("Content-Type", response.headers["content-type"]);
+    res.send(buffer);
+  } catch (error) {
+    console.error("이미지 로드 실패:", error);
+    res.status(500).send("이미지 로드 실패");
+  }
+});
+
 // 빌드된 정적 파일을 서빙하는 미들웨어 설정
 app.use(express.static(path.join(__dirname, "build")));
 
