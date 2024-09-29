@@ -19,8 +19,10 @@ export const Search = ({ error }) => {
 
     const processedSearchValue = searchValue.replace(/\s+/g, ""); // 공백 제거
 
-    if (location.pathname.startsWith("/find-main")) {
-      navigate(`/find-main/${encodeURIComponent(processedSearchValue)}`);
+    if (location.pathname.startsWith("/character-capture")) {
+      navigate(
+        `/character-capture/${encodeURIComponent(processedSearchValue)}`
+      );
     } else {
       navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
     }
