@@ -16,9 +16,10 @@ export const CharacterCapture = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   console.log(result);
+
   useEffect(() => {
     setError(null);
-
+    setResult(null);
     if (!characterName) return;
 
     const fetchDataAndUpdateState = async () => {
@@ -56,7 +57,7 @@ export const CharacterCapture = () => {
         <>
           <Container>
             <HeaderWrap>
-              <CaptureInput></CaptureInput>
+              <CaptureInput setResult={setResult}></CaptureInput>
               {!loading && result && (
                 <CaptureRenderingBox result={result}>
                   {JSON.stringify(result)}

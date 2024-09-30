@@ -4,9 +4,11 @@ import styled from "styled-components";
 import npc from "../../assets/npc/npc_fish.png";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
 
-export const CaptureInput = () => {
+export const CaptureInput = ({ setResult }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [isMainCharacterSearch, setIsMainCharacterSearch] = useState(false); // 체크박스 상태
+  const [isMainCharacterSearch, setIsMainCharacterSearch] = useState(false);
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -14,9 +16,9 @@ export const CaptureInput = () => {
 
     const processedSearchValue = searchValue.replace(/\s+/g, "");
 
-    if (isMainCharacterSearch) {
-      // 본캐 찾기 로직
-      try {
+    try {
+      if (isMainCharacterSearch) {
+        // 본캐 찾기 로직
         const result = await characterCaptureFetch(processedSearchValue);
         const mainCharacterName =
           result?.getCombinedData?.getUnionRanking?.ranking[0]?.character_name;
@@ -27,16 +29,18 @@ export const CaptureInput = () => {
             `/character-capture/${encodeURIComponent(mainCharacterName)}`
           );
         } else {
-          alert("본캐 정보를 찾을 수 없습니다.");
+          setError("본캐 정보를 찾을 수 없습니다.");
         }
-      } catch (error) {
-        console.error("본캐 찾기 중 오류 발생:", error);
+      } else {
+        // 캐릭터 캡처 로직
+        await characterCaptureFetch(processedSearchValue, setResult);
+        navigate(
+          `/character-capture/${encodeURIComponent(processedSearchValue)}`
+        );
       }
-    } else {
-      // 캐릭터 캡처 로직
-      navigate(
-        `/character-capture/${encodeURIComponent(processedSearchValue)}`
-      );
+    } catch (error) {
+      setError(`본캐 찾기 중 오류 발생: ${error.message}`);
+      console.error("본캐 찾기 중 오류 발생:", error);
     }
   };
 
@@ -50,8 +54,9 @@ export const CaptureInput = () => {
   };
 
   const handleCheckboxChange = () => {
-    setIsMainCharacterSearch(!isMainCharacterSearch); // 체크박스 상태 토글
+    setIsMainCharacterSearch(!isMainCharacterSearch);
   };
+
   return (
     <Container onSubmit={handleSubmit}>
       <Npc src={npc} alt="돌정령"></Npc>
