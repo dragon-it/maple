@@ -237,7 +237,11 @@ const NpcText = styled.div`
 const SaveButton = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #4caf50;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 221, 85, 1) 20%,
+    rgba(221, 136, 17, 1) 100%
+  );
   color: white;
   border: none;
   border-radius: 5px;

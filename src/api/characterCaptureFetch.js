@@ -59,7 +59,7 @@ const getOcid = async (characterName) => {
   }
 };
 
-const characterCaptureFetch = async (characterName) => {
+const characterCaptureFetch = async (characterName, setResult = null) => {
   if (characterName.trim() !== "") {
     try {
       const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
@@ -84,6 +84,10 @@ const characterCaptureFetch = async (characterName) => {
 
         if (!resultObject.getCombinedData.getBasicInformation) {
           throw new Error("기본 정보가 없습니다.");
+        }
+
+        if (setResult) {
+          setResult(resultObject);
         }
 
         return resultObject; // 결과 반환
