@@ -106,11 +106,17 @@ export const CaptureRenderingBox = ({ result }) => {
 
   const saveAsImage = async () => {
     const element = document.getElementById("character-wrap");
+
+    const width = 519;
+    const height = 202;
+
     const canvas = await html2canvas(element, {
       allowTaint: true,
       useCORS: true,
       backgroundColor: null,
-      scale: 1.25,
+      Width: width, // 고정된 캔버스 폭
+      Height: height, // 고정된 캔버스 높이
+      scale: 1.4, // 스케일 설정 (크기 조정)
     });
 
     const link = document.createElement("a");
@@ -144,6 +150,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: none;
 `;
 
 const MainCharacterWrap = styled.div`
@@ -161,8 +168,8 @@ const Image = styled.img`
   z-index: 10;
   transform: scaleX(-1);
   position: relative;
-  top: 7px;
-  z-index: 99;
+  top: 9px;
+  z-index: -1;
 `;
 
 const NpcBox = styled.img`
@@ -170,10 +177,6 @@ const NpcBox = styled.img`
   z-index: 1;
   width: 100%;
   height: auto;
-
-  @media screen and (max-width: 519px) {
-    width: 95%;
-  }
 `;
 
 const CharacterInfo = styled.div`
@@ -197,7 +200,7 @@ const CharacterInfo = styled.div`
 
 const NickName = styled.div`
   position: relative;
-  width: 80%;
+  width: 100%;
   background: linear-gradient(
     180deg,
     rgba(150, 149, 143, 1) 0%,
@@ -205,11 +208,16 @@ const NickName = styled.div`
     rgba(108, 106, 106, 1) 100%
   );
   color: rgb(247, 247, 247);
-  border: 1px solid rgb(82, 79, 87);
+  border: 2px solid rgb(82, 79, 87);
   border-radius: 7px;
   text-align: center;
   font-size: 1em;
-  box-shadow: 0 0 0 3px rgb(230, 230, 230), 0 0 0 4px #494949;
+  border: 2px solid rgba(230, 230, 230, 0.6);
+  white-space: nowrap;
+
+  @media screen and (max-width: 519px) {
+    font-size: 2.3vw;
+  }
 `;
 
 const NpcWrap = styled.div`
@@ -235,19 +243,26 @@ const NpcText = styled.div`
 `;
 
 const SaveButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-top: 10px;
+  padding: 8px 18px;
   background: linear-gradient(
     180deg,
     rgba(255, 221, 85, 1) 20%,
     rgba(221, 136, 17, 1) 100%
   );
   color: white;
-  border: none;
-  border-radius: 5px;
+  text-shadow: 1px 1px #3a3a3a7f;
+  border: 2px solid rgb(213, 125, 13);
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
 
   &:hover {
-    background-color: #45a049;
+    background: linear-gradient(
+      180deg,
+      #ffe684 20%,
+      rgba(221, 136, 17, 1) 100%
+    );
   }
 `;

@@ -59,20 +59,26 @@ const getOcid = async (characterName) => {
   }
 };
 
-const characterCaptureFetch = async (characterName, setResult = null) => {
+const validateCharacterName = (characterName) => {
+  if (/[ㄱ-ㅎ]/.test(characterName)) {
+    throw new Error("초성이 포함된 닉네임은 검색할 수 없습니다.");
+  }
+  if (/[!@#$%^&*(),.?":{}|<>]/g.test(characterName)) {
+    throw new Error("특수문자가 포함된 닉네임은 검색할 수 없습니다.");
+  }
+};
+
+const characterCaptureFetch = async (
+  characterName,
+  setResult = () => {},
+  setError = () => {}
+) => {
   if (characterName.trim() !== "") {
     try {
-      const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
-      const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/g;
-      if (isChosung) {
-        throw new Error("초성만으로 검색할 수 없습니다.");
-      } else if (specialCharRegex.test(characterName)) {
-        throw new Error("특수문자가 포함된 닉네임은 검색할 수 없습니다.");
-      }
+      validateCharacterName(characterName);
 
       const ocid = await getOcid(characterName);
       if (ocid) {
-        // 여러 API 호출을 병렬로 처리
         const apiResults = await Promise.all(
           apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
         );
@@ -83,19 +89,17 @@ const characterCaptureFetch = async (characterName, setResult = null) => {
         });
 
         if (!resultObject.getCombinedData.getBasicInformation) {
-          throw new Error("기본 정보가 없습니다.");
-        }
-
-        if (setResult) {
+          setError("기본 정보가 없습니다.");
+        } else {
           setResult(resultObject);
         }
 
-        return resultObject; // 결과 반환
+        return resultObject;
       } else {
-        throw new Error("OCID 가져오기 오류");
+        setError("잘못된 페이지입니다.");
       }
     } catch (error) {
-      throw new Error(`검색 중 오류 발생: ${error.message}`);
+      setError(error.message);
     }
   }
 };

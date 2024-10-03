@@ -4,10 +4,9 @@ import styled from "styled-components";
 import npc from "../../assets/npc/npc_fish.png";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
 
-export const CaptureInput = ({ setResult }) => {
+export const CaptureInput = ({ setResult, setError }) => {
   const [searchValue, setSearchValue] = useState("");
   const [isMainCharacterSearch, setIsMainCharacterSearch] = useState(false);
-  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -17,29 +16,28 @@ export const CaptureInput = ({ setResult }) => {
     const processedSearchValue = searchValue.replace(/\s+/g, "");
 
     try {
-      if (isMainCharacterSearch) {
-        // 본캐 찾기 로직
-        const result = await characterCaptureFetch(processedSearchValue);
-        const mainCharacterName =
-          result?.getCombinedData?.getUnionRanking?.ranking[0]?.character_name;
+      const result = await characterCaptureFetch(
+        processedSearchValue,
+        setResult
+      );
+      const mainCharacterName =
+        result?.getCombinedData?.getUnionRanking?.ranking[0]?.character_name;
 
-        if (mainCharacterName) {
-          // 본캐 찾으면 해당 본캐의 URL로 리다이렉트
-          navigate(
-            `/character-capture/${encodeURIComponent(mainCharacterName)}`
-          );
-        } else {
-          setError("본캐 정보를 찾을 수 없습니다.");
-        }
-      } else {
-        // 캐릭터 캡처 로직
-        await characterCaptureFetch(processedSearchValue, setResult);
+      const redirectName =
+        isMainCharacterSearch && mainCharacterName
+          ? mainCharacterName
+          : processedSearchValue;
+
+      if (isMainCharacterSearch && !mainCharacterName) {
+        setError("유니온 정보가 없어서 본캐를 찾지 못했습니다.");
         navigate(
           `/character-capture/${encodeURIComponent(processedSearchValue)}`
         );
+      } else {
+        navigate(`/character-capture/${encodeURIComponent(redirectName)}`);
       }
     } catch (error) {
-      setError(`본캐 찾기 중 오류 발생: ${error.message}`);
+      setError("오류가 발생하였습니다. 닉네임을 확인해주세요.");
       console.error("본캐 찾기 중 오류 발생:", error);
     }
   };
@@ -60,14 +58,16 @@ export const CaptureInput = ({ setResult }) => {
   return (
     <Container onSubmit={handleSubmit}>
       <Npc src={npc} alt="돌정령"></Npc>
-      <label>
-        <input
+      <FindMainCheckBox>
+        <CheckBox
+          id="check1"
           type="checkbox"
           checked={isMainCharacterSearch}
           onChange={handleCheckboxChange}
         />
+        <CheckBoxLabel htmlFor="check1" />
         본캐 찾기
-      </label>
+      </FindMainCheckBox>
       <NameInput
         type="text"
         placeholder="캐릭터 닉네임을 입력해주세요."
@@ -112,4 +112,41 @@ const Npc = styled.img`
   width: 207px;
   height: auto;
   transform: scaleX(-1);
+`;
+
+const CheckBox = styled.input`
+  display: none;
+
+  &:checked + label::after {
+    content: "✔";
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+`;
+
+const CheckBoxLabel = styled.label`
+  width: 17px;
+  height: 17px;
+  border: 2px solid #707070;
+  position: relative;
+  border-radius: 5px;
+`;
+
+const FindMainCheckBox = styled.label`
+  display: flex;
+  align-items: center;
+  align-items: center;
+  padding: 2px 4px;
+  border: 1px solid rgb(110, 93, 73);
+  background: linear-gradient(
+    0deg,
+    rgba(139, 118, 97, 1) 25%,
+    rgba(158, 139, 116, 1) 100%
+  );
+  border-radius: 5px;
+  cursor: pointer;
 `;
