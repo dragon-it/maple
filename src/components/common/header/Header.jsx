@@ -70,10 +70,6 @@ const PcHeaderContainer = styled.div`
   font-family: maple-light;
   background: ${({ theme }) => theme.headerBgColor};
   white-space: nowrap;
-
-  @media screen and (max-width: 767px) {
-    display: none;
-  }
 `;
 
 const HeaderLogo = styled.img`
@@ -86,6 +82,10 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Items = styled.div`

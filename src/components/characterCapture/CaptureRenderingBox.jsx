@@ -64,12 +64,12 @@ export const CaptureRenderingBox = ({ result }) => {
     ?.final_stat?.[42] || { stat_value: 0 };
 
   const characterInfoLines = [
-    `닉네임: ${character_name || "이름 없음"}`,
-    `레벨: ${character_level || "레벨 정보 없음"}`,
-    `전투력: ${formatPowerStat(powerValue) || "전투력 없음"}`,
-    `직업: ${character_class || "직업 없음"}`,
-    `월드: ${world_name || "월드 정보 없음"}`,
-    character_guild_name ? `길드: ${character_guild_name}` : "",
+    `닉네임 | ${character_name || "이름 없음"}`,
+    `레벨 | ${character_level || "레벨 정보 없음"}`,
+    `전투력 | ${formatPowerStat(powerValue) || "전투력 없음"}`,
+    `직업 | ${character_class || "직업 없음"}`,
+    `월드 | ${world_name || "월드 정보 없음"}`,
+    character_guild_name ? `길드 | ${character_guild_name}` : "",
   ];
 
   const [imageSrc, setImageSrc] = useState(character_image || "");
@@ -151,6 +151,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   box-shadow: none;
+  margin-top: 10px;
 `;
 
 const MainCharacterWrap = styled.div`
