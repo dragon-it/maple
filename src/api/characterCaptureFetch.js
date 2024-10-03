@@ -96,7 +96,9 @@ const characterCaptureFetch = async (
 
         return resultObject;
       } else {
-        setError("잘못된 페이지입니다.");
+        setError(
+          "존재하지 않는 캐릭터 명이거나 오랫동안 접속하지 않은 캐릭터입니다.."
+        );
       }
     } catch (error) {
       setError(error.message);
