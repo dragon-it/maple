@@ -15,23 +15,22 @@ export const CharacterCapture = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log(result);
 
   useEffect(() => {
-    setError(null);
     setResult(null);
+    setLoading(false);
+    setError(null);
     if (!characterName) return;
 
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
       setError(null);
-      await characterCaptureFetch(
-        characterName,
-        setResult,
-        setLoading,
-        setError
-      );
-      setLoading(false);
+
+      try {
+        await characterCaptureFetch(characterName, setResult, setError);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchDataAndUpdateState();
@@ -48,16 +47,16 @@ export const CharacterCapture = () => {
         </LoadingWrap>
       ) : error ? (
         <ErrorWrap>
-          <Error
-            error={error}
-            errorMessage="존재하지 않는 캐릭터 명이거나 오랫동안 접속하지 않은 캐릭터입니다."
-          />
+          <Error error={error} errorMessage={error} />
         </ErrorWrap>
       ) : (
         <>
           <Container>
             <HeaderWrap>
-              <CaptureInput setResult={setResult}></CaptureInput>
+              <CaptureInput
+                setResult={setResult}
+                setError={setError}
+              ></CaptureInput>
               {!loading && result && (
                 <CaptureRenderingBox result={result}>
                   {JSON.stringify(result)}
