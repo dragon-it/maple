@@ -69,8 +69,7 @@ const SearchWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  top: 0;
   width: 100%;
-  height: 100px;
+  min-height: 80px;
   color: black;
 `;
