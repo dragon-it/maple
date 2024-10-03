@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import npc from "../../assets/npc/npc_fish.png";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
+import serchIcon from "../../assets/SearchIcon_small.svg";
 
 export const CaptureInput = ({ setResult, setError }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -57,7 +57,18 @@ export const CaptureInput = ({ setResult, setError }) => {
 
   return (
     <Container onSubmit={handleSubmit}>
-      <Npc src={npc} alt="돌정령"></Npc>
+      <InputWrap>
+        <NameInput
+          type="text"
+          placeholder="캐릭터 닉네임을 입력해주세요."
+          value={searchValue}
+          onChange={handleInputChange}
+          maxLength={15}
+        />
+        <StyledButton>
+          <img src={serchIcon} alt="검색" width={20} height={20} />
+        </StyledButton>
+      </InputWrap>
       <FindMainCheckBox>
         <CheckBox
           id="check1"
@@ -68,50 +79,39 @@ export const CaptureInput = ({ setResult, setError }) => {
         <CheckBoxLabel htmlFor="check1" />
         본캐 찾기
       </FindMainCheckBox>
-      <NameInput
-        type="text"
-        placeholder="캐릭터 닉네임을 입력해주세요."
-        value={searchValue}
-        onChange={handleInputChange}
-        maxLength={15}
-      />
     </Container>
   );
 };
 
 const Container = styled.form`
-  width: 100%;
+  width: fit-content;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 7px;
 `;
 
 const NameInput = styled.input`
   position: relative;
-  width: 220px;
+  width: 200px;
   height: 30px;
-  padding: 2px 10px;
-  border: 2px solid rgba(0, 0, 0, 0.9);
-  border-radius: 7px;
-  outline: none;
-  background-color: rgba(255, 255, 255, 0.4);
+  padding: 2px 30px 2px 5px;
+  border: 1px solid rgb(132, 111, 90);
+  border-radius: 8px;
+  outline: 2px solid rgb(110, 93, 73);
+  background: linear-gradient(0deg, #8b7b6a 25%, rgba(158, 139, 116, 1) 100%);
+  color: rgba(255, 255, 255, 0.8);
 
   &:focus {
-    border-color: rgba(255, 51, 0, 0.9);
-    box-shadow: 0 0 10px rgba(255, 51, 0, 0.5);
+    background: linear-gradient(0deg, #a3917d 25%, #b9a388 100%);
+    box-shadow: 0 0 3px rgba(235, 136, 112, 0.897);
   }
 
-  &:focus + button {
-    color: rgba(255, 51, 0, 0.9);
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
   }
-`;
-
-const Npc = styled.img`
-  width: 207px;
-  height: auto;
-  transform: scaleX(-1);
 `;
 
 const CheckBox = styled.input`
@@ -119,34 +119,59 @@ const CheckBox = styled.input`
 
   &:checked + label::after {
     content: "✔";
-    font-size: 15px;
+    font-size: 20px;
     width: 15px;
     height: 15px;
     position: absolute;
-    top: 0;
+    top: -9px;
     left: 0;
+    color: rgba(255, 255, 255, 0.8);
   }
 `;
 
 const CheckBoxLabel = styled.label`
   width: 17px;
   height: 17px;
-  border: 2px solid #707070;
+  border: 2px solid rgb(73, 73, 73);
   position: relative;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const FindMainCheckBox = styled.label`
   display: flex;
   align-items: center;
-  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
   padding: 2px 4px;
-  border: 1px solid rgb(110, 93, 73);
-  background: linear-gradient(
-    0deg,
-    rgba(139, 118, 97, 1) 25%,
-    rgba(158, 139, 116, 1) 100%
-  );
+  border: 1px solid rgb(132, 111, 90);
   border-radius: 5px;
+  outline: 2px solid rgb(110, 93, 73);
+  background: linear-gradient(0deg, #8b7b6a 25%, rgba(158, 139, 116, 1) 100%);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(0deg, #a3917d 25%, #b9a388 100%);
+  }
+`;
+
+const InputWrap = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StyledButton = styled.button`
+  position: absolute;
+  right: 0px;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: none;
   cursor: pointer;
 `;

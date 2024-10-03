@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Logo } from "./Logo";
 import { useNavigate, useLocation } from "react-router-dom";
-import serchIcon_big from "../../assets/SearchIcon_big.svg";
-import serchIcon_small from "../../assets/SearchIcon_small.svg";
+import serchIcon from "../../assets/SearchIcon_small.svg";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리
@@ -56,12 +55,7 @@ export const Search = ({ error }) => {
           maxLength={15}
         />
         <StyledButton isUserRoute={isUserRoute}>
-          <img
-            src={isUserRoute ? serchIcon_small : serchIcon_big}
-            alt="검색"
-            width={isUserRoute ? "18" : "23"}
-            height={isUserRoute ? "18" : "23"}
-          />
+          <img src={serchIcon} alt="검색" width={18} height={18} />
         </StyledButton>
       </InputWrap>
     </InputContainer>
@@ -111,7 +105,7 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
   position: absolute;
   right: 10px;
-  width: ${({ isUserRoute }) => (isUserRoute ? "30px" : "35px")};
+  width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
