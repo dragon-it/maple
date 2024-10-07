@@ -4,72 +4,134 @@ import { formatPowerStat } from "../common/powerStat/PowerStat";
 import npc_Chat_Box from "../../assets/npc/npc_Chat_Box.png";
 import html2canvas from "html2canvas";
 
-const StyledLine = styled.p`
-  margin: 2px 0;
+const StyledLine = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 1px 0;
   color: rgb(0, 0, 0);
+  letter-spacing: 0px;
+  gap: 5px;
+`;
+
+const Label = styled.span`
+  color: #000000;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 5px;
+  background-color: rgb(197, 220, 242);
+  padding: 1px 3px;
   @media screen and (max-width: 519px) {
-    margin: 0;
-    font-size: 2.3vw;
+    font-size: 3.1vw;
+  }
+`;
+
+const Value = styled.span`
+  color: black;
+  text-align: left;
+  width: 70%;
+  word-spacing: -2px;
+  @media screen and (max-width: 519px) {
+    font-size: 3vw;
   }
 `;
 
 const LineTypingEffect = ({ lines, speed = 5 }) => {
+  // useState를 사용해서 현재 화면에 표시된 줄을 관리. 처음엔 빈 배열.
   const [displayedLines, setDisplayedLines] = useState([]);
+
+  // 몇 번째 줄을 타이핑 중인지 관리하는 상태 변수. 처음엔 0부터 시작.
   const [lineIndex, setLineIndex] = useState(0);
+
+  // 현재 타이핑 중인 줄에서 몇 번째 글자까지 출력했는지 관리하는 상태 변수.
   const [charIndex, setCharIndex] = useState(0);
 
   useEffect(() => {
-    if (lineIndex < lines.length) {
-      if (charIndex < lines[lineIndex].length) {
+    if (lines.length > 0 && lineIndex < lines.length) {
+      if (
+        charIndex <
+        lines[lineIndex].label.length + lines[lineIndex].value.length
+      ) {
         const timeoutId = setTimeout(() => {
           setDisplayedLines((prev) => {
-            const currentLine = prev[lineIndex] || "";
+            const currentLine = prev[lineIndex] || { label: "", value: "" };
+            const isLabel = charIndex < lines[lineIndex].label.length;
+
             return [
               ...prev.slice(0, lineIndex),
-              currentLine + lines[lineIndex][charIndex],
+              {
+                label: isLabel
+                  ? currentLine.label + lines[lineIndex].label[charIndex]
+                  : lines[lineIndex].label,
+                value: !isLabel
+                  ? currentLine.value +
+                    lines[lineIndex].value[
+                      charIndex - lines[lineIndex].label.length
+                    ]
+                  : currentLine.value,
+              },
             ];
           });
-          setCharIndex(charIndex + 1);
+
+          setCharIndex((prev) => prev + 1);
         }, speed);
 
         return () => clearTimeout(timeoutId);
       } else {
         setCharIndex(0);
-        setLineIndex(lineIndex + 1);
+        setLineIndex((prev) => prev + 1);
       }
     }
   }, [lineIndex, charIndex, lines, speed]);
 
   return (
-    <div>
+    <>
+      {/* displayedLines에 있는 각 줄을 화면에 표시. map을 사용해 줄마다 출력. */}
       {displayedLines.map((line, i) => (
-        <StyledLine key={i}>{line}</StyledLine>
+        <StyledLine key={i}>
+          <Label>{line.label}</Label> {/* 각 줄의 label 부분 출력. */}
+          <Value>{line.value}</Value> {/* 각 줄의 value 부분 출력. */}
+        </StyledLine>
       ))}
-    </div>
+    </>
   );
 };
 
 export const CaptureRenderingBox = ({ result }) => {
   console.log(result);
+  console.log(result?.getCombinedData?.getBasicInformation.character_level);
+
   const {
+    character_level,
     character_name,
     character_class,
     character_guild_name,
     character_image,
-    character_level,
     world_name,
   } = result?.getCombinedData?.getBasicInformation || {};
+
+  const { union_level } = result?.getCombinedData?.getUnion || {};
+  const { popularity } = result?.getCombinedData?.getCharacterPopularity || {};
+  console.log(union_level);
 
   const { stat_value: powerValue } = result?.getCombinedData?.getCharacterStat
     ?.final_stat?.[42] || { stat_value: 0 };
 
   const characterInfoLines = [
-    `닉네임 | ${character_name || "이름 없음"}`,
-    `레벨 | ${character_level || "레벨 정보 없음"}`,
-    `전투력 | ${formatPowerStat(powerValue) || "전투력 없음"}`,
-    `직업 | ${character_class || "직업 없음"}`,
-    `월드 | ${world_name || "월드 정보 없음"}`,
-    character_guild_name ? `길드 | ${character_guild_name}` : "",
+    { label: "닉네임", value: character_name || "-" },
+    { label: "전투력", value: formatPowerStat(powerValue) || "-" },
+    { label: "유니온", value: `${union_level}` || "-" },
+    { label: "인기도", value: `${popularity}` || "-" },
+  ];
+
+  const characterInfoLinesSecond = [
+    {
+      label: "레벨",
+      value: `${character_level}` || "-",
+    },
+    { label: "직업", value: character_class || "-" },
+    { label: "월드", value: world_name || "-" },
+    { label: "길드", value: character_guild_name || "-" },
   ];
 
   const [imageSrc, setImageSrc] = useState(character_image || "");
@@ -114,8 +176,8 @@ export const CaptureRenderingBox = ({ result }) => {
       allowTaint: true,
       useCORS: true,
       backgroundColor: null,
-      Width: width, // 고정된 캔버스 폭
-      Height: height, // 고정된 캔버스 높이
+      width: width, // 고정된 캔버스 폭
+      height: height, // 고정된 캔버스 높이
       scale: 1.4, // 스케일 설정 (크기 조정)
     });
 
@@ -135,7 +197,12 @@ export const CaptureRenderingBox = ({ result }) => {
             <NickName>{character_name}</NickName>
           </NpcWrap>
           <NpcText>
-            <LineTypingEffect lines={characterInfoLines} speed={5} />
+            <LineColumn>
+              <LineTypingEffect lines={characterInfoLines} speed={5} />
+            </LineColumn>
+            <LineColumn>
+              <LineTypingEffect lines={characterInfoLinesSecond} speed={5} />
+            </LineColumn>
           </NpcText>
         </CharacterInfo>
       </MainCharacterWrap>
@@ -178,6 +245,8 @@ const NpcBox = styled.img`
   z-index: 1;
   width: 100%;
   height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `;
 
 const CharacterInfo = styled.div`
@@ -196,6 +265,7 @@ const CharacterInfo = styled.div`
   flex-shrink: 1;
 
   @media screen and (max-width: 519px) {
+    padding: 13px 40px 36px 17px;
   }
 `;
 
@@ -232,6 +302,8 @@ const NpcWrap = styled.div`
 `;
 
 const NpcText = styled.div`
+  display: flex;
+  gap: 5px;
   width: 70%;
   overflow-wrap: break-word;
   white-space: normal;
@@ -252,18 +324,28 @@ const SaveButton = styled.button`
     rgba(221, 136, 17, 1) 100%
   );
   color: white;
-  text-shadow: 1px 1px #3a3a3a7f;
+  text-shadow: 1px 1px rgba(58, 58, 58, 0.498);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
   border: 2px solid rgb(213, 125, 13);
   border-radius: 10px;
   cursor: pointer;
   font-size: 15px;
   font-weight: bold;
+  transition: background 0.3s ease;
 
   &:hover {
     background: linear-gradient(
       180deg,
-      #ffe684 20%,
+      rgb(255, 230, 132) 20%,
       rgba(221, 136, 17, 1) 100%
     );
+    transform: scale(1.02);
   }
+`;
+
+const LineColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
 `;
