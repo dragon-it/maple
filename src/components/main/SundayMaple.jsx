@@ -242,7 +242,7 @@ const ScrollTopButton = styled.div`
   justify-content: center;
   align-items: center;
   bottom: 24px;
-  right: 125px;
+  right: 30px;
   width: 50px;
   height: 50px;
   background-color: ${({ theme }) => theme.toggleBgColor};
@@ -252,7 +252,6 @@ const ScrollTopButton = styled.div`
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
-    right: 10px;
     width: 32px;
     height: 32px;
   }
