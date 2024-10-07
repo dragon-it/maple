@@ -6,33 +6,39 @@ import html2canvas from "html2canvas";
 
 const StyledLine = styled.div`
   display: flex;
-  justify-content: flex-start;
   align-items: center;
   margin: 1px 0;
   color: rgb(0, 0, 0);
-  letter-spacing: 0px;
   gap: 5px;
+  line-height: 1;
+
+  @media screen and (max-width: 519px) {
+    gap: 2px;
+  }
 `;
 
 const Label = styled.span`
-  color: #000000;
+  display: flex;
+  align-items: center;
   font-weight: bold;
   font-size: 15px;
   border-radius: 5px;
   background-color: rgb(197, 220, 242);
-  padding: 1px 3px;
+  padding: 2px 3px;
+
   @media screen and (max-width: 519px) {
     font-size: 3.1vw;
   }
 `;
 
 const Value = styled.span`
-  color: black;
-  text-align: left;
+  display: flex;
+  align-items: center;
   width: 70%;
-  word-spacing: -2px;
+
   @media screen and (max-width: 519px) {
     font-size: 3vw;
+    word-spacing: -1px;
   }
 `;
 
@@ -86,11 +92,10 @@ const LineTypingEffect = ({ lines, speed = 5 }) => {
 
   return (
     <>
-      {/* displayedLines에 있는 각 줄을 화면에 표시. map을 사용해 줄마다 출력. */}
       {displayedLines.map((line, i) => (
         <StyledLine key={i}>
-          <Label>{line.label}</Label> {/* 각 줄의 label 부분 출력. */}
-          <Value>{line.value}</Value> {/* 각 줄의 value 부분 출력. */}
+          <Label>{line.label}</Label>
+          <Value>{line.value}</Value>
         </StyledLine>
       ))}
     </>
@@ -98,9 +103,6 @@ const LineTypingEffect = ({ lines, speed = 5 }) => {
 };
 
 export const CaptureRenderingBox = ({ result }) => {
-  console.log(result);
-  console.log(result?.getCombinedData?.getBasicInformation.character_level);
-
   const {
     character_level,
     character_name,
@@ -112,7 +114,6 @@ export const CaptureRenderingBox = ({ result }) => {
 
   const { union_level } = result?.getCombinedData?.getUnion || {};
   const { popularity } = result?.getCombinedData?.getCharacterPopularity || {};
-  console.log(union_level);
 
   const { stat_value: powerValue } = result?.getCombinedData?.getCharacterStat
     ?.final_stat?.[42] || { stat_value: 0 };
@@ -142,12 +143,12 @@ export const CaptureRenderingBox = ({ result }) => {
         `/api/image-proxy?imageUrl=${encodeURIComponent(imageUrl)}`
       );
       if (!response.ok) {
-        throw new Error("프록시 요청 실패");
+        throw new Error("요청 실패");
       }
       const blob = await response.blob();
       return URL.createObjectURL(blob);
     } catch (error) {
-      console.error("프록시를 통한 이미지 로드 오류:", error);
+      console.error("이미지 로드 오류:", error);
       throw error;
     }
   };
@@ -169,16 +170,15 @@ export const CaptureRenderingBox = ({ result }) => {
   const saveAsImage = async () => {
     const element = document.getElementById("character-wrap");
 
-    const width = 519;
-    const height = 202;
-
     const canvas = await html2canvas(element, {
-      allowTaint: true,
-      useCORS: true,
-      backgroundColor: null,
-      width: width, // 고정된 캔버스 폭
-      height: height, // 고정된 캔버스 높이
-      scale: 1.4, // 스케일 설정 (크기 조정)
+      allowTaint: true, // 크로스 오리진 허용
+      useCORS: true, // CORS서버 이미지 로드 허용
+      backgroundColor: null, // 백그라운드 컬러 제외
+      width: 519, // 캔버스 폭 고정
+      height: 202, // 캔버스 높이 고정
+      windowWidth: 1920, // 윈도우 폭 고정
+      windowHeight: 911, // 윈도우 높이 고정
+      scale: 1.35, // 스케일 설정 기본 1
     });
 
     const link = document.createElement("a");
@@ -217,17 +217,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: none;
   margin-top: 10px;
 `;
 
 const MainCharacterWrap = styled.div`
-  width: fit-content;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
 `;
 
 const Image = styled.img`
@@ -238,40 +232,43 @@ const Image = styled.img`
   position: relative;
   top: 9px;
   z-index: -1;
+  @media screen and (max-width: 519px) {
+    top: 1.5vw;
+  }
 `;
 
 const NpcBox = styled.img`
   position: relative;
-  z-index: 1;
   width: 100%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+  @media screen and (max-width: 280px) {
+    border-radius: 5px;
+  }
 `;
 
 const CharacterInfo = styled.div`
+  width: 100%;
   display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  flex-direction: row;
   justify-content: space-around;
   align-items: center;
   padding: 13px 13px 36px 17px;
-  z-index: 10;
-  width: 100%;
-  min-height: 50px;
-  flex-shrink: 1;
 
   @media screen and (max-width: 519px) {
-    padding: 13px 40px 36px 17px;
+    padding: 23px 21px 36px 4vw;
   }
 `;
 
-const NickName = styled.div`
+const NickName = styled.span`
   position: relative;
   width: 100%;
+  max-height: 23px;
   background: linear-gradient(
     180deg,
     rgba(150, 149, 143, 1) 0%,
@@ -294,9 +291,7 @@ const NickName = styled.div`
 const NpcWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100%;
   max-width: 23%;
   flex-grow: 1;
 `;
@@ -328,10 +323,9 @@ const SaveButton = styled.button`
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
   border: 2px solid rgb(213, 125, 13);
   border-radius: 10px;
-  cursor: pointer;
   font-size: 15px;
   font-weight: bold;
-  transition: background 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     background: linear-gradient(
@@ -346,6 +340,9 @@ const SaveButton = styled.button`
 const LineColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 7px;
   width: 100%;
+  @media screen and (max-width: 519px) {
+    gap: 0px;
+  }
 `;
