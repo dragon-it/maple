@@ -56,7 +56,9 @@ export const CaptureInput = ({ setResult, setError }) => {
 
   return (
     <Container onSubmit={handleSubmit}>
-      <CaptureHead>CHARACTER CAPTURE</CaptureHead>
+      <CaptureHead onClick={() => navigate("/character-capture")}>
+        CHARACTER CAPTURE
+      </CaptureHead>
       <InputWrap>
         <NameInput
           type="text"
@@ -96,14 +98,15 @@ const CaptureHead = styled.div`
   width: 100%;
   font-weight: normal;
   margin: 5px 0;
-  text-shadow: 0px 0px 2px rgb(51, 46, 46);
-  color: rgb(0, 0, 0);
+  text-shadow: 0px 0px 4px rgb(51, 46, 46);
+  color: rgb(24, 24, 24);
   font-size: 15px;
   font-weight: bold;
   position: relative;
   padding: 0 10px;
   text-align: center;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const NameInput = styled.input`
