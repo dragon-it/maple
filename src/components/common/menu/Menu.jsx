@@ -8,6 +8,7 @@ import { useTheme } from "../../../context/ThemeProvider";
 export const Menu = () => {
   const { theme } = useTheme();
   const [isClicked, setIsClicked] = useState(false);
+  console.log(isClicked);
 
   const handleClicked = () => {
     setIsClicked(!isClicked);
@@ -60,6 +61,7 @@ const HamburgerImg = styled.img`
 `;
 
 const MenuContainer = styled.div`
+  display: ${({ isClicked }) => (isClicked ? "block" : "none")};
   position: fixed;
   top: 0;
   right: ${({ isClicked }) => (isClicked ? "0" : "-100%")};
