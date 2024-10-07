@@ -93,7 +93,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 10px;
   margin-top: 20px;
 
   @media screen and (max-width: 768px) {
@@ -102,19 +101,21 @@ const Container = styled.div`
 `;
 
 const HeaderWrap = styled.div`
-  width: fit-content;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   gap: 30px;
   padding: 10px 20px 20px 20px;
   background-color: rgba(181, 165, 149, 0.85);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-  border: 1px solid #dcd9ca;
-  outline: 1px solid #928b66;
+  border: 1px solid rgb(220, 217, 202);
+  outline: 1px solid rgb(146, 139, 102);
   border-radius: 10px;
   z-index: 9999;
+
+  @media screen and (max-width: 576px) {
+    padding: 10px 5px 20px 5px;
+  }
 `;
 
 const NpcWarp = styled.div`
@@ -149,7 +150,5 @@ const LoadingWrap = styled.div`
 `;
 
 const Npc = styled.img`
-  width: 207px;
-  height: auto;
   transform: scaleX(-1);
 `;
