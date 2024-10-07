@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import npc from "../assets/npc/npc_fish.png";
-import { Error } from "./Error";
+import error_npc from "../assets/npc/npc_fish_error.png";
 import characterCaptureFetch from "../api/characterCaptureFetch";
 import { CaptureInput } from "../components/characterCapture/CaptureInput";
 import { CaptureRenderingBox } from "../components/characterCapture/CaptureRenderingBox";
@@ -48,9 +48,19 @@ export const CharacterCapture = () => {
           />
         </LoadingWrap>
       ) : error ? (
-        <ErrorWrap>
-          <Error error={error} errorMessage={error} />
-        </ErrorWrap>
+        <Container>
+          <HeaderWrap>
+            <CaptureInput setResult={setResult} setError={setError} />
+            <NpcWarp>
+              <NpcChatBox
+                text={error}
+                error={error}
+                errorMessage={error}
+              ></NpcChatBox>
+              <Npc src={error_npc} alt="날치" />
+            </NpcWarp>
+          </HeaderWrap>
+        </Container>
       ) : (
         <>
           <Container result={result}>
@@ -79,7 +89,7 @@ export const CharacterCapture = () => {
 
 const Container = styled.div`
   width: 100%;
-  height: ${({ result }) => (result ? "60%" : "auto")};
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,20 +102,25 @@ const Container = styled.div`
 `;
 
 const HeaderWrap = styled.div`
-  width: 100%;
-  height: 100%;
+  width: fit-content;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
   gap: 30px;
+  padding: 10px 20px 20px 20px;
+  background-color: rgba(181, 165, 149, 0.85);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  border: 1px solid #dcd9ca;
+  outline: 1px solid #928b66;
+  border-radius: 10px;
+  z-index: 9999;
 `;
 
 const NpcWarp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
 `;
 
 const LoadingWrap = styled.div`
@@ -131,13 +146,6 @@ const LoadingWrap = styled.div`
       width: 130px;
     }
   }
-`;
-
-const ErrorWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
 `;
 
 const Npc = styled.img`
