@@ -9,9 +9,9 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     font-family:
       sans-serif,
-      maple-light,
       "Noto Sans",
       "Noto Sans CJK KR",
+      maple-light,
       "Montserrat",
       "Helvetica Neue",
       "NanumSquare",
