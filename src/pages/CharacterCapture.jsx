@@ -75,9 +75,7 @@ export const CharacterCapture = () => {
               )}
 
               {!loading && result && (
-                <CaptureRenderingBox result={result}>
-                  {JSON.stringify(result)}
-                </CaptureRenderingBox>
+                <CaptureRenderingBox result={result}></CaptureRenderingBox>
               )}
             </HeaderWrap>
           </Container>
@@ -93,7 +91,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
 
   @media screen and (max-width: 768px) {
     padding: 0 5px;
