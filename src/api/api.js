@@ -86,6 +86,25 @@ const getCombinedData = async (ocid) => {
   }
 };
 
+// 캐릭터 캡처 API
+const getCharacterCapture = async (ocid) => {
+  try {
+    const response = await axios.get(`/api/character-capture`, {
+      params: { ocid },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Failed to fetch combined data");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching combined data:", error);
+    return false;
+  }
+};
+
 // 길드 랭킹 함수
 const getGuildRanking = async (guildName, worldName) => {
   return callMapleStoryAPI("ranking/guild", {
@@ -105,4 +124,5 @@ export {
   getGuildMembers,
   getNotice,
   getNoticeDetail,
+  getCharacterCapture,
 };
