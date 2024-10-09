@@ -3,26 +3,56 @@ import styled from "styled-components";
 
 export const SearchGuildInput = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectWorld, setSelectWorld] = useState("");
+  console.log(selectWorld);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleSelectWorld = (world) => {
+    setSelectWorld(world);
+    setIsOpen(false); // 선택 후 드롭다운 닫기
+  };
+
   return (
     <Container>
-      <WorldButton onClick={toggleDropdown}>월드 선택</WorldButton>
+      <WorldButton onClick={toggleDropdown}>
+        {selectWorld || "월드 선택"}
+      </WorldButton>
       {isOpen && (
         <Dropdown>
-          <GuildItem>리부트</GuildItem>
-          <GuildItem>스카니아</GuildItem>
-          <GuildItem>루나</GuildItem>
-          <GuildItem>엘리시움</GuildItem>
-          <GuildItem>크로아</GuildItem>
-          <GuildItem>오로라</GuildItem>
-          <GuildItem>베라</GuildItem>
-          <GuildItem>유니온</GuildItem>
-          <GuildItem>제니스</GuildItem>
-          <GuildItem>아케인</GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("스카니아")}>
+            스카니아
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("베라")}>베라</GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("루나")}>루나</GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("제니스")}>
+            제니스
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("유니온")}>
+            유니온
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("엘리시움")}>
+            엘리시움
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("이노시스")}>
+            이노시스
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("레드")}>레드</GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("오로라")}>
+            오로라
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("아케인")}>
+            아케인
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("노바")}>노바</GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("리부트")}>
+            리부트
+          </GuildItem>
+          <GuildItem onClick={() => handleSelectWorld("리부트2")}>
+            리부트2
+          </GuildItem>
         </Dropdown>
       )}
     </Container>
@@ -51,11 +81,11 @@ const Dropdown = styled.div`
 
 const GuildItem = styled.div`
   padding: 10px 20px;
+  width: 100px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 5px;
-  width: 100px;
   cursor: pointer;
   &:hover {
     background-color: #e0e0e0;
