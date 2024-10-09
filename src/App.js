@@ -73,6 +73,14 @@ function App() {
               }
             />
             <Route
+              path="/guild-search/:world/guild"
+              element={
+                <Layout>
+                  <SearchGuild />
+                </Layout>
+              }
+            />
+            <Route
               path="/sunday-maple"
               element={
                 <Layout>
