@@ -9,8 +9,6 @@ export const Logo = ({ error, isUserRoute }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();
 
-
-
   // 로고 클릭 시 홈페이지 이동
   const handleClick = () => {
     navigate(`/`);
@@ -18,7 +16,6 @@ export const Logo = ({ error, isUserRoute }) => {
 
   // 로고 이미지 선택 로직
   const logoSrc = (() => {
-
     if (theme === "dark") {
       return isUserRoute && !error ? logo_light : logo_dark;
     }
