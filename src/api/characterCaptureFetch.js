@@ -1,5 +1,5 @@
 import { getOcidApi } from "./api";
-import apiFunctions from "./ApiFuntion";
+import characterCaptureApi from "./ApiFuntion";
 
 const getAllCaseCombinations = (str) => {
   if (str.length === 0) return [""]; // 문자열이 빈 경우, 빈 문자열 배열 반환
@@ -80,11 +80,13 @@ const characterCaptureFetch = async (
       const ocid = await getOcid(characterName);
       if (ocid) {
         const apiResults = await Promise.all(
-          apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
+          characterCaptureApi.map(({ function: apiFunction }) =>
+            apiFunction(ocid)
+          )
         );
 
         const resultObject = {};
-        apiFunctions.forEach(({ name }, index) => {
+        characterCaptureApi.forEach(({ name }, index) => {
           resultObject[name] = apiResults[index];
         });
 

@@ -306,6 +306,7 @@ app.get("/api/guild/members", async (req, res) => {
 // Combined 엔드포인트
 app.get("/api/character/information", async (req, res) => {
   const { ocid } = req.query;
+  const date = getFormattedDate();
 
   if (!ocid) {
     return res.status(400).json({ error: "ocid is required" });
@@ -361,9 +362,8 @@ app.get("/api/character/information", async (req, res) => {
       callMapleStoryAPI("character/dojang", { ocid }),
       callMapleStoryAPI("ranking/union", {
         ocid,
-        date: "2024-09-23",
+        date,
         page: 1,
-        world_name: "리부트",
       }),
     ]);
 
@@ -401,6 +401,43 @@ app.get("/api/character/information", async (req, res) => {
   }
 });
 
+// 캐릭터 캡처
+app.get("/api/character-capture", async (req, res) => {
+  const { ocid } = req.query;
+  const date = getFormattedDate();
+
+  if (!ocid) {
+    return res.status(400).json({ error: "ocid is required" });
+  }
+
+  try {
+    const [basicData, popularity, union, dojang, unionLanking] =
+      await Promise.all([
+        callMapleStoryAPI("character/basic", { ocid }),
+        callMapleStoryAPI("character/popularity", { ocid }),
+        callMapleStoryAPI("user/union", { ocid }),
+        callMapleStoryAPI("character/dojang", { ocid }),
+        callMapleStoryAPI("ranking/union", {
+          ocid,
+          date,
+          page: 1,
+        }),
+      ]);
+
+    res.json({
+      getBasicInformation: basicData,
+      getCharacterPopularity: popularity,
+      getUnion: union,
+      getUnionRanking: unionLanking,
+      getDojang: dojang,
+    });
+  } catch (error) {
+    console.error("Combined API error:", error.message);
+    res.status(500).json({ error: "Failed to fetch combined data" });
+  }
+});
+
+// 캐릭터 캡처 이미지
 app.get("/api/image-proxy", async (req, res) => {
   const { imageUrl } = req.query;
   try {
@@ -426,12 +463,6 @@ app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "build", "index.html"));
   }
 });
-
-///////////////////////////////////////////////////////////////////////////////
-// 캐릭터 목록 api
-
-// GET
-// /maplestory/v1/character/list
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
