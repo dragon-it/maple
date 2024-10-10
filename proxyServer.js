@@ -303,6 +303,62 @@ app.get("/api/guild/members", async (req, res) => {
   }
 });
 
+// 모든 월드의 길드 oguild_id 조회
+app.get("/api/guild/all", async (req, res) => {
+  const { guild_name: guildName } = req.query;
+
+  // 월드 리스트
+  const worlds = [
+    "스카니아",
+    "베라",
+    "루나",
+    "제니스",
+    "유니온",
+    "엘리시움",
+    "이노시스",
+    "레드",
+    "오로라",
+    "아케인",
+    "노바",
+    "리부트",
+    "리부트2",
+  ];
+
+  if (!guildName) {
+    return res.status(400).json({ error: "guild_name is required" });
+  }
+
+  try {
+    const results = [];
+
+    // 모든 월드를 순회하며 API 호출
+    for (const world of worlds) {
+      const data = await callMapleStoryAPI("guild/id", {
+        guild_name: guildName,
+        world_name: world,
+      });
+
+      // 데이터가 존재할 경우 oguild_id를 결과 배열에 추가
+      if (data && data.oguild_id) {
+        results.push({
+          world_name: world,
+          oguild_id: data.oguild_id,
+        });
+      }
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "No guild found" });
+    }
+
+    // 존재하는 길드 oguild_id 목록 반환
+    res.json(results);
+  } catch (error) {
+    console.error(`Error during guild all worlds API call: ${error.message}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Combined 엔드포인트
 app.get("/api/character/information", async (req, res) => {
   const { ocid } = req.query;
@@ -394,7 +450,6 @@ app.get("/api/character/information", async (req, res) => {
       getUnionRanking: unionLanking,
       getDojang: dojang,
     });
-    console.log(unionLanking);
   } catch (error) {
     console.error("Combined API error:", error.message);
     res.status(500).json({ error: "Failed to fetch combined data" });

@@ -73,7 +73,7 @@ function App() {
               }
             />
             <Route
-              path="/guild-search/:world/guild"
+              path="/guild-search/:guildName"
               element={
                 <Layout>
                   <SearchGuild />
