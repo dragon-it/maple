@@ -6,17 +6,21 @@ import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import npc from "../assets/npc/npc_fish.png";
 import error_npc from "../assets/npc/npc_fish_error.png";
-import characterCaptureFetch from "../api/characterCaptureFetch";
 import { NpcChatBox } from "../components/common/npcChat/NpcChatBox";
 import { SearchGuildRendering } from "../components/searchGuild/SearchGuildRendering";
 import { SearchGuildInput } from "../components/searchGuild/SearchGuildInput";
+import SearchGuildFetch from "../api/searchGuildFetch";
 
 export const SearchGuild = () => {
   const { theme } = useTheme();
-  const { guildName, worldName } = useParams();
+  const { guildName } = useParams();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  console.log(result);
+  console.log(error);
+  console.log(loading);
 
   useEffect(() => {
     setResult(null);
@@ -29,14 +33,14 @@ export const SearchGuild = () => {
       setError(null);
 
       try {
-        await characterCaptureFetch(guildName, worldName, setResult, setError);
+        await SearchGuildFetch(guildName, setResult, setError);
       } finally {
         setLoading(false);
       }
     };
 
     fetchDataAndUpdateState();
-  }, [guildName, worldName]);
+  }, [guildName]);
 
   return (
     <>

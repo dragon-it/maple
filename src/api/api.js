@@ -55,6 +55,21 @@ const getOguildId = async (guildName, worldName) => {
   });
 };
 
+// 길드 모든 월드 id
+const getAllOguildId = async (guildName) => {
+  return callMapleStoryAPI(
+    "guild/all",
+    {
+      guild_name: guildName,
+    },
+    {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    }
+  );
+};
+
 // 길드 정보 함수
 const getGuildBasicInformation = async (oguildId) => {
   return callMapleStoryAPI("guild/basic", {
@@ -125,4 +140,5 @@ export {
   getNotice,
   getNoticeDetail,
   getCharacterCapture,
+  getAllOguildId,
 };
