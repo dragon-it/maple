@@ -92,7 +92,7 @@ export const SearchGuild = () => {
 };
 
 const Container = styled.div`
-  width: 100%;
+  width: fit-content;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -105,20 +105,15 @@ const Container = styled.div`
 
 const HeaderWrap = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
-  gap: 30px;
-  padding: 10px 20px 20px 20px;
-  background-color: rgba(181, 165, 149, 0.85);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-  border: 1px solid rgb(220, 217, 202);
-  outline: 1px solid rgb(146, 139, 102);
-  border-radius: 10px;
-  z-index: 9999;
-
-  @media screen and (max-width: 576px) {
-    padding: 10px 5px 20px 5px;
-  }
+  width: 100%;
+  position: relative;
+  padding: 10px;
+  gap: 10px;
+  background-color: rgb(51, 51, 51);
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 5px;
+  outline: 1px solid rgb(141, 141, 141);
 `;
 
 const NpcWarp = styled.div`
