@@ -38,7 +38,7 @@ export const SearchGuildInput = () => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.form`
   position: relative;
   width: 100%;
   display: flex;
@@ -47,4 +47,19 @@ const Container = styled.div`
 
 const GuildNameInput = styled.input``;
 
-const SearchBtn = styled.button``;
+const SearchBtn = styled.button`
+  margin: auto;
+  line-height: 0px;
+  width: 70px;
+  height: 28px;
+  background: rgb(170, 187, 51);
+  color: rgb(255, 255, 255);
+  text-shadow: 1px 1px rgba(58, 58, 58, 0.5);
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+
+  &:hover {
+    background: rgb(197, 212, 98);
+  }
+`;
