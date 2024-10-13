@@ -111,7 +111,7 @@ const HeaderWrap = styled.div`
   position: relative;
   padding: 10px;
   gap: 10px;
-  background-color: rgb(51, 51, 51);
+  background-color: #222222;
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
