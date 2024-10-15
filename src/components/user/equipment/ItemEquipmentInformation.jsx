@@ -753,8 +753,11 @@ const TabButton = styled.button`
   font-family: maple-light;
   font-size: 14px;
   color: white;
-  background: ${({ isSelected }) => (isSelected ? "#FFAA00" : "#999999")};
-  border: 1px solid ${({ isSelected }) => (isSelected ? "#E47733" : "#777777")};
+  background: ${({ isSelected }) =>
+    isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+  border: 1px solid
+    ${({ isSelected }) =>
+      isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   cursor: pointer;
@@ -767,14 +770,17 @@ const BaseButton = styled.button`
   cursor: pointer;
   color: white;
   font-family: maple-light;
-  background: ${({ isSelected }) => (isSelected ? "#FFAA00" : "#999999")};
-  border: 1px solid ${({ isSelected }) => (isSelected ? "#E47733" : "#777777")};
+  background: ${({ isSelected }) =>
+    isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+  border: 1px solid
+    ${({ isSelected }) =>
+      isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
 `;
 
 const UiBackgrnd = styled.div`
   position: relative;
   border-top: 1px solid black;
-  background-color: #fffbfb;
+  background-color: rgb(255, 251, 251);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 `;
