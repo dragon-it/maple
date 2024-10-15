@@ -4,8 +4,8 @@ import { useTheme } from "../context/ThemeProvider";
 import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
-import npc from "../assets/npc/npc_fish.png";
-import error_npc from "../assets/npc/npc_fish_error.png";
+import npc from "../assets/npc/npc_oceanleli.png";
+import error_npc from "../assets/npc/npc_oceanleli_error.png";
 import { NpcChatBox } from "../components/common/npcChat/NpcChatBox";
 import { SearchGuildRendering } from "../components/searchGuild/SearchGuildRendering";
 import { SearchGuildInput } from "../components/searchGuild/SearchGuildInput";
@@ -57,8 +57,7 @@ export const SearchGuild = () => {
                 error={error}
                 errorMessage={error}
               ></NpcChatBox>
-              <Npc src={error_npc} alt="날치" />
-              {/* 바다렐이 */}
+              <Npc src={error_npc} alt="바다렐이" />
             </NpcWarp>
           </HeaderWrap>
         </Container>
@@ -70,9 +69,10 @@ export const SearchGuild = () => {
 
               {!result && (
                 <NpcWarp>
-                  <NpcChatBox text={""}></NpcChatBox>
-                  <Npc src={npc} alt="날치" />
-                  {/* 바다렐이 */}
+                  <NpcChatBox
+                    text={"모든 월드의 길드 검색을 해줄게."}
+                  ></NpcChatBox>
+                  <Npc src={npc} alt="바다렐이" />
                 </NpcWarp>
               )}
 
@@ -117,6 +117,7 @@ const NpcWarp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 7px;
 `;
 
 const LoadingWrap = styled.div`
