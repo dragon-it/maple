@@ -303,7 +303,7 @@ app.get("/api/guild/members", async (req, res) => {
   }
 });
 
-// 모든 월드의 길드 oguild_id 조회
+// 모든 월드의 길드 oguild_id와 guild/basic 조회
 app.get("/api/guild/all", async (req, res) => {
   const { guild_name: guildName } = req.query;
 
@@ -322,6 +322,9 @@ app.get("/api/guild/all", async (req, res) => {
     "노바",
     "리부트",
     "리부트2",
+    "버닝",
+    "버닝1",
+    "버닝2",
   ];
 
   if (!guildName) {
@@ -333,17 +336,29 @@ app.get("/api/guild/all", async (req, res) => {
 
     // 모든 월드를 순회하며 API 호출
     for (const world of worlds) {
-      const data = await callMapleStoryAPI("guild/id", {
+      // guild/id API 호출
+      const guildData = await callMapleStoryAPI("guild/id", {
         guild_name: guildName,
         world_name: world,
       });
 
-      // 데이터가 존재할 경우 oguild_id를 결과 배열에 추가
-      if (data && data.oguild_id) {
-        results.push({
-          world_name: world,
-          oguild_id: data.oguild_id,
+      // 데이터가 존재할 경우 oguild_id와 guild/basic 정보 조회
+      if (guildData && guildData.oguild_id) {
+        const oguild_id = guildData.oguild_id;
+
+        // guild/basic API 호출
+        const basicData = await callMapleStoryAPI("guild/basic", {
+          oguild_id,
         });
+
+        // guild/basic 데이터가 존재할 경우 결과 배열에 추가
+        if (basicData) {
+          results.push({
+            world_name: world,
+            oguild_id,
+            basic_info: basicData, // guild 기본 정보 추가
+          });
+        }
       }
     }
 
@@ -351,7 +366,7 @@ app.get("/api/guild/all", async (req, res) => {
       return res.status(404).json({ error: "No guild found" });
     }
 
-    // 존재하는 길드 oguild_id 목록 반환
+    // 길드 oguild_id와 기본 정보 목록 반환
     res.json(results);
   } catch (error) {
     console.error(`Error during guild all worlds API call: ${error.message}`);

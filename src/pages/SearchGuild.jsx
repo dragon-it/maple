@@ -18,10 +18,6 @@ export const SearchGuild = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(result);
-  console.log(error);
-  console.log(loading);
-
   useEffect(() => {
     setResult(null);
     setLoading(false);
@@ -92,12 +88,12 @@ export const SearchGuild = () => {
 };
 
 const Container = styled.div`
-  width: fit-content;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
 
   @media screen and (max-width: 768px) {
     padding: 0 5px;
@@ -107,14 +103,14 @@ const Container = styled.div`
 const HeaderWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   position: relative;
   padding: 10px;
   gap: 10px;
-  background-color: #222222;
+  background-color: rgba(34, 34, 34, 0.9);
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
+  box-shadow: 0 0px 4px 4px rgba(167, 167, 167, 0.47);
 `;
 
 const NpcWarp = styled.div`
