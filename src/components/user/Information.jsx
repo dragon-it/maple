@@ -80,7 +80,7 @@ const Information = ({ result }) => {
                     <img
                       id="spiritImage"
                       src={spirit}
-                      alt=""
+                      alt="돌정령"
                       onClick={toggleFlip}
                       style={{
                         transform: getTransformStyle(),

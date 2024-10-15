@@ -50,11 +50,10 @@ const GuildNameInput = styled.input`
   position: relative;
   max-width: 200px;
   padding: 2px 30px 2px 5px;
-
   border-radius: 5px;
   background: rgb(197, 195, 194);
   color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 2px 2px rgb(148, 148, 148);
 
   &:focus {
     background: linear-gradient(
@@ -72,18 +71,18 @@ const GuildNameInput = styled.input`
 `;
 
 const SearchBtn = styled.button`
-  line-height: 0px;
   width: 70px;
   height: 28px;
   background: rgb(170, 187, 51);
   color: rgb(255, 255, 255);
   border-radius: 5px;
   text-shadow: 1px 1px rgba(58, 58, 58, 0.5);
+  box-shadow: 0px 2px 2px rgb(148, 148, 148);
   cursor: pointer;
   border-radius: 5px;
   font-weight: bold;
 
   &:hover {
-    background: rgb(197, 212, 98);
+    background: rgb(187, 202, 88);
   }
 `;

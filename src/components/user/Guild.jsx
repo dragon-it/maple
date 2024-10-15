@@ -5,11 +5,13 @@ import { GuildMember } from "./guild/GuildMember";
 import { GuildSkill } from "./guild/GuildSkill";
 import { GuildStatistics } from "./guild/GuildStatistics";
 
-export const Guild = ({ result }) => {
+export const Guild = ({ result, isGuildDetail }) => {
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
+
+  console.log();
 
   // 데이터 존재 여부 확인
   if (!result || !result.guildBasicInformation) {
@@ -26,7 +28,7 @@ export const Guild = ({ result }) => {
   const guildInfo = result.guildBasicInformation;
 
   return (
-    <Container>
+    <Container isGuildDetail={isGuildDetail}>
       <InfoWrap>
         <TabWrap>
           <GuildHeader>GUILD</GuildHeader>
@@ -51,7 +53,7 @@ export const Guild = ({ result }) => {
             <Name>{guildInfo.guild_name || "이름 없음"}</Name>
             <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
           </GuildBasicInformation>
-          <Wd>
+          <Tabs>
             <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
               길드 정보
             </Tab>
@@ -64,7 +66,7 @@ export const Guild = ({ result }) => {
             <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
               길드 통계
             </Tab>
-          </Wd>
+          </Tabs>
         </TabWrap>
         <TabHeaderWrap>
           <TabHeader>
@@ -86,11 +88,11 @@ export const Guild = ({ result }) => {
 const Container = styled.div`
   width: 100%;
   position: relative;
-  padding: 0px 10px 10px 10px;
+  padding: ${(props) => (props.isGuildDetail ? "0px" : "0px 10px 10px 10px")};
   color: rgb(220, 220, 220);
 `;
 
-const Wd = styled.div`
+const Tabs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
