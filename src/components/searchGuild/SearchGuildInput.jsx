@@ -26,14 +26,19 @@ export const SearchGuildInput = () => {
 
   return (
     <Container>
-      <GuildNameInput
-        type="text"
-        placeholder="길드 이름을 입력해주세요."
-        value={searchValue}
-        onChange={handleInputChange}
-        maxLength={15}
-      />
-      <SearchBtn onClick={handleSubmit}>검색</SearchBtn>
+      <GuildHead onClick={() => navigate("/guild-search")}>
+        GUILD SEARCH
+      </GuildHead>
+      <InputWrap>
+        <GuildNameInput
+          type="text"
+          placeholder="길드 이름을 입력해주세요."
+          value={searchValue}
+          onChange={handleInputChange}
+          maxLength={15}
+        />
+        <SearchBtn onClick={handleSubmit}>검색</SearchBtn>
+      </InputWrap>
     </Container>
   );
 };
@@ -43,7 +48,29 @@ const Container = styled.form`
   width: 100%;
   display: flex;
   gap: 5px;
-  flex-direction: row;
+  flex-direction: column;
+`;
+
+const GuildHead = styled.div`
+  width: 100%;
+  font-weight: normal;
+  margin: 5px 0;
+  text-shadow: 0px 0px 4px rgb(180, 180, 180);
+  color: rgb(204, 204, 204);
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  padding: 0 10px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const InputWrap = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 5px;
 `;
 
 const GuildNameInput = styled.input`
