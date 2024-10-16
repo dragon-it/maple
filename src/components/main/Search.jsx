@@ -67,8 +67,7 @@ const InputContainer = styled.form`
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 5px;
-  z-index: ${({ isUserRoute }) => (isUserRoute ? "1" : "99999")};
+  gap: 2px;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;

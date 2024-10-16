@@ -32,7 +32,7 @@ const SearchWrap = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 80px;
+  min-height: 100px;
 `;
 
 const FavoriteWrap = styled.div`
