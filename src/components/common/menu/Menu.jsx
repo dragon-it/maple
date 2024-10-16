@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import hamburger_bar_dark from "../../../assets/menu/hamburger_dark.svg";
 import hamburger_bar_light from "../../../assets/menu/hamburger_light.svg";
-import close_Btn from "../../../assets/menu/Close_Btn.svg";
 import { useTheme } from "../../../context/ThemeProvider";
 
 export const Menu = () => {
@@ -24,12 +23,7 @@ export const Menu = () => {
         />
       </Container>
       <MenuContainer isClicked={isClicked}>
-        <p>Menu</p>
-        <MenuCloseBtn
-          onClick={handleClicked}
-          src={close_Btn}
-          alt="close_Button"
-        ></MenuCloseBtn>
+        <Menus>Menu</Menus>
       </MenuContainer>
     </>
   );
@@ -37,7 +31,7 @@ export const Menu = () => {
 
 const Container = styled.div`
   display: none;
-
+  position: relative;
   @media screen and (max-width: 1024px) {
     display: block;
   }
@@ -62,36 +56,26 @@ const HamburgerImg = styled.img`
 
 const MenuContainer = styled.div`
   display: ${({ isClicked }) => (isClicked ? "block" : "none")};
-  position: fixed;
-  top: 0;
-  right: ${({ isClicked }) => (isClicked ? "0" : "-100%")};
-  width: 300px;
-  height: 100%;
-  background-color: #222;
+  position: absolute;
+  top: 50px;
+  right: 30px;
+  width: 40px;
+  height: 200px;
+  font-size: 10px;
+  background-color: #373b41;
+  outline: 1px solid #2e3035;
+  border: 1px solid #3d454e;
+  border-radius: 7px;
   transition: right 0.3s ease;
   z-index: 1000;
-  padding: 20px;
   box-shadow: ${({ isClicked }) =>
     isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
   z-index: 9999999;
 `;
 
-const MenuCloseBtn = styled.img`
-  position: absolute;
+const Menus = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 35px;
-  height: 35px;
-  padding: 5px;
-  right: 24px;
-  top: 24px;
-  border: 1px solid rgb(0, 0, 0);
-  border-radius: 5px;
-  background-color: rgba(129, 129, 129, 0.15);
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(201, 201, 201, 0.65);
-  }
+  justify-content: center;
+  color: #fefefe;
 `;
