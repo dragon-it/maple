@@ -149,4 +149,5 @@ const LoadingWrap = styled.div`
 
 const Npc = styled.img`
   transform: scaleX(-1);
+  max-width: 207px;
 `;
