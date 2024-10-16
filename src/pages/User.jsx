@@ -101,7 +101,7 @@ const Container = styled.div`
   margin-top: 10px;
 
   @media screen and (max-width: 1024px) {
-    margin-top: 80px;
+    margin-top: 90px;
     width: 90%;
   }
 
@@ -132,7 +132,7 @@ const SearchWrap = styled.div`
 
   @media screen and (max-width: 1024px) {
     position: absolute;
-    top: -110px;
+    top: -87px;
     left: 0;
     width: 100%;
     margin-bottom: 10px;

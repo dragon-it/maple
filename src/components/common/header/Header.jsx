@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import logo from "../../../assets/Component 39.svg";
+import logo from "../../../assets/LogoIcon.svg";
+import logo_text from "../../../assets/Logo_Text_Only.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
 
 export const Header = () => {
@@ -16,7 +17,18 @@ export const Header = () => {
   const sundayMapleUrl = localStorage.getItem("sundayMaple") || "#";
   return (
     <PcHeaderContainer>
-      <HeaderLogo src={logo} alt="로고" onClick={() => navigate(routes.home)} />
+      <LogoWrap>
+        <HeaderLogo
+          src={logo}
+          alt="로고"
+          onClick={() => navigate(routes.home)}
+        />
+        <HeaderLogoText
+          src={logo_text}
+          alt="로고 텍스트"
+          onClick={() => navigate(routes.home)}
+        />
+      </LogoWrap>
       <ItemContainer>
         <Items onClick={() => navigate(routes.home)}>
           <p>캐릭터 검색</p>
@@ -72,10 +84,20 @@ const PcHeaderContainer = styled.div`
   white-space: nowrap;
 `;
 
+const LogoWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const HeaderLogo = styled.img`
-  width: 55px;
+  width: 50px;
   cursor: pointer;
-  margin-top: 3px;
+`;
+
+const HeaderLogoText = styled.img`
+  width: 50px;
+  cursor: pointer;
 `;
 
 const ItemContainer = styled.div`
