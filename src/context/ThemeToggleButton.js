@@ -33,7 +33,6 @@ const Icon = styled.img`
   align-items: center;
   width: 40px;
   height: 40px;
-  cursor: pointer;
   padding: 5px;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 5px;
