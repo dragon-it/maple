@@ -70,7 +70,7 @@ export const SearchGuild = () => {
               {!result && (
                 <NpcWarp>
                   <NpcChatBox
-                    text={"모든 월드의 길드 검색을 해줄게."}
+                    text={"모든 월드의 길드를 검색 해줄게."}
                   ></NpcChatBox>
                   <Npc src={npc} alt="바다렐이" />
                 </NpcWarp>
