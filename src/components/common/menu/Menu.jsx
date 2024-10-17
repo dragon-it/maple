@@ -23,7 +23,11 @@ export const Menu = () => {
         />
       </Container>
       <MenuContainer isClicked={isClicked}>
-        <Menus>Menu</Menus>
+        <MenusHeader>MENU</MenusHeader>
+        <Menus>캐릭터 검색</Menus>
+        <Menus>캐릭터 캡처</Menus>
+        <Menus>길드 검색</Menus>
+        <Menus>썬데이 메이플(공홈)</Menus>
       </MenuContainer>
     </>
   );
@@ -32,6 +36,7 @@ export const Menu = () => {
 const Container = styled.div`
   display: none;
   position: relative;
+
   @media screen and (max-width: 1024px) {
     display: block;
   }
@@ -55,27 +60,35 @@ const HamburgerImg = styled.img`
 `;
 
 const MenuContainer = styled.div`
-  display: ${({ isClicked }) => (isClicked ? "block" : "none")};
   position: absolute;
+  width: 120px;
+  height: auto;
+  visibility: ${({ isClicked }) => (isClicked ? "visible" : "hidden")};
+  opacity: ${({ isClicked }) => (isClicked ? 1 : 0)};
+  max-height: ${({ isClicked }) => (isClicked ? "200px" : "0")};
   top: 50px;
   right: 30px;
-  width: 40px;
-  height: 200px;
-  font-size: 10px;
-  background-color: #373b41;
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #24272b;
   outline: 1px solid #2e3035;
   border: 1px solid #3d454e;
   border-radius: 7px;
-  transition: right 0.3s ease;
-  z-index: 1000;
+  transition: opacity 0.5s ease, max-height 1s ease;
+  z-index: 9999999;
   box-shadow: ${({ isClicked }) =>
     isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
-  z-index: 9999999;
+  overflow: hidden;
+  text-align: center;
+`;
+
+const MenusHeader = styled.div`
+  font-size: 12px;
+  color: #a9bac1;
 `;
 
 const Menus = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fefefe;
+  color: rgb(254, 254, 254);
+  font-size: 12px;
+  padding: 7px 0px;
 `;
