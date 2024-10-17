@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import logo from "../../../assets/LogoIcon.svg";
 import logo_text from "../../../assets/Logo_Text_Only.svg";
@@ -14,7 +14,8 @@ export const Header = () => {
     searchGuild: "/guild-search",
   };
 
-  const sundayMapleUrl = localStorage.getItem("sundayMaple") || "#";
+  const sundayMapleUrl = localStorage.getItem("sundayMaple") || "https://maplestory.nexon.com/News/Event";
+  
   return (
     <PcHeaderContainer>
       <LogoWrap>
@@ -30,15 +31,15 @@ export const Header = () => {
         />
       </LogoWrap>
       <ItemContainer>
-        <Items onClick={() => navigate(routes.home)}>
-          <p>캐릭터 검색</p>
-        </Items>
-        <Items onClick={() => navigate(routes.characterCapture)}>
-          <p>캐릭터 캡처</p>
-        </Items>
-        <Items onClick={() => navigate(routes.searchGuild)}>
-          <p>길드 검색</p>
-        </Items>
+      <Items to={routes.home}>
+        캐릭터 검색
+      </Items>
+      <Items to={routes.characterCapture}>
+        캐릭터 캡처
+      </Items>
+      <Items to={routes.searchGuild}>
+        길드 검색
+      </Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
@@ -110,8 +111,10 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Items = styled.div`
+const Items = styled(Link)`
   ${itemStyles};
+  text-decoration: none;
+  color: inherit;
 `;
 
 const ItemsToHome = styled.a`
