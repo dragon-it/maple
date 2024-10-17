@@ -31,13 +31,18 @@ const Icon = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   padding: 5px;
-  border: 1px solid rgb(0, 0, 0);
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+  background-color: #24272b;
+  outline: 1px solid #b0b0b0;
+  border: 1px solid #3d454e;
   cursor: pointer;
+
+  &:hover {
+    background-color: #34383e;
+  }
 `;
 
 export default ThemeToggleButton;
