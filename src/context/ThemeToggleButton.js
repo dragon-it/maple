@@ -36,12 +36,12 @@ const Icon = styled.img`
   padding: 5px;
   border-radius: 7px;
   background-color: #24272b;
-  outline: 1px solid #b0b0b0;
-  border: 1px solid #3d454e;
   cursor: pointer;
 
   &:hover {
     background-color: #34383e;
+    border: 1px solid #3d454e;
+    scale: 1.1;
   }
 `;
 
