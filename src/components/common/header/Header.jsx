@@ -12,10 +12,13 @@ export const Header = () => {
     home: "/",
     characterCapture: "/character-capture",
     searchGuild: "/guild-search",
+    randomClass: "/random-class",
   };
 
-  const sundayMapleUrl = localStorage.getItem("sundayMaple") || "https://maplestory.nexon.com/News/Event";
-  
+  const sundayMapleUrl =
+    localStorage.getItem("sundayMaple") ||
+    "https://maplestory.nexon.com/News/Event";
+
   return (
     <PcHeaderContainer>
       <LogoWrap>
@@ -31,15 +34,10 @@ export const Header = () => {
         />
       </LogoWrap>
       <ItemContainer>
-      <Items to={routes.home}>
-        캐릭터 검색
-      </Items>
-      <Items to={routes.characterCapture}>
-        캐릭터 캡처
-      </Items>
-      <Items to={routes.searchGuild}>
-        길드 검색
-      </Items>
+        <Items to={routes.home}>캐릭터 검색</Items>
+        <Items to={routes.characterCapture}>캐릭터 캡처</Items>
+        <Items to={routes.searchGuild}>길드 검색</Items>
+        <Items to={routes.randomClass}>랜덤 직업 뽑기</Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
