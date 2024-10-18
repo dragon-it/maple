@@ -14,6 +14,7 @@ import { SearchGuild } from "./pages/SearchGuild";
 import { SundayMaple } from "./pages/SundayMaple";
 import { Footer } from "./components/common/footer/Footer";
 import { CharacterCapture } from "./pages/CharacterCapture";
+import { RandomClass } from "./pages/RandomClass";
 
 function Layout({ children }) {
   return (
@@ -93,6 +94,14 @@ function App() {
               element={
                 <Layout>
                   <SundayMaple />
+                </Layout>
+              }
+            />
+            <Route
+              path="/random-class"
+              element={
+                <Layout>
+                  <RandomClass />
                 </Layout>
               }
             />
