@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 export const ItemSymbol = ({ symbolData }) => {
-  console.log(symbolData);
   // 필터 함수를 사용하여 아케인 심볼과 어센틱 심볼을 분류
   const symbolList = symbolData?.symbol || [];
   const arcaneSymbols = symbolList.filter((item) =>
