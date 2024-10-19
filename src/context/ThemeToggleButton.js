@@ -11,7 +11,7 @@ function ThemeToggleButton() {
   return (
     <ToggleWrapper>
       <Icon
-        src={theme === "dark" ? light_theme_icon : dark_theme_icon}
+        src={theme === "dark" ? dark_theme_icon : light_theme_icon}
         alt="theme-icon"
         onClick={toggleTheme}
       />
@@ -22,8 +22,6 @@ function ThemeToggleButton() {
 
 const ToggleWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  background: transparent;
   gap: 10px;
 `;
 
@@ -31,17 +29,16 @@ const Icon = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   padding: 5px;
-  border-radius: 7px;
-  background-color: #24272b;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.headerBgColor};
+  border: ${({ theme }) => theme.toggleBorderColor};
   cursor: pointer;
 
   &:hover {
-    background-color: #34383e;
-    border: 1px solid #3d454e;
-    scale: 1.1;
+    background-color: ${({ theme }) => theme.headerIconHoverColor};
   }
 `;
 
