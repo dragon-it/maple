@@ -9,9 +9,9 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     font-family:
       sans-serif,
-      maple-light,
       "Noto Sans",
       "Noto Sans CJK KR",
+      maple-light,
       "Montserrat",
       "Helvetica Neue",
       "NanumSquare",
@@ -36,6 +36,9 @@ export const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar-thumb:hover {
       background-color: rgb(160, 160, 165);
       cursor: pointer;
+    }
+    * {
+      -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 효과 제거 */
     }
   }
 

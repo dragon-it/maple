@@ -1,108 +1,18 @@
-import React, { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import loadingImg from "../../assets/loading2.gif";
+import React, { useState } from "react";
+import styled from "styled-components";
 import { GuildInformation } from "./guild/GuildInformation";
 import { GuildMember } from "./guild/GuildMember";
 import { GuildSkill } from "./guild/GuildSkill";
 import { GuildStatistics } from "./guild/GuildStatistics";
-import {
-  getGuildBasicInformation,
-  getGuildMembers,
-  getGuildRanking,
-  getOguildId,
-} from "../../api/api";
 
-/**
- * React 컴포넌트 - 길드 관련 정보와 탭 인터페이스를 제공
- * @param {Object} props - 컴포넌트 props
- * @param {Object} props.result - 결과 데이터 객체
- */
-export const Guild = ({ result }) => {
+export const Guild = ({ result, isGuildDetail }) => {
   const [activeTab, setActiveTab] = useState(1);
-  const [guildData, setGuildData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (result && result.getCombinedData) {
-      const { getBasicInformation } = result.getCombinedData;
-      if (getBasicInformation) {
-        fetchGuildData(
-          getBasicInformation.character_guild_name,
-          getBasicInformation.world_name
-        );
-      }
-    }
-  }, [result]);
-
-  const fetchGuildData = async (guildName, worldName) => {
-    setLoading(true);
-    try {
-      const oguildIdResponse = await getOguildId(guildName, worldName);
-      const oguildId = oguildIdResponse.oguild_id;
-      if (!oguildId) throw new Error("길드 ID를 가져올 수 없습니다.");
-
-      // 길드 기본 정보와 랭킹 정보 병렬 호출
-      const [guildBasicInformation, guildRankInformation] = await Promise.all([
-        getGuildBasicInformation(oguildId),
-        getGuildRanking(guildName, worldName),
-      ]);
-
-      let guildMembersData = [];
-      if (guildBasicInformation) {
-        const { guild_member } = guildBasicInformation;
-        try {
-          // 멤버 데이터 병렬 호출
-          const membersData = await getGuildMembers(guild_member);
-          guildMembersData = guild_member.map((member, index) => {
-            const memberData = membersData[index] || {};
-            return {
-              character_name: member,
-              character_level: memberData.character_level || null,
-              character_image: memberData.character_image || null,
-              character_class: memberData.character_class || null,
-            };
-          });
-        } catch (error) {
-          console.error("Failed to fetch members data", error);
-          guildMembersData = guild_member.map((member) => ({
-            character_name: member,
-            character_class: null,
-            character_level: null,
-            character_image: null,
-          }));
-        }
-      }
-
-      setGuildData({
-        guildBasicInformation,
-        guildRankInformation,
-        guildMembersData,
-      });
-    } catch (error) {
-      console.error(`fetchGuildData error: ${error.message}`);
-      setError(`길드 데이터 검색 중 오류 발생: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
 
-  // 데이터가 없거나 로딩 중일 때 처리
-  if (loading) {
-    return (
-      <Container>
-        <LoadingWrap>
-          <img src={loadingImg} alt="로딩 중" />
-        </LoadingWrap>
-      </Container>
-    );
-  }
-
-  if (!guildData) {
+  // 데이터 존재 여부 확인
+  if (!result || !result.guildBasicInformation) {
     return (
       <Container>
         <NoDataWrap>
@@ -113,12 +23,35 @@ export const Guild = ({ result }) => {
     );
   }
 
+  const guildInfo = result.guildBasicInformation;
+
   return (
-    <Container>
+    <Container isGuildDetail={isGuildDetail}>
       <InfoWrap>
         <TabWrap>
           <GuildHeader>GUILD</GuildHeader>
-          <Wd>
+          <GuildBasicInformation>
+            <Icon>
+              {guildInfo.guild_mark ? (
+                <img
+                  src={`data:image/png;base64,${guildInfo.guild_mark}`}
+                  alt="GuildIcon"
+                />
+              ) : guildInfo.guild_mark_custom ? (
+                <img
+                  src={`data:image/png;base64,${guildInfo.guild_mark_custom}`}
+                  alt="GuildIcon"
+                />
+              ) : (
+                // api 수정으로 임시 빈칸
+                // <div>아이콘 없음</div>
+                <></>
+              )}
+            </Icon>
+            <Name>{guildInfo.guild_name || "이름 없음"}</Name>
+            <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
+          </GuildBasicInformation>
+          <Tabs>
             <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
               길드 정보
             </Tab>
@@ -131,7 +64,7 @@ export const Guild = ({ result }) => {
             <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
               길드 통계
             </Tab>
-          </Wd>
+          </Tabs>
         </TabWrap>
         <TabHeaderWrap>
           <TabHeader>
@@ -140,44 +73,24 @@ export const Guild = ({ result }) => {
             {activeTab === 3 && "일반 길드 스킬"}
             {activeTab === 4 && "길드 통계"}
           </TabHeader>
-          {activeTab === 1 && <GuildInformation result={guildData} />}
-          {activeTab === 2 && <GuildMember result={guildData} />}
-          {activeTab === 3 && <GuildSkill result={guildData} />}
-          {activeTab === 4 && <GuildStatistics result={guildData} />}
+          {activeTab === 1 && <GuildInformation result={result} />}
+          {activeTab === 2 && <GuildMember result={result} />}
+          {activeTab === 3 && <GuildSkill result={result} />}
+          {activeTab === 4 && <GuildStatistics result={result} />}
         </TabHeaderWrap>
       </InfoWrap>
     </Container>
   );
 };
 
-const slide = keyframes`
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-`;
-
 const Container = styled.div`
   width: 100%;
   position: relative;
-  padding: 0px 10px 10px 10px;
+  padding: ${(props) => (props.isGuildDetail ? "0px" : "0px 10px 10px 10px")};
   color: rgb(220, 220, 220);
 `;
 
-const LoadingWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  img {
-    width: 100px;
-    height: auto;
-    animation: ${slide} 1s linear infinite;
-  }
-`;
-
-const Wd = styled.div`
+const Tabs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -215,6 +128,29 @@ const GuildHeader = styled.div`
   @media screen and (max-width: 768px) {
     text-align: left;
   }
+`;
+
+const GuildBasicInformation = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: maple-light;
+`;
+
+const Icon = styled.div`
+  width: auto;
+  color: #ffffff;
+  img {
+    min-width: 40px;
+  }
+`;
+
+const Name = styled.span``;
+
+const Level = styled.span`
+  font-weight: 700;
+  color: rgb(200, 175, 137);
 `;
 
 const Tab = styled.span`
