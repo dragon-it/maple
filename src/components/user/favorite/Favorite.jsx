@@ -67,6 +67,8 @@ const FavoriteWrap = styled.div`
   color: rgb(255, 255, 255);
   max-height: 500px;
   font-family: maple-light;
+  background-color: rgba(0, 0, 0, 0.53);
+  border-radius: 5px;
 `;
 
 const FavoriteHeader = styled.span`
