@@ -1,7 +1,6 @@
 import React from "react";
 import { Search } from "../components/main/Search";
 import styled from "styled-components";
-import { Footer } from "../components/common/Footer";
 import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
 
@@ -10,22 +9,20 @@ export const Main = () => {
     <Container>
       <SearchWrap>
         <Search />
-        <FavoriteWrap>
-          <Favorite />
-        </FavoriteWrap>
       </SearchWrap>
+      <FavoriteWrap>
+        <Favorite />
+      </FavoriteWrap>
       <SundayMaple />
-      <Footer />
     </Container>
   );
 };
 
 const Container = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   width: 100%;
 `;
 
@@ -39,13 +36,11 @@ const SearchWrap = styled.div`
 `;
 
 const FavoriteWrap = styled.div`
-  position: absolute;
-  top: 110px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: auto;
-  background-color: rgba(0, 0, 0, 0.53);
-  border-radius: 5px;
   z-index: 50;
-  @media screen and (max-width: 768px) {
-    top: 130px;
-  }
 `;

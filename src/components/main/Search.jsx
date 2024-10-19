@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Logo } from "./Logo";
 import { useNavigate, useLocation } from "react-router-dom";
-import ThemeToggleButton from "../../context/ThemeToggleButton";
-import serchIcon_big from "../../assets/SearchIcon_big.svg";
-import serchIcon_small from "../../assets/SearchIcon_small.svg";
+import serchIcon from "../../assets/SearchIcon_small.svg";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리
@@ -19,7 +17,14 @@ export const Search = ({ error }) => {
     }
 
     const processedSearchValue = searchValue.replace(/\s+/g, ""); // 공백 제거
-    navigate(`/user/${encodeURIComponent(processedSearchValue)}`); // 검색어를 URL에 인코딩하여 이동
+
+    if (location.pathname.startsWith("/character-capture")) {
+      navigate(
+        `/character-capture/${encodeURIComponent(processedSearchValue)}`
+      );
+    } else {
+      navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
+    }
   };
 
   // 폼 제출을 처리하는 함수
@@ -38,32 +43,22 @@ export const Search = ({ error }) => {
   };
 
   return (
-    <>
-      <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
-        <Logo error={error} isUserRoute={isUserRoute} />
-        <InputWrap>
-          <StyledInput
-            type="text"
-            placeholder="캐릭터 닉네임을 입력해주세요."
-            value={searchValue}
-            onChange={handleInputChange}
-            isUserRoute={isUserRoute}
-            maxLength={15}
-          />
-          <StyledButton isUserRoute={isUserRoute}>
-            <img
-              src={isUserRoute ? serchIcon_small : serchIcon_big}
-              alt="검색"
-              width={isUserRoute ? "18" : "23"}
-              height={isUserRoute ? "18" : "23"}
-            />
-          </StyledButton>
-        </InputWrap>
-      </InputContainer>
-      <ThemeToggleWrap>
-        <ThemeToggleButton />
-      </ThemeToggleWrap>
-    </>
+    <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
+      <Logo error={error} isUserRoute={isUserRoute} />
+      <InputWrap>
+        <StyledInput
+          type="text"
+          placeholder="캐릭터 닉네임을 입력해주세요."
+          value={searchValue}
+          onChange={handleInputChange}
+          isUserRoute={isUserRoute}
+          maxLength={15}
+        />
+        <StyledButton isUserRoute={isUserRoute}>
+          <img src={serchIcon} alt="검색" width={18} height={18} />
+        </StyledButton>
+      </InputWrap>
+    </InputContainer>
   );
 };
 
@@ -72,12 +67,10 @@ const InputContainer = styled.form`
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 5px;
-  z-index: ${({ isUserRoute }) => (isUserRoute ? "1" : "99999999999")};
+  gap: 2px;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
-    gap: 0;
   }
 `;
 
@@ -111,21 +104,11 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
   position: absolute;
   right: 10px;
-  width: ${({ isUserRoute }) => (isUserRoute ? "30px" : "35px")};
+  width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   background: none;
   cursor: pointer;
-`;
-
-const ThemeToggleWrap = styled.div`
-  margin-left: 10px;
-  z-index: 99999;
-  @media screen and (max-width: 1024px) {
-    display: block;
-    position: absolute;
-    right: 10px;
-  }
 `;

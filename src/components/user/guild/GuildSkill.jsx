@@ -162,7 +162,7 @@ const SkillContainer = styled.div`
 const Table = styled.div`
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 10px;
   padding-bottom: 10px;
   background-color: rgb(57, 57, 57);
