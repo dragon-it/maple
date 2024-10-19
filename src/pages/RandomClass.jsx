@@ -103,8 +103,6 @@ export const RandomClass = () => {
   const [currentCharacterIndex, setCurrentCharacterIndex] = useState(0);
   const [isRolling, setIsRolling] = useState(false);
 
-  console.log(selectedCharacter);
-
   useEffect(() => {
     let interval;
     if (isRolling) {
@@ -196,22 +194,25 @@ const ContentsWrap = styled.div`
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
   padding: 5px 15px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
 `;
 
 const Title = styled.p`
   text-align: center;
-  color: rgb(197, 197, 197);
+  color: rgb(255, 255, 255);
   font-size: 18px;
 `;
 
 const ClassName = styled.p`
   background: rgb(238, 238, 238);
-  font-size: 18px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
   border-radius: 5px;
   text-align: center;
 
   span {
     color: rgb(221, 62, 62);
+    font-weight: bold;
   }
 `;
 
