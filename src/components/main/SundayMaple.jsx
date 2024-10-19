@@ -255,6 +255,10 @@ const ScrollTopButton = styled.div`
     width: 32px;
     height: 32px;
   }
+
+  &:hover {
+    filter: brightness(1.4);
+  }
 `;
 
 const ToTopIcon = styled.img`

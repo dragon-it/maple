@@ -48,7 +48,7 @@ export const Header = () => {
           </p>
         </ItemsToHome>
       </ItemContainer>
-      <SpaceField />
+      {/* <SpaceField /> */}
       <ThemeToggleWrap>
         <ThemeToggleButton />
       </ThemeToggleWrap>
@@ -121,10 +121,10 @@ const ItemsToHome = styled.a`
   color: inherit;
 `;
 
-const SpaceField = styled.div`
-  flex: 1 1;
-  max-width: 1000px;
-`;
+// const SpaceField = styled.div`
+//   flex: 1 1;
+//   max-width: 1000px;
+// `;
 
 const OfficialHome = styled.div`
   margin-left: 3px;
