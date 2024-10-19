@@ -11,8 +11,6 @@ export const Guild = ({ result, isGuildDetail }) => {
     setActiveTab(tabNumber);
   };
 
-  console.log();
-
   // 데이터 존재 여부 확인
   if (!result || !result.guildBasicInformation) {
     return (
