@@ -93,12 +93,12 @@ export const User = () => {
           {/* 길드 정보 */}
           {activeTab === 5 &&
             (guildLoading ? (
-              <LoadingWrap>
+              <GuildLoading>
                 <img
                   src={theme === "dark" ? loadingImg_dark : loadingImg_light}
                   alt="로딩 중..."
                 />
-              </LoadingWrap>
+              </GuildLoading>
             ) : (
               <Guild result={result} />
             ))}
@@ -193,9 +193,33 @@ const LoadingWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 100%;
   z-index: 999;
+
+  img {
+    width: 100px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    img {
+      width: 160px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    img {
+      width: 130px;
+    }
+  }
+`;
+
+const GuildLoading = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  margin-bottom: 10px;
 
   img {
     width: 100px;
