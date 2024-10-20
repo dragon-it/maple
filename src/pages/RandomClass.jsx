@@ -199,7 +199,15 @@ const ContentsWrap = styled.div`
 
 const Title = styled.p`
   text-align: center;
-  color: rgb(255, 255, 255);
+  color: rgb(3, 3, 3);
+  background: rgb(227, 186, 252);
+  background: radial-gradient(
+    circle,
+    rgba(227, 186, 252, 1) 18%,
+    rgba(180, 234, 246, 1) 89%
+  );
+
+  border-radius: 5px;
   font-size: 18px;
 `;
 
