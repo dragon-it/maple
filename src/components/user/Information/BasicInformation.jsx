@@ -4,6 +4,7 @@ import BasicInfoBackground from "./BasicInfoBackground";
 import { useTheme } from "../../../context/ThemeProvider";
 import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
 import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.svg";
+import WorldIcons from "../../common/worldIcon/WorldIcons";
 
 export const BasicInformation = ({ BasicInfo }) => {
   const { theme } = useTheme();
@@ -67,6 +68,9 @@ export const BasicInformation = ({ BasicInfo }) => {
     }
   };
 
+  const worldName = BasicInfo.getBasicInformation.world_name;
+  const worldIcon = WorldIcons[worldName];
+
   return (
     <Container>
       <HeaderWrap>
@@ -115,7 +119,12 @@ export const BasicInformation = ({ BasicInfo }) => {
           <ItemWrap>
             <Contents>
               <Title>월드</Title>
-              <Value>{BasicInfo.getBasicInformation.world_name}</Value>
+              <Value>
+                {BasicInfo.getBasicInformation.world_name}
+                {worldIcon && (
+                  <WorldIconImg src={worldIcon} alt={`${worldName} 아이콘`} />
+                )}
+              </Value>
             </Contents>
             <Contents>
               <Title>길드</Title>
@@ -295,6 +304,7 @@ const Contents = styled.div`
 `;
 
 const Value = styled.div`
+  display: flex;
   color: black;
 `;
 
@@ -313,4 +323,10 @@ const FavoriteIcon = styled.div`
   height: fit-content;
   top: 0;
   right: 0;
+`;
+
+const WorldIconImg = styled.img`
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
 `;
