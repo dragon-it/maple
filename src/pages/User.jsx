@@ -5,41 +5,53 @@ import Information from "../components/user/Information";
 import { Equipment } from "../components/user/Equipment";
 import { Skill } from "../components/user/Skill";
 import { useParams } from "react-router-dom";
-import fetchData from "../api/fetchData";
-import loadingImg from "../assets/loading.gif";
+import UserApi from "../api/userApi";
+import loadingImg_light from "../assets/loading/loading_light.gif";
+import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import { Error } from "./Error";
 import { Union } from "../components/user/Union";
-import { Footer } from "../components/common/Footer";
 import { Guild } from "../components/user/Guild";
+import { useTheme } from "../context/ThemeProvider";
 
 export const User = () => {
-  const [activeTab, setActiveTab] = useState(1);
-  const handleTabClick = (tabNumber) => {
-    setActiveTab(tabNumber);
-  };
-
+  const { theme } = useTheme();
   const { characterName } = useParams();
+  const [activeTab, setActiveTab] = useState(1);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [guildLoading, setGuildLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       setLoading(true);
-      setError(null); // 오류 상태 초기화
+      setError(null);
       setActiveTab(1);
-      await fetchData(characterName, setResult, setLoading, setError);
+      await UserApi(
+        characterName,
+        setResult,
+        setLoading,
+        setError,
+        setGuildLoading
+      );
       setLoading(false);
     };
 
     fetchDataAndUpdateState();
   }, [characterName]);
 
+  const handleTabClick = (tabNumber) => {
+    setActiveTab(tabNumber);
+  };
+
   return (
     <>
       {loading ? (
         <LoadingWrap>
-          <img src={loadingImg} alt="로딩 중..." />
+          <img
+            src={theme === "dark" ? loadingImg_dark : loadingImg_light}
+            alt="로딩 중..."
+          />
         </LoadingWrap>
       ) : error ? (
         <ErrorWrap>
@@ -49,40 +61,48 @@ export const User = () => {
           />
         </ErrorWrap>
       ) : (
-        <>
-          <Container>
-            <HeaderWrap>
-              <Tabs>
-                <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-                  캐릭터 정보
-                </Tab>
-                <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-                  캐릭터 장비
-                </Tab>
-                <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-                  스킬
-                </Tab>
-                <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
-                  유니온
-                </Tab>
-                <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
-                  길드
-                </Tab>
-              </Tabs>
-              <SearchWrap>
-                <Search />
-              </SearchWrap>
-            </HeaderWrap>
-            {activeTab === 1 && <Information result={result} />}
-            {activeTab === 2 && <Equipment result={result} />}
-            {activeTab === 3 && <Skill result={result} />}
-            {activeTab === 4 && <Union result={result} />}
-            {activeTab === 5 && <Guild result={result} />}
-          </Container>
-          <FooterWrap>
-            <Footer />
-          </FooterWrap>
-        </>
+        <Container>
+          <HeaderWrap>
+            <Tabs>
+              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+                캐릭터 정보
+              </Tab>
+              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+                캐릭터 장비
+              </Tab>
+              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+                스킬
+              </Tab>
+              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+                유니온
+              </Tab>
+              <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
+                길드
+              </Tab>
+            </Tabs>
+            <SearchWrap>
+              <Search />
+            </SearchWrap>
+          </HeaderWrap>
+
+          {/* 캐릭터 정보 */}
+          {activeTab === 1 && <Information result={result} />}
+          {activeTab === 2 && <Equipment result={result} />}
+          {activeTab === 3 && <Skill result={result} />}
+          {activeTab === 4 && <Union result={result} />}
+          {/* 길드 정보 */}
+          {activeTab === 5 &&
+            (guildLoading ? (
+              <LoadingWrap>
+                <img
+                  src={theme === "dark" ? loadingImg_dark : loadingImg_light}
+                  alt="로딩 중..."
+                />
+              </LoadingWrap>
+            ) : (
+              <Guild result={result} />
+            ))}
+        </Container>
       )}
     </>
   );
@@ -90,15 +110,16 @@ export const User = () => {
 
 const Container = styled.div`
   position: relative;
+  width: fit-content;
   height: auto;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
   z-index: 99;
-  margin-top: 40px;
+  margin-top: 10px;
 
   @media screen and (max-width: 1024px) {
-    margin-top: 80px;
+    margin-top: 90px;
     width: 90%;
   }
 
@@ -107,7 +128,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 90px;
+    margin-top: 100px;
   }
 `;
 
@@ -129,13 +150,13 @@ const SearchWrap = styled.div`
 
   @media screen and (max-width: 1024px) {
     position: absolute;
-    top: -100px;
+    top: -87px;
     left: 0;
     width: 100%;
+    margin-bottom: 10px;
   }
 
   @media screen and (max-width: 576px) {
-    top: -100px;
   }
 `;
 
@@ -168,12 +189,17 @@ const Tab = styled.div`
 `;
 
 const LoadingWrap = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
   z-index: 999;
+
+  img {
+    width: 100px;
+  }
 
   @media screen and (max-width: 1024px) {
     img {
@@ -193,11 +219,4 @@ const ErrorWrap = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
-`;
-
-const FooterWrap = styled.div`
-  bottom: 0;
-  width: 100%;
-  z-index: 9;
 `;

@@ -9,14 +9,7 @@ import axios from "axios";
 
 const callMapleStoryAPI = async (endpoint, params) => {
   try {
-    const response = await axios.get(`/api/${endpoint}`, {
-      params: {
-        ...params,
-      },
-      headers: {
-        "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
-      },
-    });
+    const response = await axios.get(`/api/${endpoint}`, { params });
     if (response.status === 200) {
       return response.data;
     } else {
@@ -39,56 +32,97 @@ const getYesterDayFormatted = () => {
 
 // Ocid 함수
 const getOcidApi = async (characterName) => {
-  return callMapleStoryAPI("id", { character_name: characterName });
+  return callMapleStoryAPI("ocid", { character_name: characterName });
 };
 
 // 선데이메이플 공지
 const getNotice = async () => {
-  try {
-    const result = await callMapleStoryAPI("notice-event");
-    console.log("Notice data received:", result);
-    return result;
-  } catch (error) {
-    console.error("Error fetching notice data:", error.message);
-    throw error;
-  }
+  return callMapleStoryAPI("notice-event");
 };
 
 // 선데이메이플 공지 디테일
 const getNoticeDetail = async (notice_id) => {
-  return callMapleStoryAPI("notice-event/detail", { notice_id });
+  return callMapleStoryAPI("notice-event/detail", {
+    notice_id,
+  });
 };
 
 // 길드 id
 const getOguildId = async (guildName, worldName) => {
-  return callMapleStoryAPI("guild-id", {
+  return callMapleStoryAPI("guild/id", {
     guild_name: guildName,
     world_name: worldName,
   });
 };
 
+// 길드 모든 월드 id
+const getAllOguildId = async (guildName) => {
+  return callMapleStoryAPI(
+    "guild/all",
+    {
+      guild_name: guildName,
+    },
+    {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    }
+  );
+};
+
 // 길드 정보 함수
 const getGuildBasicInformation = async (oguildId) => {
-  return callMapleStoryAPI("guild-basic", { oguild_id: oguildId });
+  return callMapleStoryAPI("guild/basic", {
+    oguild_id: oguildId,
+  });
 };
 
 // 길드 멤버 정보 함수
 const getGuildMembers = async (guildMembers) => {
-  const query = new URLSearchParams({
-    guildMembers: JSON.stringify(guildMembers),
-  }).toString();
-
-  return callMapleStoryAPI(`guild-member?${query}`);
+  return callMapleStoryAPI("guild/members", { guildMembers });
 };
 
 // Combined API 호출 함수
 const getCombinedData = async (ocid) => {
-  return callMapleStoryAPI("character-info", { ocid });
+  try {
+    const response = await axios.get(`/api/character/information`, {
+      params: { ocid },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Failed to fetch combined data");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching combined data:", error);
+    return false;
+  }
+};
+
+// 캐릭터 캡처 API
+const getCharacterCapture = async (ocid) => {
+  try {
+    const response = await axios.get(`/api/character-capture`, {
+      params: { ocid },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Failed to fetch combined data");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching combined data:", error);
+    return false;
+  }
 };
 
 // 길드 랭킹 함수
 const getGuildRanking = async (guildName, worldName) => {
-  return callMapleStoryAPI("guild-rank", {
+  return callMapleStoryAPI("ranking/guild", {
     guild_name: guildName,
     world_name: worldName,
   });
@@ -105,4 +139,6 @@ export {
   getGuildMembers,
   getNotice,
   getNoticeDetail,
+  getCharacterCapture,
+  getAllOguildId,
 };

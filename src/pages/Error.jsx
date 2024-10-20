@@ -1,24 +1,32 @@
 import React from "react";
 import error_image from "../assets/error_image.png";
+import error_image_fish from "../assets/npc/npc_fish_error.png";
 import styled from "styled-components";
 import { Search } from "../components/main/Search";
+import { NpcChatBox } from "../components/common/npcChat/NpcChatBox";
 
 export const Error = ({ errorMessage, error }) => {
+  const currentPath = window.location.pathname;
+  const isCapturePage = currentPath.includes("/character-capture");
+
   return (
     <ErrorPageWrap>
       <SearchWrap>
         <Search error={error} />
       </SearchWrap>
       <ErrorImg>
-        <img src={error_image} alt="error_image" width="207" height="258" />
+        <NpcChatBox text={errorMessage}></NpcChatBox>
+        <img
+          src={isCapturePage ? error_image_fish : error_image}
+          alt="error_image"
+        />
       </ErrorImg>
-      <ErrorText>{errorMessage}</ErrorText>
     </ErrorPageWrap>
   );
 };
 
 const ErrorPageWrap = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,19 +37,17 @@ const ErrorPageWrap = styled.div`
   z-index: 1;
 `;
 
-const ErrorText = styled.div`
-  font-family: Maple-light;
-  font-size: 16px;
-  @media screen and (max-width: 1024px) {
-    font-size: 13px;
-  }
-`;
-
 const ErrorImg = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 5px;
   width: 207px;
+
+  img {
+    width: 100%;
+  }
 
   @media screen and (max-width: 1024px) {
     img {
@@ -58,17 +64,12 @@ const ErrorImg = styled.div`
 `;
 
 const SearchWrap = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  top: 0;
   width: 100%;
-  height: 100px;
+  min-height: 80px;
   color: black;
-  @media screen and (max-width: 1024px) {
-    position: absolute;
-    top: 0;
-  }
 `;

@@ -68,7 +68,7 @@ export const ItemDetail = ({ item, clicked }) => {
 
     // exceptional_upgrade도 체크
     return Object.entries(stats).every(
-      ([key, value]) => value === "0" || value === 0
+      ([key, value]) => value === "0" || value === 0 || value === null
     );
   };
 
@@ -359,7 +359,7 @@ const Container = styled.div`
   border: 1px solid white;
   outline: 1px solid black;
   color: white;
-  padding: 0px 10px;
+  padding: 0px 10px 5px;
   padding-bottom: 3px;
   height: fit-content;
 
@@ -543,7 +543,7 @@ const ExInitial = styled.div`
   justify-content: center;
   align-items: center;
   width: 20px;
-  height: auto;
+  height: 13px;
   margin-right: 3px;
   color: white;
   background-color: rgb(255, 51, 51);
