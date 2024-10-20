@@ -2,26 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "proxyServer.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "src/**/*",
-      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
-      "src": "/api/notice-event",
-      "dest": "/api/noticeEvent.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/proxyServer.js"
     }
   ]
 }

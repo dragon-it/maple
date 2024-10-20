@@ -64,7 +64,7 @@ const Container = styled.div`
   outline: 1px solid black;
   line-height: 18px;
   color: white;
-  padding: 0px 10px;
+  padding: 0px 10px 5px;
   height: fit-content;
 
   @media screen and (max-width: 1024px) {

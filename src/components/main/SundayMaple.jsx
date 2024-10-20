@@ -13,9 +13,9 @@ export const SundayMaple = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    const skipWeek = localStorage.getItem("skipWeek");
-    if (skipWeek) {
-      const skipUntil = new Date(skipWeek);
+    const skipDay = localStorage.getItem("skipDay");
+    if (skipDay) {
+      const skipUntil = new Date(skipDay);
       if (skipUntil > new Date()) {
         setIsVisible(false);
       }
@@ -25,7 +25,7 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNotice = async () => {
       try {
-        const response = await axios.get("/api/notice-event", {
+        const response = await axios.get("/notice-event", {
           headers: {
             "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
           },
@@ -51,22 +51,36 @@ export const SundayMaple = () => {
         );
 
         if (sundayMapleNotices.length > 0) {
-          const sundayMapleNoticeId = Number(sundayMapleNotices[0].notice_id);
+          const sundayMapleNotice = sundayMapleNotices[0];
+          const sundayMapleNoticeId = Number(sundayMapleNotice.notice_id);
+          const eventEndTime = new Date(sundayMapleNotice.date_event_end);
 
-          try {
-            const [noticeDetailResponse] = await Promise.all([
-              axios.get("/api/notice-event/detail", {
-                params: { notice_id: sundayMapleNoticeId },
-              }),
-            ]);
+          // 현재 시간과 종료 시간 비교
+          const currentTime = new Date();
+          if (eventEndTime > currentTime) {
+            try {
+              const [noticeDetailResponse] = await Promise.all([
+                axios.get("/notice-event/detail", {
+                  params: { notice_id: sundayMapleNoticeId },
+                }),
+              ]);
 
-            if (noticeDetailResponse.status === 200) {
-              setSundayMapleNoticeDetail(noticeDetailResponse.data);
-            } else {
-              console.error("Failed to fetch notice detail data");
+              if (noticeDetailResponse.status === 200) {
+                setSundayMapleNoticeDetail(noticeDetailResponse.data);
+                const sundayMapleUrl = noticeDetailResponse.data.url;
+                localStorage.setItem("sundayMaple", sundayMapleUrl);
+              } else {
+                console.error("Failed to fetch notice detail data");
+              }
+            } catch (error) {
+              console.error(
+                "Error fetching notice detail data:",
+                error.message
+              );
             }
-          } catch (error) {
-            console.error("Error fetching notice detail data:", error.message);
+          } else {
+            // 이벤트 종료 시간이 현재보다 이전인 경우, 공지 표시 안함
+            setIsVisible(false);
           }
         }
       }
@@ -111,16 +125,15 @@ export const SundayMaple = () => {
       {desiredHtmlContent && (
         <ContentsWrap>
           <ButtonWrap>
-            <SkipWeekCheckboxWrapper>
+            <SkipDayCheckboxWrapper>
               <input
                 type="checkbox"
-                id="skip-week-checkbox"
+                id="skip-day-checkbox"
                 checked={isChecked}
                 onChange={handleSkipDay}
               />
-              <label for="skip-week-checkbox">오늘 하루 보지 않기</label>
-            </SkipWeekCheckboxWrapper>
-
+              <label htmlFor="skip-day-checkbox">오늘 하루 보지 않기</label>
+            </SkipDayCheckboxWrapper>
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
@@ -146,7 +159,14 @@ const Container = styled.div`
   margin-bottom: 20px;
 `;
 
-const Contents = styled.div``;
+const Contents = styled.div`
+  img {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    border: 1px solid rgb(119, 119, 119);
+  }
+`;
 
 const ContentsWrap = styled.div`
   padding: 3px 10px 10px 10px;
@@ -155,17 +175,11 @@ const ContentsWrap = styled.div`
   position: relative;
   max-width: 876px;
   border: 1px solid rgb(30, 38, 47);
-  outline: 1px solid rgb(56, 87, 106);
+  outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
   border-radius: 20px;
   overflow: hidden;
   object-fit: cover;
-
-  img {
-    width: 100%;
-    object-fit: contain;
-    border-radius: 20px;
-  }
 
   @media screen and (max-width: 768px) {
     padding: 5px;
@@ -198,11 +212,16 @@ const CloseButton = styled.button`
   }
 `;
 
-const SkipWeekCheckboxWrapper = styled.div`
+const SkipDayCheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
   font-family: maple-light;
-  color: #ffffff;
+  color: rgb(216, 216, 216);
+
+  :hover {
+    background: rgba(184, 184, 184, 0.24);
+    border-radius: 5px;
+  }
 
   input[type="checkbox"] {
     cursor: pointer;
@@ -210,6 +229,10 @@ const SkipWeekCheckboxWrapper = styled.div`
 
   label {
     cursor: pointer;
+    padding: 4px;
+    &:hover {
+      color: rgb(255, 255, 255);
+    }
   }
 `;
 
@@ -219,7 +242,7 @@ const ScrollTopButton = styled.div`
   justify-content: center;
   align-items: center;
   bottom: 24px;
-  right: 125px;
+  right: 30px;
   width: 50px;
   height: 50px;
   background-color: ${({ theme }) => theme.toggleBgColor};
@@ -229,9 +252,12 @@ const ScrollTopButton = styled.div`
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
-    right: 10px;
     width: 32px;
     height: 32px;
+  }
+
+  &:hover {
+    filter: brightness(1.4);
   }
 `;
 
