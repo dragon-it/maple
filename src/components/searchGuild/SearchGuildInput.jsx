@@ -70,6 +70,7 @@ const InputWrap = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  justify-content: center;
   gap: 5px;
 `;
 

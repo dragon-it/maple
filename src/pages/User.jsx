@@ -15,14 +15,11 @@ import { useTheme } from "../context/ThemeProvider";
 
 export const User = () => {
   const { theme } = useTheme();
-  const [activeTab, setActiveTab] = useState(1);
-  const handleTabClick = (tabNumber) => {
-    setActiveTab(tabNumber);
-  };
-
   const { characterName } = useParams();
+  const [activeTab, setActiveTab] = useState(1);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [guildLoading, setGuildLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -30,12 +27,22 @@ export const User = () => {
       setLoading(true);
       setError(null);
       setActiveTab(1);
-      await UserApi(characterName, setResult, setLoading, setError);
+      await UserApi(
+        characterName,
+        setResult,
+        setLoading,
+        setError,
+        setGuildLoading
+      );
       setLoading(false);
     };
 
     fetchDataAndUpdateState();
   }, [characterName]);
+
+  const handleTabClick = (tabNumber) => {
+    setActiveTab(tabNumber);
+  };
 
   return (
     <>
@@ -54,37 +61,48 @@ export const User = () => {
           />
         </ErrorWrap>
       ) : (
-        <>
-          <Container>
-            <HeaderWrap>
-              <Tabs>
-                <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
-                  캐릭터 정보
-                </Tab>
-                <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
-                  캐릭터 장비
-                </Tab>
-                <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
-                  스킬
-                </Tab>
-                <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
-                  유니온
-                </Tab>
-                <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
-                  길드
-                </Tab>
-              </Tabs>
-              <SearchWrap>
-                <Search />
-              </SearchWrap>
-            </HeaderWrap>
-            {activeTab === 1 && <Information result={result} />}
-            {activeTab === 2 && <Equipment result={result} />}
-            {activeTab === 3 && <Skill result={result} />}
-            {activeTab === 4 && <Union result={result} />}
-            {activeTab === 5 && <Guild result={result} />}
-          </Container>
-        </>
+        <Container>
+          <HeaderWrap>
+            <Tabs>
+              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+                캐릭터 정보
+              </Tab>
+              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+                캐릭터 장비
+              </Tab>
+              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+                스킬
+              </Tab>
+              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+                유니온
+              </Tab>
+              <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
+                길드
+              </Tab>
+            </Tabs>
+            <SearchWrap>
+              <Search />
+            </SearchWrap>
+          </HeaderWrap>
+
+          {/* 캐릭터 정보 */}
+          {activeTab === 1 && <Information result={result} />}
+          {activeTab === 2 && <Equipment result={result} />}
+          {activeTab === 3 && <Skill result={result} />}
+          {activeTab === 4 && <Union result={result} />}
+          {/* 길드 정보 */}
+          {activeTab === 5 &&
+            (guildLoading ? (
+              <LoadingWrap>
+                <img
+                  src={theme === "dark" ? loadingImg_dark : loadingImg_light}
+                  alt="로딩 중..."
+                />
+              </LoadingWrap>
+            ) : (
+              <Guild result={result} />
+            ))}
+        </Container>
       )}
     </>
   );
