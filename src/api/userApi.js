@@ -65,7 +65,13 @@ const getOcid = async (characterName) => {
   }
 };
 
-const UserApi = async (characterName, setResult, setLoading, setError) => {
+const UserApi = async (
+  characterName,
+  setResult,
+  setLoading,
+  setError,
+  setGuildLoading
+) => {
   if (characterName.trim() !== "") {
     try {
       const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
@@ -79,7 +85,6 @@ const UserApi = async (characterName, setResult, setLoading, setError) => {
       setLoading(true);
       const ocid = await getOcid(characterName);
       if (ocid) {
-        // 여러 API 호출을 병렬로 처리
         const apiResults = await Promise.all(
           apiFunctions.map(({ function: apiFunction }) => apiFunction(ocid))
         );
@@ -95,55 +100,16 @@ const UserApi = async (characterName, setResult, setLoading, setError) => {
 
         const { character_guild_name, world_name } =
           resultObject.getCombinedData.getBasicInformation;
-
-        // 길드 관련 정보 병렬 처리
-        const [oguildId, guildRankInformation] = await Promise.all([
-          getOguildId(character_guild_name, world_name),
-          getGuildRanking(character_guild_name, world_name),
-        ]);
-
-        const guildBasicInformation = await getGuildBasicInformation(
-          oguildId.oguild_id
-        );
-
-        if (guildBasicInformation) {
-          const { guild_member } = guildBasicInformation;
-
-          // 길드 멤버 정보 병렬 처리
-          let fetchedMembersData = [];
-          try {
-            fetchedMembersData = await getGuildMembers(guild_member);
-            if (!Array.isArray(fetchedMembersData)) {
-              console.error(fetchedMembersData);
-              throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
-            }
-          } catch (error) {
-            console.error("Failed to fetch members data", error);
-            fetchedMembersData = guild_member.map((member) => ({
-              character_name: member,
-              character_level: null,
-              character_image: null,
-            }));
-          }
-
-          fetchedMembersData = fetchedMembersData.map((memberData, index) => {
-            if (Object.keys(memberData).length === 0) {
-              return {
-                character_name: guild_member[index],
-                character_level: null,
-                character_image: null,
-              };
-            }
-            return memberData;
-          });
-
-          resultObject.guildMembersData = fetchedMembersData;
-        }
-
-        resultObject.guildBasicInformation = guildBasicInformation;
-        resultObject.guildRankInformation = guildRankInformation;
-
         setResult(resultObject);
+
+        // 길드 관련 API는 백그라운드로 호출
+        setGuildLoading(true); // 길드 로딩 상태 시작
+        loadGuildData(
+          character_guild_name,
+          world_name,
+          setResult,
+          setGuildLoading
+        );
       } else {
         setError("OCID 가져오기 오류");
       }
@@ -152,6 +118,64 @@ const UserApi = async (characterName, setResult, setLoading, setError) => {
     } finally {
       setLoading(false);
     }
+  }
+};
+
+// 길드 관련 API를 백그라운드에서 호출
+const loadGuildData = async (
+  guildName,
+  worldName,
+  setResult,
+  setGuildLoading
+) => {
+  try {
+    const [oguildId, guildRankInformation] = await Promise.all([
+      getOguildId(guildName, worldName),
+      getGuildRanking(guildName, worldName),
+    ]);
+
+    const guildBasicInformation = await getGuildBasicInformation(
+      oguildId.oguild_id
+    );
+
+    if (guildBasicInformation) {
+      const { guild_member } = guildBasicInformation;
+      let fetchedMembersData = [];
+      try {
+        fetchedMembersData = await getGuildMembers(guild_member);
+        if (!Array.isArray(fetchedMembersData)) {
+          throw new Error("길드 멤버 데이터 형식이 잘못되었습니다.");
+        }
+      } catch (error) {
+        fetchedMembersData = guild_member.map((member) => ({
+          character_name: member,
+          character_level: null,
+          character_image: null,
+        }));
+      }
+
+      fetchedMembersData = fetchedMembersData.map((memberData, index) => {
+        if (Object.keys(memberData).length === 0) {
+          return {
+            character_name: guild_member[index],
+            character_level: null,
+            character_image: null,
+          };
+        }
+        return memberData;
+      });
+
+      setResult((prevResult) => ({
+        ...prevResult,
+        guildBasicInformation,
+        guildRankInformation,
+        guildMembersData: fetchedMembersData,
+      }));
+    }
+  } catch (error) {
+    console.error(`길드 정보 불러오기 오류: ${error.message}`);
+  } finally {
+    setGuildLoading(false); // 길드 로딩 상태 종료
   }
 };
 

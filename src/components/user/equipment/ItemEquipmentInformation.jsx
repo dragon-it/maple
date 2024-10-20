@@ -279,6 +279,23 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                 <BackgroundImageWrap />
                 <EquipItems>
                   <BackgroundImage src={equipmentUi} alt="ui" />
+                  {/* 프리셋 데이터가 없으면 item_equipment 출력 */}
+                  {(EquipData[selectedPreset] &&
+                  EquipData[selectedPreset].length > 0
+                    ? EquipData[selectedPreset]
+                    : EquipData.item_equipment
+                  )?.map((item, index) => (
+                    <ItemIcon
+                      key={index}
+                      style={positions[item.item_equipment_slot]}
+                      grade={item.potential_option_grade}
+                      gradeColors={gradeColors}
+                      onClick={() => handleItemClick(item)}
+                      onMouseOver={() => handleItemHover(item)}
+                    >
+                      <img src={item.item_icon} alt={`icon-${index}`} />
+                    </ItemIcon>
+                  ))}
                   {EquipData[selectedPreset]?.map((item, index) => (
                     <ItemIcon
                       key={index}
