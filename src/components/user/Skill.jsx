@@ -68,6 +68,10 @@ const Container = styled.div`
   flex-direction: row;
   padding: 10px;
   padding-top: 5px;
+
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const SkillWrap = styled.div`

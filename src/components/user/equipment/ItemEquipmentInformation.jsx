@@ -693,6 +693,10 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 5px;
 
+  img {
+    image-rendering: pixelated;
+  }
+
   @media screen and (max-width: 1024px) {
     width: 100%;
     flex-direction: column;
