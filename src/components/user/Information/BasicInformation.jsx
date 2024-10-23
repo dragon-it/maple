@@ -247,6 +247,7 @@ const CharacterImg = styled.div`
   transform: scaleX(-1);
   width: 110px;
   margin: 2px 0;
+  image-rendering: pixelated;
 `;
 
 const CharacterName = styled.div`
@@ -306,6 +307,10 @@ const Contents = styled.div`
 const Value = styled.div`
   display: flex;
   color: black;
+
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const Title = styled.div`
