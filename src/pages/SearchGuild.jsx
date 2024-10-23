@@ -95,6 +95,10 @@ const Container = styled.div`
   align-items: center;
   margin-top: 20px;
 
+  img {
+    image-rendering: pixelated;
+  }
+
   @media screen and (max-width: 768px) {
     padding: 0 5px;
   }
