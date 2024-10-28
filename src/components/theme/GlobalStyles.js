@@ -8,6 +8,8 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.25;
     margin: 0 auto;
     font-family:
+      '맑은 고딕', 
+      'Malgun Gothic',
       sans-serif,
       "Noto Sans",
       "Noto Sans CJK KR",
