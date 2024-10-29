@@ -74,7 +74,7 @@ const SkillWrap = styled.div`
   :hover {
     background-color: #616161;
     img {
-      scale: 1.2;
+      transform: scale(1.2);
     }
   }
 
