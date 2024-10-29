@@ -8,7 +8,6 @@ import { useTheme } from "../../../context/ThemeProvider";
 export const Menu = () => {
   const { theme } = useTheme();
   const [isClicked, setIsClicked] = useState(false);
-  console.log(isClicked);
   const menuRef = useRef(null);
 
   const routes = {
