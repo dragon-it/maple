@@ -40,6 +40,13 @@ const Icon = styled.img`
   &:hover {
     background-color: ${({ theme }) => theme.headerIconHoverColor};
   }
+
+  @media (hover: none) {
+    &:active {
+      background-color: ${({ theme }) => theme.headerIconHoverColor};
+      transform: scale(0.9);
+    }
+  }
 `;
 
 export default ThemeToggleButton;
