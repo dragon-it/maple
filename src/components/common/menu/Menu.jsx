@@ -8,6 +8,7 @@ import { useTheme } from "../../../context/ThemeProvider";
 export const Menu = () => {
   const { theme } = useTheme();
   const [isClicked, setIsClicked] = useState(false);
+  console.log(isClicked);
   const menuRef = useRef(null);
 
   const routes = {
@@ -21,7 +22,8 @@ export const Menu = () => {
     localStorage.getItem("sundayMaple") ||
     "https://maplestory.nexon.com/News/Event";
 
-  const handleClicked = () => {
+  const handleClicked = (event) => {
+    event.stopPropagation();
     setIsClicked(!isClicked);
   };
 
@@ -31,9 +33,9 @@ export const Menu = () => {
         setIsClicked(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
