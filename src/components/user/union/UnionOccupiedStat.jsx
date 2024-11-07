@@ -6,11 +6,11 @@ export const UnionOccupiedStat = ({ Data }) => {
     <Container>
       <UnionRaiderStat>
         <Header>공격대원 효과</Header>
-        {Data.union_raider_stat.map((item, index) => (
-          <UnionOccupiedItem key={index}>
-            <p>{item} </p>
-          </UnionOccupiedItem>
-        ))}
+        <ul>
+          {Data.union_raider_stat.map((item, index) => (
+            <UnionOccupiedItem key={index}>{item}</UnionOccupiedItem>
+          ))}
+        </ul>
       </UnionRaiderStat>
     </Container>
   );
@@ -43,9 +43,9 @@ const UnionRaiderStat = styled.div`
   position: relative;
 `;
 
-const UnionOccupiedItem = styled.div`
+const UnionOccupiedItem = styled.li`
   color: rgb(179, 179, 179);
-  :hover {
+  &:hover {
     background-color: rgb(209, 209, 209);
     color: rgb(78, 77, 77);
   }
