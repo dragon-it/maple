@@ -9,9 +9,7 @@ import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
 import { Header } from "./components/common/header/Header.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
-
 import { SearchGuild } from "./pages/SearchGuild";
-import { SundayMaple } from "./pages/SundayMaple";
 import { Footer } from "./components/common/footer/Footer";
 import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
@@ -86,14 +84,6 @@ function App() {
               element={
                 <Layout>
                   <SearchGuild />
-                </Layout>
-              }
-            />
-            <Route
-              path="/sunday-maple"
-              element={
-                <Layout>
-                  <SundayMaple />
                 </Layout>
               }
             />
