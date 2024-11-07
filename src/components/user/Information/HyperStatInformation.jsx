@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 
-export const HyperStatInformation = ({ HyperStatInfo, onHeightChange  }) => {
+export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
   const [showAllStat, setShowAllStat] = useState(true);
   const containerRef = useRef(null); // 컨테이너의 참조를 저장하기 위한 ref
@@ -14,7 +14,7 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange  }) => {
     setShowAllStat(!showAllStat);
   };
 
-useEffect(() => {
+  useEffect(() => {
     if (containerRef.current) {
       const height = containerRef.current.offsetHeight; // 컨테이너의 높이 확인
       onHeightChange(height); // 부모 컴포넌트에 높이 전달
@@ -33,32 +33,29 @@ useEffect(() => {
       <HyperHeader>HYPER STAT</HyperHeader>
       <HyperBody>
         <StatWrap>
-          {showAllStat 
-          ?
-          <>
-          {filteredStats.map((stat, index) => (
-            <StatInfo
-              key={index}>
-              <StatContainer>
-                <div>{stat.stat_type}</div>
-                <div>Lv.{stat.stat_level}</div>
-              </StatContainer>
-            </StatInfo>
-          ))}
-          </>
-          :
-          <>
-            {filteredStats.map((stat, index) => (
-            <StatInfo
-              key={index}>
-              <StatContainer>
-                <div>{stat.stat_increase}</div>
-                <Level>Lv.{stat.stat_level}</Level>
-              </StatContainer>
-            </StatInfo>
-            ))}
-          </>
-          }
+          {showAllStat ? (
+            <>
+              {filteredStats.map((stat, index) => (
+                <StatInfo key={index}>
+                  <StatContainer>
+                    <div>{stat.stat_type}</div>
+                    <div>Lv.{stat.stat_level}</div>
+                  </StatContainer>
+                </StatInfo>
+              ))}
+            </>
+          ) : (
+            <>
+              {filteredStats.map((stat, index) => (
+                <StatInfo key={index}>
+                  <StatContainer>
+                    <div>{stat.stat_increase}</div>
+                    <Level>Lv.{stat.stat_level}</Level>
+                  </StatContainer>
+                </StatInfo>
+              ))}
+            </>
+          )}
         </StatWrap>
         <ButtonContainer>
           <PresetWrap>
@@ -73,7 +70,10 @@ useEffect(() => {
               </PresetButton>
             ))}
           </PresetWrap>
-          <RemainPoint><div>POINT :</div> {HyperStatInfo[`${currentPresetKey}_remain_point`]}</RemainPoint>
+          <RemainPoint>
+            <div>POINT :</div>
+            {HyperStatInfo[`${currentPresetKey}_remain_point`]}
+          </RemainPoint>
         </ButtonContainer>
       </HyperBody>
       <ShowAllStatBtn onClick={toggleShowAllStat} showAllStat={showAllStat}>
@@ -83,7 +83,6 @@ useEffect(() => {
   );
 };
 
-
 const Container = styled.div`
   padding: 5px;
   display: flex;
@@ -92,11 +91,11 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
   font-size: 13px;
-  border: 1px solid rgb(80,92,101);
-  outline: 1px solid rgb(42,49,58);
+  border: 1px solid rgb(80, 92, 101);
+  outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
-  background-color: rgba(59,66,75, 0.9);
-  img{
+  background-color: rgba(59, 66, 75, 0.9);
+  img {
     width: 20px;
     height: 20px;
   }
@@ -107,8 +106,8 @@ const ShowAllStatBtn = styled.div`
   box-sizing: border-box;
   font-family: maple-light;
   cursor: pointer;
-  margin-bottom:  ${(props) => (props.showAllStat ? "5px": "0px")};
-  p{
+  margin-bottom: ${(props) => (props.showAllStat ? "5px" : "0px")};
+  p {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,36 +115,36 @@ const ShowAllStatBtn = styled.div`
     padding: 0 10px;
     border-radius: 5px;
   }
-  :hover{
-    background-color: rgba(134,148,160, 0.5);
+  :hover {
+    background-color: rgba(134, 148, 160, 0.5);
   }
-`
+`;
 
 const HyperHeader = styled.div`
   font-size: 15px;
   font-weight: 700;
-  color: rgb(220,252,2);
+  color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
-`
+`;
 const HyperBody = styled.div`
   border-radius: 5px;
   margin-bottom: 6px;
-`
+`;
 
 const StatWrap = styled.div`
   margin-bottom: 10px;
-  background-color: rgb(134,148,160);
+  background-color: rgb(134, 148, 160);
   border-radius: 5px;
   color: white;
   padding: 7px;
-`
+`;
 
 const StatInfo = styled.div`
   padding: 2px 0;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  :hover{
-    background-color: rgba(59,66,75, 0.9);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  :hover {
+    background-color: rgba(59, 66, 75, 0.9);
   }
 `;
 
@@ -153,17 +152,17 @@ const Level = styled.div`
   width: 30px;
   display: flex;
   justify-content: flex-start;
-`
+`;
 
 const ButtonContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    height: 25px;
-    padding: 0 3px;
-    background-color: #aaa9a9;
-    border-radius: 5px;
-    font-family: maple-light;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 25px;
+  padding: 0 3px;
+  background-color: #aaa9a9;
+  border-radius: 5px;
+  font-family: maple-light;
 `;
 
 const PresetWrap = styled.div`
@@ -171,27 +170,25 @@ const PresetWrap = styled.div`
   align-items: center;
   gap: 5px;
   margin-left: 2px;
-`
+`;
 
 const PresetButton = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  ${(props) =>
-    props.isSelected? `filter: brightness(0.5);`: ''}
+  ${(props) => (props.isSelected ? `filter: brightness(0.5);` : "")}
 `;
 
 const PresetHeader = styled.div`
   font-size: 13px;
   text-shadow: none;
-  color: rgb(0,0,0);
-`
+  color: rgb(0, 0, 0);
+`;
 
 const StatContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
 
 const RemainPoint = styled.div`
   display: flex;
@@ -203,7 +200,7 @@ const RemainPoint = styled.div`
   padding: 0 3px;
   font-size: 12px;
   border-radius: 5px;
-  background-color: rgba(59,66,75, 0.9);
+  background-color: rgba(59, 66, 75, 0.9);
   color: white;
-`
+`;
 export default HyperStatInformation;
