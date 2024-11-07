@@ -39,9 +39,10 @@ export const StatInformation = ({ statInfo }) => {
   };
 
   const getStatValue = (index) => {
-    return statInfo.final_stat && statInfo.final_stat[index]
-      ? statInfo.final_stat[index].stat_value
-      : "데이터 없음";
+    if (!statInfo.final_stat || !statInfo.final_stat[index]) {
+      return "데이터 없음";
+    }
+    return statInfo.final_stat[index].stat_value ?? "데이터 없음";
   };
 
   const getStatName = (index) => {
@@ -288,12 +289,12 @@ const StatRightWrap = styled.div`
   }
 `;
 
-const StatHeader = styled.div`
+const StatHeader = styled.p`
   align-items: flex-start;
   font-size: 14px;
   color: white;
 `;
-const StatValue = styled.div`
+const StatValue = styled.p`
   align-items: flex-end;
   font-size: 14px;
   color: white;

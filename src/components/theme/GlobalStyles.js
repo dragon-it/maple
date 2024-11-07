@@ -16,8 +16,7 @@ export const GlobalStyle = createGlobalStyle`
       maple-light,
       "Montserrat",
       "Helvetica Neue",
-      "NanumSquare",
-      maple-bold;
+      "NanumSquare";
     word-break: keep-all;
     word-wrap: break-word;
     text-rendering: optimizeLegibility;
