@@ -79,11 +79,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 7px;
+  padding: 5px;
   background-color: rgb(56, 60, 69);
   border-radius: 5px;
   border: 1px solid rgb(69, 89, 100);
   outline: 1px solid rgb(56, 70, 81);
+  height: 100%;
+  min-width: 380px;
 `;
 
 const UnionWrap = styled.div`
