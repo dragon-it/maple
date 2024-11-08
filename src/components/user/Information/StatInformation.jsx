@@ -289,12 +289,12 @@ const StatRightWrap = styled.div`
   }
 `;
 
-const StatHeader = styled.p`
+const StatHeader = styled.span`
   align-items: flex-start;
   font-size: 14px;
   color: white;
 `;
-const StatValue = styled.p`
+const StatValue = styled.span`
   align-items: flex-end;
   font-size: 14px;
   color: white;

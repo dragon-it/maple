@@ -46,34 +46,31 @@ const Container = styled.div`
   color: white;
 `;
 
-const Header = styled.div``;
+const Header = styled.p``;
 
-const EffectContainer = styled.div`
+const EffectContainer = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 3px;
-  height: 100%;
   :hover {
     background-color: rgb(151, 151, 151);
     color: rgb(19, 19, 19);
   }
 `;
 
-const InfoWrap = styled.div`
+const InfoWrap = styled.li`
   display: flex;
-  flex-direction: row;
   align-items: center;
   padding: 5px;
-  gap: 2px;
   background-color: rgb(48, 54, 63);
-  border-radius: 5px;
+  border-radius: 3px;
   border: 1px solid rgb(136, 184, 212);
   outline: 1px solid rgb(56, 70, 81);
   height: 100%;
 `;
 
-const Level = styled.div`
+const Level = styled.span`
   width: 40px;
 `;
 
-const Name = styled.div``;
+const Name = styled.span``;
