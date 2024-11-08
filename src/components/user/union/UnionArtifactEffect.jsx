@@ -53,8 +53,7 @@ const EffectContainer = styled.ul`
   flex-direction: column;
   gap: 3px;
   :hover {
-    background-color: rgb(151, 151, 151);
-    color: rgb(19, 19, 19);
+    filter: brightness(1.4);
   }
 `;
 
