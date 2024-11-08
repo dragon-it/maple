@@ -129,6 +129,10 @@ const InfoWrap = styled.div`
   outline: 1px solid rgb(56, 70, 81);
   gap: 5px;
   padding: 5px;
+
+  &:hover {
+    filter: brightness(0.85);
+  }
   img {
     width: 90px;
     height: 90px;
@@ -148,9 +152,6 @@ const ArtifactWrap = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 5px;
   width: 970px;
-  :hover {
-    background-color: #525050;
-  }
 
   @media screen and (max-width: 1024px) {
     width: 100%;
