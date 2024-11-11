@@ -2,12 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 export const UnionOccupiedStat = ({ Data }) => {
+  const sortedData = [...Data.union_raider_stat].sort((a, b) =>
+    a.localeCompare(b)
+  );
+
   return (
     <Container>
       <UnionRaiderStat>
         <Header>공격대원 효과</Header>
         <ul>
-          {Data.union_raider_stat.map((item, index) => (
+          {sortedData.map((item, index) => (
             <UnionOccupiedItem key={index}>{item}</UnionOccupiedItem>
           ))}
         </ul>
