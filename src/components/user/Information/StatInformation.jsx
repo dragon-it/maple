@@ -248,8 +248,8 @@ const CombatpowerWrap = styled.div`
   border-radius: 5px;
 `;
 
-const CombatpowerHeader = styled.div`
-  width: 20%;
+const CombatpowerHeader = styled.span`
+
 `;
 
 const StatWrap = styled.div`
@@ -265,16 +265,13 @@ const StatLeftWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 54%;
+  width: 50%;
   div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 768px) {
-    width: 50%;
-  }
 `;
 
 const StatRightWrap = styled.div`
@@ -311,10 +308,8 @@ const AttackFontWrap = styled.div`
   white-space: nowrap;
   p {
     display: flex;
-    flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    gap: 25px;
   }
 
   @media screen and (max-width: 1024px) {
@@ -331,9 +326,6 @@ const TextRight = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: flex-end;
-  font-size: 14px;
-  color: white;
   gap: 8px;
 `;
 
@@ -341,9 +333,6 @@ const TextLeft = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: flex-end;
-  font-size: 14px;
-  color: white;
   gap: 8px;
 `;
 
