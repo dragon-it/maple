@@ -136,10 +136,6 @@ const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 3px 10px;
-  min-width: 750px;
-  @media screen and (max-width: 1024px) {
-    min-width: 0;
-  }
 `;
 
 const SearchWrap = styled.div`

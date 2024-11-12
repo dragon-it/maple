@@ -39,8 +39,10 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
                 <StatInfo key={index}>
                   <StatContainer>
                     <span>{stat.stat_type}</span>
-                    <Level><span>Lv.</span> 
-                    <span>{stat.stat_level}</span></Level>
+                    <Level>
+                      <span>Lv.</span>
+                      <span>{stat.stat_level}</span>
+                    </Level>
                   </StatContainer>
                 </StatInfo>
               ))}
@@ -51,7 +53,10 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
                 <StatInfo key={index}>
                   <StatContainer>
                     <span>{stat.stat_increase}</span>
-                    <Level><span>Lv.</span><span>{stat.stat_level}</span></Level>
+                    <Level>
+                      <span>Lv.</span>
+                      <span>{stat.stat_level}</span>
+                    </Level>
                   </StatContainer>
                 </StatInfo>
               ))}
@@ -72,8 +77,9 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
             ))}
           </PresetWrap>
           <RemainPoint>
-            <div>POINT :</div>
-            {HyperStatInfo[`${currentPresetKey}_remain_point`]}
+            <span>
+              POINT {HyperStatInfo[`${currentPresetKey}_remain_point`]}
+            </span>
           </RemainPoint>
         </ButtonContainer>
       </HyperBody>
@@ -103,7 +109,7 @@ const ShowAllStatBtn = styled.div`
   box-sizing: border-box;
   font-family: maple-light;
   cursor: pointer;
-  margin-bottom: ${(props) => (props.showAllStat ? "5px" : "0px")};
+
   p {
     display: flex;
     justify-content: center;
@@ -148,11 +154,11 @@ const StatInfo = styled.li`
 const Level = styled.span`
   display: flex;
 
-  :first-child{
+  :first-child {
     color: rgba(194, 209, 215, 0.877);
   }
 
-  :nth-child(2){
+  :nth-child(2) {
     width: 20px;
     text-align: center;
   }
@@ -161,12 +167,11 @@ const Level = styled.span`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
   height: 25px;
   padding: 0 3px;
-  background-color: #aaa9a9;
+  background-color: rgb(170, 169, 169);
   border-radius: 5px;
-  font-family: maple-light;
 `;
 
 const PresetWrap = styled.div`
@@ -177,34 +182,50 @@ const PresetWrap = styled.div`
 `;
 
 const PresetButton = styled.button`
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border-radius: 5px;
-  ${(props) => (props.isSelected ? `filter: brightness(0.5);` : "")}
+  width: 20px;
+  height: 20px;
+  color: ${(props) => (props.isSelected ? "#FFFFFF" : "#e4e4e4")};
+  background: ${(props) => (props.isSelected ? "#444F59" : "#828F9A")};
+  border: 1px solid ${(props) => (props.isSelected ? "#d8e1e6" : "#454D57")};
+  &:hover {
+    filter: brightness(1.2);
+  }
 `;
 
 const PresetHeader = styled.div`
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
   text-shadow: none;
-  color: rgb(0, 0, 0);
+  color: rgb(34, 34, 34);
 `;
 
 const StatContainer = styled.p`
   display: flex;
   justify-content: space-between;
+  text-shadow: 0px 0px 1px rgb(62, 62, 62);
 `;
 
-const RemainPoint = styled.div`
+const RemainPoint = styled.span`
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
   gap: 10px;
   width: 50%;
   height: 20px;
-  padding: 0 3px;
-  font-size: 12px;
-  border-radius: 5px;
+  line-height: 20px;
+  font-size: 14px;
+  border-radius: 10px;
   background-color: rgba(59, 66, 75, 0.9);
+  border-top: 2px solid rgb(38, 43, 49);
+  border-left: 1px solid rgb(62, 73, 81);
+  border-right: 1px solid rgb(62, 73, 81);
+  box-shadow: 0px 1px 0px rgb(133, 145, 145);
   color: white;
 `;
+
 export default HyperStatInformation;

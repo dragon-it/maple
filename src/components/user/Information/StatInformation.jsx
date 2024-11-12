@@ -245,12 +245,12 @@ const CombatpowerWrap = styled.div`
   font-size: 20px;
   font-weight: bold;
   background-color: rgb(62, 96, 118);
+  border: 1px solid rgb(71, 119, 149);
+  box-shadow: 0px 2px 0px rgb(0, 0, 0);
   border-radius: 5px;
 `;
 
-const CombatpowerHeader = styled.span`
-
-`;
+const CombatpowerHeader = styled.span``;
 
 const StatWrap = styled.div`
   display: flex;
@@ -265,13 +265,16 @@ const StatLeftWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 50%;
+  width: 54%;
   div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
+  @media screen and (max-width: 1024px) {
+    width: 50%;
+  }
 `;
 
 const StatRightWrap = styled.div`
@@ -289,8 +292,10 @@ const StatRightWrap = styled.div`
 const StatHeader = styled.span`
   align-items: flex-start;
   font-size: 14px;
-  color: white;
+  color: rgb(210, 221, 225);
+  text-shadow: 0px 1px 0px rgb(62, 62, 62);
 `;
+
 const StatValue = styled.span`
   align-items: flex-end;
   font-size: 14px;
@@ -303,13 +308,14 @@ const AttackFontWrap = styled.div`
   justify-content: space-between;
   padding: 8px;
   gap: 10px;
-  background-color: rgb(108, 120, 134);
+  background-color: rgb(103 113 125);
   border-radius: 5px;
   white-space: nowrap;
   p {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    gap: 20px;
   }
 
   @media screen and (max-width: 1024px) {
