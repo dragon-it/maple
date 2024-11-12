@@ -38,8 +38,9 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
               {filteredStats.map((stat, index) => (
                 <StatInfo key={index}>
                   <StatContainer>
-                    <div>{stat.stat_type}</div>
-                    <div>Lv.{stat.stat_level}</div>
+                    <span>{stat.stat_type}</span>
+                    <Level><span>Lv.</span> 
+                    <span>{stat.stat_level}</span></Level>
                   </StatContainer>
                 </StatInfo>
               ))}
@@ -49,8 +50,8 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
               {filteredStats.map((stat, index) => (
                 <StatInfo key={index}>
                   <StatContainer>
-                    <div>{stat.stat_increase}</div>
-                    <Level>Lv.{stat.stat_level}</Level>
+                    <span>{stat.stat_increase}</span>
+                    <Level><span>Lv.</span><span>{stat.stat_level}</span></Level>
                   </StatContainer>
                 </StatInfo>
               ))}
@@ -95,10 +96,6 @@ const Container = styled.div`
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
   background-color: rgba(59, 66, 75, 0.9);
-  img {
-    width: 20px;
-    height: 20px;
-  }
 `;
 
 const ShowAllStatBtn = styled.div`
@@ -120,19 +117,19 @@ const ShowAllStatBtn = styled.div`
   }
 `;
 
-const HyperHeader = styled.div`
+const HyperHeader = styled.h2`
   font-size: 15px;
-  font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
+
 const HyperBody = styled.div`
   border-radius: 5px;
   margin-bottom: 6px;
 `;
 
-const StatWrap = styled.div`
+const StatWrap = styled.ul`
   margin-bottom: 10px;
   background-color: rgb(134, 148, 160);
   border-radius: 5px;
@@ -140,7 +137,7 @@ const StatWrap = styled.div`
   padding: 7px;
 `;
 
-const StatInfo = styled.div`
+const StatInfo = styled.li`
   padding: 2px 0;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   :hover {
@@ -148,10 +145,17 @@ const StatInfo = styled.div`
   }
 `;
 
-const Level = styled.div`
-  width: 30px;
+const Level = styled.span`
   display: flex;
-  justify-content: flex-start;
+
+  :first-child{
+    color: rgba(194, 209, 215, 0.877);
+  }
+
+  :nth-child(2){
+    width: 20px;
+    text-align: center;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -185,7 +189,7 @@ const PresetHeader = styled.div`
   color: rgb(0, 0, 0);
 `;
 
-const StatContainer = styled.div`
+const StatContainer = styled.p`
   display: flex;
   justify-content: space-between;
 `;

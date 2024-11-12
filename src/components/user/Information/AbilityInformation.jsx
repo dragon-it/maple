@@ -75,7 +75,7 @@ export const AbilityInformation = ({ AbilityInfo }) => {
             ))}
           </ButtonWrap>
           <RemainFame>
-            <div>명성치 :</div> {formattedRemainFame}
+            <span>명성치 : {formattedRemainFame}</span>
           </RemainFame>
         </ButtonContainer>
       </PresetWrap>
@@ -94,11 +94,6 @@ const Container = styled.div`
   font-size: 14px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   color: white;
-  img {
-    width: 100%;
-    height: 100%;
-    transition: 1s;
-  }
 `;
 
 const NoDataWrap = styled.div`
@@ -109,16 +104,31 @@ const NoDataWrap = styled.div`
 
 const PresetWrap = styled.div`
   line-height: 20px;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0 5px;
+`;
+
+const AbilityHeader = styled.h2`
+  font-size: 15px;
+  color: rgb(220, 252, 2);
+  margin-bottom: 5px;
+`;
+
+const AbilityDetail = styled.div`
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
   p {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 13px;
     width: 100%;
     height: 24px;
     color: white;
@@ -129,30 +139,12 @@ const PresetWrap = styled.div`
   }
 `;
 
-const AbilityHeader = styled.div`
-  font-size: 15px;
-  font-weight: 700;
-  color: rgb(220, 252, 2);
-  margin-bottom: 5px;
-`;
-const AbilityDetail = styled.div`
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  width: 100%;
-  padding: 3px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-`;
-
-const AbilityGradeHeader = styled.div`
+const AbilityGradeHeader = styled.p`
   font-family: maple-light;
   margin-bottom: 5px;
 `;
 
-const AbilityNoData = styled.div`
+const AbilityNoData = styled.p`
   font-family: maple-light;
 `;
 
@@ -185,7 +177,7 @@ const ButtonWrap = styled.div`
   gap: 5px;
   margin-left: 2px;
 `;
-const PresetHeader = styled.div`
+const PresetHeader = styled.span`
   font-size: 13px;
   text-shadow: none;
   color: black;
