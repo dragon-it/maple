@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import card_Backgrnd from "../assets/classillust/characterCard.slotBackgrnd.png";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import characters from "../components/randomClass/RandomClassImage";
 
 export const RandomClass = () => {
@@ -49,6 +50,13 @@ export const RandomClass = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>랜덤 직업 뽑기 - 메짱</title>
+        <meta
+          name="description"
+          content="MapleStory 직업 랜덤 뽑기 기능을 제공합니다."
+        />
+      </Helmet>
       <ContentsWrap>
         <Title>랜덤 직업 뽑기</Title>
         <>
