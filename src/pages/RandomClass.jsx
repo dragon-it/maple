@@ -26,7 +26,7 @@ export const RandomClass = () => {
         setCurrentCharacterIndex(
           (prevIndex) => (prevIndex + 1) % characters.length
         );
-      }, 10);
+      }, 20);
     }
     return () => clearInterval(interval);
   }, [isRolling]);
@@ -65,6 +65,7 @@ export const RandomClass = () => {
             <>
               <ClassImage
                 image={characters[currentCharacterIndex].image}
+                isRolling={isRolling}
                 alt="Character"
               />
               <ClassName>{characters[currentCharacterIndex].name}</ClassName>
@@ -145,6 +146,7 @@ const ClassName = styled.p`
 `;
 
 const ClassImage = styled.div`
+  position: relative;
   width: 200px;
   height: 300px;
   background-image: url(${card_Backgrnd});
@@ -152,8 +154,34 @@ const ClassImage = styled.div`
   background-position: center;
   border-radius: 5%;
   border: ${(props) => (props.image ? "3px solid rgb(145, 145, 145)" : "none")};
-
+  overflow: hidden;
   ${(props) => props.image && `background-image: url(${props.image});`}
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 230%;
+    height: 100%;
+    background: linear-gradient(
+      232deg,
+      rgb(255 255 255 / 0%) 52%,
+      rgb(255 255 255 / 80%) 59%,
+      rgb(255 255 255 / 0%) 66%
+    );
+    animation: holo-move 1.5s infinite linear;
+    opacity: ${(props) => (props.isRolling ? 0 : 1)};
+  }
+
+  @keyframes holo-move {
+    0% {
+      transform: translateX(-60%);
+    }
+    100% {
+      transform: translateX(50%);
+    }
+  }
 `;
 
 const StartBtn = styled.div`
