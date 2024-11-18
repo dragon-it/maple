@@ -89,7 +89,7 @@ export const SearchGuildRendering = ({ result }) => {
 
 const Container = styled.div`
   width: 100%;
-  min-width: 750px;
+  min-width: 650px;
 
   @media screen and (max-width: 1024px) {
     min-width: 550px;
