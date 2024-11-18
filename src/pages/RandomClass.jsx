@@ -121,7 +121,6 @@ const ContentsWrap = styled.div`
 const Title = styled.p`
   text-align: center;
   color: rgb(3, 3, 3);
-  background: rgb(227, 186, 252);
   background: radial-gradient(
     circle,
     rgba(227, 186, 252, 1) 18%,
