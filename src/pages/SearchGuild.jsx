@@ -115,6 +115,14 @@ const HeaderWrap = styled.div`
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
   box-shadow: 0 0px 4px 4px rgba(167, 167, 167, 0.47);
+
+  @media screen and (max-width: 1024px) {
+    width: 70%;
+  }
+
+  @media screen and (max-width: 576px) {
+    width: 100%;
+  }
 `;
 
 const NpcWarp = styled.div`
