@@ -124,7 +124,7 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 100%;
+    width: 99%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -151,9 +151,6 @@ const SearchWrap = styled.div`
     width: 100%;
     margin-bottom: 10px;
   }
-
-  @media screen and (max-width: 576px) {
-  }
 `;
 
 const Tabs = styled.div`
@@ -161,6 +158,11 @@ const Tabs = styled.div`
   padding: 10px 0;
   white-space: nowrap;
   font-family: maple-light;
+  min-width: 390px;
+
+  @media screen and (max-width: 1024px) {
+    min-width: 0px;
+  }
 `;
 
 const Tab = styled.div`
