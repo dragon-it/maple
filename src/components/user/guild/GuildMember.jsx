@@ -166,18 +166,29 @@ const DetailMember = styled.div`
 `;
 
 const DetailImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
   object-fit: cover;
+  border: 1px solid #3d3d3d2d;
   transform: scaleX(-1);
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const EmptyImage = styled.div`
-  width: 80px;
-  height: 80px;
-  background-color: #636363ea;
+  width: 96px;
+  height: 96px;
+  border: 1px solid #3d3d3d2d;
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const DetailName = styled.div``;
