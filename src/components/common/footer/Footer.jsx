@@ -4,11 +4,9 @@ import FooterText from "./FooterText";
 
 export const Footer = () => {
   return (
-    <>
-      <FooterTextSpan>
-        <FooterText />
-      </FooterTextSpan>
-    </>
+    <FooterTextSpan>
+      <FooterText />
+    </FooterTextSpan>
   );
 };
 
@@ -24,4 +22,5 @@ const FooterTextSpan = styled.span`
   text-align: center;
   font-family: maple-light;
   background: ${({ theme }) => theme.footerBgColor};
+  text-decoration: none;
 `;
