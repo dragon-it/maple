@@ -4,6 +4,7 @@ import BasicInfoBackground from "./BasicInfoBackground";
 import { useTheme } from "../../../context/ThemeProvider";
 import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
 import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.svg";
+import TanjiroImage from "../../../assets/npc/tanjiro.png";
 import WorldIcons from "../../common/worldIcon/WorldIcons";
 
 export const BasicInformation = ({ BasicInfo }) => {
@@ -104,7 +105,12 @@ export const BasicInformation = ({ BasicInfo }) => {
           <Level>Lv. {BasicInfo.getBasicInformation.character_level}</Level>
           <CharacterImg>
             <img
-              src={BasicInfo.getBasicInformation.character_image}
+              src={
+                BasicInfo.getBasicInformation.character_class ===
+                "카마도 탄지로"
+                  ? TanjiroImage
+                  : BasicInfo.getBasicInformation.character_image
+              }
               alt="character_image"
             />
           </CharacterImg>
