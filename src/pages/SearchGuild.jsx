@@ -15,7 +15,6 @@ import SearchGuildFetch from "../api/searchGuildFetch";
 export const SearchGuild = () => {
   const { theme } = useTheme();
   const { guildName } = useParams();
-  console.log(guildName);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

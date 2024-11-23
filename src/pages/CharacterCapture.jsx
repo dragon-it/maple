@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import npc from "../assets/npc/npc_fish.png";
+import { Helmet } from "react-helmet";
 import error_npc from "../assets/npc/npc_fish_error.png";
 import characterCaptureFetch from "../api/characterCaptureFetch";
 import { CaptureInput } from "../components/characterCapture/CaptureInput";
@@ -40,6 +41,13 @@ export const CharacterCapture = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`캐릭터 캡처 - 메짱`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       {loading ? (
         <LoadingWrap>
           <img
@@ -92,10 +100,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
-
-  img {
-    image-rendering: pixelated;
-  }
 
   @media screen and (max-width: 768px) {
     padding: 0 5px;

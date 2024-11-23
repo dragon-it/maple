@@ -3,10 +3,18 @@ import { Search } from "../components/main/Search";
 import styled from "styled-components";
 import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
+import { Helmet } from "react-helmet";
 
 export const Main = () => {
   return (
     <Container>
+      <Helmet>
+        <title>{`메짱`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       <SearchWrap>
         <Search />
       </SearchWrap>

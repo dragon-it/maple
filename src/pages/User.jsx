@@ -12,6 +12,7 @@ import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Guild } from "../components/user/Guild";
 import { useTheme } from "../context/ThemeProvider";
+import { Helmet } from "react-helmet";
 
 export const User = () => {
   const { theme } = useTheme();
@@ -46,6 +47,13 @@ export const User = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${characterName} - 캐릭터 검색`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       {loading ? (
         <LoadingWrap>
           <img
