@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTheme } from "../context/ThemeProvider";
+import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
@@ -14,6 +15,7 @@ import SearchGuildFetch from "../api/searchGuildFetch";
 export const SearchGuild = () => {
   const { theme } = useTheme();
   const { guildName } = useParams();
+  console.log(guildName);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -40,6 +42,13 @@ export const SearchGuild = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`길드 검색 - 메짱`}</title>
+        <meta
+          name="description"
+          content="모든 서버의 길드를 불러오는 기능입니다."
+        />
+      </Helmet>
       {loading ? (
         <LoadingWrap>
           <img
