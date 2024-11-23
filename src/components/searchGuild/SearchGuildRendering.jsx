@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { SearchGuildDetail } from "./SearchGuildDetail";
 import WorldIcons from "../common/worldIcon/WorldIcons";
 
@@ -34,6 +35,10 @@ export const SearchGuildRendering = ({ result }) => {
 
   return (
     <Container>
+      <Helmet>
+        <title>{`길드 ${guildName} - 메짱`}</title>
+        <meta name="description" content="길드의 정보를 불러오는 기능입니다." />
+      </Helmet>
       {isGuildDetail ? (
         <SearchGuildDetail
           selectedGuild={selectedGuild}
