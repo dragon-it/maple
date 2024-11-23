@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { formatPowerStat } from "../common/powerStat/PowerStat";
 import npc_Chat_Box from "../../assets/npc/npc_Chat_Box.png";
 import html2canvas from "html2canvas";
+import TanjiroImage from "../../assets/npc/tanjiro.png";
 
 const StyledLine = styled.div`
   display: flex;
@@ -193,7 +194,12 @@ export const CaptureRenderingBox = ({ result }) => {
         <NpcBox src={npc_Chat_Box} alt="대화박스" />
         <CharacterInfo>
           <NpcWrap>
-            <Image src={imageSrc} alt="캐릭터 이미지" />
+            <Image
+              src={
+                character_class === "카마도 탄지로" ? TanjiroImage : imageSrc
+              }
+              alt="캐릭터 이미지"
+            />
             <NickName>{character_name}</NickName>
           </NpcWrap>
           <NpcText>
