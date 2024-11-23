@@ -124,7 +124,7 @@ const MenuContainer = styled.div`
   outline: 1px solid #2e3035;
   border: 1px solid #3d454e;
   border-radius: 7px;
-  transition: opacity 0.5s ease, max-height 1s ease;
+  transition: opacity 0.5s ease, max-height 0.8s ease;
   text-decoration: none;
   z-index: 9999999;
   box-shadow: ${({ isClicked }) =>
