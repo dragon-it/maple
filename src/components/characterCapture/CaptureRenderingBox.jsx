@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { formatPowerStat } from "../common/powerStat/PowerStat";
 import npc_Chat_Box from "../../assets/npc/npc_Chat_Box.png";
 import html2canvas from "html2canvas";
+import { Helmet } from "react-helmet";
 import TanjiroImage from "../../assets/npc/tanjiro.png";
 
 const StyledLine = styled.div`
@@ -190,6 +191,13 @@ export const CaptureRenderingBox = ({ result }) => {
 
   return (
     <Container>
+      <Helmet>
+        <title>{`${character_name} - 캐릭터 캡처`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       <MainCharacterWrap id="character-wrap" crossOrigin="anonymous">
         <NpcBox src={npc_Chat_Box} alt="대화박스" />
         <CharacterInfo>
@@ -238,6 +246,8 @@ const Image = styled.img`
   position: relative;
   top: 9px;
   z-index: -1;
+  image-rendering: pixelated;
+
   @media screen and (max-width: 519px) {
     top: 1.5vw;
   }
