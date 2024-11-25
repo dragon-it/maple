@@ -70,10 +70,7 @@ export const PropensityInformation = ({ propensityData }) => {
           onClick={handleChartClick}
         >
           <PolarGrid />
-          <Tooltip
-            formatter={(value) => `레벨: ${value}`}
-            active={tooltipVisible}
-          />
+          <Tooltip formatter={(value) => `${value}`} active={tooltipVisible} />
           <PolarAngleAxis dataKey="subject" display="none" />
           <Radar
             name="레벨"
