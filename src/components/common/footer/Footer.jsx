@@ -12,7 +12,6 @@ export const Footer = () => {
 
 const FooterTextSpan = styled.span`
   position: relative;
-  bottom: -58px;
   width: 100%;
   padding: 3px 0;
   margin-top: 10px;
