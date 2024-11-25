@@ -523,6 +523,9 @@ app.get("/api/image-proxy", async (req, res) => {
   }
 });
 
+// ads.txt 제공 설정
+app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
+
 // 빌드된 정적 파일을 서빙하는 미들웨어 설정
 app.use(express.static(path.join(__dirname, "build")));
 
