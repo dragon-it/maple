@@ -234,6 +234,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     align-items: center;
     width: 46px;
     height: 46px;
+    overflow: hidden;
     cursor: pointer;
     border: ${({ grade, gradeColors }) =>
       `2px solid ${
