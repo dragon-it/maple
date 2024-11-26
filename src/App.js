@@ -130,4 +130,5 @@ const HeaderContentsWrap = styled.div`
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
+  min-height: 100vh;
 `;
