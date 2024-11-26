@@ -16,10 +16,12 @@ import { RandomClass } from "./pages/RandomClass";
 
 function Layout({ children }) {
   return (
-    <HeaderContentsWrap>
-      <Header />
+    <>
+      <HeaderContentsWrap>
+        <Header />
+      </HeaderContentsWrap>
       {children}
-    </HeaderContentsWrap>
+    </>
   );
 }
 
@@ -29,7 +31,6 @@ function App() {
       <GlobalStyle />
       <Container>
         <Router>
-          <BackgroundImage />
           <Routes>
             <Route
               path="/"
@@ -59,7 +60,9 @@ function App() {
               path="/user/:characterName"
               element={
                 <Layout>
-                  <User />
+                  <UserWrap>
+                    <User />
+                  </UserWrap>
                 </Layout>
               }
             />
@@ -104,6 +107,7 @@ function App() {
               }
             />
           </Routes>
+          <BackgroundImage />
           <Footer />
         </Router>
       </Container>
@@ -116,8 +120,7 @@ export default App;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
-  position: relative;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,6 +132,12 @@ const HeaderContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 1;
-  min-height: 100vh;
+`;
+
+const UserWrap = styled.div`
+  min-height: 85vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

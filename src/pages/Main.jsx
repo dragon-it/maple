@@ -12,7 +12,7 @@ export const Main = () => {
         <title>{`메짱`}</title>
         <meta
           name="description"
-          content="캐릭터를 이미지로 저장하는 기능입니다."
+          content="메이플스토리 캐릭터 검색사이트 메짱입니다."
         />
       </Helmet>
       <SearchWrap>
@@ -30,8 +30,8 @@ const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 100%;
+  min-height: 100vh;
 `;
 
 const SearchWrap = styled.div`
