@@ -119,7 +119,7 @@ export const User = () => {
 const Container = styled.div`
   position: relative;
   width: fit-content;
-  height: auto;
+  height: fit-content;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
@@ -199,7 +199,7 @@ const LoadingWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 100vh;
   z-index: 999;
 
   img {
