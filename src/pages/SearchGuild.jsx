@@ -102,6 +102,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  margin-top: 20px;
 
   img {
     image-rendering: pixelated;
@@ -145,7 +146,7 @@ const LoadingWrap = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: 999;
 
   img {
