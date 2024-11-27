@@ -54,7 +54,7 @@ export const RandomClass = () => {
         <title>랜덤 직업 뽑기 - 메짱</title>
         <meta
           name="description"
-          content="MapleStory 직업 랜덤 뽑기 기능을 제공합니다."
+          content="메이플스토리 직업 랜덤 뽑기 기능입니다."
         />
       </Helmet>
       <ContentsWrap>
