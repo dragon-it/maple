@@ -100,7 +100,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
-  min-height: 100vh;
+  min-height: 85vh;
 
   @media screen and (max-width: 768px) {
     padding: 0 5px;
