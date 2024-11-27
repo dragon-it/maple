@@ -15,6 +15,7 @@ export const Menu = () => {
     characterCapture: "/character-capture",
     searchGuild: "/guild-search",
     randomClass: "/random-class",
+    expSimulator: "/exp-simulator",
   };
 
   const sundayMapleUrl =
@@ -60,6 +61,9 @@ export const Menu = () => {
         </Menus>
         <Menus to={routes.randomClass} onClick={() => setIsClicked(false)}>
           랜덤 직업 뽑기
+        </Menus>
+        <Menus to={routes.expSimulator} onClick={() => setIsClicked(false)}>
+          Exp 시뮬레이터
         </Menus>
         <MenuLink
           href={sundayMapleUrl}
