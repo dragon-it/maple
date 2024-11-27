@@ -13,6 +13,7 @@ import { SearchGuild } from "./pages/SearchGuild";
 import { Footer } from "./components/common/footer/Footer";
 import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
+import { ExpSimulator } from "./pages/ExpSimulator";
 
 function Layout({ children }) {
   return (
@@ -95,6 +96,14 @@ function App() {
               element={
                 <Layout>
                   <RandomClass />
+                </Layout>
+              }
+            />
+            <Route
+              path="/exp-simulator"
+              element={
+                <Layout>
+                  <ExpSimulator />
                 </Layout>
               }
             />
