@@ -240,6 +240,9 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
       `2px solid ${
         gradeColors && gradeColors[grade] ? gradeColors[grade] : "none"
       }`};
+    img {
+      image-rendering: pixelated;
+    }
   `;
 
   return (
@@ -340,19 +343,19 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       onClick={() => handlePresetChange("preset_1")}
                       isSelected={selectedPreset === "item_equipment_preset_1"}
                     >
-                      <div>프리셋1</div>
+                      <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_2")}
                       isSelected={selectedPreset === "item_equipment_preset_2"}
                     >
-                      <div>프리셋2</div>
+                      <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_3")}
                       isSelected={selectedPreset === "item_equipment_preset_3"}
                     >
-                      <div>프리셋3</div>
+                      <span>프리셋3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingPresetKey === selectedPreset && (
@@ -388,7 +391,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       selectedCashPreset === "cash_item_equipment_base"
                     }
                   >
-                    <div>BASE</div>
+                    <span>BASE</span>
                   </BaseButton>
                   <PresetButtons>
                     <PresetButton
@@ -397,7 +400,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         selectedCashPreset === "cash_item_equipment_preset_1"
                       }
                     >
-                      <div>프리셋1</div>
+                      <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_2")}
@@ -405,7 +408,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         selectedCashPreset === "cash_item_equipment_preset_2"
                       }
                     >
-                      <div>프리셋2</div>
+                      <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_3")}
@@ -413,7 +416,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         selectedCashPreset === "cash_item_equipment_preset_3"
                       }
                     >
-                      <div>프리셋3</div>
+                      <span>프리셋3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingCashPresetKey === selectedCashPreset && (
@@ -694,10 +697,6 @@ const Container = styled.div`
   border-radius: 5px;
   padding: 5px;
 
-  img {
-    image-rendering: pixelated;
-  }
-
   @media screen and (max-width: 1024px) {
     width: 100%;
     flex-direction: column;
@@ -828,6 +827,9 @@ const ADIcon = styled.div`
   cursor: pointer;
   right: 59px;
   bottom: 17px;
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const PetEquipWrap = styled.div`
@@ -919,5 +921,9 @@ const DetailWrap = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 100%;
+  }
+
+  img {
+    image-rendering: pixelated;
   }
 `;
