@@ -54,26 +54,26 @@ export const GuildInformation = ({ result }) => {
         </ValueColumn>
       </BasicInfoSection>
       <RankingSection>
-        <GuildRankHeader>길드 랭킹</GuildRankHeader>
+        <GuildRankTitle>길드 랭킹</GuildRankTitle>
         <ItemWrap>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={fame_icon} alt="fame_icon" />
-              <div>주간 명성</div>
+              <p>주간 명성</p>
             </RankingHeader>
             <RankingValue>{getRankingText(fameRanking)}</RankingValue>
           </RankingItem>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={flag_icon} alt="flag_icon" />
-              <div>플래그</div>
+              <p>플래그</p>
             </RankingHeader>
             <RankingValue>{getRankingText(flagRanking)}</RankingValue>
           </RankingItem>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={suro_icon} alt="suro_icon" />
-              <div>지하 수로</div>
+              <p>지하 수로</p>
             </RankingHeader>
             <RankingValue>{getRankingText(suroRanking)}</RankingValue>
           </RankingItem>
@@ -106,17 +106,17 @@ const HeaderColumn = styled.div`
   color: rgb(200, 175, 137);
 `;
 
-const ValueColumn = styled.div`
+const ValueColumn = styled.span`
   display: flex;
   flex-direction: column;
   gap: 5px;
 `;
 
-const Header = styled.div``;
+const Header = styled.span``;
 
-const Value = styled.div``;
+const Value = styled.span``;
 
-const MasterName = styled.div`
+const MasterName = styled.span`
   cursor: pointer;
   &:hover {
     background-color: rgb(78, 78, 78);
@@ -134,17 +134,17 @@ const RankingItem = styled.div`
   text-align: center;
 `;
 
-const GuildRankHeader = styled.div`
+const GuildRankTitle = styled.div`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
 `;
 
-const RankingHeader = styled.div`
+const RankingHeader = styled.span`
   color: rgb(200, 175, 137);
 `;
 
-const RankingValue = styled.div``;
+const RankingValue = styled.span``;
 
 const ItemWrap = styled.div`
   display: flex;
