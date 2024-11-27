@@ -78,6 +78,7 @@ export const PropensityInformation = ({ propensityData }) => {
             stroke="#3498db"
             fill="#3498db"
             fillOpacity={0.6}
+            animationDuration={500}
           />
         </RadarChart>
         <ItemsWrap>
