@@ -112,7 +112,7 @@ const PresetWrap = styled.div`
 const AbilityHeader = styled.h2`
   font-size: 15px;
   color: rgb(220, 252, 2);
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 `;
 
 const AbilityDetail = styled.div`

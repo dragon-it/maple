@@ -61,13 +61,14 @@ const Container = styled.div`
   color: white;
   padding: 0px 10px;
   padding-bottom: 10px;
+  max-height: 600px;
+  overflow-y: scroll;
 
   @media screen and (max-width: 1504px) {
     position: fixed;
     left: 50%;
-    top: 25%;
     z-index: 99999;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(0%);
   }
 
   @media screen and (max-width: 380px) {

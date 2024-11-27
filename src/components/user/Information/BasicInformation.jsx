@@ -167,15 +167,14 @@ const Container = styled.div`
   background-color: rgba(59, 66, 75, 0.9);
 `;
 
-const HeaderWrap = styled.div`
+const HeaderWrap = styled.span`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const CharacterHeader = styled.div`
+const CharacterHeader = styled.h2`
   font-size: 15px;
-  font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
