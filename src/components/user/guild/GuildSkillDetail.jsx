@@ -20,10 +20,10 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
         </IconImage>
       </IconWrap>
       <SkillDescriptionWrap>
-        <div>{item.skill_description}</div>
+        <span>{item.skill_description}</span>
       </SkillDescriptionWrap>
       <SkillEffect Data={item.skill_effect}>
-        <div>{item.skill_effect}</div>
+        <span>{item.skill_effect}</span>
       </SkillEffect>
     </Container>
   );
@@ -127,12 +127,12 @@ const PinImage = styled.div`
   transform: rotate(45deg);
 `;
 
-const SkillDescriptionWrap = styled.div`
+const SkillDescriptionWrap = styled.p`
   font-size: 13px;
   white-space: pre-wrap;
 `;
 
-const SkillEffect = styled.div`
+const SkillEffect = styled.p`
   font-size: 13px;
   white-space: pre-wrap;
   ${({ Data }) => Data && `margin-top: 10px;`}
