@@ -111,9 +111,12 @@ const ItemContainer = styled.div`
   flex-direction: row;
   gap: 10px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
     display: none;
-    gap: 5px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    gap: 0px;
   }
 `;
 
