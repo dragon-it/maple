@@ -28,15 +28,23 @@ export const ExpSimulator = () => {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  min-height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99;
+  min-height: 85vh;
+  margin-top: 20px;
 `;
 
-const Header = styled.h2`
+const Header = styled.h1`
+  width: 100%;
+  margin: 5px 0;
+  text-shadow: 0px 0px 7px rgb(38, 151, 185);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  position: relative;
   text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 const Notice = styled.div`
