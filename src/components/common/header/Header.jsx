@@ -76,13 +76,18 @@ const PcHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 0 10px;
   width: 100%;
-  gap: 20px;
+  gap: 10px;
   max-height: 50px;
   font-family: maple-light;
   background: ${({ theme }) => theme.headerBgColor};
   white-space: nowrap;
+
+  @media screen and (max-width: 768px) {
+    padding: 0px;
+    gap: 0px;
+  }
 `;
 
 const LogoWrap = styled.div`
@@ -106,8 +111,9 @@ const ItemContainer = styled.div`
   flex-direction: row;
   gap: 10px;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     display: none;
+    gap: 5px;
   }
 `;
 

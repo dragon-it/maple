@@ -46,4 +46,13 @@ export const GlobalStyle = createGlobalStyle`
   * {
   -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 효과 제거 */
 }
+
+/* 크롬, 사파리, 오페라에서 화살표 없애기 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 `;
