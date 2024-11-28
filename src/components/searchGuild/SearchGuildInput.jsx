@@ -53,7 +53,6 @@ const Container = styled.form`
 
 const GuildHead = styled.div`
   width: 100%;
-  font-weight: normal;
   margin: 5px 0;
   text-shadow: 0px 0px 4px rgb(180, 180, 180);
   color: rgb(204, 204, 204);
