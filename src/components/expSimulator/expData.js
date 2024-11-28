@@ -1,4 +1,4 @@
-const expData = [
+const ExpData = [
   {
     level: "200",
     "익스트림 성장의 비약": "25.88",
@@ -1011,4 +1011,4 @@ const expData = [
   },
 ];
 
-export default expData;
+export default ExpData;
