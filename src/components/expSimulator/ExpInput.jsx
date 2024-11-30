@@ -115,7 +115,10 @@ export const ExpInput = () => {
         {Object.keys(elixirCounts).map((elixir) => (
           <ElixirControl key={elixir}>
             <Elixir>
-              <Icon src={elixirImages[elixir]} alt="elixir_Icon" />
+              <IconWrap>
+                {" "}
+                <Icon src={elixirImages[elixir]} alt="elixir_Icon" />
+              </IconWrap>
               <span>
                 {elixir} × <Quantity>{elixirCounts[elixir]}</Quantity>
               </span>
@@ -232,9 +235,17 @@ const Result = styled.div`
   }
 `;
 
-const Icon = styled.img`
+const IconWrap = styled.div`
   width: 40px;
   height: 40px;
-  margin-right: 3px;
+  display: flex;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  margin-right: 5px;
+  background-color: rgb(214, 214, 214);
+`;
+
+const Icon = styled.img`
+  margin: auto;
   image-rendering: pixelated;
 `;
