@@ -28,6 +28,21 @@ export const ExpInput = () => {
       [elixir]: Math.max(prev[elixir] + delta, 0),
     }));
   };
+
+  const handleReset = () => {
+    setLevel(200);
+    setCurrentExp(0);
+    setElixirCounts({
+      "익스트림 성장의 비약": 0,
+      "성장의 비약 (200~209)": 0,
+      "성장의 비약 (200~219)": 0,
+      "성장의 비약 (200~229)": 0,
+      "태풍 성장의 비약": 0,
+      "극한 성장의 비약": 0,
+      "초월 성장의 비약": 0,
+    });
+  };
+
   const calculateFinalExp = () => {
     let finalLevel = level;
     let expPercent = Number(currentExp);
@@ -97,7 +112,6 @@ export const ExpInput = () => {
           }
         }}
       />
-
       <ItemTitle>현재 경험치: {currentExp}%</ItemTitle>
       <ValueInput
         type="number"
@@ -110,13 +124,11 @@ export const ExpInput = () => {
           }
         }}
       />
-
       <ElixirWrap>
         {Object.keys(elixirCounts).map((elixir) => (
           <ElixirControl key={elixir}>
             <Elixir>
               <IconWrap>
-                {" "}
                 <Icon src={elixirImages[elixir]} alt="elixir_Icon" />
               </IconWrap>
               <span>
@@ -135,6 +147,10 @@ export const ExpInput = () => {
           </ElixirControl>
         ))}
       </ElixirWrap>
+      <ResultActions>
+        <ResultText>결과</ResultText>
+        <Reset onClick={handleReset}>초기화</Reset>
+      </ResultActions>
 
       <Result>
         <span>
@@ -165,25 +181,25 @@ const ValueInput = styled.input`
   border-radius: 5px;
   height: 25px;
   width: 310px;
-  background: #242a30;
+  background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
   margin-top: 2px;
 `;
 
 const ElixirWrap = styled.div`
-  margin-top: 10px;
+  margin: 15px 0;
 `;
 
 const ElixirControl = styled.div`
   height: 50px;
   display: flex;
   justify-content: space-between;
-  background: #2c3640;
-  border: 1px solid #365264;
-  outline: 1px solid #5da8b1;
+  background: rgb(33, 40, 48);
+  border: 1px solid rgb(54, 82, 100);
+  outline: 1px solid rgb(67, 121, 128);
   border-radius: 5px;
   padding: 3px;
-  margin: 5px 0px;
+  margin: 7px 0px;
   align-items: center;
   color: rgb(216, 216, 216);
 
@@ -193,7 +209,7 @@ const ElixirControl = styled.div`
 `;
 
 const Quantity = styled.span`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: rgb(255, 255, 255);
 `;
@@ -204,31 +220,34 @@ const ButtonWrap = styled.div`
 `;
 
 const QuantityButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 28px;
   height: 28px;
+  font-size: 20px;
   background: rgb(141, 199, 209);
   border-radius: 5px;
   cursor: pointer;
 
   &:hover {
-    filter: brightness(1.2);
+    filter: brightness(1.3);
   }
 `;
 
 const Result = styled.div`
-  height: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
   border-radius: 5px;
   font-size: 20px;
   color: rgb(255, 255, 255);
   text-shadow: 1px 1px 0px rgb(88, 88, 88);
-  background: linear-gradient(180deg, #36b6d0 44%, #369ab8 100%);
-  border-top: 1px solid #56d6de;
-  outline: 1px solid #387076;
-  box-shadow: 0px 2px 0px #2a738b;
+  background-color: rgba(121, 127, 134, 0.9);
+  border-top: 2px solid rgb(38, 43, 49);
+  border-left: 1px solid rgb(62, 73, 81);
+  border-right: 1px solid rgb(62, 73, 81);
+  box-shadow: 0px 1px 0px rgb(133, 145, 145);
 
   &:hover {
     filter: brightness(1.05);
@@ -248,4 +267,23 @@ const IconWrap = styled.div`
 const Icon = styled.img`
   margin: auto;
   image-rendering: pixelated;
+`;
+
+const ResultActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ResultText = styled.span`
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(200, 175, 137);
+  text-shadow: 1px 1px 1px rgb(173, 92, 92);
+`;
+
+const Reset = styled.button`
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  font-weight: 700;
 `;
