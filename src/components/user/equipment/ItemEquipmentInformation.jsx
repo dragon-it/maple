@@ -441,7 +441,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_1_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(1)}
                               onClick={() => handlePetAppearanceInfo(1)}
                             />
@@ -467,8 +467,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_1_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_1_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_1_auto_skill
@@ -483,8 +483,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_1_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_1_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_1_auto_skill
@@ -509,7 +509,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_2_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(2)}
                               onClick={() => handlePetAppearanceInfo(2)}
                             />
@@ -535,8 +535,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_2_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_2_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_2_auto_skill
@@ -551,8 +551,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_2_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_2_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_2_auto_skill
@@ -577,7 +577,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_3_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(3)}
                               onClick={() => handlePetAppearanceInfo(3)}
                             />
@@ -603,8 +603,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_3_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_3_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_3_auto_skill
@@ -619,8 +619,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_3_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_3_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_3_auto_skill
