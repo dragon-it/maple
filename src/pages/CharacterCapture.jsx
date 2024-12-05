@@ -99,8 +99,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  min-height: 85vh;
+  margin: 20px 0px;
+  min-height: 82vh;
 
   @media screen and (max-width: 768px) {
     padding: 0 5px;
