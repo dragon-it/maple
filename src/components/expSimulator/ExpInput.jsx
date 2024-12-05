@@ -146,16 +146,14 @@ export const ExpInput = () => {
             </ButtonWrap>
           </ElixirControl>
         ))}
+        <Reset onClick={handleReset}>초기화</Reset>
       </ElixirWrap>
       <ResultActions>
         <ResultText>결과</ResultText>
-        <Reset onClick={handleReset}>초기화</Reset>
       </ResultActions>
 
       <Result>
-        <span>
-          {finalLevel}레벨 {expPercent}%
-        </span>
+        {finalLevel}레벨 {expPercent}%
       </Result>
     </Container>
   );
@@ -243,15 +241,8 @@ const Result = styled.div`
   font-size: 20px;
   color: rgb(255, 255, 255);
   text-shadow: 1px 1px 0px rgb(88, 88, 88);
-  background-color: rgba(121, 127, 134, 0.9);
-  border-top: 2px solid rgb(38, 43, 49);
-  border-left: 1px solid rgb(62, 73, 81);
-  border-right: 1px solid rgb(62, 73, 81);
-  box-shadow: 0px 1px 0px rgb(133, 145, 145);
-
-  &:hover {
-    filter: brightness(1.05);
-  }
+  background: rgb(90, 96, 102);
+  border: 1px solid rgb(100, 100, 100);
 `;
 
 const IconWrap = styled.div`
@@ -273,6 +264,7 @@ const ResultActions = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 5px;
 `;
 
 const ResultText = styled.span`
@@ -283,7 +275,12 @@ const ResultText = styled.span`
 `;
 
 const Reset = styled.button`
+  width: 100%;
   background: rgb(255, 255, 255);
   border-radius: 5px;
-  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
 `;
