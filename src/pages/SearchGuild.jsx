@@ -101,8 +101,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 85vh;
-  margin-top: 20px;
+  margin: 20px 0px;
+  min-height: 82vh;
 
   img {
     image-rendering: pixelated;
