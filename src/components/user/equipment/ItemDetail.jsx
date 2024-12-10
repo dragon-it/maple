@@ -191,7 +191,9 @@ export const ItemDetail = ({ item, clicked }) => {
 
               const addPart =
                 add !== undefined && add !== "0" && add !== 0 ? (
-                  <span style={{ color: "rgb(204, 255, 0)" }}>
+                  <span
+                    style={{ color: "rgb(204, 255, 0)", padding: "0px 1px" }}
+                  >
                     {`${modifier(add)}`}
                   </span>
                 ) : null;
@@ -199,19 +201,23 @@ export const ItemDetail = ({ item, clicked }) => {
                 starforce !== undefined &&
                 starforce !== "0" &&
                 starforce !== 0 ? (
-                  <span style={{ color: "rgb(255, 204, 0)" }}>
+                  <span
+                    style={{ color: "rgb(255, 204, 0)", padding: "0px 1px" }}
+                  >
                     {`${modifier(starforce)}`}
                   </span>
                 ) : null;
               const basePart =
                 add !== 0 || starforce !== 0 ? (
-                  <span style={{ color: "rgb(255, 255, 255)" }}>{`${modifier(
-                    base
-                  )}`}</span>
+                  <span
+                    style={{ color: "rgb(255, 255, 255)", padding: "0px 1px" }}
+                  >{`${modifier(base)}`}</span>
                 ) : null;
               const etcPart =
                 etc !== undefined && etc !== "0" && etc !== 0 ? (
-                  <span style={{ color: "rgb(170, 170, 255)" }}>
+                  <span
+                    style={{ color: "rgb(170, 170, 255)", padding: "0px 1px" }}
+                  >
                     {`${modifier(etc)}`}
                   </span>
                 ) : null;
@@ -337,7 +343,6 @@ const SelectContainer = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  font-family: maple-light;
 
   @media screen and (max-width: 1024px) {
     width: 200px;
@@ -362,6 +367,7 @@ const Container = styled.div`
   padding: 0px 10px 5px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: "돋움";
 
   @media screen and (max-width: 1024px) {
     width: 300px;
@@ -371,7 +377,7 @@ const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 2px dotted rgb(89, 85, 82);
   padding-bottom: 10px;
   h2 {
     font-size: 16px;
@@ -392,7 +398,7 @@ const IconWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 2px dotted rgb(89, 85, 82);
 `;
 
 const IconImage = styled.div`
@@ -459,7 +465,7 @@ const OptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-line;
   ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
-  ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(55, 56, 58);"}
+  ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(89, 85, 82);"}
 `;
 
 const OptionInitial = styled.div`
@@ -507,11 +513,11 @@ const PotentialOptionWrap = styled.div`
 
 const AdditionalOptionWrap = styled.div`
   padding: 5px 0;
-  border-top: 2px dotted rgb(55, 56, 58);
+  border-top: 2px dotted rgb(89, 85, 82);
 `;
 
 const SoulOptionWrap = styled.div`
-  border-top: 2px dotted rgb(55, 56, 58);
+  border-top: 2px dotted rgb(89, 85, 82);
   padding-top: 3px;
   :first-child {
     color: rgb(255, 255, 68);
@@ -519,7 +525,7 @@ const SoulOptionWrap = styled.div`
 `;
 
 const ExOptionWrap = styled.div`
-  border-top: 2px dotted rgb(55, 56, 58);
+  border-top: 2px dotted rgb(89, 85, 82);
   padding-top: 5px;
 `;
 
@@ -561,8 +567,8 @@ const ADItemGrade = styled.div`
   flex-direction: column;
 `;
 
-const ADCategory = styled.div``;
+const ADCategory = styled.span``;
 
-const ADGrade = styled.div`
+const ADGrade = styled.span`
   margin-bottom: 10px;
 `;
