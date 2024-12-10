@@ -192,7 +192,10 @@ export const ItemDetail = ({ item, clicked }) => {
               const addPart =
                 add !== undefined && add !== "0" && add !== 0 ? (
                   <span
-                    style={{ color: "rgb(204, 255, 0)", padding: "0px 1px" }}
+                    style={{
+                      color: "rgb(204, 255, 0)",
+                      padding: "0px 0px 0px 2px",
+                    }}
                   >
                     {`${modifier(add)}`}
                   </span>
@@ -202,7 +205,10 @@ export const ItemDetail = ({ item, clicked }) => {
                 starforce !== "0" &&
                 starforce !== 0 ? (
                   <span
-                    style={{ color: "rgb(255, 204, 0)", padding: "0px 1px" }}
+                    style={{
+                      color: "rgb(255, 204, 0)",
+                      padding: "0px 0px 0px 2px",
+                    }}
                   >
                     {`${modifier(starforce)}`}
                   </span>
@@ -210,13 +216,18 @@ export const ItemDetail = ({ item, clicked }) => {
               const basePart =
                 add !== 0 || starforce !== 0 ? (
                   <span
-                    style={{ color: "rgb(255, 255, 255)", padding: "0px 1px" }}
-                  >{`${modifier(base)}`}</span>
+                    style={{
+                      color: "rgb(255, 255, 255)",
+                    }}
+                  >{`${Number(base).toLocaleString()}`}</span>
                 ) : null;
               const etcPart =
                 etc !== undefined && etc !== "0" && etc !== 0 ? (
                   <span
-                    style={{ color: "rgb(170, 170, 255)", padding: "0px 1px" }}
+                    style={{
+                      color: "rgb(170, 170, 255)",
+                      padding: "0px 0px 0px 2px",
+                    }}
                   >
                     {`${modifier(etc)}`}
                   </span>
