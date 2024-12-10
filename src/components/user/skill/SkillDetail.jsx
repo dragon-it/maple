@@ -63,6 +63,7 @@ const Container = styled.div`
   padding-bottom: 10px;
   max-height: 600px;
   overflow-y: scroll;
+  font-family: "돋움";
 
   @media screen and (max-width: 1504px) {
     position: fixed;
