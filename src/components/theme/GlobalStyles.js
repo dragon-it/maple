@@ -11,6 +11,8 @@ export const GlobalStyle = createGlobalStyle`
       '맑은 고딕', 
       'Malgun Gothic',
       sans-serif,
+      '돋움',
+      Dotum,
       "Noto Sans",
       "Noto Sans CJK KR",
       maple-light,
