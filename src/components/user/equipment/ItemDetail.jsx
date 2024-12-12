@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
+import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
+import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
+import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
 
 export const ItemDetail = ({ item, clicked }) => {
   if (!item) {
@@ -88,13 +92,13 @@ export const ItemDetail = ({ item, clicked }) => {
   const getInitial = (grade) => {
     switch (grade) {
       case "레어":
-        return "R";
+        return rare_Icon;
       case "에픽":
-        return "E";
+        return epic_Icon;
       case "유니크":
-        return "U";
+        return unique_Icon;
       case "레전드리":
-        return "L";
+        return legendary_Icon;
       default:
         return "";
     }
@@ -290,9 +294,11 @@ export const ItemDetail = ({ item, clicked }) => {
         {item.potential_option_grade && (
           <PotentialOptionWrap>
             <OptionHeader potengrade={item.potential_option_grade}>
-              <OptionInitial potengrade={item.potential_option_grade}>
-                {getInitial(item.potential_option_grade)}
-              </OptionInitial>
+              <OptionInitial
+                potengrade={item.potential_option_grade}
+                src={getInitial(item.potential_option_grade)}
+                alt="Icon"
+              ></OptionInitial>
               <span>잠재옵션</span>
             </OptionHeader>
             {[
@@ -309,9 +315,9 @@ export const ItemDetail = ({ item, clicked }) => {
             <OptionHeader potengrade={item.additional_potential_option_grade}>
               <OptionInitial
                 potengrade={item.additional_potential_option_grade}
-              >
-                {getInitial(item.additional_potential_option_grade)}
-              </OptionInitial>
+                src={getInitial(item.additional_potential_option_grade)}
+                alt="Icon"
+              ></OptionInitial>
               <span>에디셔널 잠재옵션</span>
             </OptionHeader>
             <AdditionalItems>
@@ -479,27 +485,10 @@ const OptionWrap = styled.div`
   ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(89, 85, 82);"}
 `;
 
-const OptionInitial = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+const OptionInitial = styled.img`
   width: 13px;
   height: 13px;
-  box-sizing: border-box;
-  font-size: 11px;
-  border-radius: 3px;
   margin-right: 3px;
-  ${({ potengrade }) => {
-    if (potengrade === "레어")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(0,154,255); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-    if (potengrade === "에픽")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,0,239); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-    if (potengrade === "유니크")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(255,188,0); text-shadow: 0px 0px 1px black, -1px 0px 3px black, 0px -1px 1px black";
-    if (potengrade === "레전드리")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,239,0); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-  }}
 `;
 
 const OptionHeader = styled.div`
@@ -529,7 +518,7 @@ const AdditionalOptionWrap = styled.div`
 
 const SoulOptionWrap = styled.div`
   border-top: 2px dotted rgb(89, 85, 82);
-  padding-top: 3px;
+  padding: 5px 0px;
   :first-child {
     color: rgb(255, 255, 68);
   }
