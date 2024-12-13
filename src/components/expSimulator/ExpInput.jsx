@@ -44,42 +44,90 @@ export const ExpInput = () => {
   };
 
   const calculateFinalExp = () => {
+    // 최종 레벨을 저장하는 변수로, 초기값은 현재 레벨
     let finalLevel = level;
-    let expPercent = Number(currentExp);
+    console.log(finalLevel, "현재 레벨"); // 200
 
+    // 현재 경험치 값을 저장하는 변수 (숫자로 변환)
+    let currentExpValue = Number(currentExp);
+    console.log(currentExpValue, "현재 경험치"); //10(%)
+
+    // 현재 레벨에서 필요한 총 경험치를 저장할 변수
+    let totalExp = 0;
+
+    // 누적 경험치를 저장할 변수
+    let accumulatedExp = 0;
+
+    // ExpData 배열 데이터를 객체 형태로 변환하여 레벨별로 빠르게 접근할 수 있도록 구조화
     const expIncreaseData = ExpData.reduce((acc, data) => {
-      acc[data.level] = data;
-      return acc;
+      acc[data.level] = {
+        ...data,
+        requiredExp: Number(data.requiredExp.replace(/,/g, "")), // 문자열로 되어 있는 경험치 데이터를 숫자로 변환
+      };
+      return acc; // 변환된 데이터를 반환하여 객체 형태로 저장
     }, {});
 
+    // 현재 레벨에 해당하는 경험치 데이터를 확인
+    if (expIncreaseData[finalLevel]) {
+      // 현재 레벨의 총 경험치 통 크기를 가져옴
+      totalExp = expIncreaseData[finalLevel].requiredExp;
+      console.log(totalExp, "현재 레벨의 총 경험치 통 크기"); // 2207026470
+
+      accumulatedExp = (totalExp * currentExpValue) / 100;
+      console.log(accumulatedExp, "현재 경험치 량"); // 220702647
+    }
+
+    // 비약 종류를 하나씩 확인 (elixirCounts 객체의 키를 순회)
     Object.keys(elixirCounts).forEach((elixir) => {
-      const count = elixirCounts[elixir];
-
+      const count = elixirCounts[elixir]; // 해당 비약의 개수 가져옴
+      // 해당 비약을 사용한 횟수만큼 반복 처리
       for (let i = 0; i < count; i++) {
-        const levelExpIncreaseData = expIncreaseData[finalLevel];
+        if (!expIncreaseData[finalLevel]) break; // 현재 레벨 데이터가 없으면 중단
+        // 비약 사용으로 증가하는 경험치 비율 가져오기
+        const expPercentIncrease = Number(expIncreaseData[finalLevel][elixir]);
+        console.log(expPercentIncrease, "비약 사용으로 증가하는 경험치 비율"); // 100(%)
+        // 비약 효과로 증가하는 실제 경험치 계산
+        const expIncreaseAmount = (totalExp * expPercentIncrease) / 100;
+        console.log(expIncreaseAmount, "비약 효과로 증가하는 실제 경험치 계산"); // 2207026470
+        // 계산된 경험치를 누적 경험치에 더함
+        accumulatedExp += expIncreaseAmount;
 
-        if (levelExpIncreaseData) {
-          const expIncrease = Number(levelExpIncreaseData[elixir]);
-          expPercent += expIncrease;
+        console.log(accumulatedExp, "계산된 경험치를 누적 경험치에 더함"); // 2427729117
 
-          while (expPercent >= 100) {
-            expPercent -= 100;
-            finalLevel++;
+        // 누적 경험치가 현재 레벨의 총 경험치를 초과하는 동안 반복 (레벨업 처리)
+        while (accumulatedExp >= totalExp) {
+          // 초과한 경험치를 다음 레벨로 넘김
+          accumulatedExp -= totalExp;
 
-            const nextLevelExpIncrease = expIncreaseData[finalLevel]?.[elixir];
+          // 레벨을 증가시킴
+          finalLevel++;
 
-            if (nextLevelExpIncrease) {
-              expPercent *= nextLevelExpIncrease / expIncrease;
-            } else {
-              expPercent = 100;
-              break;
-            }
+          console.log(finalLevel, "증가한 레벨 수치"); // 201
+          console.log(accumulatedExp, "남은 경험치량"); // 220702647
+
+          // 다음 레벨의 경험치 통 크기를 가져옴
+          if (expIncreaseData[finalLevel]) {
+            totalExp = expIncreaseData[finalLevel].requiredExp;
+            console.log(totalExp, "다음 레벨의 경험치 전체 크기"); // 2207026470   <= 이게 왜 2207026470인지 모르겠음 201레벨 데이터는     level: "201", requiredExp: "2,471,869,646" 이거임
+          } else {
+            console.log("최고 레벨 도달");
+            break; // 최고 레벨에 도달하면 while 루프를 빠져나옴
           }
         }
       }
     });
 
-    return { finalLevel, expPercent: expPercent.toFixed(3) };
+    // 최종 경험치 비율을 계산 (현재 누적 경험치를 기준으로 계산)
+    let finalExpPercent = 0;
+    if (expIncreaseData[finalLevel]) {
+      finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3); // 소수점 3자리까지 계산
+      console.log(finalLevel);
+
+      console.log(expIncreaseData[finalLevel].requiredExp);
+    }
+
+    // 최종 레벨과 경험치 비율을 객체로 반환
+    return { finalLevel, expPercent: finalExpPercent };
   };
 
   const { finalLevel, expPercent } = calculateFinalExp();
