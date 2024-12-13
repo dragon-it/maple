@@ -354,9 +354,9 @@ const SelectContainer = styled.div`
   align-items: center;
   width: 290px;
   height: 50px;
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 0px 10px;
-  background-color: #000000;
+  background-color: rgb(0, 0, 0);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
