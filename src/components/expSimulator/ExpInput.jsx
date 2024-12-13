@@ -17,9 +17,9 @@ export const ExpInput = () => {
     "성장의 비약 (200~209)": 0,
     "성장의 비약 (200~219)": 0,
     "성장의 비약 (200~229)": 0,
-    "태풍 성장의 비약": 0,
-    "극한 성장의 비약": 0,
-    "초월 성장의 비약": 0,
+    "태풍 성장의 비약 (200~239)": 0,
+    "극한 성장의 비약 (200~249)": 0,
+    "초월 성장의 비약 (200~269)": 0,
   });
 
   const handleElixirChange = (elixir, delta) => {
@@ -37,81 +37,55 @@ export const ExpInput = () => {
       "성장의 비약 (200~209)": 0,
       "성장의 비약 (200~219)": 0,
       "성장의 비약 (200~229)": 0,
-      "태풍 성장의 비약": 0,
-      "극한 성장의 비약": 0,
-      "초월 성장의 비약": 0,
+      "태풍 성장의 비약 (200~239)": 0,
+      "극한 성장의 비약 (200~249)": 0,
+      "초월 성장의 비약 (200~269)": 0,
     });
   };
 
   const calculateFinalExp = () => {
-    // 최종 레벨을 저장하는 변수로, 초기값은 현재 레벨
+    // 초기 변수 설정
     let finalLevel = level;
-    console.log(finalLevel, "현재 레벨"); // 200
-
-    // 현재 경험치 값을 저장하는 변수 (숫자로 변환)
     let currentExpValue = Number(currentExp);
-    console.log(currentExpValue, "현재 경험치"); //10(%)
-
-    // 현재 레벨에서 필요한 총 경험치를 저장할 변수
     let totalExp = 0;
-
-    // 누적 경험치를 저장할 변수
     let accumulatedExp = 0;
 
-    // ExpData 배열 데이터를 객체 형태로 변환하여 레벨별로 빠르게 접근할 수 있도록 구조화
+    // ExpData 배열을 객체로 변환
     const expIncreaseData = ExpData.reduce((acc, data) => {
       acc[data.level] = {
         ...data,
-        requiredExp: Number(data.requiredExp.replace(/,/g, "")), // 문자열로 되어 있는 경험치 데이터를 숫자로 변환
+        requiredExp: Number(data.requiredExp.replace(/,/g, "")), // 문자열 -> 숫자 변환
       };
-      return acc; // 변환된 데이터를 반환하여 객체 형태로 저장
+      return acc;
     }, {});
 
-    // 현재 레벨에 해당하는 경험치 데이터를 확인
+    // 현재 레벨 경험치 데이터 확인
     if (expIncreaseData[finalLevel]) {
-      // 현재 레벨의 총 경험치 통 크기를 가져옴
       totalExp = expIncreaseData[finalLevel].requiredExp;
-      console.log(totalExp, "현재 레벨의 총 경험치 통 크기"); // 2207026470
-
       accumulatedExp = (totalExp * currentExpValue) / 100;
-      console.log(accumulatedExp, "현재 경험치 량"); // 220702647
     }
 
-    // 비약 종류를 하나씩 확인 (elixirCounts 객체의 키를 순회)
+    // 비약 데이터 처리
     Object.keys(elixirCounts).forEach((elixir) => {
-      const count = elixirCounts[elixir]; // 해당 비약의 개수 가져옴
-      // 해당 비약을 사용한 횟수만큼 반복 처리
+      const count = elixirCounts[elixir];
+
       for (let i = 0; i < count; i++) {
-        if (!expIncreaseData[finalLevel]) break; // 현재 레벨 데이터가 없으면 중단
-        // 비약 사용으로 증가하는 경험치 비율 가져오기
+        if (!expIncreaseData[finalLevel]) break;
+
         const expPercentIncrease = Number(expIncreaseData[finalLevel][elixir]);
-        console.log(expPercentIncrease, "비약 사용으로 증가하는 경험치 비율"); // 100(%)
-        // 비약 효과로 증가하는 실제 경험치 계산
         const expIncreaseAmount = (totalExp * expPercentIncrease) / 100;
-        console.log(expIncreaseAmount, "비약 효과로 증가하는 실제 경험치 계산"); // 2207026470
-        // 계산된 경험치를 누적 경험치에 더함
         accumulatedExp += expIncreaseAmount;
 
-        console.log(accumulatedExp, "계산된 경험치를 누적 경험치에 더함"); // 2427729117
-
-        // 누적 경험치가 현재 레벨의 총 경험치를 초과하는 동안 반복 (레벨업 처리)
+        // 레벨업 처리
         while (accumulatedExp >= totalExp) {
-          // 초과한 경험치를 다음 레벨로 넘김
           accumulatedExp -= totalExp;
-
-          // 레벨을 증가시킴
           finalLevel++;
 
-          console.log(finalLevel, "증가한 레벨 수치"); // 201
-          console.log(accumulatedExp, "남은 경험치량"); // 220702647
-
-          // 다음 레벨의 경험치 통 크기를 가져옴
+          // 다음 레벨 경험치 데이터 가져오기
           if (expIncreaseData[finalLevel]) {
             totalExp = expIncreaseData[finalLevel].requiredExp;
-            console.log(totalExp, "다음 레벨의 경험치 전체 크기"); // 2207026470   <= 이게 왜 2207026470인지 모르겠음 201레벨 데이터는     level: "201", requiredExp: "2,471,869,646" 이거임
           } else {
-            console.log("최고 레벨 도달");
-            break; // 최고 레벨에 도달하면 while 루프를 빠져나옴
+            break;
           }
         }
       }
@@ -137,9 +111,9 @@ export const ExpInput = () => {
     "성장의 비약 (200~209)": Growth_Elixir1,
     "성장의 비약 (200~219)": Growth_Elixir2,
     "성장의 비약 (200~229)": Growth_Elixir3,
-    "태풍 성장의 비약": Typhoon_Elixir,
-    "극한 성장의 비약": limit_Elixir,
-    "초월 성장의 비약": Transcendent_Elixir,
+    "태풍 성장의 비약 (200~239)": Typhoon_Elixir,
+    "극한 성장의 비약 (200~249)": limit_Elixir,
+    "초월 성장의 비약 (200~269)": Transcendent_Elixir,
   };
 
   return (
@@ -221,12 +195,14 @@ const Elixir = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 20px;
 `;
 
 const ValueInput = styled.input`
   border-radius: 5px;
   height: 25px;
-  width: 310px;
+  width: 100%;
+  box-sizing: border-box;
   background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
   margin-top: 2px;
@@ -290,7 +266,8 @@ const Result = styled.div`
   color: rgb(255, 255, 255);
   text-shadow: 1px 1px 0px rgb(88, 88, 88);
   background: rgb(90, 96, 102);
-  border: 1px solid rgb(100, 100, 100);
+  border: 1px solid rgb(157, 188, 209);
+  padding: 5px;
 `;
 
 const IconWrap = styled.div`
