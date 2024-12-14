@@ -41,6 +41,8 @@ export const Footer = () => {
 const Adsense = styled.div`
   width: 100%;
   height: auto;
+  display: flex;
+  justify-content: center;
 `;
 
 const FooterTextDiv = styled.div`
