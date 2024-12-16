@@ -7,6 +7,7 @@ import {
 } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { Guild } from "../user/Guild";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import loadingImg_light from "../../assets/loading/loading_light.gif";
 import loadingImg_dark from "../../assets/loading/loading_dark.gif";
@@ -68,6 +69,10 @@ export const SearchGuildDetail = ({ isGuildDetail }) => {
 
   return (
     <>
+      <Helmet>
+        <title>{`길드 ${guildName}[${worldName}] - 메짱`}</title>
+        <meta name="description" content="길드의 정보를 불러오는 기능입니다." />
+      </Helmet>
       <Guild result={result} isGuildDetail={isGuildDetail}></Guild>
     </>
   );

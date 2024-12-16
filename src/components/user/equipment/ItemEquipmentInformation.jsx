@@ -234,11 +234,15 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     align-items: center;
     width: 46px;
     height: 46px;
+    overflow: hidden;
     cursor: pointer;
     border: ${({ grade, gradeColors }) =>
       `2px solid ${
         gradeColors && gradeColors[grade] ? gradeColors[grade] : "none"
       }`};
+    img {
+      image-rendering: pixelated;
+    }
   `;
 
   return (
@@ -339,19 +343,19 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       onClick={() => handlePresetChange("preset_1")}
                       isSelected={selectedPreset === "item_equipment_preset_1"}
                     >
-                      <div>프리셋1</div>
+                      <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_2")}
                       isSelected={selectedPreset === "item_equipment_preset_2"}
                     >
-                      <div>프리셋2</div>
+                      <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_3")}
                       isSelected={selectedPreset === "item_equipment_preset_3"}
                     >
-                      <div>프리셋3</div>
+                      <span>프리셋3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingPresetKey === selectedPreset && (
@@ -387,7 +391,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       selectedCashPreset === "cash_item_equipment_base"
                     }
                   >
-                    <div>BASE</div>
+                    <span>BASE</span>
                   </BaseButton>
                   <PresetButtons>
                     <PresetButton
@@ -396,7 +400,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         selectedCashPreset === "cash_item_equipment_preset_1"
                       }
                     >
-                      <div>프리셋1</div>
+                      <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_2")}
@@ -404,7 +408,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         selectedCashPreset === "cash_item_equipment_preset_2"
                       }
                     >
-                      <div>프리셋2</div>
+                      <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_3")}
@@ -412,7 +416,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         selectedCashPreset === "cash_item_equipment_preset_3"
                       }
                     >
-                      <div>프리셋3</div>
+                      <span>프리셋3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingCashPresetKey === selectedCashPreset && (
@@ -437,7 +441,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_1_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(1)}
                               onClick={() => handlePetAppearanceInfo(1)}
                             />
@@ -463,8 +467,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_1_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_1_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_1_auto_skill
@@ -479,8 +483,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_1_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_1_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_1_auto_skill
@@ -505,7 +509,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_2_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(2)}
                               onClick={() => handlePetAppearanceInfo(2)}
                             />
@@ -531,8 +535,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_2_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_2_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_2_auto_skill
@@ -547,8 +551,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_2_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_2_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_2_auto_skill
@@ -573,7 +577,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_3_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(3)}
                               onClick={() => handlePetAppearanceInfo(3)}
                             />
@@ -599,8 +603,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_3_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_3_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_3_auto_skill
@@ -615,8 +619,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_3_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_3_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_3_auto_skill
@@ -823,6 +827,9 @@ const ADIcon = styled.div`
   cursor: pointer;
   right: 59px;
   bottom: 17px;
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const PetEquipWrap = styled.div`
@@ -914,5 +921,9 @@ const DetailWrap = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 100%;
+  }
+
+  img {
+    image-rendering: pixelated;
   }
 `;

@@ -15,8 +15,14 @@ const Information = ({ result }) => {
     // height가 300 이하일 경우 이미지를 표시
     if (height <= 350) {
       document.getElementById("spiritImage").style.display = "block";
+      document.getElementById("imgWrap").style.border =
+        "1px solid rgb(80, 92, 101)";
+      document.getElementById("imgWrap").style.outline =
+        "1px solid rgb(42, 49, 58)";
     } else {
       document.getElementById("spiritImage").style.display = "none";
+      document.getElementById("imgWrap").style.border = "none";
+      document.getElementById("imgWrap").style.outline = "none";
       const spiritTextElement = document.getElementById("spiritText");
       if (spiritTextElement) {
         spiritTextElement.style.display = "none";
@@ -76,7 +82,7 @@ const Information = ({ result }) => {
                     HyperStatInfo={result.getCombinedData.getHyperStat}
                     onHeightChange={handleHeightChange}
                   ></HyperStatInformation>
-                  <ImgWrap>
+                  <ImgWrap id="imgWrap">
                     <img
                       id="spiritImage"
                       src={spirit}
@@ -176,17 +182,14 @@ const ProWrap = styled.div`
 const ImgWrap = styled.div`
   position: relative;
   user-select: none;
+  border-radius: 5px;
+  background-color: rgba(59, 66, 75, 0.9);
+
   img {
     width: 100%;
-    max-height: 200px;
-    border: 1px solid rgb(80, 92, 101);
-    outline: 1px solid rgb(42, 49, 58);
-    border-radius: 5px;
-    background-color: rgba(59, 66, 75, 0.9);
-
-    @media screen and (max-width: 576px) {
-      max-width: none;
-    }
+    max-height: 220px;
+    max-width: 345px;
+    margin: auto;
   }
 `;
 
