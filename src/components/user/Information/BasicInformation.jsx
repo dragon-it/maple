@@ -4,6 +4,7 @@ import BasicInfoBackground from "./BasicInfoBackground";
 import { useTheme } from "../../../context/ThemeProvider";
 import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
 import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.svg";
+import TanjiroImage from "../../../assets/npc/tanjiro.png";
 import WorldIcons from "../../common/worldIcon/WorldIcons";
 
 export const BasicInformation = ({ BasicInfo }) => {
@@ -104,7 +105,12 @@ export const BasicInformation = ({ BasicInfo }) => {
           <Level>Lv. {BasicInfo.getBasicInformation.character_level}</Level>
           <CharacterImg>
             <img
-              src={BasicInfo.getBasicInformation.character_image}
+              src={
+                BasicInfo.getBasicInformation.character_class ===
+                "카마도 탄지로"
+                  ? TanjiroImage
+                  : BasicInfo.getBasicInformation.character_image
+              }
               alt="character_image"
             />
           </CharacterImg>
@@ -161,15 +167,14 @@ const Container = styled.div`
   background-color: rgba(59, 66, 75, 0.9);
 `;
 
-const HeaderWrap = styled.div`
+const HeaderWrap = styled.span`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const CharacterHeader = styled.div`
+const CharacterHeader = styled.h2`
   font-size: 15px;
-  font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
@@ -247,6 +252,7 @@ const CharacterImg = styled.div`
   transform: scaleX(-1);
   width: 110px;
   margin: 2px 0;
+  image-rendering: pixelated;
 `;
 
 const CharacterName = styled.div`
@@ -306,6 +312,10 @@ const Contents = styled.div`
 const Value = styled.div`
   display: flex;
   color: black;
+
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const Title = styled.div`

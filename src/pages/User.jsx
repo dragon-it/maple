@@ -12,6 +12,7 @@ import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Guild } from "../components/user/Guild";
 import { useTheme } from "../context/ThemeProvider";
+import { Helmet } from "react-helmet";
 
 export const User = () => {
   const { theme } = useTheme();
@@ -46,6 +47,13 @@ export const User = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${characterName} - 캐릭터 검색`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       {loading ? (
         <LoadingWrap>
           <img
@@ -93,12 +101,12 @@ export const User = () => {
           {/* 길드 정보 */}
           {activeTab === 5 &&
             (guildLoading ? (
-              <LoadingWrap>
+              <GuildLoading>
                 <img
                   src={theme === "dark" ? loadingImg_dark : loadingImg_light}
                   alt="로딩 중..."
                 />
-              </LoadingWrap>
+              </GuildLoading>
             ) : (
               <Guild result={result} />
             ))}
@@ -111,7 +119,7 @@ export const User = () => {
 const Container = styled.div`
   position: relative;
   width: fit-content;
-  height: auto;
+  height: fit-content;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
@@ -124,7 +132,7 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 100%;
+    width: 99%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -136,10 +144,6 @@ const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 3px 10px;
-  min-width: 750px;
-  @media screen and (max-width: 1024px) {
-    min-width: 0;
-  }
 `;
 
 const SearchWrap = styled.div`
@@ -155,9 +159,6 @@ const SearchWrap = styled.div`
     width: 100%;
     margin-bottom: 10px;
   }
-
-  @media screen and (max-width: 576px) {
-  }
 `;
 
 const Tabs = styled.div`
@@ -165,6 +166,11 @@ const Tabs = styled.div`
   padding: 10px 0;
   white-space: nowrap;
   font-family: maple-light;
+  min-width: 390px;
+
+  @media screen and (max-width: 1024px) {
+    min-width: 0px;
+  }
 `;
 
 const Tab = styled.div`
@@ -193,9 +199,33 @@ const LoadingWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: 999;
+
+  img {
+    width: 100px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    img {
+      width: 160px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    img {
+      width: 130px;
+    }
+  }
+`;
+
+const GuildLoading = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  margin-bottom: 10px;
 
   img {
     width: 100px;

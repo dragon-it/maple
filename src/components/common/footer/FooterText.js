@@ -1,13 +1,22 @@
 import React from "react";
+import OpenAPILogo from "../../../assets/footerLogo.svg";
 
 const FooterText = () => (
-  <>
-    Data by NEXON Open API, Font by MapleStory
-    <br />
-    © 2024. 메짱. All rights reserved.
-    <br />
-    Contact by sideoff0217@naver.com
-  </>
+  <div className="footer-text">
+    <p>
+      Data By{" "}
+      <a href="https://openapi.nexon.com/ko/">
+        <img
+          src={OpenAPILogo}
+          alt="Data by OpenAPI"
+          style={{ width: "150px" }}
+        />
+      </a>
+    </p>
+
+    <p>Font By MapleStory</p>
+    <p>Contact: sideoff0217@naver.com</p>
+  </div>
 );
 
 export default FooterText;

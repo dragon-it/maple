@@ -161,7 +161,7 @@ export const HexaStat = ({ Data }) => {
 };
 
 const Container = styled.div`
-  background-color: #000000d3;
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
@@ -178,13 +178,11 @@ const Header = styled.div`
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
 
-const StatWrap = styled.div`
+const StatWrap = styled.ul`
   font-size: 13px;
 `;
 
-const MainStat = styled.div`
-  display: flex;
-  flex-direction: row;
+const MainStat = styled.li`
   font-weight: bold;
   font-size: 15px;
   @media screen and (max-width: 768px) {
@@ -192,7 +190,7 @@ const MainStat = styled.div`
   }
 `;
 
-const StatInfoContainer = styled.div`
+const StatInfoContainer = styled.li`
   display: flex;
   flex-direction: row;
   gap: 3px;
@@ -202,11 +200,11 @@ const StatInfoContainer = styled.div`
   }
 `;
 
-const StatLevel = styled.div``;
+const StatLevel = styled.span``;
 
-const StatName = styled.div``;
+const StatName = styled.span``;
 
-const StatValue = styled.div``;
+const StatValue = styled.span``;
 
 const SkillNoDataText = styled.div`
   font-family: maple-light;
@@ -222,13 +220,13 @@ const StatContainer = styled.div`
   }
 `;
 
-const SlotHeader = styled.div`
+const SlotHeader = styled.li`
   font-family: maple-light;
   color: #ffffff;
   font-size: 15px;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 10px;
-  background-color: #b665f3;
+  background-color: rgb(182, 101, 243);
   text-align: center;
   margin-bottom: 3px;
 `;

@@ -3,10 +3,18 @@ import { Search } from "../components/main/Search";
 import styled from "styled-components";
 import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
+import { Helmet } from "react-helmet";
 
 export const Main = () => {
   return (
     <Container>
+      <Helmet>
+        <title>{`메짱`}</title>
+        <meta
+          name="description"
+          content="메이플스토리 캐릭터 검색사이트 메짱입니다."
+        />
+      </Helmet>
       <SearchWrap>
         <Search />
       </SearchWrap>
@@ -22,8 +30,9 @@ const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 100%;
+  margin: 20px 0px;
+  min-height: 82vh;
 `;
 
 const SearchWrap = styled.div`

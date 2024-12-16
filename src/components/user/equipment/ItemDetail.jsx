@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
+import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
+import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
+import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
 
 export const ItemDetail = ({ item, clicked }) => {
   if (!item) {
@@ -88,13 +92,13 @@ export const ItemDetail = ({ item, clicked }) => {
   const getInitial = (grade) => {
     switch (grade) {
       case "레어":
-        return "R";
+        return rare_Icon;
       case "에픽":
-        return "E";
+        return epic_Icon;
       case "유니크":
-        return "U";
+        return unique_Icon;
       case "레전드리":
-        return "L";
+        return legendary_Icon;
       default:
         return "";
     }
@@ -191,7 +195,12 @@ export const ItemDetail = ({ item, clicked }) => {
 
               const addPart =
                 add !== undefined && add !== "0" && add !== 0 ? (
-                  <span style={{ color: "rgb(204, 255, 0)" }}>
+                  <span
+                    style={{
+                      color: "rgb(204, 255, 0)",
+                      padding: "0px 0px 0px 2px",
+                    }}
+                  >
                     {`${modifier(add)}`}
                   </span>
                 ) : null;
@@ -199,19 +208,31 @@ export const ItemDetail = ({ item, clicked }) => {
                 starforce !== undefined &&
                 starforce !== "0" &&
                 starforce !== 0 ? (
-                  <span style={{ color: "rgb(255, 204, 0)" }}>
+                  <span
+                    style={{
+                      color: "rgb(255, 204, 0)",
+                      padding: "0px 0px 0px 2px",
+                    }}
+                  >
                     {`${modifier(starforce)}`}
                   </span>
                 ) : null;
               const basePart =
                 add !== 0 || starforce !== 0 ? (
-                  <span style={{ color: "rgb(255, 255, 255)" }}>{`${modifier(
-                    base
-                  )}`}</span>
+                  <span
+                    style={{
+                      color: "rgb(255, 255, 255)",
+                    }}
+                  >{`${Number(base).toLocaleString()}`}</span>
                 ) : null;
               const etcPart =
                 etc !== undefined && etc !== "0" && etc !== 0 ? (
-                  <span style={{ color: "rgb(170, 170, 255)" }}>
+                  <span
+                    style={{
+                      color: "rgb(170, 170, 255)",
+                      padding: "0px 0px 0px 2px",
+                    }}
+                  >
                     {`${modifier(etc)}`}
                   </span>
                 ) : null;
@@ -273,9 +294,11 @@ export const ItemDetail = ({ item, clicked }) => {
         {item.potential_option_grade && (
           <PotentialOptionWrap>
             <OptionHeader potengrade={item.potential_option_grade}>
-              <OptionInitial potengrade={item.potential_option_grade}>
-                {getInitial(item.potential_option_grade)}
-              </OptionInitial>
+              <OptionInitial
+                potengrade={item.potential_option_grade}
+                src={getInitial(item.potential_option_grade)}
+                alt="Icon"
+              ></OptionInitial>
               <span>잠재옵션</span>
             </OptionHeader>
             {[
@@ -292,9 +315,9 @@ export const ItemDetail = ({ item, clicked }) => {
             <OptionHeader potengrade={item.additional_potential_option_grade}>
               <OptionInitial
                 potengrade={item.additional_potential_option_grade}
-              >
-                {getInitial(item.additional_potential_option_grade)}
-              </OptionInitial>
+                src={getInitial(item.additional_potential_option_grade)}
+                alt="Icon"
+              ></OptionInitial>
               <span>에디셔널 잠재옵션</span>
             </OptionHeader>
             <AdditionalItems>
@@ -331,13 +354,12 @@ const SelectContainer = styled.div`
   align-items: center;
   width: 290px;
   height: 50px;
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 0px 10px;
-  background-color: #000000;
+  background-color: rgb(0, 0, 0);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  font-family: maple-light;
 
   @media screen and (max-width: 1024px) {
     width: 200px;
@@ -362,6 +384,7 @@ const Container = styled.div`
   padding: 0px 10px 5px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: "돋움";
 
   @media screen and (max-width: 1024px) {
     width: 300px;
@@ -371,7 +394,7 @@ const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 2px dotted rgb(89, 85, 82);
   padding-bottom: 10px;
   h2 {
     font-size: 16px;
@@ -392,7 +415,7 @@ const IconWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 2px dotted rgb(89, 85, 82);
 `;
 
 const IconImage = styled.div`
@@ -459,30 +482,13 @@ const OptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-line;
   ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
-  ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(55, 56, 58);"}
+  ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(89, 85, 82);"}
 `;
 
-const OptionInitial = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+const OptionInitial = styled.img`
   width: 13px;
   height: 13px;
-  box-sizing: border-box;
-  font-size: 11px;
-  border-radius: 3px;
   margin-right: 3px;
-  ${({ potengrade }) => {
-    if (potengrade === "레어")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(0,154,255); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-    if (potengrade === "에픽")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,0,239); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-    if (potengrade === "유니크")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(255,188,0); text-shadow: 0px 0px 1px black, -1px 0px 3px black, 0px -1px 1px black";
-    if (potengrade === "레전드리")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,239,0); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-  }}
 `;
 
 const OptionHeader = styled.div`
@@ -507,19 +513,19 @@ const PotentialOptionWrap = styled.div`
 
 const AdditionalOptionWrap = styled.div`
   padding: 5px 0;
-  border-top: 2px dotted rgb(55, 56, 58);
+  border-top: 2px dotted rgb(89, 85, 82);
 `;
 
 const SoulOptionWrap = styled.div`
-  border-top: 2px dotted rgb(55, 56, 58);
-  padding-top: 3px;
+  border-top: 2px dotted rgb(89, 85, 82);
+  padding: 5px 0px;
   :first-child {
     color: rgb(255, 255, 68);
   }
 `;
 
 const ExOptionWrap = styled.div`
-  border-top: 2px dotted rgb(55, 56, 58);
+  border-top: 2px dotted rgb(89, 85, 82);
   padding-top: 5px;
 `;
 
@@ -561,8 +567,8 @@ const ADItemGrade = styled.div`
   flex-direction: column;
 `;
 
-const ADCategory = styled.div``;
+const ADCategory = styled.span``;
 
-const ADGrade = styled.div`
+const ADGrade = styled.span`
   margin-bottom: 10px;
 `;
