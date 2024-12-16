@@ -14,6 +14,7 @@
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^6.24.1",
     "react-scripts": "^5.0.1",
     "recharts": "^2.12.7",
@@ -23,7 +24,7 @@
   "scripts": {
     "start": "node proxyServer.js",
     "dev": "concurrently \"node proxyServer.js\" \"react-scripts start\"",
-    "build": "react-scripts build",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build", 
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

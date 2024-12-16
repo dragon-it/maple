@@ -86,7 +86,10 @@ export const GuildMember = ({ result }) => {
                   />
                   <DetailName>{member.character_name}</DetailName>
                   <DetailLevel>{member.character_class}</DetailLevel>
-                  <DetailLevel>Lv. {member.character_level}</DetailLevel>
+                  <DetailLevel>
+                    <span>Lv. </span>
+                    <span>{member.character_level}</span>
+                  </DetailLevel>
                 </DetailMember>
               ))}
               {/* <!-- 이미지 보기 미접속 캐릭터 명단 --> */}
@@ -108,7 +111,10 @@ export const GuildMember = ({ result }) => {
                 >
                   <SimpleItems>{member.character_name}</SimpleItems>
                   <SimpleItems>{member.character_class}</SimpleItems>
-                  <SimpleItems>Lv. {member.character_level}</SimpleItems>
+                  <SimpleItems>
+                    <span>Lv. </span>
+                    <span>{member.character_level}</span>
+                  </SimpleItems>
                 </SimpleMember>
               ))}
               {/* <!-- 텍스트 보기 미접속 캐릭터 명단 --> */}
@@ -154,11 +160,10 @@ const DetailMember = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3px 3px 5px 3px;
-  background-color: #a3a3a3ea;
+  background-color: rgb(155, 155, 155);
   color: #020202;
   border-radius: 5px;
   min-height: 30px;
-  font-family: maple-light;
   cursor: pointer;
   &:hover {
     background-color: rgb(131, 131, 131);
@@ -166,27 +171,46 @@ const DetailMember = styled.div`
 `;
 
 const DetailImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
+  border: 1px solid #3d3d3d2d;
+  background-color: #757575dc;
+  border-bottom: 2px solid rgb(62, 73, 81);
+  border-left: 1px solid rgb(62, 73, 81);
+  border-right: 1px solid rgb(62, 73, 81);
+  box-shadow: rgb(133, 145, 145) 0px 1px 0px;
   transform: scaleX(-1);
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const EmptyImage = styled.div`
-  width: 80px;
-  height: 80px;
-  background-color: #636363ea;
+  width: 96px;
+  height: 96px;
+  border: 1px solid #3d3d3d2d;
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
-const DetailName = styled.div``;
+const DetailName = styled.h5``;
 
-const DetailLevel = styled.div`
+const DetailLevel = styled.span`
   font-size: 12px;
+  span:first-child {
+    color: rgba(44, 44, 44, 0.719);
+  }
 `;
 
-const SimpleItems = styled.div`
+const SimpleItems = styled.span`
   font-size: 13px;
   line-height: 1.5rem;
   color: rgb(248, 248, 248);

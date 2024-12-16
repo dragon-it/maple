@@ -25,9 +25,7 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
                 onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                 onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
               >
-                <SkillIcon>
-                  <img src={item.skill_icon} alt={`icon-${index}`} />
-                </SkillIcon>
+                <SkillIcon src={item.skill_icon} alt={`icon-${index}`} />
                 <SkillNameLevelWrap>
                   <SkillName>{item.skill_name}</SkillName>
                   <SkillLevel>Lv.{item.skill_level}</SkillLevel>
@@ -47,31 +45,31 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
 };
 
 const Container = styled.div`
-  background-color: #000000d3;
   width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
-  color: white;
   padding: 7px;
 `;
-const SkillHeader = styled.div`
+
+const SkillHeader = styled.h2`
   font-size: 15px;
-  font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
-const SkillWrap = styled.div`
+
+const SkillWrap = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
   width: 970px;
   color: white;
   :hover {
-    background-color: #616161;
+    background-color: rgb(97, 97, 97);
     img {
-      scale: 1.2;
+      transform: scale(1.2);
     }
   }
 
@@ -89,16 +87,12 @@ const SkillWrap = styled.div`
   }
 `;
 
-const SkillIcon = styled.div`
-  display: flex;
-  flex-direction: row;
-  img {
-    width: 32px;
-    height: 32px;
-  }
+const SkillIcon = styled.img`
+  width: 32px;
+  height: 32px;
 `;
 
-const SkillSimpleWrap = styled.div`
+const SkillSimpleWrap = styled.li`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -107,14 +101,14 @@ const SkillSimpleWrap = styled.div`
   cursor: pointer;
 `;
 
-const SkillNameLevelWrap = styled.div`
+const SkillNameLevelWrap = styled.span`
   display: flex;
   flex-direction: column;
 `;
 
-const SkillName = styled.div``;
+const SkillName = styled.span``;
 
-const SkillLevel = styled.div`
+const SkillLevel = styled.span`
   @media screen and (max-width: 576px) {
     font-size: 10px;
   }

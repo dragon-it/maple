@@ -75,7 +75,6 @@ const FavoriteHeader = styled.span`
   display: flex;
   justify-content: center;
   font-size: 18px;
-  margin-bottom: 10px;
 
   @media screen and (max-width: 1024px) {
     font-size: 14px;

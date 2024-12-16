@@ -20,10 +20,10 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
         </IconImage>
       </IconWrap>
       <SkillDescriptionWrap>
-        <div>{item.skill_description}</div>
+        <p>{item.skill_description}</p>
       </SkillDescriptionWrap>
-      <SkillEffect Data={item.skill_effect}>
-        <div>{item.skill_effect}</div>
+      <SkillEffect>
+        <p>{item.skill_effect}</p>
       </SkillEffect>
     </Container>
   );
@@ -61,13 +61,15 @@ const Container = styled.div`
   color: white;
   padding: 0px 10px;
   padding-bottom: 10px;
+  max-height: 600px;
+  overflow-y: scroll;
+  font-family: "돋움";
 
   @media screen and (max-width: 1504px) {
     position: fixed;
     left: 50%;
-    top: 15%;
     z-index: 99999;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(0%);
   }
 
   @media screen and (max-width: 380px) {
@@ -77,13 +79,11 @@ const Container = styled.div`
 
 const SkillNameWrap = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
   h2 {
     font-size: 16px;
-    padding: 10px 0;
-    line-height: 24px;
+    padding: 20px 0;
     text-align: center;
   }
 `;
@@ -94,7 +94,6 @@ const IconWrap = styled.div`
   padding: 10px 0;
   display: flex;
   justify-content: center;
-  align-items: center;
   border-bottom: 2px dotted rgb(55, 56, 58);
 `;
 
@@ -102,10 +101,11 @@ const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
-  background-color: white;
-  border-radius: 10px;
+  width: 56px;
+  height: 56px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+
   img {
     width: 50px;
     height: 50px;
@@ -128,10 +128,11 @@ const PinImage = styled.div`
 const SkillDescriptionWrap = styled.div`
   font-size: 13px;
   white-space: pre-wrap;
+  margin-top: 10px;
 `;
 
 const SkillEffect = styled.div`
   font-size: 13px;
   white-space: pre-wrap;
-  ${({ Data }) => Data && `margin-top: 10px;`}
+  margin-top: 10px;
 `;

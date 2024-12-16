@@ -126,7 +126,6 @@ export const GuildSkill = ({ result }) => {
 const Container = styled.div`
   width: 100%;
   color: white;
-  font-family: maple-light;
 `;
 
 const SkillWrap = styled.div`
@@ -210,8 +209,7 @@ const RightArrow = styled.img`
   height: 40px;
 `;
 
-// 공통 스타일 컴포넌트
-const SkillName = styled.div`
+const SkillName = styled.span`
   font-size: 11px;
   width: 100%;
   text-align: center;
@@ -227,17 +225,18 @@ const SkillIcon = styled.div`
   height: 32px;
 `;
 
-const SkillLevel = styled.div`
+const SkillLevel = styled.span`
   color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
   font-size: 13px;
 `;
 
-const SkillHeader = styled.div`
+const SkillHeader = styled.span`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
+  font-family: maple-light;
 `;
 
-const SkillNoDataText = styled.div`
+const SkillNoDataText = styled.span`
   font-family: maple-light;
 `;

@@ -39,9 +39,10 @@ export const StatInformation = ({ statInfo }) => {
   };
 
   const getStatValue = (index) => {
-    return statInfo.final_stat && statInfo.final_stat[index]
-      ? statInfo.final_stat[index].stat_value
-      : "데이터 없음";
+    if (!statInfo.final_stat || !statInfo.final_stat[index]) {
+      return "데이터 없음";
+    }
+    return statInfo.final_stat[index].stat_value ?? "데이터 없음";
   };
 
   const getStatName = (index) => {
@@ -244,12 +245,12 @@ const CombatpowerWrap = styled.div`
   font-size: 20px;
   font-weight: bold;
   background-color: rgb(62, 96, 118);
+  border: 1px solid rgb(71, 119, 149);
+  box-shadow: 0px 2px 0px rgb(0, 0, 0);
   border-radius: 5px;
 `;
 
-const CombatpowerHeader = styled.div`
-  width: 20%;
-`;
+const CombatpowerHeader = styled.span``;
 
 const StatWrap = styled.div`
   display: flex;
@@ -271,7 +272,7 @@ const StatLeftWrap = styled.div`
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     width: 50%;
   }
 `;
@@ -288,12 +289,14 @@ const StatRightWrap = styled.div`
   }
 `;
 
-const StatHeader = styled.div`
+const StatHeader = styled.span`
   align-items: flex-start;
   font-size: 14px;
-  color: white;
+  color: rgb(210, 221, 225);
+  text-shadow: 0px 1px 0px rgb(62, 62, 62);
 `;
-const StatValue = styled.div`
+
+const StatValue = styled.span`
   align-items: flex-end;
   font-size: 14px;
   color: white;
@@ -305,15 +308,14 @@ const AttackFontWrap = styled.div`
   justify-content: space-between;
   padding: 8px;
   gap: 10px;
-  background-color: rgb(108, 120, 134);
+  background-color: rgb(103 113 125);
   border-radius: 5px;
   white-space: nowrap;
   p {
     display: flex;
-    flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    gap: 25px;
+    gap: 20px;
   }
 
   @media screen and (max-width: 1024px) {
@@ -330,9 +332,6 @@ const TextRight = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: flex-end;
-  font-size: 14px;
-  color: white;
   gap: 8px;
 `;
 
@@ -340,9 +339,6 @@ const TextLeft = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: flex-end;
-  font-size: 14px;
-  color: white;
   gap: 8px;
 `;
 
