@@ -7,7 +7,7 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 80;
 const BASE_URL = "https://open.api.nexon.com";
 
 app.use(express.json());
@@ -522,6 +522,9 @@ app.get("/api/image-proxy", async (req, res) => {
     res.status(500).send("이미지 로드 실패");
   }
 });
+
+// ads.txt 제공 설정
+app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
 // 빌드된 정적 파일을 서빙하는 미들웨어 설정
 app.use(express.static(path.join(__dirname, "build")));

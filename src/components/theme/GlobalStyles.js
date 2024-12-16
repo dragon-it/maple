@@ -8,14 +8,17 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.25;
     margin: 0 auto;
     font-family:
+      '맑은 고딕', 
+      'Malgun Gothic',
       sans-serif,
+      '돋움',
+      Dotum,
       "Noto Sans",
       "Noto Sans CJK KR",
       maple-light,
       "Montserrat",
       "Helvetica Neue",
-      "NanumSquare",
-      maple-bold;
+      "NanumSquare";
     word-break: keep-all;
     word-wrap: break-word;
     text-rendering: optimizeLegibility;
@@ -45,4 +48,13 @@ export const GlobalStyle = createGlobalStyle`
   * {
   -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 효과 제거 */
 }
+
+/* 크롬, 사파리, 오페라에서 화살표 없애기 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 `;

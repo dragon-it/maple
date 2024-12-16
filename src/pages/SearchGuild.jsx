@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTheme } from "../context/ThemeProvider";
+import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
@@ -40,6 +41,13 @@ export const SearchGuild = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`길드 검색 - 메짱`}</title>
+        <meta
+          name="description"
+          content="모든 서버의 길드를 불러오는 기능입니다."
+        />
+      </Helmet>
       {loading ? (
         <LoadingWrap>
           <img
@@ -93,7 +101,12 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0px;
+  min-height: 82vh;
+
+  img {
+    image-rendering: pixelated;
+  }
 
   @media screen and (max-width: 768px) {
     padding: 0 5px;
@@ -111,6 +124,14 @@ const HeaderWrap = styled.div`
   border-radius: 5px;
   outline: 1px solid rgb(141, 141, 141);
   box-shadow: 0 0px 4px 4px rgba(167, 167, 167, 0.47);
+
+  @media screen and (max-width: 1024px) {
+    width: 70%;
+  }
+
+  @media screen and (max-width: 576px) {
+    width: 100%;
+  }
 `;
 
 const NpcWarp = styled.div`
@@ -125,7 +146,7 @@ const LoadingWrap = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: 999;
 
   img {

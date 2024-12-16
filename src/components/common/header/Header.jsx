@@ -13,6 +13,7 @@ export const Header = () => {
     characterCapture: "/character-capture",
     searchGuild: "/guild-search",
     randomClass: "/random-class",
+    expSimulator: "/exp-simulator",
   };
 
   const sundayMapleUrl =
@@ -38,6 +39,7 @@ export const Header = () => {
         <Items to={routes.characterCapture}>캐릭터 캡처</Items>
         <Items to={routes.searchGuild}>길드 검색</Items>
         <Items to={routes.randomClass}>랜덤 직업 뽑기</Items>
+        <Items to={routes.expSimulator}>Exp 시뮬레이터</Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
@@ -48,7 +50,7 @@ export const Header = () => {
           </p>
         </ItemsToHome>
       </ItemContainer>
-      {/* <SpaceField /> */}
+
       <ThemeToggleWrap>
         <ThemeToggleButton />
       </ThemeToggleWrap>
@@ -74,13 +76,18 @@ const PcHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 0 10px;
   width: 100%;
-  gap: 20px;
+  gap: 10px;
   max-height: 50px;
   font-family: maple-light;
   background: ${({ theme }) => theme.headerBgColor};
   white-space: nowrap;
+
+  @media screen and (max-width: 768px) {
+    padding: 0px;
+    gap: 0px;
+  }
 `;
 
 const LogoWrap = styled.div`
@@ -107,6 +114,10 @@ const ItemContainer = styled.div`
   @media screen and (max-width: 767px) {
     display: none;
   }
+
+  @media screen and (max-width: 1024px) {
+    gap: 0px;
+  }
 `;
 
 const Items = styled(Link)`
@@ -120,11 +131,6 @@ const ItemsToHome = styled.a`
   text-decoration: none;
   color: inherit;
 `;
-
-// const SpaceField = styled.div`
-//   flex: 1 1;
-//   max-width: 1000px;
-// `;
 
 const OfficialHome = styled.div`
   margin-left: 3px;
