@@ -95,9 +95,6 @@ export const ExpInput = () => {
     let finalExpPercent = 0;
     if (expIncreaseData[finalLevel]) {
       finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3); // 소수점 3자리까지 계산
-      console.log(finalLevel);
-
-      console.log(expIncreaseData[finalLevel].requiredExp);
     }
 
     // 최종 레벨과 경험치 비율을 객체로 반환
