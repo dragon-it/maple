@@ -93,7 +93,7 @@ const Container = styled.div`
   background-color: rgba(59, 66, 75, 0.9);
   font-size: 14px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  color: white;
+  color: rgb(247, 247, 247);
 `;
 
 const NoDataWrap = styled.div`
@@ -154,7 +154,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   height: 25px;
   padding: 0 3px;
-  background-color: rgb(170, 169, 169);
+  background-color: rgb(180, 180, 180);
   border-radius: 5px;
 `;
 
@@ -186,7 +186,7 @@ const PresetHeader = styled.span`
   font-size: 14px;
   font-weight: 700;
   text-shadow: none;
-  color: rgb(34, 34, 34);
+  color: rgb(39, 39, 39);
 `;
 
 const PresetButton = styled.button`
@@ -197,9 +197,9 @@ const PresetButton = styled.button`
   border-radius: 5px;
   width: 20px;
   height: 20px;
-  color: ${(props) => (props.isSelected ? "#FFFFFF" : "#e4e4e4")};
-  background: ${(props) => (props.isSelected ? "#444F59" : "#828F9A")};
-  border: 1px solid ${(props) => (props.isSelected ? "#d8e1e6" : "#454D57")};
+  color: ${(props) => (props.isSelected ? "rgb(255, 255, 255)" : "rgb(230, 230, 230)")};
+  background: ${(props) => (props.isSelected ? "rgb(68, 79, 89)" : "rgb(130, 143, 154)")};
+  border: 1px solid ${(props) => (props.isSelected ? "rgb(247, 247, 247)" : "rgb(	69, 77, 87)")};
   &:hover {
     filter: brightness(1.2);
   }

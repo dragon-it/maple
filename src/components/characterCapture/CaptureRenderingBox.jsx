@@ -287,9 +287,9 @@ const NickName = styled.span`
   max-height: 23px;
   background: linear-gradient(
     180deg,
-    rgba(150, 149, 143, 1) 0%,
-    rgba(136, 136, 136, 1) 49%,
-    rgba(108, 106, 106, 1) 100%
+    rgb(150, 149, 143) 0%,
+    rgb(136, 136, 136) 49%,
+    rgb(108, 106, 106) 100%
   );
   color: rgb(247, 247, 247);
   border: 2px solid rgb(82, 79, 87);
@@ -331,11 +331,11 @@ const SaveButton = styled.button`
   padding: 8px 18px;
   background: linear-gradient(
     180deg,
-    rgba(255, 221, 85, 1) 20%,
-    rgba(221, 136, 17, 1) 100%
+    rgb(255, 221, 85) 20%,
+    rgb(221, 136, 17) 100%
   );
   color: white;
-  text-shadow: 1px 1px rgba(58, 58, 58, 0.498);
+  text-shadow: 1px 1px rgba(58, 58, 58, 0.5);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
   border: 2px solid rgb(213, 125, 13);
   border-radius: 10px;
@@ -347,7 +347,7 @@ const SaveButton = styled.button`
     background: linear-gradient(
       180deg,
       rgb(255, 230, 132) 20%,
-      rgba(221, 136, 17, 1) 100%
+      rgb(221, 136, 17) 100%
     );
     transform: scale(1.02);
   }
