@@ -293,7 +293,6 @@ const StatHeader = styled.span`
   align-items: flex-start;
   font-size: 14px;
   color: rgb(210, 221, 225);
-  text-shadow: 0px 1px 0px rgb(62, 62, 62);
 `;
 
 const StatValue = styled.span`

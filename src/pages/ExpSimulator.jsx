@@ -64,7 +64,7 @@ const Icon = styled.div`
   height: 16px;
   text-align: center;
   border: 1px solid black;
-  background: rgb(214, 214, 214);
+  background: rgb(216, 216, 216);
   padding: 4px 5px 5px 5px;
   border-radius: 4px;
   font-size: 10px;
@@ -81,5 +81,5 @@ const RenderingBox = styled.div`
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
   padding: 5px 10px 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
 `;
