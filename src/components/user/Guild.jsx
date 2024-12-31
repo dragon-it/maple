@@ -170,7 +170,7 @@ const Tab = styled.span`
   font-family: maple-light;
   &:hover {
     background-color: ${(props) =>
-      props.active ? "transparents" : "rgb(117, 117, 117)"};
+      props.active ? "transparents" : "rgb(119, 119, 119)"};
   }
 
   @media screen and (max-width: 768px) {
