@@ -116,7 +116,7 @@ const ContentsWrap = styled.div`
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
   padding: 5px 10px 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
 `;
 
 const Title = styled.p`

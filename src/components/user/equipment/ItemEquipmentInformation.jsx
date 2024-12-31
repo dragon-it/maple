@@ -801,7 +801,7 @@ const BaseButton = styled.button`
 const UiBackgrnd = styled.div`
   position: relative;
   border-top: 1px solid black;
-  background-color: rgb(255, 251, 251);
+  background-color: rgb(255, 255, 255);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 `;
