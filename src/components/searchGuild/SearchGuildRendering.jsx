@@ -197,7 +197,7 @@ const Icon = styled.div`
   height: 16px;
   text-align: center;
   border: 1px solid black;
-  background: rgb(214, 214, 214);
+  background: rgb(216, 216, 216);
   padding: 4px 5px 5px 5px;
   border-radius: 4px;
   font-size: 10px;

@@ -98,7 +98,7 @@ const StatisticsContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #2e2e2e;
+  background-color:rgb(44, 44, 44);
   border-radius: 10px;
   width: 100%;
   color: rgb(255, 25, 25);
@@ -135,9 +135,9 @@ const TopClassesContainer = styled.div`
   flex: 1;
   color: #fff;
   padding: 20px;
-  background-color: #424242;
+  background-color:rgb(66, 66, 66);
   border-radius: 10px;
-  border: 1px solid rgb(177, 177, 177);
+  border: 1px solid rgb(255, 255, 255);
   margin-left: 20px;
   font-size: 16px;
   font-family: maple-light;
@@ -157,7 +157,7 @@ const ClassItem = styled.div`
   gap: 10px;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid rgb(89, 85, 82);
 `;
 
 const ClassRank = styled.span`

@@ -154,7 +154,7 @@ const SkillContainer = styled.div`
   gap: 10px;
   background-color: rgb(57, 57, 57);
   padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 `;
 
@@ -165,7 +165,7 @@ const Table = styled.div`
   margin-bottom: 10px;
   padding-bottom: 10px;
   background-color: rgb(57, 57, 57);
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 
   @media screen and (max-width: 1024px) {

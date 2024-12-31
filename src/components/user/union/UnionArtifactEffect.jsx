@@ -61,7 +61,6 @@ const InfoWrap = styled.li`
   display: flex;
   align-items: center;
   padding: 5px;
-  background-color: rgb(48, 54, 63);
   border-radius: 3px;
   border: 1px solid rgb(136, 184, 212);
   outline: 1px solid rgb(56, 70, 81);

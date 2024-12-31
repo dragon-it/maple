@@ -125,7 +125,6 @@ const Container = styled.div`
   li {
     cursor: pointer;
     margin: 8px 0;
-    color: #e45b5b;
   }
 
   @media screen and (max-width: 1024px) {
@@ -147,20 +146,20 @@ const Header = styled.div`
 const SetEffectName = styled.div`
   &:not(:empty) {
     color: #ffffff;
-    border-bottom: 1px dashed #ffffff78;
+    border-bottom: 1px dashed rgb(89, 85, 82);
 
     span {
       display: flex;
       align-items: center;
       margin: 3px 0;
       &:hover {
-        background-color: rgba(104, 103, 103, 0.5);
+        background-color: rgba(91, 91, 91, 0.5);
       }
     }
   }
   ul {
     &:hover {
-      background-color: rgba(104, 103, 103, 0.5);
+      background-color: rgba(91, 91, 91, 0.5);
     }
   }
 `;

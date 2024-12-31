@@ -67,7 +67,7 @@ const FavoriteWrap = styled.div`
   color: rgb(255, 255, 255);
   max-height: 500px;
   font-family: maple-light;
-  background-color: rgba(0, 0, 0, 0.53);
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
 `;
 
@@ -91,7 +91,7 @@ const CharacterNameListItem = styled.div`
   padding: 0px 5px;
 
   &:hover {
-    background-color: rgba(162, 162, 162, 0.25);
+    background-color: rgba(184, 184, 184, 0.25);
   }
 `;
 

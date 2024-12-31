@@ -222,7 +222,7 @@ const SymbolIcons = styled.div`
     box-sizing: content-box;
     width: 30px;
     height: 30px;
-    border: 2px solid #d4bc6c;
+    border: 2px solid rgb(212, 188, 108);
     border-radius: 5px;
   }
 `;
