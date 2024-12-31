@@ -191,7 +191,7 @@ const CharacterBody = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: row;
-  border: 1px solid rgb(36 36 36);
+  border: 1px solid rgb(36, 36, 36);
   border-radius: 5px;
   background-size: cover;
   cursor: pointer;
@@ -279,7 +279,7 @@ const Experience = styled.div`
 `;
 
 const Job = styled.div`
-  background-color: rgba(202, 204, 206, 0.9);
+  background-color: rgba(202, 204, 206, 0.8);
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   width: 110px;
@@ -338,5 +338,5 @@ const FavoriteIcon = styled.div`
 const WorldIconImg = styled.img`
   width: 15px;
   height: 15px;
-  margin-left: 5px;
+  margin-left: 3px;
 `;

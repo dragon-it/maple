@@ -124,9 +124,9 @@ const MenuContainer = styled.div`
   right: 10px;
   padding: 5px 10px;
   font-size: 14px;
-  background-color: #24272b;
-  outline: 1px solid #2e3035;
-  border: 1px solid #3d454e;
+  background-color:rgb(36, 39, 43);
+  outline: 1px solid rgb(46, 48, 53);
+  border: 1px solid rgb(61, 69, 78);
   border-radius: 7px;
   transition: opacity 0.5s ease, max-height 0.8s ease;
   text-decoration: none;
@@ -139,13 +139,13 @@ const MenuContainer = styled.div`
 
 const MenusHeader = styled.div`
   font-size: 12px;
-  color: #a9bac1;
-  border-bottom: 1px solid rgba(91, 91, 91, 0.498);
+  color:rgb(169, 186, 193);
+  border-bottom: 1px solid rgba(91, 91, 91, 0.5);
   padding-bottom: 5px;
 `;
 
 const Menus = styled(Link)`
-  color: rgb(254, 254, 254);
+  color: rgb(255, 255, 255);
   font-size: 12px;
   padding: 7px 0px;
   text-decoration: none;
@@ -165,7 +165,7 @@ const Menus = styled(Link)`
 `;
 
 const MenuLink = styled.a`
-  color: rgb(254, 254, 254);
+  color: rgb(255, 255, 255);
   font-size: 12px;
   padding: 7px 0px;
   text-decoration: none;

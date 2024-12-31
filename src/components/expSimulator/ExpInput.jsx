@@ -95,9 +95,6 @@ export const ExpInput = () => {
     let finalExpPercent = 0;
     if (expIncreaseData[finalLevel]) {
       finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3); // 소수점 3자리까지 계산
-      console.log(finalLevel);
-
-      console.log(expIncreaseData[finalLevel].requiredExp);
     }
 
     // 최종 레벨과 경험치 비율을 객체로 반환
@@ -266,7 +263,7 @@ const Result = styled.div`
   color: rgb(255, 255, 255);
   text-shadow: 1px 1px 0px rgb(88, 88, 88);
   background: rgb(90, 96, 102);
-  border: 1px solid rgb(157, 188, 209);
+  border: 1px solid rgb(197, 220, 242);
   padding: 5px;
 `;
 
@@ -277,7 +274,7 @@ const IconWrap = styled.div`
   border: 1px solid rgb(0, 0, 0);
   border-radius: 5px;
   margin-right: 5px;
-  background-color: rgb(214, 214, 214);
+  background-color: rgb(216, 216, 214);
 `;
 
 const Icon = styled.img`

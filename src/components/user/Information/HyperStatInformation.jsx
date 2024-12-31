@@ -105,7 +105,7 @@ const Container = styled.div`
 `;
 
 const ShowAllStatBtn = styled.div`
-  color: white;
+  color: rgb(247, 247, 247);
   box-sizing: border-box;
   font-family: maple-light;
   cursor: pointer;
@@ -155,7 +155,7 @@ const Level = styled.span`
   display: flex;
 
   :first-child {
-    color: rgba(194, 209, 215, 0.877);
+    color: rgb(197, 220, 242);
   }
 
   :nth-child(2) {
@@ -170,7 +170,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   height: 25px;
   padding: 0 3px;
-  background-color: rgb(170, 169, 169);
+  background-color: rgb(180, 180, 180);
   border-radius: 5px;
 `;
 
@@ -201,13 +201,12 @@ const PresetHeader = styled.div`
   font-size: 14px;
   font-weight: 700;
   text-shadow: none;
-  color: rgb(34, 34, 34);
+  color: rgb(39, 39, 39);
 `;
 
 const StatContainer = styled.p`
   display: flex;
   justify-content: space-between;
-  text-shadow: 0px 0px 1px rgb(62, 62, 62);
 `;
 
 const RemainPoint = styled.span`
