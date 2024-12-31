@@ -120,7 +120,6 @@ const Container = styled.div`
 `;
 
 const PropensityItemWrapper = styled.p`
-  background-color: rgb(31, 189, 255);
   width: 120px;
 
   @media screen and (max-width: 576px) {

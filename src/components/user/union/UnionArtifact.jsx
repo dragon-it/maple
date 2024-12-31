@@ -94,6 +94,7 @@ const Container = styled.div`
     width: 100%;
   }
 `;
+
 const RaiderWrap = styled.div`
   display: flex;
   background-color: rgb(56, 60, 69);

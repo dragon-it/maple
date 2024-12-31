@@ -7,7 +7,7 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3001;
 const BASE_URL = "https://open.api.nexon.com";
 
 app.use(express.json());
@@ -320,11 +320,15 @@ app.get("/api/guild/all", async (req, res) => {
     "오로라",
     "아케인",
     "노바",
-    "리부트",
-    "리부트2",
+    "에오스",
+    "핼리오스",
     "버닝",
     "버닝1",
     "버닝2",
+    "챌린저스",
+    "챌린저스2",
+    "챌린저스3",
+    "챌린저스4",
   ];
 
   if (!guildName) {
@@ -527,15 +531,17 @@ app.get("/api/image-proxy", async (req, res) => {
 app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
 // 빌드된 정적 파일을 서빙하는 미들웨어 설정
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, process.env.BUILD_DIR)));
 
-// API가 아닌 모든 요청을 빌드된 index.html로 리다이렉트
-app.get("*", (req, res) => {
-  if (!req.url.startsWith("/api")) {
-    // API 경로가 아닌 경우에만 index.html을 리턴
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+
+app.get('*', (req, res) => {
+  if (!req.url.startsWith('/api')) {
+    res.sendFile(path.resolve(__dirname, process.env.BUILD_DIR, 'index.html'));
+  } else {
+    res.status(404).send('Not Found');
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -95,7 +95,7 @@ const BasicInfoSection = styled.div`
   margin-bottom: 20px;
   padding: 10px;
   background-color: rgb(25, 25, 25);
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 `;
 
@@ -119,7 +119,7 @@ const Value = styled.span``;
 const MasterName = styled.span`
   cursor: pointer;
   &:hover {
-    background-color: rgb(78, 78, 78);
+    background-color: rgb(73, 73, 73);
   }
 `;
 
@@ -153,7 +153,7 @@ const ItemWrap = styled.div`
   gap: 25px;
   padding: 10px;
   background-color: rgb(25, 25, 25);
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 `;
 
