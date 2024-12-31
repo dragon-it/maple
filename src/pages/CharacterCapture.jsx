@@ -114,7 +114,7 @@ const HeaderWrap = styled.div`
   gap: 30px;
   padding: 10px 20px 20px 20px;
   background-color: rgba(181, 165, 149, 0.85);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
   border: 1px solid rgb(220, 217, 202);
   outline: 1px solid rgb(146, 139, 102);
   border-radius: 10px;
