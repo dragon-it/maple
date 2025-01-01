@@ -22,7 +22,7 @@ jobs:
       - name: Add EC2 to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Copy files to EC2
         run: |
