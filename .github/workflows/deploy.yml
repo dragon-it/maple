@@ -17,7 +17,10 @@ jobs:
       - name: Copy files to EC2
         run: |
           scp -r . ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/maple
+          
 
       - name: Run deploy script
         run: |
-          ssh ubuntu@${{ secrets.EC2_HOST }} 'cd /home/ubuntu/maple && sudo ./deploy.sh'
+          ssh ubuntu@${{ secrets.EC2_HOST }} 'chmod +x /home/ubuntu/maple/deploy.sh'
+
+          

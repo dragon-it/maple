@@ -6,7 +6,9 @@ echo "배포 스크립트 시작"
 
 # 현재 활성 상태 확인
 echo "현재 활성 포트 확인 중..."
-ACTIVE_PORT=$(curl -s http://localhost:80 | grep -o 300[1-2] || echo "NONE")
+ACTIVE_PORT=$(pm2 list | grep "mezzang" | awk '{print $4}' || echo "NONE")
+
+
 echo "활성 포트: $ACTIVE_PORT"
 
 if [ "$ACTIVE_PORT" == "3001" ]; then
@@ -33,16 +35,16 @@ echo "빌드 완료"
 
 # PM2 재시작
 echo "PM2 서버 재시작: $TARGET_APP"
-pm2 restart $TARGET_APP
+pm2 restart $TARGET_APP || exit 1
 echo "PM2 재시작 완료"
 
 # Nginx 설정 업데이트
 if [ "$NEW_PORT" == "3001" ]; then
-  sed -i 's/weight=10/weight=0/g' /etc/nginx/sites-available/default
-  sed -i 's/server localhost:3002 weight=0/server localhost:3002 weight=10/g' /etc/nginx/sites-available/default
+sudo sed -i 's/weight=10/weight=1/g' /etc/nginx/sites-available/default
+sudo sed -i 's/server localhost:3002 weight=1/server localhost:3002 weight=10/g' /etc/nginx/sites-available/default
 else
-  sed -i 's/weight=10/weight=0/g' /etc/nginx/sites-available/default
-  sed -i 's/server localhost:3001 weight=0/server localhost:3001 weight=10/g' /etc/nginx/sites-available/default
+sudo sed -i 's/weight=10/weight=1/g' /etc/nginx/sites-available/default
+sudo sed -i 's/server localhost:3001 weight=1/server localhost:3001 weight=10/g' /etc/nginx/sites-available/default
 fi
 
 Nginx 재시작 
