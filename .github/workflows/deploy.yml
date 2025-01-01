@@ -1,0 +1,28 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main # main 브랜치에 push 될 때 실행
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Copy files to EC2
+        run: |
+          scp -r . ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/maple
+
+      - name: Run deploy script
+        run: |
+          ssh ubuntu@${{ secrets.EC2_HOST }} 'cd /home/ubuntu/maple && sudo ./deploy.sh'
