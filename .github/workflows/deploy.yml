@@ -26,7 +26,7 @@ jobs:
 
       - name: Copy files to EC2
         run: |
-            scp -i ~/.ssh/id_rsa -r . ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/maple
+          scp -v -i ~/.ssh/id_rsa -r . ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/maple
 
       - name: Run deploy script
         run: |
