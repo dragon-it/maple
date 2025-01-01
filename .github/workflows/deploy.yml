@@ -26,7 +26,7 @@ jobs:
 
       - name: Copy files to EC2
         run: |
-          scp -r . ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/maple
+          scp -r . ubuntu@${{ secrets.EC2_MEZZANG_PEM }}:/home/ubuntu/maple
 
       - name: Run deploy script
         run: |
