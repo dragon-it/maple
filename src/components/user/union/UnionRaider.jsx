@@ -106,7 +106,6 @@ const RaiderInnerStatWrap = styled.div`
   z-index: 999;
   left: 23%;
   top: 20%;
-  white-space: nowrap;
 `;
 
 const RaiderExternalStat = styled.div`

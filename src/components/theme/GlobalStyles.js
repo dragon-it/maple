@@ -28,7 +28,6 @@ export const GlobalStyle = createGlobalStyle`
 /* 스크롤바 전체 영역 */
     ::-webkit-scrollbar {
       width: 10px;
-      border: 2px solid rgb(84,84,84);
       border-radius: 12px 12px 12px 12px;
     }
     ::-webkit-scrollbar-thumb {

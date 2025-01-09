@@ -164,8 +164,8 @@ const SearchWrap = styled.div`
 const Tabs = styled.div`
   display: flex;
   padding: 10px 0;
-  white-space: nowrap;
   font-family: maple-light;
+  font-size: 12px;
   min-width: 390px;
 
   @media screen and (max-width: 1024px) {
