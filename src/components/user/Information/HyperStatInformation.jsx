@@ -217,7 +217,7 @@ const RemainPoint = styled.span`
   width: 50%;
   height: 20px;
   line-height: 20px;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 10px;
   background-color: rgba(59, 66, 75, 0.9);
   border-top: 2px solid rgb(38, 43, 49);

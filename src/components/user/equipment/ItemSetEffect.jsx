@@ -107,7 +107,7 @@ const Container = styled.div`
   left: -261px;
   width: 250px;
   padding: 10px;
-  white-space: pre-line;
+  white-space: pre-wrap;
   background-color: rgba(0, 0, 0, 0.9);
   border-radius: 5px;
   border: 1px solid white;

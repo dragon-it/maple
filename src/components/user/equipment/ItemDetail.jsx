@@ -164,7 +164,7 @@ export const ItemDetail = ({ item, clicked }) => {
         </h2>
         {/* 잠재 옵션 등급 표시 */}
         {item.potential_option_grade && (
-          <p>{`(${item.potential_option_grade} 아이템)`}</p>
+          <NamePotentialName>{`(${item.potential_option_grade} 아이템)`}</NamePotentialName>
         )}
       </ItemNameWrap>
 
@@ -399,16 +399,16 @@ const ItemNameWrap = styled.div`
   h2 {
     font-size: 15px;
     padding: 3px 0;
-    line-height: 24px;
     text-align: center;
     span {
       color: rgb(210, 245, 57);
     }
-    p {
-      display: flex;
-    }
   }
 `;
+
+const NamePotentialName = styled.p`
+  font-size: 12px;
+`
 
 const IconWrap = styled.div`
   padding: 10px 0;
@@ -480,7 +480,6 @@ const ItemOptionWrap = styled.div`
 
 const OptionWrap = styled.div`
   font-size: 11px;
-  white-space: pre-line;
   ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
   ${(props) => props.PotenOptions && "border-top: 1px dashed rgb(89, 85, 82);"}
 `;
