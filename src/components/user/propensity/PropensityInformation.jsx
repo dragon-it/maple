@@ -199,11 +199,6 @@ const ChartWrap = styled.div`
   z-index: 99;
 `;
 const PropensityName = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
   font-size: 13px;
   p {
     padding: 5px;

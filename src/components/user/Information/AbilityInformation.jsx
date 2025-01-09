@@ -91,7 +91,7 @@ const Container = styled.div`
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
   background-color: rgba(59, 66, 75, 0.9);
-  font-size: 14px;
+  font-size: 12px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   color: rgb(247, 247, 247);
 `;
@@ -128,7 +128,7 @@ const AbilityDetail = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 13px;
+    font-size: 12px;
     width: 100%;
     height: 24px;
     color: white;
@@ -165,7 +165,7 @@ const RemainFame = styled.span`
   gap: 10px;
   width: 50%;
   height: 20px;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 10px;
   background-color: rgba(59, 66, 75, 0.9);
   border-top: 2px solid rgb(38, 43, 49);
