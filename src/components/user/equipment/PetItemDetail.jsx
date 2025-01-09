@@ -196,7 +196,7 @@ const ItemOptionWrap = styled.div`
 
 const ItemDescriptionWrap = styled.div`
   font-size: 14px;
-  white-space: normal;
+  white-space: pre-wrap;
   padding: 5px 0;
   ${({ Data }) => Data && `border-bottom: 2px dotted rgb(55, 56, 58);`}
 `;
