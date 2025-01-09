@@ -320,13 +320,13 @@ export const ItemDetail = ({ item, clicked }) => {
               ></OptionInitial>
               <span>에디셔널 잠재옵션</span>
             </OptionHeader>
-            <AdditionalItems>
-              {item.additional_potential_option_1}
-              <br />
-              {item.additional_potential_option_2}
-              <br />
-              {item.additional_potential_option_3}
-            </AdditionalItems>
+            {[
+              item.additional_potential_option_1,
+              item.additional_potential_option_2,
+              item.additional_potential_option_3,
+            ].map((option, index) => (
+              <AdditionalItems key={index}>{option}</AdditionalItems>
+            ))}
           </AdditionalOptionWrap>
         )}
         {item.soul_name && (
@@ -394,10 +394,10 @@ const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 2px dotted rgb(89, 85, 82);
+  border-bottom: 1px dashed rgb(89, 85, 82);
   padding-bottom: 10px;
   h2 {
-    font-size: 16px;
+    font-size: 15px;
     padding: 3px 0;
     line-height: 24px;
     text-align: center;
@@ -415,7 +415,7 @@ const IconWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px dotted rgb(89, 85, 82);
+  border-bottom: 1px dashed rgb(89, 85, 82);
 `;
 
 const IconImage = styled.div`
@@ -449,7 +449,7 @@ const IconImage = styled.div`
 
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
-  font-size: 13px;
+  font-size: 12px;
   padding-top: ${(props) => (props.Data ? "0" : "15px")};
 `;
 
@@ -475,14 +475,14 @@ const PinImage = styled.div`
 const ItemOptionWrap = styled.div`
   padding: 5px 0;
   line-height: 16px;
-  font-size: 12px;
+  font-size: 11px;
 `;
 
 const OptionWrap = styled.div`
-  font-size: 13px;
+  font-size: 11px;
   white-space: pre-line;
   ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
-  ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(89, 85, 82);"}
+  ${(props) => props.PotenOptions && "border-top: 1px dashed rgb(89, 85, 82);"}
 `;
 
 const OptionInitial = styled.img`
@@ -513,11 +513,11 @@ const PotentialOptionWrap = styled.div`
 
 const AdditionalOptionWrap = styled.div`
   padding: 5px 0;
-  border-top: 2px dotted rgb(89, 85, 82);
+  border-top: 1px dashed rgb(89, 85, 82);
 `;
 
 const SoulOptionWrap = styled.div`
-  border-top: 2px dotted rgb(89, 85, 82);
+  border-top: 1px dashed rgb(89, 85, 82);
   padding: 5px 0px;
   :first-child {
     color: rgb(255, 255, 68);
@@ -525,16 +525,18 @@ const SoulOptionWrap = styled.div`
 `;
 
 const ExOptionWrap = styled.div`
-  border-top: 2px dotted rgb(89, 85, 82);
-  padding-top: 5px;
+  border-top: 1px dashed rgb(89, 85, 82);
+  padding: 5px 0;
 `;
 
 const PotentialItems = styled.div`
-  font-size: 12px;
+  font-size: 11px;
+  margin: 1px;
 `;
 
 const AdditionalItems = styled.div`
-  font-size: 12px;
+  font-size: 11px;
+  margin: 1px;
 `;
 
 const ExOptionHeader = styled.div`
@@ -545,9 +547,8 @@ const ExOptionHeader = styled.div`
 `;
 
 const ExInitial = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  font-size: 10px;
   width: 20px;
   height: 13px;
   margin-right: 3px;
@@ -555,11 +556,10 @@ const ExInitial = styled.div`
   background-color: rgb(255, 51, 51);
   border: 1px solid rgb(255, 255, 255);
   border-radius: 4px;
-  text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black;
 `;
 
 const ADItemDescription = styled.div`
-  white-space: normal;
+  white-space: pre-wrap;
 `;
 
 const ADItemGrade = styled.div`
