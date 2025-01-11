@@ -18,17 +18,17 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ls -l ~/.ssh  # 디버깅을
+          ls -l ~/.ssh  
     
 
       - name: Add EC2 to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.EC2_HOST_SURFACE }} >> ~/.ssh/known_hosts
 
       - name: Copy files to EC2
         run: |
-          scp -v -i ~/.ssh/id_rsa -r . ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/maple
+          scp -v -i ~/.ssh/id_rsa -r . ubuntu@${{ secrets.EC2_HOST_SURFACE }}:/home/ubuntu/maple
 
       - name: Run deploy script
         run: |
