@@ -105,6 +105,7 @@ const UnionGrade = styled.div`
   color:rgb(255, 255, 0);
   text-shadow: 0px 0px 3px rgb(219, 250, 46);
   font-size: 20px;
+  font-family: maple-light;
 `;
 
 const InfoWrap = styled.div`

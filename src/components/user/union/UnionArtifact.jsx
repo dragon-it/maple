@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import UnionArtifactIcon from "./UnionArtifactIcon";
 import { UnionRaider } from "./UnionRaider";
 import { UnionOccupiedStat } from "./UnionOccupiedStat";
+import { UnionChampion } from "./UnionChampion";
 
-export const UnionArtifact = ({
-  Data,
-  showUnionRaider,
-  setShowUnionRaider,
-}) => {
+export const UnionArtifact = ({ Data }) => {
+  const [activeTab, setActiveTab] = useState("artifact"); // 현재 활성화된 탭 상태
+
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
   );
@@ -34,65 +33,90 @@ export const UnionArtifact = ({
   };
 
   return (
-    <Container RaiderShow={showUnionRaider}>
-      <UnionRaiderText
-        onClick={() => setShowUnionRaider((prevState) => !prevState)}
-      >
-        {showUnionRaider ? "유니온 아티팩트 보기" : "유니온 점령지도 보기"}
-      </UnionRaiderText>
-      {showUnionRaider ? (
-        <>
-          <RaiderWrap>
-            <UnionRaider Data={Data.unionRaider} />
-          </RaiderWrap>
-          <UnionOccupiedStat Data={Data.unionRaider} />
-        </>
-      ) : (
-        <ArtifactWrap>
-          {Data.unionArtiFact.union_artifact_crystal.map((crystal, index) => (
-            <InfoWrap key={index}>
-              <>
-                <img
-                  src={getIcon(NameValue[index], crystal.level)}
-                  alt={`${NameValue[index]} 아이콘`}
-                />
-              </>
-
-              <Name>
-                {NameValue[index]} Lv.{crystal.level}
-              </Name>
-              <Option>
-                <p>{crystal.crystal_option_name_1}</p>
-                <p>{crystal.crystal_option_name_2}</p>
-                <p>{crystal.crystal_option_name_3}</p>
-              </Option>
-            </InfoWrap>
-          ))}
-        </ArtifactWrap>
-      )}
-    </Container>
+    <Wrap>
+      <TabMenu>
+        <TabButton
+          isActive={activeTab === "artifact"}
+          onClick={() => setActiveTab("artifact")}
+        >
+          공격대
+        </TabButton>
+        <TabButton
+          isActive={activeTab === "raider"}
+          onClick={() => setActiveTab("raider")}
+        >
+          아티팩트
+        </TabButton>
+        <TabButton
+          isActive={activeTab === "champion"}
+          onClick={() => setActiveTab("champion")}
+        >
+          챔피언
+        </TabButton>
+      </TabMenu>
+      <ContentsWrap>
+        <Content>
+          {activeTab === "artifact" && (
+            <ArtifactWrap>
+              {Data.unionArtiFact.union_artifact_crystal.map((crystal, index) => (
+                <InfoWrap key={index}>
+                  <img
+                    src={getIcon(NameValue[index], crystal.level)}
+                    alt={`${NameValue[index]} 아이콘`}
+                  />
+                  <Name>
+                    {NameValue[index]} Lv.{crystal.level}
+                  </Name>
+                  <Option>
+                    <p>{crystal.crystal_option_name_1}</p>
+                    <p>{crystal.crystal_option_name_2}</p>
+                    <p>{crystal.crystal_option_name_3}</p>
+                  </Option>
+                </InfoWrap>
+              ))}
+            </ArtifactWrap>
+          )}
+          {activeTab === "raider" && (
+            <>
+              <RaiderWrap>
+                <UnionRaider Data={Data.unionRaider} />
+              </RaiderWrap>
+              <UnionOccupiedStat Data={Data.unionRaider} />
+            </>
+          )}
+          {activeTab === "champion" && (
+            <ChampionWrap>
+              <UnionChampion Data={Data.unionChampion} /> 
+              {/* 추후 유니온 챔피언 추가할 것  */}
+            </ChampionWrap>
+          )}
+        </Content>
+      </ContentsWrap>
+    </Wrap>
   );
 };
 
-const Container = styled.div`
+const Wrap = styled.div`
+  display: flex;
+  gap: 0px;
+`
+
+const ContentsWrap = styled.div`
   display: flex;
   justify-content: ${(props) =>
     props.RaiderShow ? "space-around" : "flex-start"};
   align-items: ${(props) => (props.RaiderShow ? "center" : "")};
-  gap: 5px;
+  gap: 2px;
   background-color: rgb(56, 60, 69);
   border-radius: 5px;
   border: 1px solid rgb(69, 89, 100);
   outline: 1px solid rgb(56, 70, 81);
   padding: 5px;
-  width: 682px;
   height: fit-content;
-  flex-wrap: wrap;
+  
   color: white;
-
-  @media screen and (max-width: 1024px) {
-    width: 100%;
-  }
+  /* max-width: 652px; */
+  flex-direction: row;
 `;
 
 const RaiderWrap = styled.div`
@@ -104,20 +128,6 @@ const RaiderWrap = styled.div`
   height: fit-content;
 `;
 
-const UnionRaiderText = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 20px;
-  border-radius: 5px;
-  color: black;
-  background-color: rgb(144, 177, 187);
-  cursor: pointer;
-  &:hover {
-    background-color: rgb(1, 196, 255);
-  }
-`;
 
 const InfoWrap = styled.div`
   display: flex;
@@ -144,11 +154,67 @@ const Option = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 13px;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: row;
+  }
 `;
 
 const Name = styled.p``;
 
 const ArtifactWrap = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 970px;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+
+const TabMenu = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: row;
+  }
+`;
+
+const TabButton = styled.button`
+  padding: 10px;
+  width: 30px;
+  height: auto;
+  font-size: 12px;
+  background-color: ${(props) =>
+    props.isActive ? "#406675" : "rgb(56, 70, 81)"};
+  color: white;
+  border: 1px solid #1D2631;
+  outline: 1px solid #4C657A;
+  cursor: pointer;
+  border-radius: 8px 0px 0px 8px;
+  
+  &:hover {
+    background-color: rgb(50, 59, 61);
+  }
+`;
+
+const ChampionWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(48, 54, 63);
+  border-radius: 5px;
+  padding: 20px;
+`;
+
+const Content = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 5px;
