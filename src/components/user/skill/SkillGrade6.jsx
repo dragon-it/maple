@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
 
 export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
   const handleItemClick = (item) => {
@@ -15,7 +16,7 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
   };
 
   return (
-    <Container>
+    <ContainerBox>
       {Data.character_skill && Data.character_skill.length > 0 ? (
         <>
           <SkillHeader>HEXA SKILL</SkillHeader>
@@ -40,7 +41,7 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
           <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
         </>
       )}
-    </Container>
+    </ContainerBox>
   );
 };
 
