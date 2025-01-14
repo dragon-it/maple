@@ -34,7 +34,6 @@ const Container = styled.div`
   position: relative;
   padding: 10px;
   padding-top: 5px;
-  font-family: maple-light;
 `;
 
 const InfoWrap = styled.div`
