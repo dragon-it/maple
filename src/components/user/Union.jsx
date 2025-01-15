@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { UnionArtifact } from "./union/UnionArtifact";
 
 export const Union = ({ result }) => {
-  const [showUnionRaider, setShowUnionRaider] = useState(false);
+  const [activeTab, setActiveTab] = useState("artifact"); 
 
   return (
     <Container>
@@ -14,8 +14,8 @@ export const Union = ({ result }) => {
             unionArtiFact: result.getCombinedData.getUnionArtiFact,
             unionRaider: result.getCombinedData.getUnionRaider,
           }}
-          showUnionRaider={showUnionRaider}
-          setShowUnionRaider={setShowUnionRaider}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
         <UnionInfo
           Data={{
@@ -23,7 +23,7 @@ export const Union = ({ result }) => {
             union: result.getCombinedData.getUnion,
             unionRaider: result.getCombinedData.getUnionRaider,
           }}
-          showUnionRaider={showUnionRaider}
+          activeTab={activeTab}
         />
       </InfoWrap>
     </Container>

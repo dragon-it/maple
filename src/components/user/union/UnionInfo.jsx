@@ -35,7 +35,7 @@ const selectIcon = (level) => {
   return UnionIcons[rankCategory][rank];
 };
 
-export const UnionInfo = ({ Data, showUnionRaider }) => {
+export const UnionInfo = ({ Data, activeTab }) => {
   const icon = selectIcon(Data.union.union_level);
 
   const toRoman = (gradeString) => {
@@ -70,7 +70,7 @@ export const UnionInfo = ({ Data, showUnionRaider }) => {
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
-      <UnionArtifactEffect Data={Data} showUnionRaider={showUnionRaider} />
+      <UnionArtifactEffect Data={Data} activeTab={activeTab} />
     </Container>
   );
 };
@@ -85,7 +85,7 @@ const Container = styled.div`
   border: 1px solid rgb(69, 89, 100);
   outline: 1px solid rgb(56, 70, 81);
   height: 100%;
-  min-width: 380px;
+  min-width: 300px;
 `;
 
 const UnionWrap = styled.div`

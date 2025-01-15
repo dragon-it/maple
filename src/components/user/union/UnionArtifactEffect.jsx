@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-export const UnionArtifactEffect = ({ Data, showUnionRaider }) => {
+export const UnionArtifactEffect = ({ Data, activeTab }) => {
   return (
     <Container>
-      {showUnionRaider ? (
+      {activeTab === "raider" ? (
         <>
           <Header>공격대 점령 효과</Header>
           <EffectContainer>
@@ -33,7 +33,6 @@ export const UnionArtifactEffect = ({ Data, showUnionRaider }) => {
 };
 
 const Container = styled.div`
-  border-radius: 5px;
   display: flex;
   gap: 5px;
   flex-direction: column;
@@ -60,15 +59,26 @@ const EffectContainer = styled.ul`
 const InfoWrap = styled.li`
   display: flex;
   align-items: center;
+  width: 100%;
   padding: 5px;
   border-radius: 3px;
   border: 1px solid rgb(136, 184, 212);
   outline: 1px solid rgb(56, 70, 81);
-  height: 100%;
+  max-width: 300px;
+  font-size: 12px;
+
+  @media screen and (max-width: 1024px) {
+    max-width: 100%;
+  }
 `;
 
 const Level = styled.span`
-  width: 40px;
+  width: 35px;
+  flex-shrink: 0; 
 `;
 
-const Name = styled.span``;
+const Name = styled.span`
+  overflow: hidden;
+  white-space: wrap; 
+
+`;
