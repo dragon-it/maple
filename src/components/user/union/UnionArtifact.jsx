@@ -1,12 +1,11 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import UnionArtifactIcon from "./UnionArtifactIcon";
 import { UnionRaider } from "./UnionRaider";
 import { UnionOccupiedStat } from "./UnionOccupiedStat";
 import { UnionChampion } from "./UnionChampion";
+import colors from "../../common/color/colors";
 
-export const UnionArtifact = ({ Data }) => {
-  const [activeTab, setActiveTab] = useState("artifact"); // 현재 활성화된 탭 상태
+export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
 
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
@@ -36,14 +35,14 @@ export const UnionArtifact = ({ Data }) => {
     <Wrap>
       <TabMenu>
         <TabButton
-          isActive={activeTab === "artifact"}
-          onClick={() => setActiveTab("artifact")}
+          isActive={activeTab === "raider"}
+          onClick={() => setActiveTab("raider")}
         >
           공격대
         </TabButton>
         <TabButton
-          isActive={activeTab === "raider"}
-          onClick={() => setActiveTab("raider")}
+          isActive={activeTab === "artifact"}
+          onClick={() => setActiveTab("artifact")}
         >
           아티팩트
         </TabButton>
@@ -54,8 +53,8 @@ export const UnionArtifact = ({ Data }) => {
           챔피언
         </TabButton>
       </TabMenu>
-      <ContentsWrap>
-        <Content>
+      <ContentsWrap activeTab={activeTab}>
+        <>
           {activeTab === "artifact" && (
             <ArtifactWrap>
               {Data.unionArtiFact.union_artifact_crystal.map((crystal, index) => (
@@ -90,7 +89,7 @@ export const UnionArtifact = ({ Data }) => {
               {/* 추후 유니온 챔피언 추가할 것  */}
             </ChampionWrap>
           )}
-        </Content>
+        </>
       </ContentsWrap>
     </Wrap>
   );
@@ -103,19 +102,18 @@ const Wrap = styled.div`
 
 const ContentsWrap = styled.div`
   display: flex;
-  justify-content: ${(props) =>
-    props.RaiderShow ? "space-around" : "flex-start"};
-  align-items: ${(props) => (props.RaiderShow ? "center" : "")};
-  gap: 2px;
-  background-color: rgb(56, 60, 69);
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background-color: ${colors.deepBlue.deepBlue3};
   border-radius: 5px;
-  border: 1px solid rgb(69, 89, 100);
-  outline: 1px solid rgb(56, 70, 81);
+  border: 1px solid ${colors.deepBlue.deepBlue4};
+  outline: 1px solid ${colors.deepBlue.deepBlue1};
   padding: 5px;
   height: fit-content;
-  
   color: white;
-  /* max-width: 652px; */
+  width: ${(props) =>
+    props.activeTab === "raider" ? "100%" : "682px"};
   flex-direction: row;
 `;
 
@@ -193,15 +191,14 @@ const TabButton = styled.button`
   height: auto;
   font-size: 12px;
   background-color: ${(props) =>
-    props.isActive ? "#406675" : "rgb(56, 70, 81)"};
+    props.isActive ? colors.union.unionRaiderColor.TabHoverBackground : colors.union.unionRaiderColor.TabBackground};
   color: white;
-  border: 1px solid #1D2631;
-  outline: 1px solid #4C657A;
+  border: 1px solid ${colors.union.unionRaiderColor.Border};
   cursor: pointer;
   border-radius: 8px 0px 0px 8px;
   
   &:hover {
-    background-color: rgb(50, 59, 61);
+    background-color: ${colors.union.unionRaiderColor.TabHoverBackground};
   }
 `;
 
