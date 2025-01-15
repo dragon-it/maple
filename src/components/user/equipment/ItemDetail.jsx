@@ -4,6 +4,7 @@ import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
 import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
 import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
 import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
+import starForce_Icon from "../../../assets/optionIcon/starForceIcon.png";
 
 export const ItemDetail = ({ item, clicked }) => {
   if (!item) {
@@ -118,16 +119,14 @@ export const ItemDetail = ({ item, clicked }) => {
         >
           <StartForceFirstLine>
             {/* 첫 번째 줄의 별 (최대 15개) */}
-            {/* 
-            Array.from 메서드를 이용하여 새 배열 생성.
-            첫 번째 인자로 length를 포함한 유사 객체 생성.
-            두 번째 인자로 콜백 함수, 배열의 각 요소에 대해 호출됨. ( _, i ) => ...의 형태로 작성되며, 두 개의 매개변수를 가짐.
-            콜백 함수의 첫 번째 매개변수 _는 배열의 요소 값. 이 경우 배열 요소의 값은 사용되지 않으므로 언더스코어로 표기하여 무시.
-            콜백 함수의 두 번째 매개변수 i는 배열의 인덱스를 나타냄. 0부터 시작하며, 각 요소의 위치를 나타냄.
-             */}
             {Array.from(
               { length: Math.min(item.starforce, 15) },
-              (_, i) => ((i + 1) % 5 === 0 ? "★ " : "★") // 별을 5개마다 공백을 추가하여 표시
+              (_, i) => (
+                <>
+                  <StarForceIcon src={starForce_Icon} alt="star" />
+                  {(i + 1) % 5 === 0 && <span style={{ margin: "0 3px" }}></span>}
+                </>
+              )
             )}
           </StartForceFirstLine>
           <StartForceSecondLine>
@@ -135,7 +134,12 @@ export const ItemDetail = ({ item, clicked }) => {
             {item.starforce > 15 &&
               Array.from(
                 { length: item.starforce - 15 },
-                (_, i) => ((i + 1) % 5 === 0 ? "★ " : "★") // 별을 5개마다 공백을 추가하여 표시
+                (_, i) => (
+                  <>
+                    <StarForceIcon src={starForce_Icon} alt="star" />
+                    {(i + 1) % 5 === 0 && <span style={{ margin: "0 3px" }}></span>}
+                  </>
+                )
               )}
           </StartForceSecondLine>
         </StarForce>
@@ -570,4 +574,9 @@ const ADCategory = styled.span``;
 
 const ADGrade = styled.span`
   margin-bottom: 10px;
+`;
+
+const StarForceIcon = styled.img`
+  width: 12px;
+  height: 12px;
 `;
