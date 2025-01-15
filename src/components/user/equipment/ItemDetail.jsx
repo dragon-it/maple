@@ -4,6 +4,7 @@ import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
 import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
 import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
 import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
+import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
 import starForce_Icon from "../../../assets/optionIcon/starForceIcon.png";
 
 export const ItemDetail = ({ item, clicked }) => {
@@ -176,7 +177,7 @@ export const ItemDetail = ({ item, clicked }) => {
       <IconWrap>
         {/* 아이템 아이콘 이미지 */}
         <IconImage grade={item.potential_option_grade}>
-          <img src={item.item_icon || item.android_icon} alt="android_icon" />
+          <img src={item.item_icon || item.android_icon} alt="item_icon" />
         </IconImage>
       </IconWrap>
 
@@ -429,7 +430,10 @@ const IconImage = styled.div`
   width: 60px;
   height: 60px;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 5px;
+  background-image: url(${iconBackground});
+  background-size: 62px 62px;
+  background-position: center;
   img {
     width: 50px;
     height: 50px;
