@@ -6,6 +6,11 @@ import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
 import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
 import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
 import starForce_Icon from "../../../assets/optionIcon/starForceIcon.png";
+import rare_Border from "../../../assets/optionIcon/Item.ItemIcon.1.png";
+import epic_Border from "../../../assets/optionIcon/Item.ItemIcon.2.png";
+import unique_Border from "../../../assets/optionIcon/Item.ItemIcon.3.png";
+import legendary_Border from "../../../assets/optionIcon/Item.ItemIcon.4.png";
+import DesiredPart from "./itemDetailDesiredPart";
 
 export const ItemDetail = ({ item, clicked }) => {
   if (!item) {
@@ -285,6 +290,16 @@ export const ItemDetail = ({ item, clicked }) => {
         {item.android_description && (
           <ADItemDescription>{item.android_description}</ADItemDescription>
         )}
+
+        {/* 업그레이드 가능 횟수 */}
+        {item.scroll_upgradeable_count && DesiredPart.includes(item.item_equipment_slot) && (
+          <div>업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
+          <ResilienceCount>
+            (복구 가능 횟수 : {item.scroll_resilience_count})
+          </ResilienceCount>
+          </div>
+        )}
+
       </ItemOptionWrap>
       <OptionWrap
         PotenOptions={
@@ -434,6 +449,7 @@ const IconImage = styled.div`
   background-image: url(${iconBackground});
   background-size: 62px 62px;
   background-position: center;
+  position: relative;
   img {
     width: 50px;
     height: 50px;
@@ -442,15 +458,59 @@ const IconImage = styled.div`
   ${({ grade }) => {
     switch (grade) {
       case "레어":
-        return "border: 3px solid rgb(0,154,255); ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 112%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${rare_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       case "에픽":
-        return "border: 3px solid rgb(120,0,239); ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 112%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${epic_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       case "유니크":
-        return "border: 3px solid rgb(255,188,0) ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 112%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${unique_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       case "레전드리":
-        return "border: 3px solid rgb(0,187,136); ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 112%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${legendary_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       default:
-        return "border: 3px solid rgb(134, 130, 132); ";
+        return "";
     }
   }}
 `;
@@ -482,7 +542,7 @@ const PinImage = styled.div`
 
 const ItemOptionWrap = styled.div`
   padding: 5px 0;
-  line-height: 16px;
+  line-height: 15px;
   font-size: 11px;
 `;
 
@@ -583,4 +643,9 @@ const ADGrade = styled.span`
 const StarForceIcon = styled.img`
   width: 12px;
   height: 12px;
+`;
+
+const ResilienceCount = styled.span`
+  margin-left: 5px;
+  color: rgb(255, 204, 0);
 `;
