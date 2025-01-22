@@ -10,21 +10,27 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
 
   const handleItemHover = (item) => {
     if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
       setSelectedItem(item);
     }
   };
 
+  const handleMouseLeave = () => {
+    if (!clicked) {
+      setSelectedItem(null);
+    }
+  };
+
   return (
-    <ContainerBox>
+    <ContainerBox onMouseOut={handleMouseLeave}>
       {Data.character_skill && Data.character_skill.length > 0 ? (
         <>
-          <SkillHeader>HEXA SKILL</SkillHeader>
+          <SkillHeader>HEXA 매트릭스</SkillHeader>
           <SkillWrap>
             {Data.character_skill.map((item, index) => (
               <SkillSimpleWrap
-                onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-                onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+                key={index}
+                onClick={() => handleItemClick(item)}
+                onMouseOver={() => handleItemHover(item)}
               >
                 <SkillIcon src={item.skill_icon} alt={`icon-${index}`} />
                 <SkillNameLevelWrap>
@@ -44,15 +50,6 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
     </ContainerBox>
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  padding: 7px;
-`;
 
 const SkillHeader = styled.h2`
   font-size: 15px;

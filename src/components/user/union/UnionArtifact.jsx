@@ -46,12 +46,16 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
         >
           아티팩트
         </TabButton>
-        <TabButton
+        {/* <TabButton
           isActive={activeTab === "champion"}
           onClick={() => setActiveTab("champion")}
         >
           챔피언
-        </TabButton>
+        </TabButton> */}  
+        
+        {/* 추후 유니온 챔피언 추가할 것 */}
+
+
       </TabMenu>
       <ContentsWrap activeTab={activeTab}>
         <>
@@ -211,14 +215,3 @@ const ChampionWrap = styled.div`
   padding: 20px;
 `;
 
-const Content = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  width: 970px;
-
-  @media screen and (max-width: 1024px) {
-    width: 100%;
-    grid-template-columns: repeat(2, 1fr);
-  }
-`;
