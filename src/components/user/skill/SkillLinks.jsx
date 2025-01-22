@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
 
 export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
   const handleItemClick = (item) => {
@@ -14,8 +15,14 @@ export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
     }
   };
 
+  const handleMouseLeave = () => {
+    if (!clicked) {
+      setSelectedItem(null);
+    }
+  };
+
   return (
-    <Container>
+    <ContainerBox onMouseOut={handleMouseLeave}>
       {Data.character_link_skill && Data.character_link_skill.length > 0 ? (
         <>
           <SkillHeader>링크 스킬</SkillHeader>
@@ -40,18 +47,11 @@ export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
           <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
         </>
       )}
-    </Container>
+    </ContainerBox>
   );
 };
 
-const Container = styled.div`
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  padding: 7px;
-`;
+
 
 const SkillHeader = styled.h2`
   font-size: 15px;
