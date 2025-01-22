@@ -1,13 +1,57 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 export const SkillDetail = ({ item, clicked, onClose }) => {
-  if (!item) {
-    return <SelectContainer>스킬을 선택해주세요.</SelectContainer>;
-  }
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 10; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+    // item이 없을 경우 처리
+    if (!item) {
+      return null; // 또는 간단한 메시지 표시
+    }
 
   return (
-    <Container onClick={onClose}>
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={{ top: detailPosition.top, left: detailPosition.left }}
+    >
       <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
       <SkillNameWrap>
         <h2>
@@ -18,10 +62,10 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
         <IconImage>
           <img src={item.skill_icon} alt="icon" />
         </IconImage>
+        <SkillDescriptionWrap>
+          <p>{item.skill_description}</p>
+        </SkillDescriptionWrap>
       </IconWrap>
-      <SkillDescriptionWrap>
-        <p>{item.skill_description}</p>
-      </SkillDescriptionWrap>
       <SkillEffect>
         <p>{item.skill_effect}</p>
       </SkillEffect>
@@ -29,61 +73,49 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
   );
 };
 
-const SelectContainer = styled.div`
-  position: absolute;
-  right: -292px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 290px;
-  height: 50px;
-  color: white;
-  padding: 0px 10px;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  font-family: maple-light;
 
-  @media screen and (max-width: 1504px) {
-    display: none;
-  }
-`;
 const Container = styled.div`
-  position: absolute;
-  right: -322px;
-  width: 320px;
+  position: fixed;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
   line-height: 16px;
   color: white;
-  padding: 0px 10px;
-  padding-bottom: 10px;
+  padding: 0px 10px 10px 10px;
+  width: 350px;
   max-height: 600px;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-family: "돋움";
-
-  @media screen and (max-width: 1504px) {
-    position: fixed;
-    left: 50%;
-    z-index: 99999;
-    transform: translateX(-50%) translateY(0%);
-  }
+  z-index: 1000;
 
   @media screen and (max-width: 380px) {
     width: 292px;
   }
+
+&::before {
+  content: "";
+  position: absolute;
+  top: 0; /* 광원 효과 위치 조정 */
+  left: 0;
+  width: 50px; /* 광원의 크기 */
+  height: 50px;
+    background: linear-gradient(139deg, rgba(255, 255, 255, 0.9) 0%, 
+    /* 광원의 중심부 */ rgba(255, 255, 255, 0) 50%, 
+    /* 광원이 점점 투명해지는 영역 */ rgba(255, 255, 255, 0) 100% 
+    /* 완전히 투명해지는 영역 */);
+  opacity: 1;
+  pointer-events: none; /* 마우스 이벤트 무시 */
+}
 `;
 
 const SkillNameWrap = styled.div`
   display: flex;
   justify-content: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  padding: 15px 0px 5px 0px;
+  
   h2 {
     font-size: 16px;
-    padding: 20px 0;
     text-align: center;
   }
 `;
@@ -93,7 +125,7 @@ const SkillName = styled.div``;
 const IconWrap = styled.div`
   padding: 10px 0;
   display: flex;
-  justify-content: center;
+  gap: 10px;
   border-bottom: 2px dotted rgb(55, 56, 58);
 `;
 
@@ -101,14 +133,14 @@ const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 56px;
-  height: 56px;
+  width: 50px;
+  height: 50px;
   background-color: rgb(255, 255, 255);
-  border-radius: 5px;
+  border-radius: 8px;
+  padding: 1px;
 
   img {
-    width: 50px;
-    height: 50px;
+    height: 100%;
     object-fit: contain;
   }
 `;
@@ -126,13 +158,14 @@ const PinImage = styled.div`
 `;
 
 const SkillDescriptionWrap = styled.div`
-  font-size: 13px;
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
   white-space: pre-wrap;
-  margin-top: 10px;
 `;
 
 const SkillEffect = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   white-space: pre-wrap;
   margin-top: 10px;
 `;

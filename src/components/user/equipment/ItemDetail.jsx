@@ -368,6 +368,7 @@ export const ItemDetail = ({ item, clicked }) => {
     </Container>
   );
 };
+
 const SelectContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -409,6 +410,22 @@ const Container = styled.div`
   @media screen and (max-width: 1024px) {
     width: 300px;
   }
+
+  &::before {
+  content: "";
+  position: absolute;
+  top: 0; /* 광원 효과 위치 조정 */
+  left: 0;
+  width: 50px; /* 광원의 크기 */
+  height: 50px;
+    background: linear-gradient(139deg, rgba(255, 255, 255, 0.9) 0%, 
+    /* 광원의 중심부 */ rgba(255, 255, 255, 0) 50%, 
+    /* 광원이 점점 투명해지는 영역 */ rgba(255, 255, 255, 0) 100% 
+    /* 완전히 투명해지는 영역 */);
+  opacity: 1;
+  pointer-events: none; /* 마우스 이벤트 무시 */
+  border-radius: 5px;
+}
 `;
 const ItemNameWrap = styled.div`
   display: flex;
@@ -513,12 +530,27 @@ const IconImage = styled.div`
         return "";
     }
   }}
+
+    &::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 40px; 
+  height: 45px;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.6) 44%, 
+    rgba(255, 255, 255, 0) 50%, 
+    rgba(255, 255, 255, 0) 100%);
+  opacity: 1;
+  pointer-events: none;
+  border-radius: 5px;
 `;
 
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
   font-size: 12px;
   padding-top: ${(props) => (props.Data ? "0" : "15px")};
+  padding-bottom: ${(props) => (props.Data ? "0" : "3px")};
 `;
 
 const StartForceFirstLine = styled.div``;
