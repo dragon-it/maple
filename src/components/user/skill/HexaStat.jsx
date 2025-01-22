@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import hexaStatData from "./HexaStatData";
+import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
 
 const StatInfo = ({ level, name, value }) => {
   return (
@@ -105,7 +106,7 @@ export const HexaStat = ({ Data }) => {
       : null;
 
   return (
-    <Container>
+    <ContainerBox>
       <Header>HEXA STAT</Header>
       <StatContainer>
         {firstHexaStatInfo && (
@@ -156,7 +157,7 @@ export const HexaStat = ({ Data }) => {
           </StatWrap>
         )}
       </StatContainer>
-    </Container>
+    </ContainerBox>
   );
 };
 
@@ -224,7 +225,6 @@ const SlotHeader = styled.li`
   font-family: maple-light;
   color: #ffffff;
   font-size: 15px;
-  border: 1px solid rgb(0, 0, 0);
   border-radius: 10px;
   background-color: rgb(182, 101, 243);
   text-align: center;
