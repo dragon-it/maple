@@ -84,15 +84,18 @@ export const ItemDetail = ({ item, clicked }) => {
   };
 
   // 옵션 값 수정자를 매핑하는 객체
+  const formatValue = (value, isPercentage = false) => 
+    `${Math.sign(value) >= 0 ? '+' : ''}${value}${isPercentage ? '%' : ''}`;
+  
   const optionValueModifierMap = {
-    all_stat: (value) => `+${value}%`,
-    equipment_level_decrease: (value) => `-${value}`,
-    max_hp_rate: (value) => `+${value}%`,
-    max_mp_rate: (value) => `+${value}%`,
-    ignore_monster_armor: (value) => `+${value}%`,
-    boss_damage: (value) => `+${value}%`,
-    damage: (value) => `+${value}%`,
-    default: (value) => `+${Number(value).toLocaleString()}`,
+    all_stat: (value) => formatValue(value, true),
+    equipment_level_decrease: (value) => formatValue(value),
+    max_hp_rate: (value) => formatValue(value, true),
+    max_mp_rate: (value) => formatValue(value, true),
+    ignore_monster_armor: (value) => formatValue(value, true),
+    boss_damage: (value) => formatValue(value, true),
+    damage: (value) => formatValue(value, true),
+    default: (value) => formatValue(Number(value).toLocaleString()),
   };
 
   // 등급의 첫 글자를 반환하는 함수
@@ -293,11 +296,21 @@ export const ItemDetail = ({ item, clicked }) => {
 
         {/* 업그레이드 가능 횟수 */}
         {item.scroll_upgradeable_count && DesiredPart.includes(item.item_equipment_slot) && (
-          <div>업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
+          <p>업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
           <ResilienceCount>
             (복구 가능 횟수 : {item.scroll_resilience_count})
           </ResilienceCount>
-          </div>
+          </p>
+        )}
+
+        {/* 황금망치 제련 여부 */}
+        {item.golden_hammer_flag === "적용" &&  (
+          <p>황금 망치 제련 적용</p>
+        )}
+
+        {/* 가위 사용 가능 횟수 */}
+        {item.cuttable_count && item.cuttable_count !== "255" && (
+          <CuttableCount>가위 사용 가능 횟수 : {item.cuttable_count}회</CuttableCount>
         )}
 
       </ItemOptionWrap>
@@ -419,11 +432,11 @@ const Container = styled.div`
   width: 50px; /* 광원의 크기 */
   height: 50px;
     background: linear-gradient(139deg, rgba(255, 255, 255, 0.9) 0%, 
-    /* 광원의 중심부 */ rgba(255, 255, 255, 0) 50%, 
-    /* 광원이 점점 투명해지는 영역 */ rgba(255, 255, 255, 0) 100% 
-    /* 완전히 투명해지는 영역 */);
+      rgba(255, 255, 255, 0) 50%,  
+      rgba(255, 255, 255, 0) 100% 
+    );
   opacity: 1;
-  pointer-events: none; /* 마우스 이벤트 무시 */
+  pointer-events: none; 
   border-radius: 5px;
 }
 `;
@@ -679,5 +692,9 @@ const StarForceIcon = styled.img`
 
 const ResilienceCount = styled.span`
   margin-left: 5px;
+  color: rgb(255, 204, 0);
+`;
+
+const CuttableCount = styled.span`
   color: rgb(255, 204, 0);
 `;
