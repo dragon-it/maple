@@ -564,7 +564,6 @@ const PinImage = styled.div`
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-right: 10px solid white;
-  border-radius: 10px;
   transform: rotate(135deg);
 `;
 

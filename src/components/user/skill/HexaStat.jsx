@@ -215,6 +215,10 @@ const StatContainer = styled.div`
   display: flex;
   gap: 50px;
 
+  @media screen and (max-width: 1024px) {
+    justify-content: center;
+  }
+
   @media screen and (max-width: 767px) {
     flex-direction: column;
     gap: 20px;
