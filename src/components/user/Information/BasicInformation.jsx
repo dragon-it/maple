@@ -156,7 +156,6 @@ export const BasicInformation = ({ BasicInfo }) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 7px;
   color: white;
   padding: 7px;
   width: 100%;
