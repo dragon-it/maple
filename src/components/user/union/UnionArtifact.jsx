@@ -54,9 +54,8 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
         </TabButton> */}  
         
         {/* 추후 유니온 챔피언 추가할 것 */}
-
-
       </TabMenu>
+      
       <ContentsWrap activeTab={activeTab}>
         <>
           {activeTab === "artifact" && (
@@ -102,6 +101,10 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
 const Wrap = styled.div`
   display: flex;
   gap: 0px;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+  }
 `
 
 const ContentsWrap = styled.div`
@@ -119,6 +122,10 @@ const ContentsWrap = styled.div`
   width: ${(props) =>
     props.activeTab === "raider" ? "100%" : "682px"};
   flex-direction: row;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 
 const RaiderWrap = styled.div`
@@ -156,10 +163,6 @@ const Option = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 13px;
-
-  @media screen and (max-width: 1024px) {
-    flex-direction: row;
-  }
 `;
 
 const Name = styled.p``;
@@ -204,6 +207,7 @@ const TabButton = styled.button`
   &:hover {
     background-color: ${colors.union.unionRaiderColor.TabHoverBackground};
   }
+
 `;
 
 const ChampionWrap = styled.div`

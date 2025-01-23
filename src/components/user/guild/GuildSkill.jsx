@@ -25,6 +25,13 @@ export const GuildSkill = ({ result }) => {
     setSelectedItem(null);
     setClicked(false);
   };
+  
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
+    if (!clicked) {
+      setSelectedItem(null);
+    }
+  };
 
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
@@ -38,7 +45,7 @@ export const GuildSkill = ({ result }) => {
   }, {});
 
   return (
-    <Container>
+    <Container  onMouseOut={handleMouseLeave}>
       {result.guildBasicInformation.guild_skill &&
       result.guildBasicInformation.guild_skill.length > 0 ? (
         <>

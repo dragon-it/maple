@@ -128,11 +128,11 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
-    width: 90%;
+    width: 75%;
   }
 
   @media screen and (max-width: 576px) {
-    width: 99%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -143,7 +143,7 @@ const Container = styled.div`
 const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 3px 10px;
+  padding: 3px 5px;
 `;
 
 const SearchWrap = styled.div`
@@ -163,7 +163,7 @@ const SearchWrap = styled.div`
 
 const Tabs = styled.div`
   display: flex;
-  padding: 10px 0;
+  padding: 5px 0;
   font-family: maple-light;
   font-size: 12px;
   min-width: 390px;

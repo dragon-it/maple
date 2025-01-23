@@ -41,10 +41,10 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
     }
   }, [mousePosition]);
 
-    // item이 없을 경우 처리
-    if (!item) {
-      return null; // 또는 간단한 메시지 표시
-    }
+  // item이 없을 경우 처리
+  if (!item) {
+    return null; // 또는 간단한 메시지 표시
+  }
 
   return (
     <Container
@@ -73,7 +73,6 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
   );
 };
 
-
 const Container = styled.div`
   position: fixed;
   background-color: #000000;
@@ -93,27 +92,29 @@ const Container = styled.div`
     width: 292px;
   }
 
-&::before {
-  content: "";
-  position: absolute;
-  top: 0; /* 광원 효과 위치 조정 */
-  left: 0;
-  width: 50px; /* 광원의 크기 */
-  height: 50px;
-    background: linear-gradient(139deg, rgba(255, 255, 255, 0.9) 0%, 
-    /* 광원의 중심부 */ rgba(255, 255, 255, 0) 50%, 
-    /* 광원이 점점 투명해지는 영역 */ rgba(255, 255, 255, 0) 100% 
-    /* 완전히 투명해지는 영역 */);
-  opacity: 1;
-  pointer-events: none; /* 마우스 이벤트 무시 */
-}
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(
+      139deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none; /* 마우스 이벤트 무시 */
+  }
 `;
 
 const SkillNameWrap = styled.div`
   display: flex;
   justify-content: center;
   padding: 15px 0px 5px 0px;
-  
+
   h2 {
     font-size: 16px;
     text-align: center;
@@ -126,10 +127,11 @@ const IconWrap = styled.div`
   padding: 10px 0;
   display: flex;
   gap: 10px;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 1px dashed rgb(55, 56, 58);
 `;
 
 const IconImage = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,6 +144,24 @@ const IconImage = styled.div`
   img {
     height: 100%;
     object-fit: contain;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 45px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
   }
 `;
 
@@ -157,14 +177,14 @@ const PinImage = styled.div`
   transform: rotate(45deg);
 `;
 
-const SkillDescriptionWrap = styled.div`
+const SkillDescriptionWrap = styled.p`
   width: 100%;
   height: 100%;
   font-size: 12px;
   white-space: pre-wrap;
 `;
 
-const SkillEffect = styled.div`
+const SkillEffect = styled.p`
   font-size: 12px;
   white-space: pre-wrap;
   margin-top: 10px;
