@@ -727,6 +727,7 @@ const InfoWrap = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
+
   height: ${(props) => {
     switch (props.currentTab) {
       case "장비":

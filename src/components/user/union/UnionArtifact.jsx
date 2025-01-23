@@ -6,7 +6,6 @@ import { UnionChampion } from "./UnionChampion";
 import colors from "../../common/color/colors";
 
 export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
-
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
   );
@@ -51,31 +50,33 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
           onClick={() => setActiveTab("champion")}
         >
           챔피언
-        </TabButton> */}  
-        
+        </TabButton> */}
+
         {/* 추후 유니온 챔피언 추가할 것 */}
       </TabMenu>
-      
+
       <ContentsWrap activeTab={activeTab}>
         <>
           {activeTab === "artifact" && (
             <ArtifactWrap>
-              {Data.unionArtiFact.union_artifact_crystal.map((crystal, index) => (
-                <InfoWrap key={index}>
-                  <img
-                    src={getIcon(NameValue[index], crystal.level)}
-                    alt={`${NameValue[index]} 아이콘`}
-                  />
-                  <Name>
-                    {NameValue[index]} Lv.{crystal.level}
-                  </Name>
-                  <Option>
-                    <p>{crystal.crystal_option_name_1}</p>
-                    <p>{crystal.crystal_option_name_2}</p>
-                    <p>{crystal.crystal_option_name_3}</p>
-                  </Option>
-                </InfoWrap>
-              ))}
+              {Data.unionArtiFact.union_artifact_crystal.map(
+                (crystal, index) => (
+                  <InfoWrap key={index}>
+                    <img
+                      src={getIcon(NameValue[index], crystal.level)}
+                      alt={`${NameValue[index]} 아이콘`}
+                    />
+                    <Name>
+                      {NameValue[index]} Lv.{crystal.level}
+                    </Name>
+                    <Option>
+                      <p>{crystal.crystal_option_name_1}</p>
+                      <p>{crystal.crystal_option_name_2}</p>
+                      <p>{crystal.crystal_option_name_3}</p>
+                    </Option>
+                  </InfoWrap>
+                )
+              )}
             </ArtifactWrap>
           )}
           {activeTab === "raider" && (
@@ -88,7 +89,7 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
           )}
           {activeTab === "champion" && (
             <ChampionWrap>
-              <UnionChampion Data={Data.unionChampion} /> 
+              <UnionChampion Data={Data.unionChampion} />
               {/* 추후 유니온 챔피언 추가할 것  */}
             </ChampionWrap>
           )}
@@ -105,7 +106,7 @@ const Wrap = styled.div`
   @media screen and (max-width: 1024px) {
     flex-direction: column;
   }
-`
+`;
 
 const ContentsWrap = styled.div`
   display: flex;
@@ -119,12 +120,15 @@ const ContentsWrap = styled.div`
   padding: 5px;
   height: fit-content;
   color: white;
-  width: ${(props) =>
-    props.activeTab === "raider" ? "100%" : "682px"};
+  width: ${(props) => (props.activeTab === "raider" ? "100%" : "682px")};
   flex-direction: row;
 
   @media screen and (max-width: 1024px) {
     width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
@@ -136,7 +140,6 @@ const RaiderWrap = styled.div`
   outline: 2px solid rgb(56, 70, 81);
   height: fit-content;
 `;
-
 
 const InfoWrap = styled.div`
   display: flex;
@@ -179,7 +182,6 @@ const ArtifactWrap = styled.div`
   }
 `;
 
-
 const TabMenu = styled.div`
   display: flex;
   margin-bottom: 10px;
@@ -189,6 +191,8 @@ const TabMenu = styled.div`
 
   @media screen and (max-width: 1024px) {
     flex-direction: row;
+    margin-bottom: 0px;
+    margin-top: 20px;
   }
 `;
 
@@ -198,16 +202,22 @@ const TabButton = styled.button`
   height: auto;
   font-size: 12px;
   background-color: ${(props) =>
-    props.isActive ? colors.union.unionRaiderColor.TabHoverBackground : colors.union.unionRaiderColor.TabBackground};
+    props.isActive
+      ? colors.union.unionRaiderColor.TabHoverBackground
+      : colors.union.unionRaiderColor.TabBackground};
   color: white;
   border: 1px solid ${colors.union.unionRaiderColor.Border};
   cursor: pointer;
   border-radius: 8px 0px 0px 8px;
-  
+
   &:hover {
     background-color: ${colors.union.unionRaiderColor.TabHoverBackground};
   }
 
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    border-radius: 8px 8px 0px 0px;
+  }
 `;
 
 const ChampionWrap = styled.div`
@@ -218,4 +228,3 @@ const ChampionWrap = styled.div`
   border-radius: 5px;
   padding: 20px;
 `;
-
