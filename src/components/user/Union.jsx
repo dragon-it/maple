@@ -32,8 +32,7 @@ export const Union = ({ result }) => {
 
 const Container = styled.div`
   position: relative;
-  padding: 10px;
-  padding-top: 5px;
+  padding: 5px;
 `;
 
 const InfoWrap = styled.div`

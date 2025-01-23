@@ -15,7 +15,7 @@ import DesiredPart from "./itemDetailDesiredPart";
 export const ItemDetail = ({ item, clicked }) => {
   if (!item) {
     // 아이템 정보가 없는 경우
-    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>;
+    return null;
   }
 
   // 옵션 이름을 매핑하는 객체
@@ -84,14 +84,16 @@ export const ItemDetail = ({ item, clicked }) => {
   };
 
   // 옵션 값 수정자를 매핑하는 객체
-  const formatValue = (value, isPercentage = false) => 
-    `${Math.sign(value) >= 0 ? '+' : ''}${value}${isPercentage ? '%' : ''}`;
-  
+  const formatValue = (value, isPercentage = false) =>
+    `${Math.sign(value) >= 0 ? "+" : ""}${value}${isPercentage ? "%" : ""}`;
+
   const optionValueModifierMap = {
     all_stat: (value) => formatValue(value, true),
     equipment_level_decrease: (value) => formatValue(value),
     max_hp_rate: (value) => formatValue(value, true),
     max_mp_rate: (value) => formatValue(value, true),
+    max_hp: (value) => formatValue(value),
+    max_mp: (value) => formatValue(value),
     ignore_monster_armor: (value) => formatValue(value, true),
     boss_damage: (value) => formatValue(value, true),
     damage: (value) => formatValue(value, true),
@@ -128,28 +130,24 @@ export const ItemDetail = ({ item, clicked }) => {
         >
           <StartForceFirstLine>
             {/* 첫 번째 줄의 별 (최대 15개) */}
-            {Array.from(
-              { length: Math.min(item.starforce, 15) },
-              (_, i) => (
-                <>
-                  <StarForceIcon src={starForce_Icon} alt="star" />
-                  {(i + 1) % 5 === 0 && <span style={{ margin: "0 3px" }}></span>}
-                </>
-              )
-            )}
+            {Array.from({ length: Math.min(item.starforce, 15) }, (_, i) => (
+              <>
+                <StarForceIcon src={starForce_Icon} alt="star" />
+                {(i + 1) % 5 === 0 && <span style={{ margin: "0 3px" }}></span>}
+              </>
+            ))}
           </StartForceFirstLine>
           <StartForceSecondLine>
             {/* 두 번째 줄의 별 (15개 이상일 때) */}
             {item.starforce > 15 &&
-              Array.from(
-                { length: item.starforce - 15 },
-                (_, i) => (
-                  <>
-                    <StarForceIcon src={starForce_Icon} alt="star" />
-                    {(i + 1) % 5 === 0 && <span style={{ margin: "0 3px" }}></span>}
-                  </>
-                )
-              )}
+              Array.from({ length: item.starforce - 15 }, (_, i) => (
+                <>
+                  <StarForceIcon src={starForce_Icon} alt="star" />
+                  {(i + 1) % 5 === 0 && (
+                    <span style={{ margin: "0 3px" }}></span>
+                  )}
+                </>
+              ))}
           </StartForceSecondLine>
         </StarForce>
 
@@ -217,6 +215,7 @@ export const ItemDetail = ({ item, clicked }) => {
                     {`${modifier(add)}`}
                   </span>
                 ) : null;
+
               const starforcePart =
                 starforce !== undefined &&
                 starforce !== "0" &&
@@ -295,24 +294,25 @@ export const ItemDetail = ({ item, clicked }) => {
         )}
 
         {/* 업그레이드 가능 횟수 */}
-        {item.scroll_upgradeable_count && DesiredPart.includes(item.item_equipment_slot) && (
-          <p>업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
-          <ResilienceCount>
-            (복구 가능 횟수 : {item.scroll_resilience_count})
-          </ResilienceCount>
-          </p>
-        )}
+        {item.scroll_upgradeable_count &&
+          DesiredPart.includes(item.item_equipment_slot) && (
+            <p>
+              업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
+              <ResilienceCount>
+                (복구 가능 횟수 : {item.scroll_resilience_count})
+              </ResilienceCount>
+            </p>
+          )}
 
         {/* 황금망치 제련 여부 */}
-        {item.golden_hammer_flag === "적용" &&  (
-          <p>황금 망치 제련 적용</p>
-        )}
+        {item.golden_hammer_flag === "적용" && <p>황금 망치 제련 적용</p>}
 
         {/* 가위 사용 가능 횟수 */}
         {item.cuttable_count && item.cuttable_count !== "255" && (
-          <CuttableCount>가위 사용 가능 횟수 : {item.cuttable_count}회</CuttableCount>
+          <CuttableCount>
+            가위 사용 가능 횟수 : {item.cuttable_count}회
+          </CuttableCount>
         )}
-
       </ItemOptionWrap>
       <OptionWrap
         PotenOptions={
@@ -382,32 +382,6 @@ export const ItemDetail = ({ item, clicked }) => {
   );
 };
 
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 290px;
-  height: 50px;
-  color: rgb(255, 255, 255);
-  padding: 0px 10px;
-  background-color: rgb(0, 0, 0);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-
-  @media screen and (max-width: 1024px) {
-    width: 200px;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 460px;
-  }
-
-  @media screen and (max-width: 576px) {
-    width: 100%;
-  }
-`;
-
 const Container = styled.div`
   width: 290px;
   background-color: #000000;
@@ -419,27 +393,31 @@ const Container = styled.div`
   padding-bottom: 3px;
   height: fit-content;
   font-family: "돋움";
+  white-space: pre-line;
 
   @media screen and (max-width: 1024px) {
     width: 300px;
   }
 
   &::before {
-  content: "";
-  position: absolute;
-  top: 0; /* 광원 효과 위치 조정 */
-  left: 0;
-  width: 50px; /* 광원의 크기 */
-  height: 50px;
-    background: linear-gradient(139deg, rgba(255, 255, 255, 0.9) 0%, 
-      rgba(255, 255, 255, 0) 50%,  
-      rgba(255, 255, 255, 0) 100% 
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(
+      139deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
     );
-  opacity: 1;
-  pointer-events: none; 
-  border-radius: 5px;
-}
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
+  }
 `;
+
 const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -458,7 +436,7 @@ const ItemNameWrap = styled.div`
 
 const NamePotentialName = styled.p`
   font-size: 12px;
-`
+`;
 
 const IconWrap = styled.div`
   padding: 10px 0;
@@ -472,8 +450,8 @@ const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   background-color: white;
   border-radius: 5px;
   background-image: url(${iconBackground});
@@ -481,8 +459,8 @@ const IconImage = styled.div`
   background-position: center;
   position: relative;
   img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
   }
   ${({ grade }) => {
@@ -544,19 +522,23 @@ const IconImage = styled.div`
     }
   }}
 
-    &::before {
-  content: "";
-  position: absolute;
-  top: 0; 
-  left: 0;
-  width: 40px; 
-  height: 45px;
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.6) 44%, 
-    rgba(255, 255, 255, 0) 50%, 
-    rgba(255, 255, 255, 0) 100%);
-  opacity: 1;
-  pointer-events: none;
-  border-radius: 5px;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 45px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
+  }
 `;
 
 const StarForce = styled.div`
@@ -576,13 +558,14 @@ const StartForceSecondLine = styled.div`
 const PinImage = styled.div`
   position: absolute;
   top: -5px;
-  left: -10px;
+  right: -10px;
   width: 11px;
   height: 10px;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-right: 10px solid white;
-  transform: rotate(45deg);
+  border-radius: 10px;
+  transform: rotate(135deg);
 `;
 
 const ItemOptionWrap = styled.div`

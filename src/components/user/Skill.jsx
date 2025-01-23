@@ -64,8 +64,7 @@ const Container = styled.div`
   width: 100%;
   position: relative;
   display: flex;
-  padding: 10px;
-  padding-top: 5px;
+  padding: 5px;
 
   img {
     image-rendering: pixelated;

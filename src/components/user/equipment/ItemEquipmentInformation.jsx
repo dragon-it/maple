@@ -720,7 +720,6 @@ const EquipWrap = styled.div`
 `;
 
 const InfoWrap = styled.div`
-  width: 300px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -735,21 +734,13 @@ const InfoWrap = styled.div`
       case "캐시":
         return "470px";
       case "펫":
-        return "345px";
+        return "285px";
       case "AD":
         return "400px";
       default:
         return "450px";
     }
   }};
-
-  @media screen and (max-width: 768px) {
-    width: 372px;
-  }
-
-  @media screen and (max-width: 576px) {
-    width: 100%;
-  }
 `;
 
 const ItemInfoDetailWrap = styled.div`
@@ -760,6 +751,7 @@ const ItemInfoDetailWrap = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -804,6 +796,7 @@ const UiBackgrnd = styled.div`
   background-color: rgb(255, 255, 255);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 const BackgroundImageWrap = styled.div`
@@ -841,19 +834,19 @@ const PetEquipWrap = styled.div`
 
 const PetBackgroundImage = styled.img`
   width: 262px;
-  margin-top: 25px;
+  margin-top: 5px;
 `;
 
 const PetBackgroundImageWrap = styled.div`
-  width: 262px;
-  height: 250px;
+  width: 272px;
+  height: 205px;
 `;
 
 const PetIconsWrap = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 39px;
+  top: 19px;
   gap: 19px;
   width: 100%;
 `;
@@ -912,15 +905,11 @@ const DetailWrap = styled.div`
   position: absolute;
   right: -302px;
 
-  @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1024px) {
     position: relative;
     display: flex;
     justify-content: center;
     right: 0;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
   }
 
   img {
