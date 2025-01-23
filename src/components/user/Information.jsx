@@ -121,7 +121,7 @@ const Container = styled.div`
 
 const InfoWrap = styled.div`
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   padding-top: 5px;
   height: 100%;
   display: flex;
