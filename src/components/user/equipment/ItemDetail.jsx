@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
 import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
@@ -12,7 +12,48 @@ import unique_Border from "../../../assets/optionIcon/Item.ItemIcon.3.png";
 import legendary_Border from "../../../assets/optionIcon/Item.ItemIcon.4.png";
 import DesiredPart from "./itemDetailDesiredPart";
 
-export const ItemDetail = ({ item, clicked }) => {
+export const ItemDetail = ({ item, clicked, onClose }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 10; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 768;
+
   if (!item) {
     // 아이템 정보가 없는 경우
     return null;
@@ -117,10 +158,15 @@ export const ItemDetail = ({ item, clicked }) => {
   };
 
   return (
-    <Container>
-      {/* 클릭 시 PinImage를 보여줌 */}
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
-
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
+    >
       {/* 아이템 이름과 별 관련 정보를 보여주는 래퍼 */}
       <ItemNameWrap>
         {/* StarForce 컴포넌트로 별 표시 */}
@@ -383,7 +429,8 @@ export const ItemDetail = ({ item, clicked }) => {
 };
 
 const Container = styled.div`
-  width: 290px;
+  position: fixed;
+  width: 270px;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
@@ -394,9 +441,11 @@ const Container = styled.div`
   height: fit-content;
   font-family: "돋움";
   white-space: pre-line;
+  z-index: 9999;
 
-  @media screen and (max-width: 1024px) {
-    width: 300px;
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    transform: translate(0%, -60%);
   }
 
   &::before {
@@ -553,18 +602,6 @@ const StartForceFirstLine = styled.div``;
 const StartForceSecondLine = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(135deg);
 `;
 
 const ItemOptionWrap = styled.div`

@@ -31,6 +31,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
 
+  const [isCloseClick, setIsCloseClick] = useState(false);
+
   // 탭 변경시 select item, click 유무 초기화 함수
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
@@ -50,6 +52,12 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setClicked(!clicked); // 클릭 시 clicked 상태 반전
+  };
+
+  const handleCloseClick = () => {
+    setClicked(false);
+    setSelectedItem(null);
+    setIsCloseClick(true);
   };
 
   // 장비 아이템 프리셋 선택
@@ -674,6 +682,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
               item={selectedItem}
               clicked={clicked}
               gradeColors={gradeColors}
+              closeClick={isCloseClick}
+              onClose={handleCloseClick}
             />
           ) : currentTab === "펫" ? (
             <PetItemDetail item={selectedItem} clicked={clicked} />
@@ -696,9 +706,9 @@ const Container = styled.div`
   gap: 5px;
   border-radius: 5px;
   padding: 5px;
+  width: 100%;
 
   @media screen and (max-width: 1024px) {
-    width: 100%;
     flex-direction: column;
     padding: 0;
   }
@@ -904,7 +914,7 @@ const PresetButtons = styled.div`
 
 const DetailWrap = styled.div`
   position: absolute;
-  right: -302px;
+  right: -282px;
 
   @media screen and (max-width: 1024px) {
     position: relative;
