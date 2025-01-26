@@ -41,6 +41,8 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
     }
   }, [mousePosition]);
 
+  const isWideScreen = window.innerWidth > 768;
+
   // item이 없을 경우 처리
   if (!item) {
     return null; // 또는 간단한 메시지 표시
@@ -50,7 +52,11 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
     <Container
       ref={detailRef}
       onClick={onClose}
-      style={{ top: detailPosition.top, left: detailPosition.left }}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
     >
       <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
       <SkillNameWrap>
@@ -89,7 +95,13 @@ const Container = styled.div`
   z-index: 1000;
 
   @media screen and (max-width: 380px) {
-    width: 292px;
+    max-width: 292px;
+  }
+
+  @media screen and (max-width: 768px) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   &::before {
@@ -106,7 +118,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0) 100%
     );
     opacity: 1;
-    pointer-events: none; /* 마우스 이벤트 무시 */
+    pointer-events: none;
   }
 `;
 

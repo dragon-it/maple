@@ -51,8 +51,6 @@ export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
   );
 };
 
-
-
 const SkillHeader = styled.h2`
   font-size: 15px;
   color: rgb(220, 252, 2);
@@ -114,6 +112,4 @@ const SkillLevel = styled.span`
   }
 `;
 
-const SkillNoDataText = styled.div`
-  font-family: maple-light;
-`;
+const SkillNoDataText = styled.p``;

@@ -69,7 +69,7 @@ export const User = () => {
           />
         </ErrorWrap>
       ) : (
-        <Container>
+        <Container activeTab={activeTab}>
           <HeaderWrap>
             <Tabs>
               <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
@@ -128,7 +128,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
-    width: 75%;
+    min-width: ${({ activeTab }) => (activeTab === 5 ? "75%" : "0")};
   }
 
   @media screen and (max-width: 576px) {
