@@ -101,6 +101,25 @@ const getCombinedData = async (ocid) => {
   }
 };
 
+// 경험치 히스토리 API
+const getExpHistory = async (ocid) => {
+  try {
+    const response = await axios.get(`/api/character/exp-history`, {
+      params: { ocid },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Failed to fetch exp history data");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching exp history data:", error);
+    return false;
+  }
+};
+
 // 캐릭터 캡처 API
 const getCharacterCapture = async (ocid) => {
   try {
@@ -133,6 +152,7 @@ export {
   getYesterDayFormatted,
   getOcidApi,
   getOguildId,
+  getExpHistory,
   getGuildBasicInformation,
   getGuildRanking,
   getCombinedData,
