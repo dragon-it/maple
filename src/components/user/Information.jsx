@@ -6,8 +6,10 @@ import { HyperStatInformation } from "./Information/HyperStatInformation";
 import { StatInformation } from "./Information/StatInformation";
 import { PropensityInformation } from "./propensity/PropensityInformation";
 import spirit from "../../assets/spirit.png";
+import { ExpHistory } from "./Information/ExpHistory";
 
 const Information = ({ result }) => {
+  console.log(result);
   const [isFlipped, setIsFlipped] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
@@ -105,6 +107,7 @@ const Information = ({ result }) => {
             <PropensityInformation
               propensityData={result.getCombinedData.getPropensity}
             ></PropensityInformation>
+            <ExpHistory historyData={result.getExpHistory} />
           </ProWrap>
         </InfoWrap>
       )}
@@ -177,6 +180,7 @@ const AbilContainer = styled.div`
 const ProWrap = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 5px;
 `;
 
 const ImgWrap = styled.div`

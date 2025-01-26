@@ -14,14 +14,8 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
     }
   };
 
-  const handleMouseLeave = () => {
-    if (!clicked) {
-      setSelectedItem(null);
-    }
-  };
-
   return (
-    <ContainerBox onMouseOut={handleMouseLeave}>
+    <ContainerBox>
       {Data.character_skill && Data.character_skill.length > 0 ? (
         <>
           <SkillHeader>HEXA 매트릭스</SkillHeader>
@@ -112,6 +106,4 @@ const SkillLevel = styled.span`
   }
 `;
 
-const SkillNoDataText = styled.div`
-  font-family: maple-light;
-`;
+const SkillNoDataText = styled.p``;

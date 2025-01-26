@@ -275,6 +275,10 @@ const StatLeftWrap = styled.div`
   @media screen and (max-width: 1024px) {
     width: 50%;
   }
+
+  @media screen and (max-width: 568px) {
+    width: 100%;
+  }
 `;
 
 const StatRightWrap = styled.div`
@@ -286,6 +290,10 @@ const StatRightWrap = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  @media screen and (max-width: 568px) {
+    width: 100%;
   }
 `;
 
@@ -357,6 +365,10 @@ const EtcTextWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+
+  @media screen and (max-width: 568px) {
+    flex-direction: column;
+  }
 `;
 
 export default StatInformation;

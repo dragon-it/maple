@@ -2,7 +2,7 @@ import styled from "styled-components";
 import UnionArtifactIcon from "./UnionArtifactIcon";
 import { UnionRaider } from "./UnionRaider";
 import { UnionOccupiedStat } from "./UnionOccupiedStat";
-import { UnionChampion } from "./UnionChampion";
+// import { UnionChampion } from "./UnionChampion";
 import colors from "../../common/color/colors";
 
 export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
@@ -59,22 +59,26 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
         <>
           {activeTab === "artifact" && (
             <ArtifactWrap>
-              {Data.unionArtiFact.union_artifact_crystal.map(
-                (crystal, index) => (
-                  <InfoWrap key={index}>
-                    <img
-                      src={getIcon(NameValue[index], crystal.level)}
-                      alt={`${NameValue[index]} 아이콘`}
-                    />
-                    <Name>
-                      {NameValue[index]} Lv.{crystal.level}
-                    </Name>
-                    <Option>
-                      <p>{crystal.crystal_option_name_1}</p>
-                      <p>{crystal.crystal_option_name_2}</p>
-                      <p>{crystal.crystal_option_name_3}</p>
-                    </Option>
-                  </InfoWrap>
+              {Data.unionArtiFact.union_artifact_crystal.length === 0 ? (
+                <p>데이터가 없습니다</p>
+              ) : (
+                Data.unionArtiFact.union_artifact_crystal.map(
+                  (crystal, index) => (
+                    <InfoWrap key={index}>
+                      <img
+                        src={getIcon(NameValue[index], crystal.level)}
+                        alt={`${NameValue[index]} 아이콘`}
+                      />
+                      <Name>
+                        {NameValue[index]} Lv.{crystal.level}
+                      </Name>
+                      <Option>
+                        <p>{crystal.crystal_option_name_1}</p>
+                        <p>{crystal.crystal_option_name_2}</p>
+                        <p>{crystal.crystal_option_name_3}</p>
+                      </Option>
+                    </InfoWrap>
+                  )
                 )
               )}
             </ArtifactWrap>
@@ -87,12 +91,11 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
               <UnionOccupiedStat Data={Data.unionRaider} />
             </>
           )}
-          {activeTab === "champion" && (
+          {/* {activeTab === "champion" && (
             <ChampionWrap>
               <UnionChampion Data={Data.unionChampion} />
-              {/* 추후 유니온 챔피언 추가할 것  */}
             </ChampionWrap>
-          )}
+          )} */}
         </>
       </ContentsWrap>
     </Wrap>
@@ -220,11 +223,11 @@ const TabButton = styled.button`
   }
 `;
 
-const ChampionWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(48, 54, 63);
-  border-radius: 5px;
-  padding: 20px;
-`;
+// const ChampionWrap = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: rgb(48, 54, 63);
+//   border-radius: 5px;
+//   padding: 20px;
+// `;
