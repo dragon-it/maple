@@ -12,6 +12,95 @@ import { CashItemDetail } from "./CashItemDetail";
 import { PetItemDetail } from "./PetItemDetail";
 import { AndroidItemDetail } from "./AndroidItemDetail";
 
+const positions = {
+  모자: { top: "6px", left: "108px" },
+  얼굴장식: { top: "55px", left: "108px" },
+  눈장식: { top: "104px", left: "108px" },
+  귀고리: { top: "104px", left: "157px" },
+  상의: { top: "154px", left: "108px" },
+  하의: { top: "203px", left: "108px" },
+  신발: { top: "252px", left: "108px" },
+  장갑: { top: "203px", left: "157px" },
+  망토: { top: "203px", left: "206px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "154px", left: "59px" },
+  반지1: { top: "6px", left: "10px" },
+  반지2: { top: "55px", left: "10px" },
+  반지3: { top: "104px", left: "10px" },
+  반지4: { top: "154px", left: "10px" },
+  펜던트: { top: "55px", left: "59px" },
+  훈장: { top: "104px", left: "206px" },
+  벨트: { top: "203px", left: "59px" },
+  어깨장식: { top: "154px", left: "157px" },
+  "포켓 아이템": { top: "203px", left: "10px" },
+  "기계 심장": { top: "252px", left: "206px" },
+  뱃지: { top: "55px", left: "206px" },
+  엠블렘: { top: "6px", left: "206px" },
+  펜던트2: { top: "104px", left: "59px" },
+};
+
+const cashPositions = {
+  모자: { top: "6px", left: "108px" },
+  얼굴장식: { top: "55px", left: "108px" },
+  눈장식: { top: "104px", left: "108px" },
+  귀고리: { top: "104px", left: "157px" },
+  상의: { top: "154px", left: "108px" },
+  하의: { top: "203px", left: "108px" },
+  신발: { top: "252px", left: "108px" },
+  장갑: { top: "203px", left: "157px" },
+  망토: { top: "203px", left: "206px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "154px", left: "59px" },
+  반지1: { top: "6px", left: "10px" },
+  반지2: { top: "55px", left: "10px" },
+  반지3: { top: "104px", left: "10px" },
+  반지4: { top: "154px", left: "10px" },
+};
+
+const ADPositions = {
+  모자: { top: "6px", left: "108px" },
+  얼굴장식: { top: "55px", left: "108px" },
+  눈장식: { top: "104px", left: "108px" },
+  귀고리: { top: "104px", left: "157px" },
+  상의: { top: "154px", left: "108px" },
+  하의: { top: "203px", left: "108px" },
+  신발: { top: "252px", left: "108px" },
+  장갑: { top: "203px", left: "57px" },
+  망토: { top: "203px", left: "156px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "154px", left: "59px" },
+};
+
+const PresetButton = styled.button`
+  position: relative;
+  border: 2px solid gray;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+  cursor: pointer;
+  font-family: maple-light;
+  background: ${({ isSelected }) => (isSelected ? "#FFAA00" : "#999999")};
+  border: 1px solid ${({ isSelected }) => (isSelected ? "#E47733" : "#777777")};
+`;
+
+const ItemIcon = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  cursor: pointer;
+  border: ${({ grade, gradeColors }) =>
+    `2px solid ${
+      gradeColors && gradeColors[grade] ? gradeColors[grade] : "none"
+    }`};
+  img {
+    image-rendering: pixelated;
+  }
+`;
+
 export const ItemEquipmentInformation = ({ EquipData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
@@ -162,96 +251,6 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
     setSelectedCashPreset(newPresetKey);
   }, [currentTab, matchingCashPresetKey, matchingPresetKey]);
-
-  const positions = {
-    모자: { top: "6px", left: "108px" },
-    얼굴장식: { top: "55px", left: "108px" },
-    눈장식: { top: "104px", left: "108px" },
-    귀고리: { top: "104px", left: "157px" },
-    상의: { top: "154px", left: "108px" },
-    하의: { top: "203px", left: "108px" },
-    신발: { top: "252px", left: "108px" },
-    장갑: { top: "203px", left: "157px" },
-    망토: { top: "203px", left: "206px" },
-    보조무기: { top: "154px", left: "206px" },
-    무기: { top: "154px", left: "59px" },
-    반지1: { top: "6px", left: "10px" },
-    반지2: { top: "55px", left: "10px" },
-    반지3: { top: "104px", left: "10px" },
-    반지4: { top: "154px", left: "10px" },
-    펜던트: { top: "55px", left: "59px" },
-    훈장: { top: "104px", left: "206px" },
-    벨트: { top: "203px", left: "59px" },
-    어깨장식: { top: "154px", left: "157px" },
-    "포켓 아이템": { top: "203px", left: "10px" },
-    "기계 심장": { top: "252px", left: "206px" },
-    뱃지: { top: "55px", left: "206px" },
-    엠블렘: { top: "6px", left: "206px" },
-    펜던트2: { top: "104px", left: "59px" },
-  };
-
-  const cashPositions = {
-    모자: { top: "6px", left: "108px" },
-    얼굴장식: { top: "55px", left: "108px" },
-    눈장식: { top: "104px", left: "108px" },
-    귀고리: { top: "104px", left: "157px" },
-    상의: { top: "154px", left: "108px" },
-    하의: { top: "203px", left: "108px" },
-    신발: { top: "252px", left: "108px" },
-    장갑: { top: "203px", left: "157px" },
-    망토: { top: "203px", left: "206px" },
-    보조무기: { top: "154px", left: "206px" },
-    무기: { top: "154px", left: "59px" },
-    반지1: { top: "6px", left: "10px" },
-    반지2: { top: "55px", left: "10px" },
-    반지3: { top: "104px", left: "10px" },
-    반지4: { top: "154px", left: "10px" },
-  };
-
-  const ADPositions = {
-    모자: { top: "6px", left: "108px" },
-    얼굴장식: { top: "55px", left: "108px" },
-    눈장식: { top: "104px", left: "108px" },
-    귀고리: { top: "104px", left: "157px" },
-    상의: { top: "154px", left: "108px" },
-    하의: { top: "203px", left: "108px" },
-    신발: { top: "252px", left: "108px" },
-    장갑: { top: "203px", left: "57px" },
-    망토: { top: "203px", left: "156px" },
-    보조무기: { top: "154px", left: "206px" },
-    무기: { top: "154px", left: "59px" },
-  };
-
-  const PresetButton = styled.button`
-    position: relative;
-    border: 2px solid gray;
-    border-radius: 5px;
-    background-color: white;
-    color: white;
-    cursor: pointer;
-    font-family: maple-light;
-    background: ${({ isSelected }) => (isSelected ? "#FFAA00" : "#999999")};
-    border: 1px solid
-      ${({ isSelected }) => (isSelected ? "#E47733" : "#777777")};
-  `;
-
-  const ItemIcon = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 46px;
-    height: 46px;
-    overflow: hidden;
-    cursor: pointer;
-    border: ${({ grade, gradeColors }) =>
-      `2px solid ${
-        gradeColors && gradeColors[grade] ? gradeColors[grade] : "none"
-      }`};
-    img {
-      image-rendering: pixelated;
-    }
-  `;
 
   return (
     <Container>
