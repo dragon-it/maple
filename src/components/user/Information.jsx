@@ -9,7 +9,6 @@ import spirit from "../../assets/spirit.png";
 import { ExpHistory } from "./Information/ExpHistory";
 
 const Information = ({ result }) => {
-  console.log(result);
   const [isFlipped, setIsFlipped] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 

@@ -34,7 +34,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       const detailRect = detailRef.current.getBoundingClientRect();
       const detailHeight = detailRect.height; // 실제 높이
       const detailWidth = detailRect.width; // 실제 너비
-      const offset = 10; // 마우스와 디테일 사이 간격
+      const offset = 1; // 마우스와 디테일 사이 간격
 
       let top = mousePosition.y + offset;
       let left = mousePosition.x + offset;
@@ -52,7 +52,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
     }
   }, [mousePosition]);
 
-  const isWideScreen = window.innerWidth > 768;
+  const isWideScreen = window.innerWidth > 1024;
 
   if (!item) {
     // 아이템 정보가 없는 경우
@@ -442,6 +442,10 @@ const Container = styled.div`
   font-family: "돋움";
   white-space: pre-line;
   z-index: 9999;
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+  }
 
   @media screen and (max-width: 768px) {
     position: absolute;

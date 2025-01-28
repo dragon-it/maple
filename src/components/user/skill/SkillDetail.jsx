@@ -45,7 +45,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
 
   // item이 없을 경우 처리
   if (!item) {
-    return null; // 또는 간단한 메시지 표시
+    return null;
   }
 
   return (
