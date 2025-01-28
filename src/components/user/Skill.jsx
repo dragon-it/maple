@@ -4,58 +4,43 @@ import { SkillLinks } from "./skill/SkillLinks";
 import { SkillGrade5 } from "./skill/SkillGrade5";
 import { SkillGrade6 } from "./skill/SkillGrade6";
 import { HexaStat } from "./skill/HexaStat";
-import { SkillDetail } from "./skill/SkillDetail";
 
 export const Skill = ({ result }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [clicked, setClicked] = useState(false);
-  const [isCloseClick, setIsCloseClick] = useState(false);
 
-  const handleCloseClick = () => {
-    setClicked(false);
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
     setSelectedItem(null);
-    setIsCloseClick(true);
-  };
-
-  const handleItemHover = (item) => {
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem(item);
-    }
+    setClicked(false);
   };
 
   return (
-    <Container>
+    <Container onMouseLeave={handleMouseLeave}>
       <SkillWrap>
         <HexaStat Data={result.getCombinedData.getHexaMatrixStat} />
         <SkillGrade6
           Data={result.getCombinedData.getSkill.grade6}
-          setSelectedItem={setSelectedItem}
-          onClick={setClicked}
           clicked={clicked}
-          onMouseOver={handleItemHover}
+          setClicked={setClicked}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
         />
         <SkillGrade5
           Data={result.getCombinedData.getSkill.grade5}
-          setSelectedItem={setSelectedItem}
-          onClick={setClicked}
           clicked={clicked}
-          onMouseOver={handleItemHover}
+          setClicked={setClicked}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
         />
         <SkillLinks
           Data={result.getCombinedData.getLinkSkill}
-          setSelectedItem={setSelectedItem}
-          onClick={setClicked}
           clicked={clicked}
-          onMouseOver={handleItemHover}
+          setClicked={setClicked}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
         />
       </SkillWrap>
-      <SkillDetail
-        item={selectedItem}
-        clicked={clicked}
-        closeClick={isCloseClick}
-        onClose={handleCloseClick}
-      />
     </Container>
   );
 };

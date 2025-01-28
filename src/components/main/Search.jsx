@@ -33,9 +33,6 @@ export const Search = ({ error }) => {
     handleSearch(); // 검색 처리 함수 호출
   };
 
-  // 현재 경로가 /user/로 시작하는지 여부 확인
-  const isUserRoute = location.pathname.startsWith("/user/");
-
   // 상태 업데이트 함수
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -43,18 +40,17 @@ export const Search = ({ error }) => {
   };
 
   return (
-    <InputContainer isUserRoute={isUserRoute} onSubmit={handleSubmit}>
-      <Logo error={error} isUserRoute={isUserRoute} />
+    <InputContainer onSubmit={handleSubmit}>
+      <Logo error={error} />
       <InputWrap>
         <StyledInput
           type="text"
           placeholder="캐릭터 닉네임을 입력해주세요."
           value={searchValue}
           onChange={handleInputChange}
-          isUserRoute={isUserRoute}
           maxLength={15}
         />
-        <StyledButton isUserRoute={isUserRoute}>
+        <StyledButton>
           <img src={serchIcon} alt="검색" width={18} height={18} />
         </StyledButton>
       </InputWrap>

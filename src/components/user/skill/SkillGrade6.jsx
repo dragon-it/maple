@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
+import { SkillDetail } from "./SkillDetail";
 
-export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
+export const SkillGrade6 = ({
+  Data,
+  clicked,
+  setClicked,
+  selectedItem,
+  setSelectedItem,
+}) => {
+  const [isCloseClick, setIsCloseClick] = useState(false);
+
+  const handleCloseClick = () => {
+    setClicked(false);
+    setSelectedItem(null);
+    setIsCloseClick(true);
+  };
+
   const handleItemClick = (item) => {
-    setSelectedItem(item);
-    onClick(!clicked);
+    setClicked(!clicked);
   };
 
   const handleItemHover = (item) => {
@@ -22,7 +36,7 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
           <SkillWrap>
             {Data.character_skill.map((item, index) => (
               <SkillSimpleWrap
-                key={index}
+                key={item.skill_name}
                 onClick={() => handleItemClick(item)}
                 onMouseOver={() => handleItemHover(item)}
               >
@@ -34,6 +48,15 @@ export const SkillGrade6 = ({ Data, setSelectedItem, clicked, onClick }) => {
               </SkillSimpleWrap>
             ))}
           </SkillWrap>
+          {/* SkillDetail 컴포넌트는 조건부로 렌더링 */}
+          {selectedItem && (
+            <SkillDetail
+              item={selectedItem}
+              clicked={clicked}
+              closeClick={isCloseClick}
+              onClose={handleCloseClick}
+            />
+          )}
         </>
       ) : (
         <>
