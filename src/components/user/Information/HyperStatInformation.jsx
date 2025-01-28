@@ -29,7 +29,7 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
     : currentPreset.filter((stat) => stat.stat_level !== 0);
 
   return (
-    <Container ref={containerRef} showAllStat={showAllStat}>
+    <Container ref={containerRef} $showAllStat={showAllStat}>
       <HyperHeader>HYPER STAT</HyperHeader>
       <HyperBody>
         <StatWrap>
@@ -70,7 +70,7 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
               <PresetButton
                 key={presetNumber}
                 onClick={() => handlePresetChange(presetNumber)}
-                isSelected={selectedPreset === presetNumber}
+                $isSelected={selectedPreset === presetNumber}
               >
                 {presetNumber}
               </PresetButton>
@@ -83,7 +83,7 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
           </RemainPoint>
         </ButtonContainer>
       </HyperBody>
-      <ShowAllStatBtn onClick={toggleShowAllStat} showAllStat={showAllStat}>
+      <ShowAllStatBtn onClick={toggleShowAllStat} $showAllStat={showAllStat}>
         {showAllStat ? <p>간략하게 보기</p> : <p>자세히보기</p>}
       </ShowAllStatBtn>
     </Container>
@@ -189,9 +189,9 @@ const PresetButton = styled.button`
   border-radius: 5px;
   width: 20px;
   height: 20px;
-  color: ${(props) => (props.isSelected ? "#FFFFFF" : "#e4e4e4")};
-  background: ${(props) => (props.isSelected ? "#444F59" : "#828F9A")};
-  border: 1px solid ${(props) => (props.isSelected ? "#d8e1e6" : "#454D57")};
+  color: ${(props) => (props.$isSelected ? "#FFFFFF" : "#e4e4e4")};
+  background: ${(props) => (props.$isSelected ? "#444F59" : "#828F9A")};
+  border: 1px solid ${(props) => (props.$isSelected ? "#d8e1e6" : "#454D57")};
   &:hover {
     filter: brightness(1.2);
   }

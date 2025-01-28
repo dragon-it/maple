@@ -58,12 +58,11 @@ export const ExpHistory = ({ historyData }) => {
             tickFormatter={(value) => `${value}%`}
             stroke="#ffffff"
             tick={{ fontSize: 12 }}
+            domain={[0, 100]}
           />
           <Tooltip
             contentStyle={{ backgroundColor: "#000000d1", color: "#ffffff" }}
-            formatter={(value) => {
-              return [`${value}%`, "경험치"];
-            }}
+            formatter={(value) => [`${value}%`, "경험치"]}
           />
           <Bar dataKey="character_exp_rate" fill="rgb(175, 209, 20)" />
         </BarChart>

@@ -55,7 +55,7 @@ export const UnionRaider = ({ Data }) => {
       </RaiderExternalStat>
       <RaiderInnerStatWrap>
         {Data.union_inner_stat.map((stat, index) => (
-          <UnionRaiderPosition key={index} position={positions[index]}>
+          <UnionRaiderPosition key={index} $position={positions[index]}>
             {stat.stat_field_effect.replace("유니온 ", "")}
           </UnionRaiderPosition>
         ))}
@@ -114,12 +114,12 @@ const RaiderExternalStat = styled.div`
 
 const UnionRaiderPosition = styled.div`
   position: absolute;
-  left: ${(props) => `${props.position.default.left}px`};
-  top: ${(props) => `${props.position.default.top}px`};
+  left: ${(props) => `${props.$position.default.left}px`};
+  top: ${(props) => `${props.$position.default.top}px`};
 
   @media screen and (max-width: 576px) {
-    left: ${(props) => `${props.position.mobile.left}px`};
-    top: ${(props) => `${props.position.mobile.top}px`};
+    left: ${(props) => `${props.$position.mobile.left}px`};
+    top: ${(props) => `${props.$position.mobile.top}px`};
     font-size: 10px;
   }
 `;
