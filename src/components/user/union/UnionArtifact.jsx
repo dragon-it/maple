@@ -181,6 +181,10 @@ const ArtifactWrap = styled.div`
 
   @media screen and (max-width: 1024px) {
     width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `;
