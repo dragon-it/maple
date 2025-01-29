@@ -115,7 +115,7 @@ const ContentsWrap = styled.div`
   border: 1px solid rgb(30, 38, 47);
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
-  padding: 5px 10px 10px;
+  padding: 5px;
   box-shadow: 0 4px 8px rgb(0, 0, 0);
 `;
 
@@ -149,6 +149,7 @@ const ClassImage = styled.div`
   position: relative;
   width: 200px;
   height: 300px;
+
   background-image: url(${card_Backgrnd});
   background-size: cover;
   background-position: center;
