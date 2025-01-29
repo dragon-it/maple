@@ -79,8 +79,9 @@ const PresetButton = styled.button`
   color: white;
   cursor: pointer;
   font-family: maple-light;
-  background: ${({ isSelected }) => (isSelected ? "#FFAA00" : "#999999")};
-  border: 1px solid ${({ isSelected }) => (isSelected ? "#E47733" : "#777777")};
+  background: ${({ $isSelected }) => ($isSelected ? "#FFAA00" : "#999999")};
+  border: 1px solid
+    ${({ $isSelected }) => ($isSelected ? "#E47733" : "#777777")};
 `;
 
 const ItemIcon = styled.div`
@@ -92,9 +93,9 @@ const ItemIcon = styled.div`
   height: 46px;
   overflow: hidden;
   cursor: pointer;
-  border: ${({ grade, gradeColors }) =>
+  border: ${({ $grade, $gradeColors }) =>
     `2px solid ${
-      gradeColors && gradeColors[grade] ? gradeColors[grade] : "none"
+      $gradeColors && $gradeColors[$grade] ? $gradeColors[$grade] : "none"
     }`};
   img {
     image-rendering: pixelated;
@@ -255,29 +256,29 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   return (
     <Container>
       <ItemInfoDetailWrap>
-        <InfoWrap currentTab={currentTab}>
+        <InfoWrap $currentTab={currentTab}>
           <Header>EQUIPMENT</Header>
           <TabMenu>
             <TabButton
-              isSelected={currentTab === "장비"}
+              $isSelected={currentTab === "장비"}
               onClick={() => handleTabChange("장비")}
             >
               장비
             </TabButton>
             <TabButton
-              isSelected={currentTab === "캐시"}
+              $isSelected={currentTab === "캐시"}
               onClick={() => handleTabChange("캐시")}
             >
               캐시
             </TabButton>
             <TabButton
-              isSelected={currentTab === "펫"}
+              $isSelected={currentTab === "펫"}
               onClick={() => handleTabChange("펫")}
             >
               펫
             </TabButton>
             <TabButton
-              isSelected={currentTab === "AD"}
+              $isSelected={currentTab === "AD"}
               onClick={() => handleTabChange("AD")}
             >
               AD
@@ -297,10 +298,10 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                     : EquipData.item_equipment
                   )?.map((item, index) => (
                     <ItemIcon
-                      key={index}
+                      key={item.item_equipment_slot}
                       style={positions[item.item_equipment_slot]}
-                      grade={item.potential_option_grade}
-                      gradeColors={gradeColors}
+                      $grade={item.potential_option_grade}
+                      $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)}
                       onMouseOver={() => handleItemHover(item)}
                     >
@@ -309,10 +310,10 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   ))}
                   {EquipData[selectedPreset]?.map((item, index) => (
                     <ItemIcon
-                      key={index}
+                      key={item.item_equipment_slot}
                       style={positions[item.item_equipment_slot]}
-                      grade={item.potential_option_grade}
-                      gradeColors={gradeColors}
+                      $grade={item.potential_option_grade}
+                      $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                       onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
                     >
@@ -348,19 +349,19 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   <PresetButtons>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_1")}
-                      isSelected={selectedPreset === "item_equipment_preset_1"}
+                      $isSelected={selectedPreset === "item_equipment_preset_1"}
                     >
                       <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_2")}
-                      isSelected={selectedPreset === "item_equipment_preset_2"}
+                      $isSelected={selectedPreset === "item_equipment_preset_2"}
                     >
                       <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_3")}
-                      isSelected={selectedPreset === "item_equipment_preset_3"}
+                      $isSelected={selectedPreset === "item_equipment_preset_3"}
                     >
                       <span>프리셋3</span>
                     </PresetButton>
@@ -381,7 +382,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   {EquipData.getCashItemEquipment[selectedCashPreset]?.map(
                     (item, index) => (
                       <ItemIcon
-                        key={index}
+                        key={item.cash_item_equipment_slot}
                         style={cashPositions[item.cash_item_equipment_slot]}
                         onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                         onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
@@ -394,7 +395,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                 <PresetButtonWrap>
                   <BaseButton
                     onClick={() => handleCashItemBase()}
-                    isSelected={
+                    $isSelected={
                       selectedCashPreset === "cash_item_equipment_base"
                     }
                   >
@@ -403,7 +404,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   <PresetButtons>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_1")}
-                      isSelected={
+                      $isSelected={
                         selectedCashPreset === "cash_item_equipment_preset_1"
                       }
                     >
@@ -411,7 +412,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_2")}
-                      isSelected={
+                      $isSelected={
                         selectedCashPreset === "cash_item_equipment_preset_2"
                       }
                     >
@@ -419,7 +420,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_3")}
-                      isSelected={
+                      $isSelected={
                         selectedCashPreset === "cash_item_equipment_preset_3"
                       }
                     >
@@ -658,7 +659,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   {EquipData.getAndroidEquipment.android_cash_item_equipment?.map(
                     (item, index) => (
                       <ItemIcon
-                        key={index}
+                        key={item.cash_item_equipment_slot}
                         style={ADPositions[item.cash_item_equipment_slot]}
                         onClick={() => handleItemClick(item)}
                         onMouseOver={() => handleItemHover(item)}
@@ -680,7 +681,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
             <ItemDetail
               item={selectedItem}
               clicked={clicked}
-              gradeColors={gradeColors}
+              $gradeColors={gradeColors}
               closeClick={isCloseClick}
               onClose={handleCloseClick}
             />
@@ -738,7 +739,7 @@ const InfoWrap = styled.div`
   outline: 1px solid black;
 
   height: ${(props) => {
-    switch (props.currentTab) {
+    switch (props.$currentTab) {
       case "장비":
         return "450px";
       case "캐시":
@@ -776,11 +777,11 @@ const TabButton = styled.button`
   font-family: maple-light;
   font-size: 14px;
   color: white;
-  background: ${({ isSelected }) =>
-    isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+  background: ${({ $isSelected }) =>
+    $isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
   border: 1px solid
-    ${({ isSelected }) =>
-      isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
+    ${({ $isSelected }) =>
+      $isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   cursor: pointer;
@@ -793,11 +794,11 @@ const BaseButton = styled.button`
   cursor: pointer;
   color: white;
   font-family: maple-light;
-  background: ${({ isSelected }) =>
-    isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+  background: ${({ $isSelected }) =>
+    $isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
   border: 1px solid
-    ${({ isSelected }) =>
-      isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
+    ${({ $isSelected }) =>
+      $isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
 `;
 
 const UiBackgrnd = styled.div`
