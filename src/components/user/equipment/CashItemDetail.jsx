@@ -1,8 +1,52 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
 
-export const CashItemDetail = ({ item, clicked }) => {
+export const CashItemDetail = ({ item, onClose }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 3; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+
+      top = Math.max(0, top);
+      left = Math.max(0, left);
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 1024;
+
   if (!item) {
     // 아이템 정보가 없는 경우를 처리
     return null;
@@ -27,12 +71,19 @@ export const CashItemDetail = ({ item, clicked }) => {
   const hasDescription = item && item.cash_item_description;
 
   return (
-    <Container>
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
+    >
       <ItemNameWrap>
         {/* 아이템 이름 */}
         <ItemName>{item.cash_item_name}</ItemName>
-        <ItemLabel Label={item.cash_item_label}>
+        <ItemLabel $Label={item.cash_item_label}>
           {item.cash_item_label}
         </ItemLabel>
 
@@ -43,13 +94,13 @@ export const CashItemDetail = ({ item, clicked }) => {
           </ItemExpire>
         )}
       </ItemNameWrap>
-      <IconWrap hasDescription={hasDescription}>
+      <IconWrap $hasDescription={hasDescription}>
         <IconImage>
           <img src={item.cash_item_icon} alt="cash_item" />
         </IconImage>
 
         {/* 아이템 설명 */}
-        <ItemDescriptionWrap Value={item && item.cash_item_description}>
+        <ItemDescriptionWrap $Value={item && item.cash_item_description}>
           <p> {item.cash_item_description} </p>
         </ItemDescriptionWrap>
       </IconWrap>
@@ -74,8 +125,8 @@ export const CashItemDetail = ({ item, clicked }) => {
 };
 
 const Container = styled.div`
-  width: 290px;
-  height: fit-content;
+  position: fixed;
+  width: 270px;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
@@ -83,12 +134,18 @@ const Container = styled.div`
   color: white;
   padding: 0px 10px 5px;
   padding-bottom: 3px;
+  height: fit-content;
   font-family: "돋움";
   white-space: pre-line;
-  font-size: 11px;
+  z-index: 9999;
 
   @media screen and (max-width: 1024px) {
-    width: 300px;
+    position: relative;
+  }
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    transform: translate(0%, -60%);
   }
 
   &::before {
@@ -125,23 +182,23 @@ const ItemName = styled.h2`
 `;
 
 const ItemLabel = styled.p`
-  ${({ Label }) =>
-    Label === "블랙라벨" &&
+  ${({ $Label }) =>
+    $Label === "블랙라벨" &&
     `
     color: rgb(255,204,0);
   `}
-  ${({ Label }) =>
-    Label === "레드라벨" &&
+  ${({ $Label }) =>
+    $Label === "레드라벨" &&
     `
     color: rgb(255,0,89);
   `}
-  ${({ Label }) =>
-    Label === "마스터라벨" &&
+  ${({ $Label }) =>
+    $Label === "마스터라벨" &&
     `
     color: rgb(108,168,192);
   `}
-  ${({ Label }) =>
-    Label === "스페셜라벨" &&
+  ${({ $Label }) =>
+    $Label === "스페셜라벨" &&
     `
     color: rgb(188,186,187);
   `}
@@ -152,8 +209,8 @@ const IconWrap = styled.div`
   display: flex;
   gap: 10px;
   border-bottom: 1px dashed rgb(55, 56, 58);
-  ${({ hasDescription }) =>
-    !hasDescription &&
+  ${({ $hasDescription }) =>
+    !$hasDescription &&
     css`
       justify-content: center;
     `}
@@ -196,18 +253,6 @@ const IconImage = styled.div`
     pointer-events: none;
     border-radius: 5px;
   }
-`;
-
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(45deg);
 `;
 
 const ItemOptionWrap = styled.div`

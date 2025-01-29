@@ -123,6 +123,14 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   const [isCloseClick, setIsCloseClick] = useState(false);
 
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
+    if (!clicked) {
+      setSelectedItem(null);
+      setClicked(false);
+    }
+  };
+
   // 탭 변경시 select item, click 유무 초기화 함수
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
@@ -254,7 +262,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   }, [currentTab, matchingCashPresetKey, matchingPresetKey]);
 
   return (
-    <Container>
+    <Container onMouseLeave={handleMouseLeave}>
       <ItemInfoDetailWrap>
         <InfoWrap $currentTab={currentTab}>
           <Header>EQUIPMENT</Header>
@@ -686,7 +694,12 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
               onClose={handleCloseClick}
             />
           ) : currentTab === "펫" ? (
-            <PetItemDetail item={selectedItem} clicked={clicked} />
+            <PetItemDetail
+              item={selectedItem}
+              clicked={clicked}
+              onClose={handleCloseClick}
+              closeClick={isCloseClick}
+            />
           ) : (
             <AndroidItemDetail item={selectedItem} clicked={clicked} />
           )}
