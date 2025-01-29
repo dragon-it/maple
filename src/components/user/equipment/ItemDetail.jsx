@@ -15,7 +15,7 @@ import DesiredPart from "./itemDetailDesiredPart";
 export const ItemDetail = ({ item, clicked, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
-  const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
+  const detailRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
@@ -33,8 +33,9 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
     if (detailRef.current) {
       const detailRect = detailRef.current.getBoundingClientRect();
       const detailHeight = detailRect.height; // 실제 높이
+
       const detailWidth = detailRect.width; // 실제 너비
-      const offset = 1; // 마우스와 디테일 사이 간격
+      const offset = 3; // 마우스와 디테일 사이 간격
 
       let top = mousePosition.y + offset;
       let left = mousePosition.x + offset;
@@ -47,6 +48,9 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       if (left + detailWidth > window.innerWidth) {
         left = mousePosition.x - detailWidth - offset;
       }
+
+      top = Math.max(0, top);
+      left = Math.max(0, left);
 
       setDetailPosition({ top, left });
     }
@@ -142,8 +146,8 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
   };
 
   // 등급의 첫 글자를 반환하는 함수
-  const getInitial = (grade) => {
-    switch (grade) {
+  const getInitial = ($grade) => {
+    switch ($grade) {
       case "레어":
         return rare_Icon;
       case "에픽":
@@ -171,28 +175,33 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       <ItemNameWrap>
         {/* StarForce 컴포넌트로 별 표시 */}
         <StarForce
-          noData={item.starforce === 0 || item.starforce === "0"} // starforce가 0 또는 "0"이면 noData 속성에 true를 전달
+          $noData={item.starforce === 0 || item.starforce === "0"} // starforce가 0 또는 "0"이면 noData 속성에 true를 전달
           style={{ display: item.starforce === 0 ? "none" : "block" }} // starforce가 0이면 스타일을 none으로 설정하여 표시하지 않음
         >
           <StartForceFirstLine>
             {/* 첫 번째 줄의 별 (최대 15개) */}
             {Array.from({ length: Math.min(item.starforce, 15) }, (_, i) => (
-              <>
+              <React.Fragment key={`star-${i}`}>
                 <StarForceIcon src={starForce_Icon} alt="star" />
-                {(i + 1) % 5 === 0 && <span style={{ margin: "0 3px" }}></span>}
-              </>
+                {(i + 1) % 5 === 0 && (
+                  <span key={`space-${i}`} style={{ margin: "0 3px" }}></span>
+                )}
+              </React.Fragment>
             ))}
           </StartForceFirstLine>
           <StartForceSecondLine>
             {/* 두 번째 줄의 별 (15개 이상일 때) */}
             {item.starforce > 15 &&
               Array.from({ length: item.starforce - 15 }, (_, i) => (
-                <>
+                <React.Fragment key={`star-second-${i}`}>
                   <StarForceIcon src={starForce_Icon} alt="star" />
                   {(i + 1) % 5 === 0 && (
-                    <span style={{ margin: "0 3px" }}></span>
+                    <span
+                      key={`space-second-${i}`}
+                      style={{ margin: "0 3px" }}
+                    ></span>
                   )}
-                </>
+                </React.Fragment>
               ))}
           </StartForceSecondLine>
         </StarForce>
@@ -228,7 +237,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       {/* 아이콘 래퍼 */}
       <IconWrap>
         {/* 아이템 아이콘 이미지 */}
-        <IconImage grade={item.potential_option_grade}>
+        <IconImage $grade={item.potential_option_grade}>
           <img src={item.item_icon || item.android_icon} alt="item_icon" />
         </IconImage>
       </IconWrap>
@@ -241,7 +250,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
         )}
         {/* 아이템 옵션 정보 표시 */}
         {item.item_total_option &&
-          Object.entries(item.item_total_option).map(([key, value]) => {
+          Object.entries(item.item_total_option).map(([key, value], index) => {
             if (value !== "0" && value !== 0) {
               const modifier =
                 optionValueModifierMap[key] || optionValueModifierMap.default;
@@ -313,7 +322,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
 
               return (
                 <p
-                  key={key}
+                  key={`${key}-${index}`}
                   style={{
                     color:
                       basePart && (addPart || starforcePart || etcPart)
@@ -361,7 +370,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
         )}
       </ItemOptionWrap>
       <OptionWrap
-        PotenOptions={
+        $PotenOptions={
           item &&
           (item.potential_option_grade ||
             item.additional_potential_option_grade ||
@@ -372,40 +381,32 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       >
         {item.potential_option_grade && (
           <PotentialOptionWrap>
-            <OptionHeader potengrade={item.potential_option_grade}>
+            <OptionHeader $potengrade={item.potential_option_grade}>
               <OptionInitial
-                potengrade={item.potential_option_grade}
+                $potengrade={item.potential_option_grade}
                 src={getInitial(item.potential_option_grade)}
                 alt="Icon"
-              ></OptionInitial>
+              />
               <span>잠재옵션</span>
             </OptionHeader>
-            {[
-              item.potential_option_1,
-              item.potential_option_2,
-              item.potential_option_3,
-            ].map((option, index) => (
-              <PotentialItems key={index}>{option}</PotentialItems>
-            ))}
+            <PotentialItems>{item.potential_option_1}</PotentialItems>
+            <PotentialItems>{item.potential_option_2}</PotentialItems>
+            <PotentialItems>{item.potential_option_3}</PotentialItems>
           </PotentialOptionWrap>
         )}
         {item.additional_potential_option_grade && (
           <AdditionalOptionWrap>
-            <OptionHeader potengrade={item.additional_potential_option_grade}>
+            <OptionHeader $potengrade={item.additional_potential_option_grade}>
               <OptionInitial
-                potengrade={item.additional_potential_option_grade}
+                $potengrade={item.additional_potential_option_grade}
                 src={getInitial(item.additional_potential_option_grade)}
                 alt="Icon"
               ></OptionInitial>
               <span>에디셔널 잠재옵션</span>
             </OptionHeader>
-            {[
-              item.additional_potential_option_1,
-              item.additional_potential_option_2,
-              item.additional_potential_option_3,
-            ].map((option, index) => (
-              <AdditionalItems key={index}>{option}</AdditionalItems>
-            ))}
+            <AdditionalItems>{item.potential_option_1}</AdditionalItems>
+            <AdditionalItems>{item.potential_option_2}</AdditionalItems>
+            <AdditionalItems>{item.potential_option_3}</AdditionalItems>
           </AdditionalOptionWrap>
         )}
         {item.soul_name && (
@@ -516,8 +517,8 @@ const IconImage = styled.div`
     height: 45px;
     object-fit: contain;
   }
-  ${({ grade }) => {
-    switch (grade) {
+  ${({ $grade }) => {
+    switch ($grade) {
       case "레어":
         return `&::after {
           content: "";
@@ -616,8 +617,8 @@ const ItemOptionWrap = styled.div`
 
 const OptionWrap = styled.div`
   font-size: 11px;
-  ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
-  ${(props) => props.PotenOptions && "border-top: 1px dashed rgb(89, 85, 82);"}
+  ${(props) => !props.$PotenOptions && "padding-bottom: 0;"}
+  ${(props) => props.$PotenOptions && "border-top: 1px dashed rgb(89, 85, 82);"}
 `;
 
 const OptionInitial = styled.img`
@@ -630,14 +631,14 @@ const OptionHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  ${({ potengrade }) => {
-    if (potengrade === "레어")
+  ${({ $potengrade }) => {
+    if ($potengrade === "레어")
       return "color: rgb(102,225,225); margin-bottom: 2px;";
-    if (potengrade === "에픽")
+    if ($potengrade === "에픽")
       return "color: rgb(153,91,197); margin-bottom: 2px;";
-    if (potengrade === "유니크")
+    if ($potengrade === "유니크")
       return "color: rgb(255,204,0); margin-bottom: 2px;";
-    if (potengrade === "레전드리")
+    if ($potengrade === "레전드리")
       return "color: rgb(204,241,20); margin-bottom: 2px;";
   }}
 `;
