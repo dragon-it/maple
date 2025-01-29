@@ -1,8 +1,52 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
 
-export const PetItemDetail = ({ item, clicked }) => {
+export const PetItemDetail = ({ item, onClose }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 3; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+
+      top = Math.max(0, top);
+      left = Math.max(0, left);
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 1024;
+
   if (!item) {
     // 아이템 정보가 없는 경우를 처리
     return null;
@@ -27,8 +71,15 @@ export const PetItemDetail = ({ item, clicked }) => {
   const hasDescription = item?.description || item?.equipment?.item_description;
 
   return (
-    <Container>
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
+    >
       <ItemNameWrap>
         <ItemName>
           {item?.nickname && item?.name
@@ -36,9 +87,11 @@ export const PetItemDetail = ({ item, clicked }) => {
             : item?.name
             ? item?.name
             : item?.autoSkillName || item?.equipment?.item_name}
+          {item?.equipment?.scroll_upgrade &&
+            ` (+${item?.equipment?.scroll_upgrade})`}
         </ItemName>
         {/* 타입 */}
-        {item.type && <ItemType Type={item.type}>{item.type}</ItemType>}
+        {item.type && <ItemType $Type={item.type}>{item.type}</ItemType>}
 
         {/* 마법의 시간 */}
         {item.expire && (
@@ -47,7 +100,7 @@ export const PetItemDetail = ({ item, clicked }) => {
       </ItemNameWrap>
 
       {/* 아이콘 */}
-      <IconWrap hasDescription={hasDescription}>
+      <IconWrap $hasDescription={hasDescription}>
         <IconImage>
           <img
             src={
@@ -99,8 +152,8 @@ export const PetItemDetail = ({ item, clicked }) => {
 };
 
 const Container = styled.div`
-  width: 290px;
-  height: fit-content;
+  position: fixed;
+  width: 270px;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
@@ -108,12 +161,18 @@ const Container = styled.div`
   color: white;
   padding: 0px 10px 5px;
   padding-bottom: 3px;
+  height: fit-content;
   font-family: "돋움";
   white-space: pre-line;
-  font-size: 11px;
+  z-index: 9999;
 
   @media screen and (max-width: 1024px) {
-    width: 300px;
+    position: relative;
+  }
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    transform: translate(0%, -60%);
   }
 
   &::before {
@@ -205,8 +264,8 @@ const ItemExpire = styled.div`
 `;
 
 const ItemType = styled.div`
-  ${({ Type }) => {
-    switch (Type) {
+  ${({ $Type }) => {
+    switch ($Type) {
       case "루나 쁘띠":
       case "루나 스윗":
         return `color: rgb(160,133,186);`;
@@ -218,18 +277,6 @@ const ItemType = styled.div`
         return "";
     }
   }}
-`;
-
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(45deg);
 `;
 
 const ItemOptionWrap = styled.div`
