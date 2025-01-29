@@ -36,6 +36,8 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
       if (left + detailWidth > window.innerWidth) {
         left = mousePosition.x - detailWidth - offset;
       }
+      top = Math.max(0, top);
+      left = Math.max(0, left);
 
       setDetailPosition({ top, left });
     }
@@ -58,7 +60,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
           : {}
       }
     >
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
+      <div style={{ position: "relative" }}></div>
       <SkillNameWrap>
         <h2>
           <SkillName>{item.skill_name}</SkillName>
@@ -81,7 +83,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
 
 const Container = styled.div`
   position: fixed;
-  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.55);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
@@ -175,18 +177,6 @@ const IconImage = styled.div`
     pointer-events: none;
     border-radius: 5px;
   }
-`;
-
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(45deg);
 `;
 
 const SkillDescriptionWrap = styled.p`

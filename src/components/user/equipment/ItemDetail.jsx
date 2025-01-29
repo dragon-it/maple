@@ -404,9 +404,15 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
               ></OptionInitial>
               <span>에디셔널 잠재옵션</span>
             </OptionHeader>
-            <AdditionalItems>{item.potential_option_1}</AdditionalItems>
-            <AdditionalItems>{item.potential_option_2}</AdditionalItems>
-            <AdditionalItems>{item.potential_option_3}</AdditionalItems>
+            <AdditionalItems>
+              {item.additional_potential_option_1}
+            </AdditionalItems>
+            <AdditionalItems>
+              {item.additional_potential_option_2}
+            </AdditionalItems>
+            <AdditionalItems>
+              {item.additional_potential_option_3}
+            </AdditionalItems>
           </AdditionalOptionWrap>
         )}
         {item.soul_name && (
