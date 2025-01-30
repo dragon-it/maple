@@ -531,7 +531,7 @@ const IconImage = styled.div`
           position: absolute;
           top: 0;
           left: 0;
-          width: 112%;
+          width: 111%;
           height: 100%;
           border-radius: 5px;
           background-image: url(${rare_Border});
@@ -544,7 +544,7 @@ const IconImage = styled.div`
           position: absolute;
           top: 0;
           left: 0;
-          width: 112%;
+          width: 111%;
           height: 100%;
           border-radius: 5px;
           background-image: url(${epic_Border});
@@ -557,7 +557,7 @@ const IconImage = styled.div`
           position: absolute;
           top: 0;
           left: 0;
-          width: 112%;
+          width: 111%;
           height: 100%;
           border-radius: 5px;
           background-image: url(${unique_Border});
@@ -570,7 +570,7 @@ const IconImage = styled.div`
           position: absolute;
           top: 0;
           left: 0;
-          width: 112%;
+          width: 111%;
           height: 100%;
           border-radius: 5px;
           background-image: url(${legendary_Border});
