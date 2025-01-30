@@ -8,6 +8,7 @@ import Transcendent_Elixir from "../../assets/expSimulator/Elixir/Transcendent_E
 import Typhoon_Elixir from "../../assets/expSimulator/Elixir/Typhoon_Elixir.png";
 import limit_Elixir from "../../assets/expSimulator/Elixir/limit_Elixir.png";
 import ExpData from "./ExpData";
+import iconBackground from "../../assets/optionIcon/Item.ItemIcon.base.png";
 
 export const ExpInput = () => {
   const [level, setLevel] = useState(200);
@@ -210,7 +211,6 @@ const ElixirWrap = styled.div`
 `;
 
 const ElixirControl = styled.div`
-  height: 50px;
   display: flex;
   justify-content: space-between;
   background: rgb(33, 40, 48);
@@ -255,9 +255,13 @@ const QuantityButton = styled.button`
 `;
 
 const Result = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
   border-radius: 5px;
   font-size: 20px;
   color: rgb(255, 255, 255);
@@ -265,16 +269,64 @@ const Result = styled.div`
   background: rgb(90, 96, 102);
   border: 1px solid rgb(197, 220, 242);
   padding: 5px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(
+      315deg,
+      rgb(255 255 255 / 0%) 52%,
+      rgb(255 255 255 / 60%) 59%,
+      rgb(255 255 255 / 0%) 66%
+    );
+    animation: holo-move 3s infinite linear;
+  }
+
+  @keyframes holo-move {
+    0% {
+      transform: translateX(-60%);
+    }
+    100% {
+      transform: translateX(50%);
+    }
+  }
 `;
 
 const IconWrap = styled.div`
-  width: 40px;
-  height: 40px;
+  position: relative;
   display: flex;
-  border: 1px solid rgb(0, 0, 0);
+  justify-content: center;
+  align-items: center;
+  min-width: 40px;
+  height: 40px;
   border-radius: 5px;
+  background-image: url(${iconBackground});
+  background-size: 50px 50px;
+  background-position: center;
+  object-fit: contain;
   margin-right: 5px;
-  background-color: rgb(216, 216, 214);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
+  }
 `;
 
 const Icon = styled.img`

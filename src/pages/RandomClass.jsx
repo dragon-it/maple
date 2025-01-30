@@ -65,7 +65,7 @@ export const RandomClass = () => {
             <>
               <ClassImage
                 image={characters[currentCharacterIndex].image}
-                isRolling={isRolling}
+                $isRolling={isRolling}
                 alt="Character"
               />
               <ClassName>{characters[currentCharacterIndex].name}</ClassName>
@@ -172,7 +172,7 @@ const ClassImage = styled.div`
       rgb(255 255 255 / 0%) 66%
     );
     animation: holo-move 1.5s infinite linear;
-    opacity: ${(props) => (props.isRolling ? 0 : 1)};
+    opacity: ${(props) => (props.$isRolling ? 0 : 1)};
   }
 
   @keyframes holo-move {
