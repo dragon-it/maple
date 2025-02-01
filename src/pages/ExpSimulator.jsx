@@ -26,7 +26,7 @@ export const ExpSimulator = () => {
 };
 
 const Container = styled.div`
-  width: 100%;
+  width: 90%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -80,6 +80,6 @@ const RenderingBox = styled.div`
   border: 1px solid rgb(30, 38, 47);
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
-  padding: 5px 10px 10px;
+  padding: 7px;
   box-shadow: 0 4px 8px rgb(0, 0, 0);
 `;
