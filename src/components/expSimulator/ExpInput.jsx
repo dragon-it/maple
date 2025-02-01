@@ -7,13 +7,15 @@ import Growth_Elixir3 from "../../assets/expSimulator/Elixir/Growth_Elixir3.png"
 import Transcendent_Elixir from "../../assets/expSimulator/Elixir/Transcendent_Elixir.png";
 import Typhoon_Elixir from "../../assets/expSimulator/Elixir/Typhoon_Elixir.png";
 import limit_Elixir from "../../assets/expSimulator/Elixir/limit_Elixir.png";
+import Advanced_EXP_Coupon from "../../assets/expSimulator/EXP/Advanced_EXP_icon.png";
+import EXP_Coupon from "../../assets/expSimulator/EXP/EXP_icon.png";
 import ExpData from "./ExpData";
 import iconBackground from "../../assets/optionIcon/Item.ItemIcon.base.png";
 
 export const ExpInput = () => {
   const [level, setLevel] = useState(200);
   const [currentExp, setCurrentExp] = useState(0);
-  const [elixirCounts, setElixirCounts] = useState({
+  const [itemCounts, setItemCounts] = useState({
     "익스트림 성장의 비약": 0,
     "성장의 비약 (200~209)": 0,
     "성장의 비약 (200~219)": 0,
@@ -21,19 +23,22 @@ export const ExpInput = () => {
     "태풍 성장의 비약 (200~239)": 0,
     "극한 성장의 비약 (200~249)": 0,
     "초월 성장의 비약 (200~269)": 0,
+    "EXP 교환권 (200~260)": 0,
+    "상급 EXP 교환권 (260~)": 0,
   });
 
-  const handleElixirChange = (elixir, delta) => {
-    setElixirCounts((prev) => ({
+  const handleElixirChange = (item, delta) => {
+    setItemCounts((prev) => ({
       ...prev,
-      [elixir]: Math.max(prev[elixir] + delta, 0),
+      [item]: Math.max(prev[item] + delta, 0),
     }));
   };
 
+  // 리셋 함수
   const handleReset = () => {
     setLevel(200);
     setCurrentExp(0);
-    setElixirCounts({
+    setItemCounts({
       "익스트림 성장의 비약": 0,
       "성장의 비약 (200~209)": 0,
       "성장의 비약 (200~219)": 0,
@@ -41,48 +46,78 @@ export const ExpInput = () => {
       "태풍 성장의 비약 (200~239)": 0,
       "극한 성장의 비약 (200~249)": 0,
       "초월 성장의 비약 (200~269)": 0,
+      "EXP 교환권 (200~260)": 0,
+      "상급 EXP 교환권 (260~)": 0,
     });
   };
 
   const calculateFinalExp = () => {
-    // 초기 변수 설정
     let finalLevel = level;
     let currentExpValue = Number(currentExp);
     let totalExp = 0;
     let accumulatedExp = 0;
 
-    // ExpData 배열을 객체로 변환
     const expIncreaseData = ExpData.reduce((acc, data) => {
       acc[data.level] = {
         ...data,
-        requiredExp: Number(data.requiredExp.replace(/,/g, "")), // 문자열 -> 숫자 변환
+        requiredExp: Number(data.requiredExp.replace(/,/g, "")), // 쉼표 제거 후 숫자로 변환
       };
       return acc;
     }, {});
 
-    // 현재 레벨 경험치 데이터 확인
     if (expIncreaseData[finalLevel]) {
       totalExp = expIncreaseData[finalLevel].requiredExp;
       accumulatedExp = (totalExp * currentExpValue) / 100;
     }
 
-    // 비약 데이터 처리
-    Object.keys(elixirCounts).forEach((elixir) => {
-      const count = elixirCounts[elixir];
+    Object.keys(itemCounts).forEach((item) => {
+      let count = itemCounts[item];
 
       for (let i = 0; i < count; i++) {
-        if (!expIncreaseData[finalLevel]) break;
+        if (!expIncreaseData[finalLevel] || finalLevel >= 300) break; // 최대 레벨 300 제한
 
-        const expPercentIncrease = Number(expIncreaseData[finalLevel][elixir]);
-        const expIncreaseAmount = (totalExp * expPercentIncrease) / 100;
+        let expIncreaseAmount = 0;
+
+        // 사용 조건 체크 (EXP 교환권 사용 가능 레벨)
+        if (
+          item === "EXP 교환권 (200~260)" &&
+          (finalLevel < 200 || finalLevel > 260)
+        ) {
+          continue; // 200~260레벨만 사용 가능
+        } else if (item === "상급 EXP 교환권 (260~)" && finalLevel < 260) {
+          continue; // 260레벨 이상만 사용 가능
+        }
+
+        // 경험치 증가량 계산
+        if (
+          item === "EXP 교환권 (200~260)" ||
+          item === "상급 EXP 교환권 (260~)"
+        ) {
+          const requiredExp = expIncreaseData[finalLevel]?.requiredExp || 1;
+          const fixedExp = expIncreaseData[finalLevel]?.[item]
+            ? Number(expIncreaseData[finalLevel][item].replace(/,/g, ""))
+            : 0;
+
+          expIncreaseAmount = fixedExp;
+        } else {
+          const expPercentIncrease = Number(expIncreaseData[finalLevel][item]);
+          expIncreaseAmount = (totalExp * expPercentIncrease) / 100;
+        }
+
+        // 261레벨이 되어도 경험치 계속 반영
         accumulatedExp += expIncreaseAmount;
 
-        // 레벨업 처리
         while (accumulatedExp >= totalExp) {
           accumulatedExp -= totalExp;
           finalLevel++;
 
-          // 다음 레벨 경험치 데이터 가져오기
+          if (finalLevel >= 300) {
+            finalLevel = 300;
+            accumulatedExp = 0;
+            break;
+          }
+
+          // 새로운 레벨의 필요 경험치 업데이트
           if (expIncreaseData[finalLevel]) {
             totalExp = expIncreaseData[finalLevel].requiredExp;
           } else {
@@ -92,19 +127,18 @@ export const ExpInput = () => {
       }
     });
 
-    // 최종 경험치 비율을 계산 (현재 누적 경험치를 기준으로 계산)
+    // 최종 경험치 백분율 계산
     let finalExpPercent = 0;
-    if (expIncreaseData[finalLevel]) {
-      finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3); // 소수점 3자리까지 계산
+    if (finalLevel < 300 && expIncreaseData[finalLevel]) {
+      finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3);
     }
 
-    // 최종 레벨과 경험치 비율을 객체로 반환
-    return { finalLevel, expPercent: finalExpPercent };
+    return { finalLevel, expPercent: finalLevel === 300 ? 0 : finalExpPercent };
   };
 
   const { finalLevel, expPercent } = calculateFinalExp();
 
-  const elixirImages = {
+  const itemImages = {
     "익스트림 성장의 비약": Extreme_Elixir,
     "성장의 비약 (200~209)": Growth_Elixir1,
     "성장의 비약 (200~219)": Growth_Elixir2,
@@ -112,17 +146,18 @@ export const ExpInput = () => {
     "태풍 성장의 비약 (200~239)": Typhoon_Elixir,
     "극한 성장의 비약 (200~249)": limit_Elixir,
     "초월 성장의 비약 (200~269)": Transcendent_Elixir,
+    "EXP 교환권 (200~260)": EXP_Coupon,
+    "상급 EXP 교환권 (260~)": Advanced_EXP_Coupon,
   };
 
   return (
     <Container>
       <ItemTitle>현재 레벨: {level}</ItemTitle>
       <ValueInput
-        type="number"
+        maxlength="3"
         value={level}
         onChange={(e) => {
           const newLevel = e.target.value === "" ? "" : Number(e.target.value);
-
           setLevel(newLevel);
         }}
         onBlur={() => {
@@ -134,40 +169,80 @@ export const ExpInput = () => {
       />
       <ItemTitle>현재 경험치: {currentExp}%</ItemTitle>
       <ValueInput
-        type="number"
+        maxLength="6"
         value={currentExp}
-        onChange={(e) => setCurrentExp(Number(e.target.value))}
+        onChange={(e) => {
+          let value = e.target.value;
+          // 숫자와 소수점만 허용하는 정규식 적용
+          if (!/^\d*\.?\d*$/.test(value)) return;
+          setCurrentExp(value);
+        }}
         onBlur={() => {
-          if (currentExp < 0 || currentExp > 100) {
-            alert("경험치는 0에서 100사이여야 합니다.");
+          let value = parseFloat(currentExp);
+          if (isNaN(value) || value < 0 || value > 100) {
+            alert("경험치는 0에서 100 사이여야 합니다.");
             setCurrentExp(0);
+          } else {
+            setCurrentExp(value.toFixed(3)); // 소수점 3자리까지 고정
           }
         }}
       />
-      <ElixirWrap>
-        {Object.keys(elixirCounts).map((elixir) => (
-          <ElixirControl key={elixir}>
-            <Elixir>
+
+      <ItemWrap>
+        {Object.keys(itemCounts).map((item) => (
+          <ItemControl key={item}>
+            <Item>
               <IconWrap>
-                <Icon src={elixirImages[elixir]} alt="elixir_Icon" />
+                <Icon src={itemImages[item]} alt="item_Icon" />
               </IconWrap>
               <span>
-                {elixir} × <Quantity>{elixirCounts[elixir]}</Quantity>
+                {item} × <Quantity>{itemCounts[item]}</Quantity>
               </span>
-            </Elixir>
+            </Item>
+            {item === "EXP 교환권 (200~260)" ||
+            item === "상급 EXP 교환권 (260~)" ? (
+              <ExpValueInput
+                maxLength="4"
+                value={itemCounts[item]}
+                onChange={(e) => {
+                  let value = e.target.value;
+                  if (!/^\d*$/.test(value)) return; // 숫자만 허용
+                  value = Number(value);
+                  if (value < 0) value = 0; // 음수 방지
 
-            <ButtonWrap>
-              <QuantityButton onClick={() => handleElixirChange(elixir, -1)}>
-                -
-              </QuantityButton>
-              <QuantityButton onClick={() => handleElixirChange(elixir, 1)}>
-                +
-              </QuantityButton>
-            </ButtonWrap>
-          </ElixirControl>
+                  // 레벨이 261 이상일 때 "EXP 교환권 (200~260)" 사용 방지
+                  if (finalLevel >= 261 && item === "EXP 교환권 (200~260)") {
+                    alert(
+                      "EXP 교환권은 200레벨 이상 260레벨 이하 사용 가능합니다."
+                    );
+                    value = 0; // 개수 초기화
+                  }
+
+                  if (finalLevel < 260 && item === "상급 EXP 교환권 (260~)") {
+                    alert("상급 EXP 교환권은 260레벨 이상 사용 가능합니다.");
+                    value = 0; // 개수 초기화
+                  }
+
+                  setItemCounts((prev) => ({
+                    ...prev,
+                    [item]: value,
+                  }));
+                }}
+              />
+            ) : (
+              <ButtonWrap>
+                <QuantityButton onClick={() => handleElixirChange(item, -1)}>
+                  -
+                </QuantityButton>
+                <QuantityButton onClick={() => handleElixirChange(item, 1)}>
+                  +
+                </QuantityButton>
+              </ButtonWrap>
+            )}
+          </ItemControl>
         ))}
-        <Reset onClick={handleReset}>초기화</Reset>
-      </ElixirWrap>
+      </ItemWrap>
+      <Reset onClick={handleReset}>초기화</Reset>
       <ResultActions>
         <ResultText>결과</ResultText>
       </ResultActions>
@@ -189,7 +264,7 @@ const ItemTitle = styled.p`
   font-size: 16px;
 `;
 
-const Elixir = styled.div`
+const Item = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -206,14 +281,23 @@ const ValueInput = styled.input`
   margin-top: 2px;
 `;
 
-const ElixirWrap = styled.div`
+const ExpValueInput = styled.input`
+  border-radius: 5px;
+  height: 25px;
+  width: 30%;
+  box-sizing: border-box;
+  background: rgb(70, 77, 83);
+  color: rgb(255, 255, 255);
+`;
+
+const ItemWrap = styled.div`
   margin: 15px 0;
 `;
 
-const ElixirControl = styled.div`
+const ItemControl = styled.div`
   display: flex;
   justify-content: space-between;
-  background: rgb(33, 40, 48);
+  background: rgb(46, 55, 66);
   border: 1px solid rgb(54, 82, 100);
   outline: 1px solid rgb(67, 121, 128);
   border-radius: 5px;
