@@ -1,29 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
+import { SkillDetail } from "./SkillDetail";
 
-export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
+export const SkillLinks = ({
+  Data,
+  clicked,
+  setClicked,
+  selectedItem,
+  setSelectedItem,
+}) => {
+  const [isCloseClick, setIsCloseClick] = useState(false);
+
+  const handleCloseClick = () => {
+    setClicked(false);
+    setSelectedItem(null);
+    setIsCloseClick(true);
+  };
+
   const handleItemClick = (item) => {
-    setSelectedItem(item);
-    onClick(!clicked);
+    setClicked(!clicked);
   };
 
   const handleItemHover = (item) => {
     if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
       setSelectedItem(item);
     }
   };
 
   return (
-    <Container>
+    <ContainerBox>
       {Data.character_link_skill && Data.character_link_skill.length > 0 ? (
         <>
           <SkillHeader>링크 스킬</SkillHeader>
           <SkillWrap>
             {Data.character_link_skill.map((item, index) => (
               <SkillSimpleWrap
-                onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-                onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+                key={item.skill_name}
+                onClick={() => handleItemClick(item)}
+                onMouseOver={() => handleItemHover(item)}
               >
                 <SkillIcon src={item.skill_icon} alt={`icon-${index}`} />
                 <SkillNameLevelWrap>
@@ -33,6 +48,15 @@ export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
               </SkillSimpleWrap>
             ))}
           </SkillWrap>
+          {/* SkillDetail 컴포넌트는 조건부로 렌더링 */}
+          {selectedItem && (
+            <SkillDetail
+              item={selectedItem}
+              clicked={clicked}
+              closeClick={isCloseClick}
+              onClose={handleCloseClick}
+            />
+          )}
         </>
       ) : (
         <>
@@ -40,18 +64,9 @@ export const SkillLinks = ({ Data, setSelectedItem, clicked, onClick }) => {
           <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
         </>
       )}
-    </Container>
+    </ContainerBox>
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  padding: 7px;
-`;
 
 const SkillHeader = styled.h2`
   font-size: 15px;
@@ -114,6 +129,4 @@ const SkillLevel = styled.span`
   }
 `;
 
-const SkillNoDataText = styled.div`
-  font-family: maple-light;
-`;
+const SkillNoDataText = styled.p``;

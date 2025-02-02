@@ -198,8 +198,8 @@ const colors = {
       Background: "rgb(56, 60, 69)", // Union Raider Background
       Border: "rgb(69, 89, 100)", // Union Raider Border
       Outline: "rgb(56, 70, 81)", // Union Raider Outline
-      SwitchBtn: "rgb(144, 177, 187)", // Union Raider Switch Btn Background
-      SwitchBtnHover: "rgb(1, 196, 255)", // Union Raider Switch Btn Hover
+      TabBackground: "rgb(56, 70, 81)", // Union Raider Switch Btn Background
+      TabHoverBackground: "rgb(91, 120, 145)", // Union Raider Switch Btn Hover Background
     },
 
     unionRaiderStat: {

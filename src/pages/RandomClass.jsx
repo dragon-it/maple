@@ -65,7 +65,7 @@ export const RandomClass = () => {
             <>
               <ClassImage
                 image={characters[currentCharacterIndex].image}
-                isRolling={isRolling}
+                $isRolling={isRolling}
                 alt="Character"
               />
               <ClassName>{characters[currentCharacterIndex].name}</ClassName>
@@ -115,7 +115,7 @@ const ContentsWrap = styled.div`
   border: 1px solid rgb(30, 38, 47);
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
-  padding: 5px 10px 10px;
+  padding: 5px;
   box-shadow: 0 4px 8px rgb(0, 0, 0);
 `;
 
@@ -149,6 +149,7 @@ const ClassImage = styled.div`
   position: relative;
   width: 200px;
   height: 300px;
+
   background-image: url(${card_Backgrnd});
   background-size: cover;
   background-position: center;
@@ -171,7 +172,7 @@ const ClassImage = styled.div`
       rgb(255 255 255 / 0%) 66%
     );
     animation: holo-move 1.5s infinite linear;
-    opacity: ${(props) => (props.isRolling ? 0 : 1)};
+    opacity: ${(props) => (props.$isRolling ? 0 : 1)};
   }
 
   @keyframes holo-move {

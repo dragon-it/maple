@@ -158,12 +158,14 @@ const getYesterDayFormatted = () => {
   return yesterday.toISOString().split("T")[0];
 };
 
+// 현재 날짜를 기준으로 어제 날짜를 반환하는 함수
 const getTodayFormatted = () => {
   const today = new Date();
   return today.toISOString().split("T")[0];
 };
 
-const getFormattedDate = () => {
+// 현재 날짜를 기준으로 어제와 오늘 날짜를 반환하는 함수
+const getCurrentFormattedDate = () => {
   const now = new Date();
   const hour = now.getHours();
   const minutes = now.getMinutes();
@@ -175,9 +177,28 @@ const getFormattedDate = () => {
   }
 };
 
+// 날짜 형식을 YYYY-MM-DD로 반환하는 함수
+const getFormattedDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+// 14일 동안의 날짜 배열을 생성
+const getLast14Days = () => {
+  const dates = [];
+  for (let i = 0; i < 14; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    dates.push(getFormattedDate(date));
+  }
+  return dates;
+};
+
 // 길드 랭킹 함수
 const getGuildRanking = async (guildName, worldName) => {
-  const date = getFormattedDate();
+  const date = getCurrentFormattedDate();
 
   // 주간 명성치 랭킹
   const resultFameRanking = await callMapleStoryAPI("ranking/guild", {
@@ -378,10 +399,43 @@ app.get("/api/guild/all", async (req, res) => {
   }
 });
 
+// 경험치 히스토리 API
+app.get("/api/character/exp-history", async (req, res) => {
+  const { ocid } = req.query;
+
+  if (!ocid) {
+    return res.status(400).json({ error: "ocid is required" });
+  }
+
+  try {
+    // 14일 동안의 경험치 히스토리 가져오기
+    const dates = getLast14Days();
+    const expHistoryPromises = dates.map((date, index) => {
+      if (index === 0) {
+        return callMapleStoryAPI("character/basic", { ocid });
+      } else {
+        return callMapleStoryAPI("character/basic", { ocid, date });
+      }
+    });
+    const expHistoryResults = await Promise.all(expHistoryPromises);
+
+    const expHistory = expHistoryResults.map((result, index) => ({
+      date: dates[index],
+      character_exp: result.character_exp,
+      character_exp_rate: result.character_exp_rate,
+    }));
+
+    res.json(expHistory); // 경험치 히스토리 반환
+  } catch (error) {
+    console.error(`Error during API call: ${error.message}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Combined 엔드포인트
 app.get("/api/character/information", async (req, res) => {
   const { ocid } = req.query;
-  const date = getFormattedDate();
+  const date = getCurrentFormattedDate();
 
   if (!ocid) {
     return res.status(400).json({ error: "ocid is required" });
@@ -478,7 +532,7 @@ app.get("/api/character/information", async (req, res) => {
 // 캐릭터 캡처
 app.get("/api/character-capture", async (req, res) => {
   const { ocid } = req.query;
-  const date = getFormattedDate();
+  const date = getCurrentFormattedDate();
 
   if (!ocid) {
     return res.status(400).json({ error: "ocid is required" });
@@ -531,17 +585,15 @@ app.get("/api/image-proxy", async (req, res) => {
 app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
 // 빌드된 정적 파일을 서빙하는 미들웨어 설정
-app.use(express.static(path.join(__dirname, process.env.BUILD_DIR)));
+app.use(express.static(path.join(__dirname, "build-blue")));
 
-
-app.get('*', (req, res) => {
-  if (!req.url.startsWith('/api')) {
-    res.sendFile(path.resolve(__dirname, process.env.BUILD_DIR, 'index.html'));
+app.get("*", (req, res) => {
+  if (!req.url.startsWith("/api")) {
+    res.sendFile(path.resolve(__dirname, "build-blue", "index.html"));
   } else {
-    res.status(404).send('Not Found');
+    res.status(404).send("Not Found");
   }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
