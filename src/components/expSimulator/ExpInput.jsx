@@ -50,13 +50,13 @@ export const ExpInput = () => {
       "상급 EXP 교환권 (260~)": 0,
     });
   };
-
   const calculateFinalExp = () => {
     let finalLevel = level;
     let currentExpValue = Number(currentExp);
     let totalExp = 0;
     let accumulatedExp = 0;
 
+    // 경험치 데이터 정리 (쉼표 제거 후 숫자로 변환)
     const expIncreaseData = ExpData.reduce((acc, data) => {
       acc[data.level] = {
         ...data,
@@ -65,11 +65,13 @@ export const ExpInput = () => {
       return acc;
     }, {});
 
+    // 현재 레벨의 총 경험치 계산
     if (expIncreaseData[finalLevel]) {
       totalExp = expIncreaseData[finalLevel].requiredExp;
       accumulatedExp = (totalExp * currentExpValue) / 100;
     }
 
+    // 아이템 사용
     Object.keys(itemCounts).forEach((item) => {
       let count = itemCounts[item];
 
@@ -78,26 +80,20 @@ export const ExpInput = () => {
 
         let expIncreaseAmount = 0;
 
-        // 사용 조건 체크 (EXP 교환권 사용 가능 레벨)
-        if (
-          item === "EXP 교환권 (200~260)" &&
-          (finalLevel < 200 || finalLevel > 260)
-        ) {
-          continue; // 200~260레벨만 사용 가능
-        } else if (item === "상급 EXP 교환권 (260~)" && finalLevel < 260) {
-          continue; // 260레벨 이상만 사용 가능
+        if (item === "EXP 교환권 (200~260)") {
+          if (finalLevel < 200) return; // 200레벨 이상만 사용 가능
+        } else if (item === "상급 EXP 교환권 (260~)") {
+          if (finalLevel < 260) return; // 260레벨 이상만 사용 가능
         }
 
-        // 경험치 증가량 계산
+        // ✅ 경험치 증가량 계산
         if (
           item === "EXP 교환권 (200~260)" ||
           item === "상급 EXP 교환권 (260~)"
         ) {
-          const requiredExp = expIncreaseData[finalLevel]?.requiredExp || 1;
           const fixedExp = expIncreaseData[finalLevel]?.[item]
             ? Number(expIncreaseData[finalLevel][item].replace(/,/g, ""))
             : 0;
-
           expIncreaseAmount = fixedExp;
         } else {
           const expPercentIncrease = Number(expIncreaseData[finalLevel][item]);
@@ -107,10 +103,12 @@ export const ExpInput = () => {
         // 261레벨이 되어도 경험치 계속 반영
         accumulatedExp += expIncreaseAmount;
 
+        // 레벨업 처리(모든 경험치를 소모할 때까지 반복)
         while (accumulatedExp >= totalExp) {
           accumulatedExp -= totalExp;
           finalLevel++;
 
+          // 최대 레벨 300 초과 방지
           if (finalLevel >= 300) {
             finalLevel = 300;
             accumulatedExp = 0;
@@ -154,7 +152,7 @@ export const ExpInput = () => {
     <Container>
       <ItemTitle>현재 레벨: {level}</ItemTitle>
       <ValueInput
-        maxlength="3"
+        maxLength="3"
         value={level}
         onChange={(e) => {
           const newLevel = e.target.value === "" ? "" : Number(e.target.value);
@@ -209,19 +207,6 @@ export const ExpInput = () => {
                   if (!/^\d*$/.test(value)) return; // 숫자만 허용
                   value = Number(value);
                   if (value < 0) value = 0; // 음수 방지
-
-                  // 레벨이 261 이상일 때 "EXP 교환권 (200~260)" 사용 방지
-                  if (finalLevel >= 261 && item === "EXP 교환권 (200~260)") {
-                    alert(
-                      "EXP 교환권은 200레벨 이상 260레벨 이하 사용 가능합니다."
-                    );
-                    value = 0; // 개수 초기화
-                  }
-
-                  if (finalLevel < 260 && item === "상급 EXP 교환권 (260~)") {
-                    alert("상급 EXP 교환권은 260레벨 이상 사용 가능합니다.");
-                    value = 0; // 개수 초기화
-                  }
 
                   setItemCounts((prev) => ({
                     ...prev,
@@ -285,13 +270,13 @@ const ExpValueInput = styled.input`
   border-radius: 5px;
   height: 25px;
   width: 30%;
-  box-sizing: border-box;
+
   background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
 `;
 
 const ItemWrap = styled.div`
-  margin: 15px 0;
+  margin: 10px 0;
 `;
 
 const ItemControl = styled.div`
@@ -343,8 +328,7 @@ const Result = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: auto;
+
   overflow: hidden;
   border-radius: 5px;
   font-size: 20px;
@@ -419,9 +403,6 @@ const Icon = styled.img`
 `;
 
 const ResultActions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 5px;
 `;
 
@@ -436,6 +417,7 @@ const Reset = styled.button`
   width: 100%;
   background: rgb(255, 255, 255);
   border-radius: 5px;
+  margin-bottom: 15px;
   cursor: pointer;
 
   &:hover {
