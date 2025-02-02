@@ -84,7 +84,7 @@ const PcHeaderContainer = styled.div`
   background: ${({ theme }) => theme.headerBgColor};
 
   @media screen and (max-width: 768px) {
-    padding: 0px;
+    padding: 5px;
     gap: 0px;
   }
 `;

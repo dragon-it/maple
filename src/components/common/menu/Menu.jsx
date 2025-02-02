@@ -48,7 +48,7 @@ export const Menu = () => {
           alt="hamburger_bar"
         />
       </Container>
-      <MenuContainer ref={menuRef} isClicked={isClicked}>
+      <MenuContainer ref={menuRef} $isClicked={isClicked}>
         <MenusHeader>MENU</MenusHeader>
         <Menus to={routes.home} onClick={() => setIsClicked(false)}>
           캐릭터 검색
@@ -117,29 +117,29 @@ const MenuContainer = styled.div`
   position: absolute;
   width: 120px;
   height: auto;
-  visibility: ${({ isClicked }) => (isClicked ? "visible" : "hidden")};
-  opacity: ${({ isClicked }) => (isClicked ? 1 : 0)};
-  max-height: ${({ isClicked }) => (isClicked ? "200px" : "0")};
+  visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
+  opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
+  max-height: ${({ $isClicked }) => ($isClicked ? "200px" : "0")};
   top: 50px;
   right: 10px;
   padding: 5px 10px;
   font-size: 14px;
-  background-color:rgb(36, 39, 43);
+  background-color: rgb(36, 39, 43);
   outline: 1px solid rgb(46, 48, 53);
   border: 1px solid rgb(61, 69, 78);
   border-radius: 7px;
   transition: opacity 0.5s ease, max-height 0.8s ease;
   text-decoration: none;
   z-index: 9999999;
-  box-shadow: ${({ isClicked }) =>
-    isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
+  box-shadow: ${({ $isClicked }) =>
+    $isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
   overflow: hidden;
   text-align: center;
 `;
 
 const MenusHeader = styled.div`
   font-size: 12px;
-  color:rgb(169, 186, 193);
+  color: rgb(169, 186, 193);
   border-bottom: 1px solid rgba(91, 91, 91, 0.5);
   padding-bottom: 5px;
 `;

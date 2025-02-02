@@ -68,7 +68,7 @@ export const AbilityInformation = ({ AbilityInfo }) => {
               <PresetButton
                 key={presetNumber}
                 onClick={() => handlePresetChange(presetNumber)}
-                isSelected={selectedPreset === presetNumber}
+                $isSelected={selectedPreset === presetNumber}
               >
                 {presetNumber}
               </PresetButton>
@@ -197,9 +197,12 @@ const PresetButton = styled.button`
   border-radius: 5px;
   width: 20px;
   height: 20px;
-  color: ${(props) => (props.isSelected ? "rgb(255, 255, 255)" : "rgb(230, 230, 230)")};
-  background: ${(props) => (props.isSelected ? "rgb(68, 79, 89)" : "rgb(130, 143, 154)")};
-  border: 1px solid ${(props) => (props.isSelected ? "rgb(247, 247, 247)" : "rgb(	69, 77, 87)")};
+  color: ${(props) =>
+    props.$isSelected ? "rgb(255, 255, 255)" : "rgb(230, 230, 230)"};
+  background: ${(props) =>
+    props.$isSelected ? "rgb(68, 79, 89)" : "rgb(130, 143, 154)"};
+  border: 1px solid
+    ${(props) => (props.$isSelected ? "rgb(247, 247, 247)" : "rgb(	69, 77, 87)")};
   &:hover {
     filter: brightness(1.2);
   }
