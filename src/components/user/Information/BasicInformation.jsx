@@ -156,7 +156,6 @@ export const BasicInformation = ({ BasicInfo }) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 7px;
   color: white;
   padding: 7px;
   width: 100%;
@@ -165,6 +164,16 @@ const Container = styled.div`
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
   background-color: rgba(59, 66, 75, 0.9);
+
+  @media screen and (max-width: 576px) {
+    padding: 5px;
+    font-size: 11px;
+  }
+
+  @media screen and (max-width: 200px) {
+    padding: 3px;
+    font-size: 10px;
+  }
 `;
 
 const HeaderWrap = styled.span`
@@ -244,6 +253,12 @@ const Level = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   border-right: 1px solid rgba(0, 0, 0, 0.3);
   border-left: 1px solid rgba(0, 0, 0, 0.3);
+
+  @media screen and (max-width: 576px) {
+    padding: 2px;
+    margin: 0 5px;
+    font-size: 12px;
+  }
 `;
 
 const CharacterImg = styled.div`
@@ -253,6 +268,10 @@ const CharacterImg = styled.div`
   width: 110px;
   margin: 2px 0;
   image-rendering: pixelated;
+
+  @media screen and (max-width: 576px) {
+    width: 90px;
+  }
 `;
 
 const CharacterName = styled.div`
@@ -306,6 +325,11 @@ const Contents = styled.div`
 
   @media screen and (max-width: 576px) {
     width: 90px;
+  }
+
+  @media screen and (max-width: 200px) {
+    width: 70px;
+    padding: 3px;
   }
 `;
 

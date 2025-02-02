@@ -1,6 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
+
+export const NpcChatBox = ({ text }) => {
+  return (
+    <ChatBoxWrapper>
+      <div className="arrow_box">{text}</div>
+    </ChatBoxWrapper>
+  );
+};
+
 const ChatBoxWrapper = styled.div`
   .arrow_box {
     position: relative;
@@ -44,11 +53,3 @@ const ChatBoxWrapper = styled.div`
     margin-left: -11px;
   }
 `;
-
-export const NpcChatBox = ({ text }) => {
-  return (
-    <ChatBoxWrapper>
-      <div className="arrow_box">{text}</div>
-    </ChatBoxWrapper>
-  );
-};

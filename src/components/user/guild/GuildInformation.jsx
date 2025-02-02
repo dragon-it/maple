@@ -8,10 +8,6 @@ import { useNavigate } from "react-router-dom";
 export const GuildInformation = ({ result }) => {
   const navigate = useNavigate();
 
-  const handleMasterInfoPortal = (characterName) => {
-    navigate(`/user/${encodeURIComponent(characterName)}`);
-  };
-
   const {
     guildBasicInformation: {
       guild_master_name = "Unknown",
@@ -33,6 +29,10 @@ export const GuildInformation = ({ result }) => {
       : "순위 없음";
   };
 
+  const handleMasterInfoPortal = (guild_master_name) => {
+    navigate(`/user/${encodeURIComponent(guild_master_name)}`);
+  };
+
   return (
     <Container>
       <BasicInfoSection>
@@ -48,7 +48,7 @@ export const GuildInformation = ({ result }) => {
           <Value>{guild_fame.toLocaleString()}</Value>
           <Value>{guild_point.toLocaleString()}</Value>
           <Value>{guild_member_count.toLocaleString()}</Value>
-          <MasterName onclick={handleMasterInfoPortal}>
+          <MasterName onClick={() => handleMasterInfoPortal(guild_master_name)}>
             {guild_master_name}
           </MasterName>
         </ValueColumn>
