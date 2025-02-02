@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import logo_Text from "../../assets/Logo_Text.svg";
 
-export const Logo = ({ isUserRoute }) => {
+export const Logo = () => {
   const navigate = useNavigate();
 
   // 로고 클릭 시 홈페이지 이동
@@ -12,7 +12,7 @@ export const Logo = ({ isUserRoute }) => {
   };
 
   return (
-    <StyledContainer onClick={handleClick} isUserRoute={isUserRoute}>
+    <StyledContainer onClick={handleClick}>
       <img src={logo_Text} alt="Logo" />
     </StyledContainer>
   );

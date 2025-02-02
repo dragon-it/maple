@@ -69,22 +69,37 @@ export const User = () => {
           />
         </ErrorWrap>
       ) : (
-        <Container>
+        <Container $activeTab={activeTab}>
           <HeaderWrap>
             <Tabs>
-              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+              <Tab
+                onClick={() => handleTabClick(1)}
+                $activeTab={activeTab === 1}
+              >
                 캐릭터 정보
               </Tab>
-              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+              <Tab
+                onClick={() => handleTabClick(2)}
+                $activeTab={activeTab === 2}
+              >
                 캐릭터 장비
               </Tab>
-              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+              <Tab
+                onClick={() => handleTabClick(3)}
+                $activeTab={activeTab === 3}
+              >
                 스킬
               </Tab>
-              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+              <Tab
+                onClick={() => handleTabClick(4)}
+                $activeTab={activeTab === 4}
+              >
                 유니온
               </Tab>
-              <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
+              <Tab
+                onClick={() => handleTabClick(5)}
+                $activeTab={activeTab === 5}
+              >
                 길드
               </Tab>
             </Tabs>
@@ -128,11 +143,11 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
-    width: 90%;
+    min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
   }
 
   @media screen and (max-width: 576px) {
-    width: 99%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -143,7 +158,7 @@ const Container = styled.div`
 const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 3px 10px;
+  padding: 3px 5px;
 `;
 
 const SearchWrap = styled.div`
@@ -163,7 +178,7 @@ const SearchWrap = styled.div`
 
 const Tabs = styled.div`
   display: flex;
-  padding: 10px 0;
+  padding: 5px 0;
   font-family: maple-light;
   font-size: 12px;
   min-width: 390px;
@@ -179,14 +194,14 @@ const Tab = styled.div`
   margin: 0 5px;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
-  background-color: ${({ theme, active }) =>
-    active ? theme.tabActiveColor : "transparent"};
-  color: ${({ theme, active }) =>
-    active ? theme.tabActiveTextColor : theme.tabColor};
+  background-color: ${({ theme, $activeTab }) =>
+    $activeTab ? theme.tabActiveColor : "transparent"};
+  color: ${({ theme, $activeTab }) =>
+    $activeTab ? theme.tabActiveTextColor : theme.tabColor};
 
   &:hover {
-    background-color: ${({ theme, active }) =>
-      active ? "transparents" : theme.tabHoverColor};
+    background-color: ${({ theme, $activeTab }) =>
+      $activeTab ? "transparents" : theme.tabHoverColor};
   }
 
   @media screen and (max-width: 576px) {

@@ -6,6 +6,7 @@ import { HyperStatInformation } from "./Information/HyperStatInformation";
 import { StatInformation } from "./Information/StatInformation";
 import { PropensityInformation } from "./propensity/PropensityInformation";
 import spirit from "../../assets/spirit.png";
+import { ExpHistory } from "./Information/ExpHistory";
 
 const Information = ({ result }) => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -105,6 +106,7 @@ const Information = ({ result }) => {
             <PropensityInformation
               propensityData={result.getCombinedData.getPropensity}
             ></PropensityInformation>
+            <ExpHistory historyData={result.getExpHistory} />
           </ProWrap>
         </InfoWrap>
       )}
@@ -121,7 +123,7 @@ const Container = styled.div`
 
 const InfoWrap = styled.div`
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   padding-top: 5px;
   height: 100%;
   display: flex;
@@ -177,6 +179,7 @@ const AbilContainer = styled.div`
 const ProWrap = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 5px;
 `;
 
 const ImgWrap = styled.div`
