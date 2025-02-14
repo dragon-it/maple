@@ -46,8 +46,8 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNoticeAndDetail = async () => {
       if (notice && notice.event_notice) {
-        const sundayMapleNotices = notice.event_notice.filter(
-          (item) => item.title === "썬데이 메이플"
+        const sundayMapleNotices = notice.event_notice.filter((item) =>
+          item.title.includes("썬데이 메이플")
         );
 
         if (sundayMapleNotices.length > 0) {
@@ -201,7 +201,7 @@ const ButtonWrap = styled.div`
 const CloseButton = styled.button`
   position: relative;
   background-color: rgba(255, 255, 255, 0.35);
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   padding: 3px;
   width: 25px;
   height: 25px;
