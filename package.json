@@ -17,7 +17,7 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.24.1",
     "react-scripts": "^5.0.1",
-    "recharts": "^2.8.0",
+    "recharts": "^2.12.7",
     "styled-components": "^6.1.11",
     "web-vitals": "^4.2.1"
   },
@@ -25,7 +25,7 @@
     "start": "node proxyServer.js",
     "dev": "concurrently \"node proxyServer.js\" \"react-scripts start\"",
     "build:blue": "set \"GENERATE_SOURCEMAP=false\" && rmdir /s /q build-blue && react-scripts build && move build build-blue",
-    "build:green": "set \"GENERATE_SOURCEMAP=false\" && rmdir /s /q build-green && react-scripts build && move build build-green",
+    "build:green": "export GENERATE_SOURCEMAP=false && rm -rf build-green && react-scripts build && mv build build-green",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
