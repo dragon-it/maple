@@ -67,7 +67,7 @@ export const Menu = () => {
           Exp 시뮬레이터
         </Menus>
         <Menus to={routes.slidingPuzzle} onClick={() => setIsClicked(false)}>
-          퍼즐 슬라이딩
+          슬라이딩 퍼즐
         </Menus>
         <MenuLink
           href={sundayMapleUrl}
