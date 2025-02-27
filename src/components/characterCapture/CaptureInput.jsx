@@ -58,7 +58,7 @@ export const CaptureInput = ({ setResult, setError }) => {
   return (
     <Container onSubmit={handleSubmit}>
       <CaptureHead onClick={() => navigate("/character-capture")}>
-        CHARACTER CAPTUREasd
+        CHARACTER CAPTURE
       </CaptureHead>
       <InputWrap>
         <NameInput
@@ -175,13 +175,21 @@ const FindMainCheckBox = styled.label`
   border: 1px solid rgb(132, 111, 90);
   border-radius: 5px;
   outline: 2px solid rgb(110, 93, 73);
-  background: linear-gradient(0deg,rgb(139, 123, 106) 25%, rgb(158, 139, 116) 100%);
+  background: linear-gradient(
+    0deg,
+    rgb(139, 123, 106) 25%,
+    rgb(158, 139, 116) 100%
+  );
   color: rgba(255, 255, 255, 0.8);
   box-shadow: 0px 5px 2px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 
   &:hover {
-    background: linear-gradient(0deg,rgb(163, 145, 125) 25%,rgb(185, 163, 136) 100%);
+    background: linear-gradient(
+      0deg,
+      rgb(163, 145, 125) 25%,
+      rgb(185, 163, 136) 100%
+    );
   }
 `;
 

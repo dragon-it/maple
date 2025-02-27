@@ -16,7 +16,6 @@ export const Menu = () => {
     searchGuild: "/guild-search",
     randomClass: "/random-class",
     expSimulator: "/exp-simulator",
-    slidingPuzzle: "/sliding-puzzle",
   };
 
   const sundayMapleUrl =
@@ -66,16 +65,13 @@ export const Menu = () => {
         <Menus to={routes.expSimulator} onClick={() => setIsClicked(false)}>
           Exp 시뮬레이터
         </Menus>
-        <Menus to={routes.slidingPuzzle} onClick={() => setIsClicked(false)}>
-          퍼즐 슬라이딩
-        </Menus>
         <MenuLink
           href={sundayMapleUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setIsClicked(false)}
         >
-          썬데이 메이플(공홈)
+          썬데이 메이플
         </MenuLink>
       </MenuContainer>
     </>
