@@ -23,9 +23,8 @@
   },
   "scripts": {
     "start": "node proxyServer.js",
-    "dev": "concurrently \"node proxyServer.js\" \"react-scripts start\"",
-    "build:blue": "set \"GENERATE_SOURCEMAP=false\" && rmdir /s /q build-blue && react-scripts build && move build build-blue",
-    "build:green": "export GENERATE_SOURCEMAP=false && rm -rf build-green && react-scripts build && mv build build-green",
+    "dev": "cross-env NODE_ENV=development concurrently \"node proxyServer.js\" \"react-scripts start\"",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -53,6 +52,5 @@
     "typescript": "^4.9.5",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }
