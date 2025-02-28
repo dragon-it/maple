@@ -1,14 +1,18 @@
 {
   "files": {
     "main.css": "/static/css/main.c7df7b00.css",
-    "main.js": "/static/js/main.5dc3f9e0.js",
+    "main.js": "/static/js/main.57990aa5.js",
+    "static/media/random_class_BGI_dark.webp": "/static/media/random_class_BGI_dark.63538ac7e64e34b93f52.webp",
+    "static/media/character_capture_light2.webp": "/static/media/character_capture_light2.3a06646288d5f4be4957.webp",
     "static/media/Flag_ranking_icon.svg": "/static/media/Flag_ranking_icon.3b74e52fca51f4ebc1193d220fb9abc5.svg",
     "static/media/character_capture_dark.webp": "/static/media/character_capture_dark.0a43241fa971d25503ed.webp",
+    "static/media/exp_simulator_BGI_light.webp": "/static/media/exp_simulator_BGI_light.5b6e25b6bef938bc6017.webp",
     "static/media/Logo_Text.svg": "/static/media/Logo_Text.ebd739dead749625f1cf234cf263121a.svg",
     "static/media/Logo_Text_Only.svg": "/static/media/Logo_Text_Only.fadd9e319278be8e6ec805ad4033a70e.svg",
     "static/media/Fame_ranking_icon.svg": "/static/media/Fame_ranking_icon.1fb7ed9f71a8d3949454912384b7fddd.svg",
+    "static/media/random_class_BGI_light.webp": "/static/media/random_class_BGI_light.3ddcec22b9af93852dc2.webp",
     "static/media/Suro_ranking_icon.svg": "/static/media/Suro_ranking_icon.8cae1058d2e541a406946b53891e9a65.svg",
-    "static/media/character_capture_light.webp": "/static/media/character_capture_light.fb2b67bae8079e063d08.webp",
+    "static/media/exp_simulator_BGI_dark.webp": "/static/media/exp_simulator_BGI_dark.da74b2bc768efb4eeb1a.webp",
     "static/media/Maplestory_Light.woff2": "/static/media/Maplestory_Light.d1002cd47fedadc951bd.woff2",
     "static/media/Henesys.webp": "/static/media/Henesys.d577da3ef97f9254c121.webp",
     "static/media/search_guild_BGI_light.webp": "/static/media/search_guild_BGI_light.6c6b340c3ef963679cd4.webp",
@@ -145,6 +149,6 @@
   },
   "entrypoints": [
     "static/css/main.c7df7b00.css",
-    "static/js/main.5dc3f9e0.js"
+    "static/js/main.57990aa5.js"
   ]
 }
