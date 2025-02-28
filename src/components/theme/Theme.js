@@ -12,7 +12,7 @@ export const light = {
   tabNotActiveColor: "rgb(224, 224, 224)",
   tabHoverColor: "rgba(255,255,255, 0.65)",
   tabNotHoverColor: "rgb(0, 86, 179)",
-  headerBgColor: "rgba(255,255,255, 0.35)",
+  headerBgColor: "rgba(255,255,255, 0.55)",
   headerHoverColor: "rgb(38,38,38)",
   headerIconHoverColor: "rgb(230,230,230)",
   footerBgColor: "rgba(255,255,255, 0.35)",
