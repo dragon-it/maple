@@ -1,52 +1,48 @@
 #!/bin/bash
 
-set -e  # 에러 발생 시 즉시 종료
+# 현재 Nginx가 가리키는 포트 확인
+CURRENT_PORT=$(grep -oP '(?<=proxy_pass http://127.0.0.1:)[0-9]+' /etc/nginx/sites-available/default)
 
-echo "🚀 배포 스크립트 시작"
-
-# 현재 실행 중인 포트 확인
-echo "🔍 현재 활성 포트 확인 중..."
-ACTIVE_PORT=$(pm2 list --json | jq -r '.[] | select(.name | test("mezzang-(blue|green)")) | .pm2_env.PORT' | head -n 1)
-
-if [ "$ACTIVE_PORT" == "3001" ]; then
-  echo "🟢 Blue가 활성 상태. Green으로 배포 시작."
-  BUILD_DIR="build-green"
-  TARGET_APP="mezzang-green"
-  NEW_PORT=3002
-elif [ "$ACTIVE_PORT" == "3002" ]; then
-  echo "🔵 Green이 활성 상태. Blue로 배포 시작."
-  BUILD_DIR="build-blue"
-  TARGET_APP="mezzang-blue"
-  NEW_PORT=3001
-else
-  echo "⚪ 활성 포트가 없습니다. 기본적으로 Blue로 설정."
-  BUILD_DIR="build-blue"
-  TARGET_APP="mezzang-blue"
-  NEW_PORT=3001
+# 만약 CURRENT_PORT가 감지되지 않으면 기본값 설정
+if [[ -z "$CURRENT_PORT" ]]; then
+    echo "현재 활성 포트가 감지되지 않음. 기본적으로 Blue(3001)로 설정."
+    CURRENT_PORT=3001
 fi
 
-# 최신 코드 가져오기
-echo "최신 코드 가져오는 중"
-cd /home/ubuntu/maple
-git pull origin main
+# Blue-Green 배포 전략 적용
+if [ "$CURRENT_PORT" == "3002" ]; then
+    NEW_PORT=3001
+    NEW_APP="mezzang-blue"
+    OLD_APP="mezzang-green"
+elif [ "$CURRENT_PORT" == "3001" ]; then
+    NEW_PORT=3002
+    NEW_APP="mezzang-green"
+    OLD_APP="mezzang-blue"
+else
+    echo "활성 포트가 없거나 감지되지 않음. 기본적으로 Blue(3001)로 설정."
+    NEW_PORT=3001
+    NEW_APP="mezzang-blue"
+    OLD_APP="mezzang-green"
+fi
 
-# 빌드 실행 (프리티어 고려하여 CPU 사용률 제한)
-echo "React 빌드 시작"
+echo "현재 실행 중인 서비스: $OLD_APP ($CURRENT_PORT번 포트, Old)"
+echo "새로운 서비스 배포: $NEW_APP ($NEW_PORT번 포트, New)"
+
+# 새로운 빌드 실행
+export BUILD_DIR="build-${NEW_APP#mezzang-}"
+export PORT=$NEW_PORT
 npm install --legacy-peer-deps
-CI=false npm run build
+npm run build
 
-# 빌드 결과를 블루/그린 빌드 폴더로 이동
-echo "빌드 완료, 파일 이동 중"
-mv -f /home/ubuntu/maple/build /home/ubuntu/maple/$BUILD_DIR
+# 새로운 프로세스 시작
+pm2 restart $NEW_APP
 
-# PM2를 사용해 새 버전 실행
-echo "서버 재시작 중"
-pm2 delete $TARGET_APP || true  # 기존 프로세스 삭제 (에러 무시)
-pm2 start server.js --name $TARGET_APP -- --port $NEW_PORT  
+# Nginx 리버스 프록시 변경
+NGINX_CONF="/etc/nginx/sites-available/default"
+sudo sed -i "s|proxy_pass http://127.0.0.1:$CURRENT_PORT;|proxy_pass http://127.0.0.1:$NEW_PORT;|" "$NGINX_CONF"
+sudo systemctl reload nginx
 
-# Nginx 설정 변경
-echo "Nginx 설정 변경"
-sudo sed -i "s|server localhost:$ACTIVE_PORT weight=10|# server localhost:$ACTIVE_PORT weight=10\n    server localhost:$NEW_PORT weight=10|g" /etc/nginx/sites-available/default
-sudo nginx -t && sudo systemctl reload nginx
+# 이전 프로세스 중지
+pm2 stop $OLD_APP
 
-echo "배포 완료"
+echo "배포 완료: $NEW_APP ($NEW_PORT번 포트) 실행 중"
