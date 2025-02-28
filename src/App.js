@@ -14,7 +14,6 @@ import { Footer } from "./components/common/footer/Footer";
 import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
-import { SlidingPuzzle } from "./pages/SlidingPuzzle";
 
 function Layout({ children }) {
   return (
@@ -105,14 +104,6 @@ function App() {
               element={
                 <Layout>
                   <ExpSimulator />
-                </Layout>
-              }
-            />
-            <Route
-              path="/Sliding-Puzzle"
-              element={
-                <Layout>
-                  <SlidingPuzzle />
                 </Layout>
               }
             />

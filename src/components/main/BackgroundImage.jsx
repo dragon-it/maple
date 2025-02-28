@@ -3,10 +3,14 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import mainLightBGI from "../../assets/Henesys.webp";
 import mainDarkBGI from "../../assets/Kerning-City.webp";
-import findMainLightBGI from "../../assets/backgruondImg/characterCapture/character_capture_light.webp";
+import findMainLightBGI from "../../assets/backgruondImg/characterCapture/character_capture_light2.webp";
 import findMainDarkBGI from "../../assets/backgruondImg/characterCapture/character_capture_dark.webp";
 import searchGuildDarkBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_dark.webp";
 import searchGuildLightBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_light.webp";
+import randomClassDarkBGI from "../../assets/backgruondImg/randomClass/random_class_BGI_dark.webp";
+import randomClassLightBGI from "../../assets/backgruondImg/randomClass/random_class_BGI_light.webp";
+import expSimulatorDarkBGI from "../../assets/backgruondImg/expSimulator/exp_simulator_BGI_dark.webp";
+import expSimulatorLightBGI from "../../assets/backgruondImg/expSimulator/exp_simulator_BGI_light.webp";
 import { useTheme } from "../../context/ThemeProvider";
 
 export const BackgroundImage = () => {
@@ -22,6 +26,10 @@ export const BackgroundImage = () => {
       return theme === "dark" ? findMainDarkBGI : findMainLightBGI;
     } else if (pathname.startsWith("/guild-search")) {
       return theme === "dark" ? searchGuildDarkBGI : searchGuildLightBGI;
+    } else if (pathname.startsWith("/random-class")) {
+      return theme === "dark" ? randomClassDarkBGI : randomClassLightBGI;
+    } else if (pathname.startsWith("/exp-simulator")) {
+      return theme === "dark" ? expSimulatorDarkBGI : expSimulatorLightBGI;
     } else {
       return theme === "dark" ? mainDarkBGI : mainLightBGI;
     }
@@ -47,7 +55,6 @@ const Container = styled.div`
     display: block;
     object-fit: cover;
     width: 100%;
-    height: auto;
     min-height: 100vh;
   }
 `;

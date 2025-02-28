@@ -75,7 +75,7 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
 
 const Container = styled.div`
   position: fixed;
-  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.55);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
@@ -89,7 +89,13 @@ const Container = styled.div`
   z-index: 1000;
 
   @media screen and (max-width: 380px) {
-    width: 292px;
+    max-width: 292px;
+  }
+
+  @media screen and (max-width: 768px) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   &::before {
@@ -106,7 +112,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0) 100%
     );
     opacity: 1;
-    pointer-events: none; /* 마우스 이벤트 무시 */
+    pointer-events: none;
   }
 `;
 

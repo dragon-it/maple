@@ -16,7 +16,6 @@ export const Menu = () => {
     searchGuild: "/guild-search",
     randomClass: "/random-class",
     expSimulator: "/exp-simulator",
-    slidingPuzzle: "/sliding-puzzle",
   };
 
   const sundayMapleUrl =
@@ -75,7 +74,7 @@ export const Menu = () => {
           rel="noopener noreferrer"
           onClick={() => setIsClicked(false)}
         >
-          썬데이 메이플(공홈)
+          썬데이 메이플
         </MenuLink>
       </MenuContainer>
     </>
