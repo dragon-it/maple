@@ -69,9 +69,7 @@ export const SlidingPuzzleMusicPlayer = () => {
         <audio ref={audioRef} loop>
           <source src={bgm} type="audio/mpeg" />
         </audio>
-        <button onClick={togglePlayPause}>
-          {isPlaying ? "일시 정지" : "재생"}
-        </button>
+        <button onClick={togglePlayPause}>{isPlaying ? "❚❚" : "▶"}</button>
         <label>
           볼륨:
           <input
@@ -93,7 +91,7 @@ const CustomAudioPlayer = styled.div`
   button {
     background-color: #ffaa33;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
