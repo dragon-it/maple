@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import puzzleImage1 from "../../assets/slidingPuzzle/2/1.jpg";
-import puzzleImage2 from "../../assets/slidingPuzzle/2/2.jpg";
-import puzzleImage3 from "../../assets/slidingPuzzle/2/3.jpg";
-import puzzleImage4 from "../../assets/slidingPuzzle/2/4.jpg";
-import puzzleImage5 from "../../assets/slidingPuzzle/2/5.jpg";
-import puzzleImage6 from "../../assets/slidingPuzzle/2/6.jpg";
-import puzzleImage7 from "../../assets/slidingPuzzle/2/7.jpg";
-import puzzleImage8 from "../../assets/slidingPuzzle/2/8.jpg";
-import puzzleImage9 from "../../assets/slidingPuzzle/2/9.jpg";
+import puzzleImage1 from "../../assets/slidingPuzzle/1/1.jpg";
+import puzzleImage2 from "../../assets/slidingPuzzle/1/2.jpg";
+import puzzleImage3 from "../../assets/slidingPuzzle/1/3.jpg";
+import puzzleImage4 from "../../assets/slidingPuzzle/1/4.jpg";
+import puzzleImage5 from "../../assets/slidingPuzzle/1/5.jpg";
+import puzzleImage6 from "../../assets/slidingPuzzle/1/6.jpg";
+import puzzleImage7 from "../../assets/slidingPuzzle/1/7.jpg";
+import puzzleImage8 from "../../assets/slidingPuzzle/1/8.jpg";
+import puzzleImage9 from "../../assets/slidingPuzzle/1/9.jpg";
 import WinImage from "../../assets/slidingPuzzle/Minigame.win.png";
 import WinSound from "../../assets/slidingPuzzle/Win.mp3";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
+import colors from "../common/color/colors";
 
 const imageMap = {
   1: puzzleImage1,
@@ -160,7 +161,7 @@ export const SlidingPuzzleLogic = () => {
           <img src={WinImage} alt="Win" />
         </>
       )}
-      <Board size={size}>
+      <Board size={size} won={won}>
         {board.map((row, rowIndex) =>
           row.map((tile, colIndex) => (
             <Tile
@@ -173,6 +174,7 @@ export const SlidingPuzzleLogic = () => {
               }}
               won={won}
               tile={tile}
+              size={size}
             >
               {tile !== 0 && !won && tile}
             </Tile>
@@ -189,28 +191,36 @@ const PuzzleContainer = styled.div`
 
 const Board = styled.div`
   display: grid;
-  grid-template-columns: repeat(${(props) => props.size}, 80px);
-  grid-template-rows: repeat(${(props) => props.size}, 80px);
-  gap: 40px; /* gap을 40으로 변경 */
+  grid-template-columns: repeat(${(props) => props.size}, 1fr);
+  grid-template-rows: repeat(${(props) => props.size}, 1fr);
+  gap: 5px;
+
+  ${({ won }) => won && `gap: 0px;`}
   margin: 20px auto;
-  width: max-content;
+  width: min(90vw, 90vh);
+  height: min(90vw, 90vh);
+  max-width: 600px;
+  max-height: 600px;
 `;
 
 const Tile = styled.div`
-  color: #000000;
-  width: 120px;
-  height: 120px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  border-radius: 5px;
+  font-size: 2vw;
+  border-radius: 8px;
   cursor: pointer;
   transition: 0.2s;
   user-select: none;
+  color: ${colors.main.black0};
+  text-shadow: 1px 1px 2px ${colors.main.white0},
+    -1px -1px 2px ${colors.main.white0}, 1px -1px 2px ${colors.main.white0},
+    -1px 1px 2px ${colors.main.white0};
 
   &:hover {
-    background: #6e6e6e;
+    background: ${colors.main.white6};
   }
 
   &.empty {
@@ -224,6 +234,7 @@ const Tile = styled.div`
     color: transparent;
     background-image: url(${(props) => imageMap[props.tile]});
     background-size: cover;
+    border-radius: 0px;
   `}
 `;
 
