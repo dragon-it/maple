@@ -239,10 +239,16 @@ const LevelWrap = styled.div`
 
 const Normal = styled.button`
   font-size: 15px;
+  ${(level) =>
+    level === "normal" &&
+    `background: ${colors.main.dark0}; color: ${colors.main.white0};`}
 `;
 
 const Hard = styled.button`
   font-size: 15px;
+  ${({ level }) =>
+    level === "hard" &&
+    `background: ${colors.main.dark0}; color: ${colors.main.white0};`}
 `;
 
 const Board = styled.div`
@@ -287,11 +293,11 @@ const Tile = styled.div`
     cursor: default;
   }
 
-  ${(props) =>
-    props.won &&
+  ${(won) =>
+    won &&
     `
     color: transparent;
-    background-image: url(${(props) => imageMap[props.tile]});
+    background-image: url(${(tile) => imageMap[tile]});
     background-size: cover;
     border-radius: 0px;
     cursor: none;
