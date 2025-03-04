@@ -254,8 +254,8 @@ const Hard = styled.button`
 const Board = styled.div`
   position: relative;
   display: grid;
-  grid-template-columns: repeat(${(props) => props.size}, 1fr);
-  grid-template-rows: repeat(${(props) => props.size}, 1fr);
+  grid-template-columns: repeat(${(size) => size}, 1fr);
+  grid-template-rows: repeat(${(size) => size}, 1fr);
   gap: 3px;
   background-color: ${colors.commonInfo.contentBackground};
   padding: 5px;
