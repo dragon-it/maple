@@ -113,6 +113,23 @@ const colors = {
     lightViolet: "rgb(182, 101, 243)", // Hexa Stat Background
   },
 
+  commonInfo: {
+    wrapBackground: "rgb(44, 51, 58)", // CommonInfo Background
+    wrapBorder: "rgb(67, 79, 86)", // CommonInfo Outline
+    wrapOutline: "rgb(36, 43, 51)", // CommonInfo Border
+    wrapHeaderText: "rgb(221, 254, 1)", // CommonInfo Header Text
+    textShadow: "0px 0px 3px rgb(30, 38, 47);", // CommonInfo Text Shadow
+    contentBackground: "rgb(238, 238, 238)", // CommonInfo Content Background
+
+    normalBtn: {
+      btnBackground: "linear-gradient(to top,rgb(76, 90, 105),rgb(42, 59, 78))", // CommonInfo Btn Background
+      btnBorder: "1px solid rgb(93, 125, 167)", // CommonInfo Btn Border
+      btnOutline: "1px solid rgb(9, 11, 15)", // CommonInfo Btn Outline
+      btnText: "rgb(255, 255, 255)", // CommonInfo Btn Text
+      btnTextShadow: "0px -1px 0px rgb(0, 0, 0)", // CommonInfo Btn Text Shadow
+    },
+  }, // Character Info, Skill Wrap, Sliding Puzzle,
+
   characterInfo: {
     levelBackground: "rgba(204, 204, 204, 0.9)", // Character Level Background
     nameBackground: "rgb(60, 194, 216)", // Character Name Background
