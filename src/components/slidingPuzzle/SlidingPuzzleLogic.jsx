@@ -73,6 +73,8 @@ export const SlidingPuzzleLogic = () => {
   const [won, setWon] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [level, setLevel] = useState("normal");
+  console.log(level);
 
   useEffect(() => {
     if (startTime) {
@@ -143,6 +145,10 @@ export const SlidingPuzzleLogic = () => {
     setElapsedTime(0);
   };
 
+  const handleLevelChange = (newLevel) => {
+    setLevel(newLevel);
+  };
+
   return (
     <PuzzleContainer>
       <HeaderText>SLIDING PUZZLE</HeaderText>
@@ -155,8 +161,12 @@ export const SlidingPuzzleLogic = () => {
       </label>
       <SlidingPuzzleMusicPlayer />
       <LevelWrap>
-        <Normal>NORMAL</Normal>
-        <Hard>HARD</Hard>
+        <Normal onClick={() => handleLevelChange("normal")} level={level}>
+          NORMAL
+        </Normal>
+        <Hard onClick={() => handleLevelChange("hard")} level={level}>
+          HARD
+        </Hard>
       </LevelWrap>
       <Timer>시간 : {elapsedTime}초</Timer>
       <Reset onClick={handleRestart}>다시하기</Reset>
@@ -174,8 +184,9 @@ export const SlidingPuzzleLogic = () => {
               won={won}
               tile={tile}
               size={size}
+              level={level}
             >
-              {tile !== 0 && !won && tile}
+              {tile !== 0 && !won && level !== "hard" && tile}
             </Tile>
           ))
         )}
