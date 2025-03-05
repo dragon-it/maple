@@ -31,11 +31,12 @@ echo "새로운 서비스 배포: $NEW_APP ($NEW_PORT번 포트, New)"
 # 새로운 빌드 실행
 export BUILD_DIR="build-${NEW_APP#mezzang-}"
 export PORT=$NEW_PORT
-npm install --legacy-peer-deps
-npm run build
+NODE_OPTIONS="--max-old-space-size=4096" npm run build
+echo "빌드 완료."
 
 # 새로운 프로세스 시작
 pm2 restart $NEW_APP
+echo "프로세스 시작 성공"
 
 # Nginx 리버스 프록시 변경
 NGINX_CONF="/etc/nginx/sites-available/default"
