@@ -1,30 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import puzzleImage1 from "../../assets/slidingPuzzle/3/1.jpg";
-import puzzleImage2 from "../../assets/slidingPuzzle/3/2.jpg";
-import puzzleImage3 from "../../assets/slidingPuzzle/3/3.jpg";
-import puzzleImage4 from "../../assets/slidingPuzzle/3/4.jpg";
-import puzzleImage5 from "../../assets/slidingPuzzle/3/5.jpg";
-import puzzleImage6 from "../../assets/slidingPuzzle/3/6.jpg";
-import puzzleImage7 from "../../assets/slidingPuzzle/3/7.jpg";
-import puzzleImage8 from "../../assets/slidingPuzzle/3/8.jpg";
-import puzzleImage9 from "../../assets/slidingPuzzle/3/9.jpg";
+
 import WinImage from "../../assets/slidingPuzzle/Minigame.win.png";
 import WinSound from "../../assets/slidingPuzzle/Win.mp3";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
 import colors from "../common/color/colors";
-
-const imageMap = {
-  1: puzzleImage1,
-  2: puzzleImage2,
-  3: puzzleImage3,
-  4: puzzleImage4,
-  5: puzzleImage5,
-  6: puzzleImage6,
-  7: puzzleImage7,
-  8: puzzleImage8,
-  9: puzzleImage9,
-};
+import PuzzleImages from "./SlidingPuzzleImages";
 
 const generateBoard = (size) => {
   let numbers = Array.from({ length: size * size }, (_, i) => i);
@@ -74,7 +55,7 @@ export const SlidingPuzzleLogic = () => {
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
   const [level, setLevel] = useState("normal");
-  console.log(level);
+  const [artwork, setArtwork] = useState("artwork1");
 
   useEffect(() => {
     if (startTime) {
@@ -149,6 +130,12 @@ export const SlidingPuzzleLogic = () => {
     setLevel(newLevel);
   };
 
+  const handleArtworkChange = (event) => {
+    setArtwork(event.target.value);
+  };
+
+  const imageMap = PuzzleImages[artwork];
+
   return (
     <PuzzleContainer>
       <HeaderText>SLIDING PUZZLE</HeaderText>
@@ -157,6 +144,14 @@ export const SlidingPuzzleLogic = () => {
         <select value={size} onChange={handleSizeChange}>
           <option value={3}>3x3</option>
           <option value={4}>4x4</option>
+        </select>
+      </label>
+      <label>
+        아트웍 선택 :
+        <select value={artwork} onChange={handleArtworkChange}>
+          <option value="artwork1">명절 아트웍</option>
+          <option value="artwork2">나들이 아트웍</option>
+          <option value="artwork3">라라 아트웍</option>
         </select>
       </label>
       <SlidingPuzzleMusicPlayer />
@@ -185,6 +180,7 @@ export const SlidingPuzzleLogic = () => {
               tile={tile}
               size={size}
               level={level}
+              imageMap={imageMap}
             >
               {tile !== 0 && !won && level !== "hard" && tile}
             </Tile>
@@ -239,7 +235,7 @@ const LevelWrap = styled.div`
 
 const Normal = styled.button`
   font-size: 15px;
-  ${(level) =>
+  ${({ level }) =>
     level === "normal" &&
     `background: ${colors.main.dark0}; color: ${colors.main.white0};`}
 `;
@@ -254,8 +250,8 @@ const Hard = styled.button`
 const Board = styled.div`
   position: relative;
   display: grid;
-  grid-template-columns: repeat(${(size) => size}, 1fr);
-  grid-template-rows: repeat(${(size) => size}, 1fr);
+  grid-template-columns: ${({ size }) => `repeat(${size}, 1fr)`};
+  grid-template-rows: ${({ size }) => `repeat(${size}, 1fr)`};
   gap: 3px;
   background-color: ${colors.commonInfo.contentBackground};
   padding: 5px;
@@ -293,15 +289,15 @@ const Tile = styled.div`
     cursor: default;
   }
 
-  ${(won) =>
+  ${({ won, tile, imageMap }) =>
     won &&
     `
-    color: transparent;
-    background-image: url(${(tile) => imageMap[tile]});
-    background-size: cover;
-    border-radius: 0px;
-    cursor: none;
-  `}
+  color: transparent;
+  background-image: url(${imageMap[tile]});
+  background-size: cover;
+  border-radius: 0px;
+  cursor: none;
+`}
 `;
 
 const Timer = styled.div`
