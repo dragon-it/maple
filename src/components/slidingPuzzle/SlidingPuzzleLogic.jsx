@@ -149,22 +149,26 @@ export const SlidingPuzzleLogic = () => {
       <label>
         아트웍 선택 :
         <select value={artwork} onChange={handleArtworkChange}>
-          <option value="artwork1">명절 아트웍</option>
-          <option value="artwork2">나들이 아트웍</option>
-          <option value="artwork3">라라 아트웍</option>
+          <option value="artwork1">명절</option>
+          <option value="artwork2">소풍</option>
+          <option value="artwork3">라라</option>
         </select>
       </label>
       <SlidingPuzzleMusicPlayer />
       <LevelWrap>
         <Normal onClick={() => handleLevelChange("normal")} level={level}>
           NORMAL
+          {level === "normal" && <LevelIndicator>◀</LevelIndicator>}
         </Normal>
         <Hard onClick={() => handleLevelChange("hard")} level={level}>
           HARD
+          {level === "hard" && <LevelIndicator>◀</LevelIndicator>}
         </Hard>
       </LevelWrap>
-      <Timer>시간 : {elapsedTime}초</Timer>
-      <Reset onClick={handleRestart}>다시하기</Reset>
+      <TimerResetWrap>
+        <Timer>시간 {elapsedTime}초</Timer>
+        <Reset onClick={handleRestart}>다시하기</Reset>
+      </TimerResetWrap>
       <Board size={size} won={won}>
         {board.map((row, rowIndex) =>
           row.map((tile, colIndex) => (
@@ -219,36 +223,76 @@ const Reset = styled.button`
   padding: 5px 15px;
   outline: ${colors.commonInfo.normalBtn.btnOutline};
   border: ${colors.commonInfo.normalBtn.btnBorder};
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
 
   &:hover {
-    filter: brightness(1.15) 3;
+    filter: brightness(1.15);
   }
 `;
 
 const LevelWrap = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
   margin: 10px 0;
 `;
 
 const Normal = styled.button`
-  font-size: 15px;
+  position: relative;
+  width: 50%;
+  background: ${colors.commonInfo.normalBtn.btnBackground};
+  color: ${colors.commonInfo.normalBtn.btnText};
+  font-size: 17px;
+  text-shadow: ${colors.commonInfo.normalBtn.btnTextShadow};
+  padding: 5px 15px;
+  outline: ${colors.commonInfo.normalBtn.btnOutline};
+  border: ${colors.commonInfo.normalBtn.btnBorder};
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+
   ${({ level }) =>
     level === "normal" &&
-    `background: ${colors.main.dark0}; color: ${colors.main.white0};`}
+    `filter: brightness(1.35); 
+    border: ${colors.commonInfo.normalBtn.btnActiveborder};
+    outline: ${colors.commonInfo.normalBtn.btnActiveOutline};
+    text-shadow: ${colors.commonInfo.normalBtn.btnACtiveTextShadow};
+    `}
 `;
 
 const Hard = styled.button`
-  font-size: 15px;
+  position: relative;
+  width: 50%;
+  font-size: 17px;
+  background: ${colors.commonInfo.hardBtn.btnBackground};
+  color: ${colors.commonInfo.hardBtn.btnText};
+  text-shadow: ${colors.commonInfo.hardBtn.btnTextShadow};
+  padding: 5px 15px;
+  outline: ${colors.commonInfo.hardBtn.btnOutline};
+  border: ${colors.commonInfo.hardBtn.btnBorder};
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.15);
+  }
+
   ${({ level }) =>
     level === "hard" &&
-    `background: ${colors.main.dark0}; color: ${colors.main.white0};`}
+    `filter: brightness(1.35); 
+    border: ${colors.commonInfo.hardBtn.btnActiveborder};
+    outline: ${colors.commonInfo.hardBtn.btnActiveOutline};
+    text-shadow: ${colors.commonInfo.hardBtn.btnACtiveTextShadow};
+    `}
 `;
 
 const Board = styled.div`
-  position: relative;
   display: grid;
   grid-template-columns: ${({ size }) => `repeat(${size}, 1fr)`};
   grid-template-rows: ${({ size }) => `repeat(${size}, 1fr)`};
@@ -296,17 +340,34 @@ const Tile = styled.div`
   background-image: url(${imageMap[tile]});
   background-size: cover;
   border-radius: 0px;
-  cursor: none;
 `}
 `;
 
-const Timer = styled.div`
+const Timer = styled.span`
   margin-top: 10px;
   font-size: 18px;
   font-weight: bold;
+  border-radius: 5px;
+  background: ${colors.commonInfo.contentBackground};
+`;
+
+const TimerResetWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
 `;
 
 const WinImageWrap = styled.img`
   position: absolute;
   max-width: 40%;
+`;
+
+const LevelIndicator = styled.span`
+  position: absolute;
+  height: 100%;
+  right: -10%;
+  top: 0%;
+  font-size: 17px;
+  color: ${colors.commonInfo.normalBtn.btnText};
 `;
