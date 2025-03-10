@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
 import WinImage from "../../assets/slidingPuzzle/Minigame.win.png";
 import WinSound from "../../assets/slidingPuzzle/Win.mp3";
+import TimerIcon from "../../assets/slidingPuzzle/Clock.svg";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
 import colors from "../common/color/colors";
 import PuzzleImages from "./SlidingPuzzleImages";
@@ -103,9 +103,9 @@ export const SlidingPuzzleLogic = () => {
     new Audio(WinSound).play();
     setStartTime(null); // 타이머 멈추기
 
-    // 0번 타일을 9번 타일로 변경
-    const newBoard = board.map((row) =>
-      row.map((tile) => (tile === 0 ? 9 : tile))
+    // 0번 타일을 9번 타일로 변경 (size가 4일 경우 조정)
+    const newBoard = board.map(
+      (row) => row.map((tile) => (tile === 0 ? size * size : tile)) // 3x3이면 9, 4x4면 16
     );
     setBoard(newBoard);
   };
@@ -139,22 +139,32 @@ export const SlidingPuzzleLogic = () => {
   return (
     <PuzzleContainer>
       <HeaderText>SLIDING PUZZLE</HeaderText>
-      <label>
-        퍼즐 크기 :
-        <select value={size} onChange={handleSizeChange}>
-          <option value={3}>3x3</option>
-          <option value={4}>4x4</option>
-        </select>
-      </label>
-      <label>
-        아트웍 선택 :
-        <select value={artwork} onChange={handleArtworkChange}>
-          <option value="artwork1">명절</option>
-          <option value="artwork2">소풍</option>
-          <option value="artwork3">라라</option>
-        </select>
-      </label>
-      <SlidingPuzzleMusicPlayer />
+      <OptionWrap>
+        <label>
+          퍼즐 크기
+          <select value={size} onChange={handleSizeChange}>
+            <option value={3}>3x3</option>
+            <option value={4}>4x4</option>
+          </select>
+        </label>
+        <label>
+          아트웍 선택
+          <select value={artwork} onChange={handleArtworkChange}>
+            <option value="artwork0">카링</option>
+            <option value="artwork1">소풍</option>
+            <option value="artwork2">소풍2</option>
+            <option value="artwork3">라라</option>
+            <option value="artwork4">루시드</option>
+            <option value="artwork5">정월대보름1</option>
+            <option value="artwork6">정월대보름2</option>
+            <option value="artwork7">한가위</option>
+            <option value="artwork8">크리스마스1</option>
+            <option value="artwork9">크리스마스2</option>
+            <option value="artwork10">크리스마스3</option>
+          </select>
+        </label>
+        <SlidingPuzzleMusicPlayer />
+      </OptionWrap>
       <LevelWrap>
         <Normal onClick={() => handleLevelChange("normal")} level={level}>
           NORMAL
@@ -166,7 +176,10 @@ export const SlidingPuzzleLogic = () => {
         </Hard>
       </LevelWrap>
       <TimerResetWrap>
-        <Timer>시간 {elapsedTime}초</Timer>
+        <Timer>
+          <img src={TimerIcon} alt="timer-icon" />
+          {elapsedTime}초
+        </Timer>
         <Reset onClick={handleRestart}>다시하기</Reset>
       </TimerResetWrap>
       <Board size={size} won={won}>
@@ -174,11 +187,18 @@ export const SlidingPuzzleLogic = () => {
           row.map((tile, colIndex) => (
             <Tile
               key={`${rowIndex}-${colIndex}`}
-              className={tile === 0 ? "empty" : ""}
+              className={tile === 0 ? "empty" : ""} // won 상태에서는 empty 클래스 무시
               onClick={() => handleClick(rowIndex, colIndex)}
               style={{
-                backgroundImage: tile !== 0 ? `url(${imageMap[tile]})` : "none",
-                backgroundSize: "cover",
+                backgroundImage:
+                  tile !== 0 || won ? `url(${imageMap})` : "none", // won일 때 0도 이미지 표시
+                backgroundSize: `${size * 100}% ${size * 100}%`, // 3x3이면 300%, 4x4면 400%
+                backgroundPosition:
+                  tile !== 0 || won
+                    ? `${-((tile - 1) % size) * 100}% ${
+                        -Math.floor((tile - 1) / size) * 100
+                      }%`
+                    : "none", // 타일 위치 계산 (won일 때 tile이 9로 바뀜)
               }}
               won={won}
               tile={tile}
@@ -186,7 +206,8 @@ export const SlidingPuzzleLogic = () => {
               level={level}
               imageMap={imageMap}
             >
-              {tile !== 0 && !won && level !== "hard" && tile}
+              {tile !== 0 && !won && level !== "hard" && tile}{" "}
+              {/* won일 때는 번호 숨김 */}
             </Tile>
           ))
         )}
@@ -212,6 +233,13 @@ const HeaderText = styled.h1`
   text-shadow: ${colors.commonInfo.textShadow};
   text-align: left;
   font-size: 16px;
+`;
+
+const OptionWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Reset = styled.button`
@@ -317,7 +345,6 @@ const Tile = styled.div`
   font-size: 2vw;
   border-radius: 5px;
   cursor: pointer;
-  transition: 0.2s;
   user-select: none;
   color: ${colors.main.dark0};
   text-shadow: 1px 1px 2px ${colors.main.white0},
@@ -333,22 +360,28 @@ const Tile = styled.div`
     cursor: default;
   }
 
-  ${({ won, tile, imageMap }) =>
+  ${({ won }) =>
     won &&
     `
-  color: transparent;
-  background-image: url(${imageMap[tile]});
-  background-size: cover;
-  border-radius: 0px;
-`}
+    border-radius: 0px; // 퍼즐 완성 시 테두리 제거
+  `}
 `;
-
 const Timer = styled.span`
-  margin-top: 10px;
-  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
   font-weight: bold;
   border-radius: 5px;
+  color: ${colors.main.dark0};
+  padding: 5px;
   background: ${colors.commonInfo.contentBackground};
+
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
 `;
 
 const TimerResetWrap = styled.div`

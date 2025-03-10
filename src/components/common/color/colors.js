@@ -129,7 +129,7 @@ const colors = {
       btnTextShadow: "0px -1px 0px rgb(0, 0, 0)", // CommonInfo Btn Text Shadow
       btnActiveborder: "1px solid rgb(255, 255, 255)", // CommonInfo Btn Active Border
       btnActiveOutline: "1px solid rgb(255, 255, 255)", // CommonInfo Btn Active Outline
-      btnACtiveTextShadow: "0px 0px 1px rgb(255, 255, 255)", // CommonInfo Btn Active Text Shadow
+      btnACtiveTextShadow: "0px 0px 3px rgb(255, 255, 255)", // CommonInfo Btn Active Text Shadow
     },
 
     hardBtn: {
