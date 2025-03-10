@@ -11,16 +11,17 @@ import artwork9 from "../../assets/slidingPuzzle/artwork/artwork9.jpg";
 import artwork10 from "../../assets/slidingPuzzle/artwork/artwork10.jpg";
 
 const PuzzleImages = {
-  artwork0,
-  artwork1,
-  artwork2,
-  artwork3,
-  artwork4,
-  artwork5,
-  artwork6,
-  artwork7,
-  artwork8,
-  artwork9,
-  artwork10,
+  artwork0: { src: artwork0, label: "카링" },
+  artwork1: { src: artwork1, label: "소풍" },
+  artwork2: { src: artwork2, label: "소풍2" },
+  artwork3: { src: artwork3, label: "라라" },
+  artwork4: { src: artwork4, label: "루시드" },
+  artwork5: { src: artwork5, label: "정월대보름1" },
+  artwork6: { src: artwork6, label: "정월대보름2" },
+  artwork7: { src: artwork7, label: "한가위" },
+  artwork8: { src: artwork8, label: "크리스마스1" },
+  artwork9: { src: artwork9, label: "크리스마스2" },
+  artwork10: { src: artwork10, label: "크리스마스3" },
 };
+
 export default PuzzleImages;
