@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import HennessysBGM from "../../assets/slidingPuzzle/Hennessys.mp3";
-import LithHarbor from "../../assets/slidingPuzzle/LithHarbor.mp3";
+import HennessysBGM from "../../assets/slidingPuzzle/backgroundMusic/Hennessys.mp3";
+import LithHarborBGM from "../../assets/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
 
 export const SlidingPuzzleMusicPlayer = () => {
   const [bgm, setBgm] = useState(HennessysBGM);
@@ -59,10 +59,10 @@ export const SlidingPuzzleMusicPlayer = () => {
   return (
     <>
       <label>
-        배경 음악 선택:
+        배경 음악 선택
         <select value={bgm} onChange={handleBgmChange}>
-          <option value={HennessysBGM}>Hennessys</option>
-          <option value={LithHarbor}>Lith Harbor</option>
+          <option value={HennessysBGM}>헤네시스</option>
+          <option value={LithHarborBGM}>리스항구</option>
         </select>
       </label>
       <CustomAudioPlayer>
