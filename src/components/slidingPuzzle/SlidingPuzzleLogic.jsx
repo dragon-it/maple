@@ -156,7 +156,6 @@ export const SlidingPuzzleLogic = () => {
               </option>
             ))}
           </select>
-          ; ;
         </label>
         <SlidingPuzzleMusicPlayer />
       </OptionWrap>
@@ -232,7 +231,7 @@ const HeaderText = styled.h1`
 
 const OptionWrap = styled.div`
   display: flex;
-  justify-content: center;
+
   flex-direction: column;
   align-items: center;
 `;
@@ -265,7 +264,7 @@ const LevelWrap = styled.div`
 
 const Normal = styled.button`
   position: relative;
-  width: 50%;
+  width: 60%;
   background: ${colors.commonInfo.normalBtn.btnBackground};
   color: ${colors.commonInfo.normalBtn.btnText};
   font-size: 17px;
@@ -291,7 +290,7 @@ const Normal = styled.button`
 
 const Hard = styled.button`
   position: relative;
-  width: 50%;
+  width: 60%;
   font-size: 17px;
   background: ${colors.commonInfo.hardBtn.btnBackground};
   color: ${colors.commonInfo.hardBtn.btnText};
@@ -323,12 +322,13 @@ const Board = styled.div`
   background-color: ${colors.commonInfo.contentBackground};
   padding: 5px;
   border-radius: 5px;
-
-  ${({ won }) => won && `gap: 0px;`}
-  width: min(90vw, 90vh);
-  height: min(90vw, 90vh);
+  margin: 0px auto;
+  width: min(95vw, 95vh);
+  height: min(95vw, 95vh);
   max-width: 550px;
   max-height: 550px;
+
+  ${({ won }) => won && `gap: 0px;`}
 `;
 
 const Tile = styled.div`
@@ -337,7 +337,7 @@ const Tile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2vw;
+  font-size: 1.9vw;
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
@@ -358,7 +358,7 @@ const Tile = styled.div`
   ${({ won }) =>
     won &&
     `
-    border-radius: 0px; // 퍼즐 완성 시 테두리 제거
+    border-radius: 0px; 
   `}
 `;
 const Timer = styled.span`
@@ -393,9 +393,9 @@ const WinImageWrap = styled.img`
 
 const LevelIndicator = styled.span`
   position: absolute;
-  height: 100%;
-  right: -10%;
-  top: 0%;
+  left: 100%;
+  margin-left: 5px;
   font-size: 17px;
   color: ${colors.commonInfo.normalBtn.btnText};
+  line-height: 1;
 `;
