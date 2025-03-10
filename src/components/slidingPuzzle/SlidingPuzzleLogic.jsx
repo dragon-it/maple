@@ -134,7 +134,7 @@ export const SlidingPuzzleLogic = () => {
     setArtwork(event.target.value);
   };
 
-  const imageMap = PuzzleImages[artwork];
+  const imageMap = PuzzleImages[artwork]?.src;
 
   return (
     <PuzzleContainer>
@@ -150,18 +150,13 @@ export const SlidingPuzzleLogic = () => {
         <label>
           아트웍 선택
           <select value={artwork} onChange={handleArtworkChange}>
-            <option value="artwork0">카링</option>
-            <option value="artwork1">소풍</option>
-            <option value="artwork2">소풍2</option>
-            <option value="artwork3">라라</option>
-            <option value="artwork4">루시드</option>
-            <option value="artwork5">정월대보름1</option>
-            <option value="artwork6">정월대보름2</option>
-            <option value="artwork7">한가위</option>
-            <option value="artwork8">크리스마스1</option>
-            <option value="artwork9">크리스마스2</option>
-            <option value="artwork10">크리스마스3</option>
+            {Object.entries(PuzzleImages).map(([id, { label }]) => (
+              <option key={id} value={id}>
+                {label}
+              </option>
+            ))}
           </select>
+          ; ;
         </label>
         <SlidingPuzzleMusicPlayer />
       </OptionWrap>
