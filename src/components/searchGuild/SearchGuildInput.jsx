@@ -53,7 +53,6 @@ const Container = styled.form`
 
 const GuildHead = styled.div`
   width: 100%;
-  font-weight: normal;
   margin: 5px 0;
   text-shadow: 0px 0px 4px rgb(180, 180, 180);
   color: rgb(204, 204, 204);
@@ -79,18 +78,9 @@ const GuildNameInput = styled.input`
   max-width: 200px;
   padding: 2px 30px 2px 5px;
   border-radius: 5px;
-  background: rgb(197, 195, 194);
+  background: rgb(204, 204, 204);
   color: rgba(0, 0, 0, 0.8);
   box-shadow: 0px 2px 2px rgb(148, 148, 148);
-
-  &:focus {
-    background: linear-gradient(
-      0deg,
-      rgb(209, 205, 199) 25%,
-      rgb(216, 210, 203) 100%
-    );
-    box-shadow: 0 0 10px rgba(131, 129, 128, 0.5);
-  }
 
   &::placeholder {
     color: rgba(0, 0, 0, 0.8);

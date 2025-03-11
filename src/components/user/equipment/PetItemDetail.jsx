@@ -1,10 +1,55 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect, useRef } from "react";
+import styled, { css } from "styled-components";
+import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
 
-export const PetItemDetail = ({ item, clicked }) => {
+export const PetItemDetail = ({ item, onClose }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 3; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+
+      top = Math.max(0, top);
+      left = Math.max(0, left);
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 1024;
+
   if (!item) {
     // 아이템 정보가 없는 경우를 처리
-    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>;
+    return null;
   }
 
   // 날짜 함수
@@ -15,24 +60,38 @@ export const PetItemDetail = ({ item, clicked }) => {
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
+      hour12: false,
     };
     return new Intl.DateTimeFormat("ko-KR", options).format(
       new Date(expireString)
     );
   };
 
-  return (
-    <Container>
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
-      <ItemNameWrap>
-        {item?.nickname && item?.name
-          ? `${item?.nickname}(${item?.name})`
-          : item?.name
-          ? item?.name
-          : item?.autoSkillName || item?.equipment?.item_name}
+  // 아이템 설명이 있는지 확인
+  const hasDescription = item?.description || item?.equipment?.item_description;
 
+  return (
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
+    >
+      <ItemNameWrap>
+        <ItemName>
+          {item?.nickname && item?.name
+            ? `${item?.nickname}(${item?.name})`
+            : item?.name
+            ? item?.name
+            : item?.autoSkillName || item?.equipment?.item_name}
+          {item?.equipment?.scroll_upgrade &&
+            ` (+${item?.equipment?.scroll_upgrade})`}
+        </ItemName>
         {/* 타입 */}
-        {item.type && <ItemType Type={item.type}>{item.type}</ItemType>}
+        {item.type && <ItemType $Type={item.type}>{item.type}</ItemType>}
 
         {/* 마법의 시간 */}
         {item.expire && (
@@ -41,7 +100,7 @@ export const PetItemDetail = ({ item, clicked }) => {
       </ItemNameWrap>
 
       {/* 아이콘 */}
-      <IconWrap>
+      <IconWrap $hasDescription={hasDescription}>
         <IconImage>
           <img
             src={
@@ -50,14 +109,19 @@ export const PetItemDetail = ({ item, clicked }) => {
             alt={`${item?.name || item?.equipment?.item_name}`}
           />
         </IconImage>
-      </IconWrap>
 
-      {/* 아이템 설명 */}
-      {item.description && (
-        <ItemDescriptionWrap Data={!!item?.description}>
-          {item?.description}
-        </ItemDescriptionWrap>
-      )}
+        {/* 펫 설명 */}
+        {item.description && (
+          <ItemDescriptionWrap>{item?.description}</ItemDescriptionWrap>
+        )}
+
+        {/* 아이템 설명 */}
+        {item.equipment && item.equipment.item_description && (
+          <ItemDescriptionWrap>
+            {item.equipment.item_description}
+          </ItemDescriptionWrap>
+        )}
+      </IconWrap>
 
       <ItemOptionWrap>
         {/* 스킬 */}
@@ -69,46 +133,27 @@ export const PetItemDetail = ({ item, clicked }) => {
         {Array.isArray(item.equipment?.item_option)
           ? item.equipment.item_option.map(
               ({ option_type, option_value }, index) => (
-                <div key={index}>
+                <p key={index}>
                   {option_type} : {option_value}
-                </div>
+                </p>
               )
             )
           : null}
+
+        {/* 업그레이드 가능 횟수 */}
+        {item.equipment && item.equipment.scroll_upgradable !== undefined && (
+          <Upgradable>
+            업그레이드 가능 횟수 : {item.equipment.scroll_upgradable}
+          </Upgradable>
+        )}
       </ItemOptionWrap>
     </Container>
   );
 };
 
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 290px;
-  height: 50px;
-  color: white;
-  padding: 0px 10px;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  font-family: maple-light;
-
-  @media screen and (max-width: 1024px) {
-    width: 200px;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 460px;
-  }
-
-  @media screen and (max-width: 576px) {
-    width: 100%;
-  }
-`;
-
 const Container = styled.div`
-  width: 290px;
+  position: fixed;
+  width: 270px;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
@@ -117,51 +162,110 @@ const Container = styled.div`
   padding: 0px 10px 5px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: "돋움";
+  white-space: pre-line;
+  z-index: 9999;
 
   @media screen and (max-width: 1024px) {
-    width: 300px;
+    position: relative;
+  }
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    transform: translate(0%, -60%);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(
+      139deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
   }
 `;
+
 const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
-  font-size: 16px;
+  border-bottom: 1px dashed rgb(89, 85, 82);
+  font-size: 15px;
   padding: 10px 0;
-  line-height: 24px;
   text-align: center;
+`;
+
+const ItemName = styled.h2`
+  font-size: 15px;
 `;
 
 const IconWrap = styled.div`
   padding: 10px 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  gap: 10px;
+  border-bottom: 1px dashed rgb(55, 56, 58);
+  ${({ hasDescription }) =>
+    !hasDescription &&
+    css`
+      justify-content: center;
+    `}
 `;
 
 const IconImage = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
+  min-width: 50px;
+  height: 50px;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 5px;
+  background-image: url(${iconBackground});
+  background-size: 50px 50px;
+  background-position: center;
+  object-fit: contain;
+
   img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 90%;
     object-fit: contain;
   }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 45px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
+  }
 `;
+
 const ItemExpire = styled.div`
   font-size: 13px;
 `;
 
 const ItemType = styled.div`
-  ${({ Type }) => {
-    switch (Type) {
+  ${({ $Type }) => {
+    switch ($Type) {
       case "루나 쁘띠":
       case "루나 스윗":
         return `color: rgb(160,133,186);`;
@@ -175,28 +279,18 @@ const ItemType = styled.div`
   }}
 `;
 
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(45deg);
-`;
-
 const ItemOptionWrap = styled.div`
   padding: 5px 0;
-  line-height: 16px;
-  font-size: 14px;
+  line-height: 15px;
+  font-size: 12px;
   color: rgb(255, 153, 0);
 `;
 
 const ItemDescriptionWrap = styled.div`
-  font-size: 14px;
-  white-space: normal;
-  padding: 5px 0;
-  ${({ Data }) => Data && `border-bottom: 2px dotted rgb(55, 56, 58);`}
+  font-size: 12px;
+  white-space: pre-wrap;
+`;
+
+const Upgradable = styled.p`
+  color: rgb(255, 255, 255);
 `;

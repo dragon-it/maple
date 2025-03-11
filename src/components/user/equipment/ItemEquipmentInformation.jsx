@@ -12,6 +12,96 @@ import { CashItemDetail } from "./CashItemDetail";
 import { PetItemDetail } from "./PetItemDetail";
 import { AndroidItemDetail } from "./AndroidItemDetail";
 
+const positions = {
+  모자: { top: "6px", left: "108px" },
+  얼굴장식: { top: "55px", left: "108px" },
+  눈장식: { top: "104px", left: "108px" },
+  귀고리: { top: "104px", left: "157px" },
+  상의: { top: "154px", left: "108px" },
+  하의: { top: "203px", left: "108px" },
+  신발: { top: "252px", left: "108px" },
+  장갑: { top: "203px", left: "157px" },
+  망토: { top: "203px", left: "206px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "154px", left: "59px" },
+  반지1: { top: "6px", left: "10px" },
+  반지2: { top: "55px", left: "10px" },
+  반지3: { top: "104px", left: "10px" },
+  반지4: { top: "154px", left: "10px" },
+  펜던트: { top: "55px", left: "59px" },
+  훈장: { top: "104px", left: "206px" },
+  벨트: { top: "203px", left: "59px" },
+  어깨장식: { top: "154px", left: "157px" },
+  "포켓 아이템": { top: "203px", left: "10px" },
+  "기계 심장": { top: "252px", left: "206px" },
+  뱃지: { top: "55px", left: "206px" },
+  엠블렘: { top: "6px", left: "206px" },
+  펜던트2: { top: "104px", left: "59px" },
+};
+
+const cashPositions = {
+  모자: { top: "6px", left: "108px" },
+  얼굴장식: { top: "55px", left: "108px" },
+  눈장식: { top: "104px", left: "108px" },
+  귀고리: { top: "104px", left: "157px" },
+  상의: { top: "154px", left: "108px" },
+  하의: { top: "203px", left: "108px" },
+  신발: { top: "252px", left: "108px" },
+  장갑: { top: "203px", left: "157px" },
+  망토: { top: "203px", left: "206px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "154px", left: "59px" },
+  반지1: { top: "6px", left: "10px" },
+  반지2: { top: "55px", left: "10px" },
+  반지3: { top: "104px", left: "10px" },
+  반지4: { top: "154px", left: "10px" },
+};
+
+const ADPositions = {
+  모자: { top: "6px", left: "108px" },
+  얼굴장식: { top: "55px", left: "108px" },
+  눈장식: { top: "104px", left: "108px" },
+  귀고리: { top: "104px", left: "157px" },
+  상의: { top: "154px", left: "108px" },
+  하의: { top: "203px", left: "108px" },
+  신발: { top: "252px", left: "108px" },
+  장갑: { top: "203px", left: "57px" },
+  망토: { top: "203px", left: "156px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "154px", left: "59px" },
+};
+
+const PresetButton = styled.button`
+  position: relative;
+  border: 2px solid gray;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+  cursor: pointer;
+  font-family: maple-light;
+  background: ${({ $isSelected }) => ($isSelected ? "#FFAA00" : "#999999")};
+  border: 1px solid
+    ${({ $isSelected }) => ($isSelected ? "#E47733" : "#777777")};
+`;
+
+const ItemIcon = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  cursor: pointer;
+  border: ${({ $grade, $gradeColors }) =>
+    `2px solid ${
+      $gradeColors && $gradeColors[$grade] ? $gradeColors[$grade] : "none"
+    }`};
+  img {
+    image-rendering: pixelated;
+  }
+`;
+
 export const ItemEquipmentInformation = ({ EquipData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
@@ -30,6 +120,16 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
+
+  const [isCloseClick, setIsCloseClick] = useState(false);
+
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
+    if (!clicked) {
+      setSelectedItem(null);
+      setClicked(false);
+    }
+  };
 
   // 탭 변경시 select item, click 유무 초기화 함수
   const handleTabChange = (tab) => {
@@ -50,6 +150,12 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setClicked(!clicked); // 클릭 시 clicked 상태 반전
+  };
+
+  const handleCloseClick = () => {
+    setClicked(false);
+    setSelectedItem(null);
+    setIsCloseClick(true);
   };
 
   // 장비 아이템 프리셋 선택
@@ -155,118 +261,32 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
     setSelectedCashPreset(newPresetKey);
   }, [currentTab, matchingCashPresetKey, matchingPresetKey]);
 
-  const positions = {
-    모자: { top: "6px", left: "108px" },
-    얼굴장식: { top: "55px", left: "108px" },
-    눈장식: { top: "104px", left: "108px" },
-    귀고리: { top: "104px", left: "157px" },
-    상의: { top: "154px", left: "108px" },
-    하의: { top: "203px", left: "108px" },
-    신발: { top: "252px", left: "108px" },
-    장갑: { top: "203px", left: "157px" },
-    망토: { top: "203px", left: "206px" },
-    보조무기: { top: "154px", left: "206px" },
-    무기: { top: "154px", left: "59px" },
-    반지1: { top: "6px", left: "10px" },
-    반지2: { top: "55px", left: "10px" },
-    반지3: { top: "104px", left: "10px" },
-    반지4: { top: "154px", left: "10px" },
-    펜던트: { top: "55px", left: "59px" },
-    훈장: { top: "104px", left: "206px" },
-    벨트: { top: "203px", left: "59px" },
-    어깨장식: { top: "154px", left: "157px" },
-    "포켓 아이템": { top: "203px", left: "10px" },
-    "기계 심장": { top: "252px", left: "206px" },
-    뱃지: { top: "55px", left: "206px" },
-    엠블렘: { top: "6px", left: "206px" },
-    펜던트2: { top: "104px", left: "59px" },
-  };
-
-  const cashPositions = {
-    모자: { top: "6px", left: "108px" },
-    얼굴장식: { top: "55px", left: "108px" },
-    눈장식: { top: "104px", left: "108px" },
-    귀고리: { top: "104px", left: "157px" },
-    상의: { top: "154px", left: "108px" },
-    하의: { top: "203px", left: "108px" },
-    신발: { top: "252px", left: "108px" },
-    장갑: { top: "203px", left: "157px" },
-    망토: { top: "203px", left: "206px" },
-    보조무기: { top: "154px", left: "206px" },
-    무기: { top: "154px", left: "59px" },
-    반지1: { top: "6px", left: "10px" },
-    반지2: { top: "55px", left: "10px" },
-    반지3: { top: "104px", left: "10px" },
-    반지4: { top: "154px", left: "10px" },
-  };
-
-  const ADPositions = {
-    모자: { top: "6px", left: "108px" },
-    얼굴장식: { top: "55px", left: "108px" },
-    눈장식: { top: "104px", left: "108px" },
-    귀고리: { top: "104px", left: "157px" },
-    상의: { top: "154px", left: "108px" },
-    하의: { top: "203px", left: "108px" },
-    신발: { top: "252px", left: "108px" },
-    장갑: { top: "203px", left: "57px" },
-    망토: { top: "203px", left: "156px" },
-    보조무기: { top: "154px", left: "206px" },
-    무기: { top: "154px", left: "59px" },
-  };
-
-  const PresetButton = styled.button`
-    position: relative;
-    border: 2px solid gray;
-    border-radius: 5px;
-    background-color: white;
-    color: white;
-    cursor: pointer;
-    font-family: maple-light;
-    background: ${({ isSelected }) => (isSelected ? "#FFAA00" : "#999999")};
-    border: 1px solid
-      ${({ isSelected }) => (isSelected ? "#E47733" : "#777777")};
-  `;
-
-  const ItemIcon = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 46px;
-    height: 46px;
-    cursor: pointer;
-    border: ${({ grade, gradeColors }) =>
-      `2px solid ${
-        gradeColors && gradeColors[grade] ? gradeColors[grade] : "none"
-      }`};
-  `;
-
   return (
-    <Container>
+    <Container onMouseLeave={handleMouseLeave}>
       <ItemInfoDetailWrap>
-        <InfoWrap currentTab={currentTab}>
+        <InfoWrap $currentTab={currentTab}>
           <Header>EQUIPMENT</Header>
           <TabMenu>
             <TabButton
-              isSelected={currentTab === "장비"}
+              $isSelected={currentTab === "장비"}
               onClick={() => handleTabChange("장비")}
             >
               장비
             </TabButton>
             <TabButton
-              isSelected={currentTab === "캐시"}
+              $isSelected={currentTab === "캐시"}
               onClick={() => handleTabChange("캐시")}
             >
               캐시
             </TabButton>
             <TabButton
-              isSelected={currentTab === "펫"}
+              $isSelected={currentTab === "펫"}
               onClick={() => handleTabChange("펫")}
             >
               펫
             </TabButton>
             <TabButton
-              isSelected={currentTab === "AD"}
+              $isSelected={currentTab === "AD"}
               onClick={() => handleTabChange("AD")}
             >
               AD
@@ -286,10 +306,10 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                     : EquipData.item_equipment
                   )?.map((item, index) => (
                     <ItemIcon
-                      key={index}
+                      key={item.item_equipment_slot}
                       style={positions[item.item_equipment_slot]}
-                      grade={item.potential_option_grade}
-                      gradeColors={gradeColors}
+                      $grade={item.potential_option_grade}
+                      $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)}
                       onMouseOver={() => handleItemHover(item)}
                     >
@@ -298,10 +318,10 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   ))}
                   {EquipData[selectedPreset]?.map((item, index) => (
                     <ItemIcon
-                      key={index}
+                      key={item.item_equipment_slot}
                       style={positions[item.item_equipment_slot]}
-                      grade={item.potential_option_grade}
-                      gradeColors={gradeColors}
+                      $grade={item.potential_option_grade}
+                      $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                       onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
                     >
@@ -337,21 +357,21 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   <PresetButtons>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_1")}
-                      isSelected={selectedPreset === "item_equipment_preset_1"}
+                      $isSelected={selectedPreset === "item_equipment_preset_1"}
                     >
-                      <div>프리셋1</div>
+                      <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_2")}
-                      isSelected={selectedPreset === "item_equipment_preset_2"}
+                      $isSelected={selectedPreset === "item_equipment_preset_2"}
                     >
-                      <div>프리셋2</div>
+                      <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_3")}
-                      isSelected={selectedPreset === "item_equipment_preset_3"}
+                      $isSelected={selectedPreset === "item_equipment_preset_3"}
                     >
-                      <div>프리셋3</div>
+                      <span>프리셋3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingPresetKey === selectedPreset && (
@@ -370,7 +390,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   {EquipData.getCashItemEquipment[selectedCashPreset]?.map(
                     (item, index) => (
                       <ItemIcon
-                        key={index}
+                        key={item.cash_item_equipment_slot}
                         style={cashPositions[item.cash_item_equipment_slot]}
                         onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                         onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
@@ -383,36 +403,36 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                 <PresetButtonWrap>
                   <BaseButton
                     onClick={() => handleCashItemBase()}
-                    isSelected={
+                    $isSelected={
                       selectedCashPreset === "cash_item_equipment_base"
                     }
                   >
-                    <div>BASE</div>
+                    <span>BASE</span>
                   </BaseButton>
                   <PresetButtons>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_1")}
-                      isSelected={
+                      $isSelected={
                         selectedCashPreset === "cash_item_equipment_preset_1"
                       }
                     >
-                      <div>프리셋1</div>
+                      <span>프리셋1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_2")}
-                      isSelected={
+                      $isSelected={
                         selectedCashPreset === "cash_item_equipment_preset_2"
                       }
                     >
-                      <div>프리셋2</div>
+                      <span>프리셋2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handleCashPresetChange("preset_3")}
-                      isSelected={
+                      $isSelected={
                         selectedCashPreset === "cash_item_equipment_preset_3"
                       }
                     >
-                      <div>프리셋3</div>
+                      <span>프리셋3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingCashPresetKey === selectedCashPreset && (
@@ -437,7 +457,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_1_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(1)}
                               onClick={() => handlePetAppearanceInfo(1)}
                             />
@@ -463,8 +483,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_1_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_1_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_1_auto_skill
@@ -479,8 +499,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_1_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_1_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_1_auto_skill
@@ -505,7 +525,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_2_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(2)}
                               onClick={() => handlePetAppearanceInfo(2)}
                             />
@@ -531,8 +551,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_2_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_2_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_2_auto_skill
@@ -547,8 +567,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_2_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_2_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_2_auto_skill
@@ -573,7 +593,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               src={
                                 EquipData.getPetEquipment.pet_3_appearance_icon
                               }
-                              alt="petIcon"
+                              alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(3)}
                               onClick={() => handlePetAppearanceInfo(3)}
                             />
@@ -599,8 +619,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         </PetEquipShapeIcon>
                         <PetAutoSkillWrap>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_3_auto_skill
-                              .skill_1_icon ? (
+                            {EquipData.getPetEquipment?.pet_3_auto_skill
+                              ?.skill_1_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_3_auto_skill
@@ -615,8 +635,8 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             )}
                           </PetAutoSkillIcon>
                           <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment.pet_3_auto_skill
-                              .skill_2_icon ? (
+                            {EquipData.getPetEquipment?.pet_3_auto_skill
+                              ?.skill_2_icon ? (
                               <img
                                 src={
                                   EquipData.getPetEquipment.pet_3_auto_skill
@@ -647,7 +667,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                   {EquipData.getAndroidEquipment.android_cash_item_equipment?.map(
                     (item, index) => (
                       <ItemIcon
-                        key={index}
+                        key={item.cash_item_equipment_slot}
                         style={ADPositions[item.cash_item_equipment_slot]}
                         onClick={() => handleItemClick(item)}
                         onMouseOver={() => handleItemHover(item)}
@@ -669,10 +689,17 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
             <ItemDetail
               item={selectedItem}
               clicked={clicked}
-              gradeColors={gradeColors}
+              $gradeColors={gradeColors}
+              closeClick={isCloseClick}
+              onClose={handleCloseClick}
             />
           ) : currentTab === "펫" ? (
-            <PetItemDetail item={selectedItem} clicked={clicked} />
+            <PetItemDetail
+              item={selectedItem}
+              clicked={clicked}
+              onClose={handleCloseClick}
+              closeClick={isCloseClick}
+            />
           ) : (
             <AndroidItemDetail item={selectedItem} clicked={clicked} />
           )}
@@ -692,9 +719,9 @@ const Container = styled.div`
   gap: 5px;
   border-radius: 5px;
   padding: 5px;
+  width: 100%;
 
   @media screen and (max-width: 1024px) {
-    width: 100%;
     flex-direction: column;
     padding: 0;
   }
@@ -716,7 +743,6 @@ const EquipWrap = styled.div`
 `;
 
 const InfoWrap = styled.div`
-  width: 300px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -724,28 +750,21 @@ const InfoWrap = styled.div`
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
+
   height: ${(props) => {
-    switch (props.currentTab) {
+    switch (props.$currentTab) {
       case "장비":
         return "450px";
       case "캐시":
         return "470px";
       case "펫":
-        return "345px";
+        return "285px";
       case "AD":
         return "400px";
       default:
         return "450px";
     }
   }};
-
-  @media screen and (max-width: 768px) {
-    width: 372px;
-  }
-
-  @media screen and (max-width: 576px) {
-    width: 100%;
-  }
 `;
 
 const ItemInfoDetailWrap = styled.div`
@@ -756,6 +775,7 @@ const ItemInfoDetailWrap = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -770,11 +790,11 @@ const TabButton = styled.button`
   font-family: maple-light;
   font-size: 14px;
   color: white;
-  background: ${({ isSelected }) =>
-    isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+  background: ${({ $isSelected }) =>
+    $isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
   border: 1px solid
-    ${({ isSelected }) =>
-      isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
+    ${({ $isSelected }) =>
+      $isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   cursor: pointer;
@@ -787,19 +807,20 @@ const BaseButton = styled.button`
   cursor: pointer;
   color: white;
   font-family: maple-light;
-  background: ${({ isSelected }) =>
-    isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+  background: ${({ $isSelected }) =>
+    $isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
   border: 1px solid
-    ${({ isSelected }) =>
-      isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
+    ${({ $isSelected }) =>
+      $isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
 `;
 
 const UiBackgrnd = styled.div`
   position: relative;
   border-top: 1px solid black;
-  background-color: rgb(255, 251, 251);
+  background-color: rgb(255, 255, 255);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 const BackgroundImageWrap = styled.div`
@@ -823,6 +844,9 @@ const ADIcon = styled.div`
   cursor: pointer;
   right: 59px;
   bottom: 17px;
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const PetEquipWrap = styled.div`
@@ -834,19 +858,19 @@ const PetEquipWrap = styled.div`
 
 const PetBackgroundImage = styled.img`
   width: 262px;
-  margin-top: 25px;
+  margin-top: 5px;
 `;
 
 const PetBackgroundImageWrap = styled.div`
-  width: 262px;
-  height: 250px;
+  width: 272px;
+  height: 205px;
 `;
 
 const PetIconsWrap = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 39px;
+  top: 19px;
   gap: 19px;
   width: 100%;
 `;
@@ -903,16 +927,16 @@ const PresetButtons = styled.div`
 
 const DetailWrap = styled.div`
   position: absolute;
-  right: -302px;
+  right: -282px;
 
-  @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1024px) {
     position: relative;
     display: flex;
     justify-content: center;
     right: 0;
   }
 
-  @media screen and (max-width: 768px) {
-    width: 100%;
+  img {
+    image-rendering: pixelated;
   }
 `;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { SearchGuildDetail } from "./SearchGuildDetail";
 import WorldIcons from "../common/worldIcon/WorldIcons";
 
@@ -34,6 +35,10 @@ export const SearchGuildRendering = ({ result }) => {
 
   return (
     <Container>
+      <Helmet>
+        <title>{`길드 ${guildName} - 메짱`}</title>
+        <meta name="description" content="길드의 정보를 불러오는 기능입니다." />
+      </Helmet>
       {isGuildDetail ? (
         <SearchGuildDetail
           selectedGuild={selectedGuild}
@@ -89,7 +94,7 @@ export const SearchGuildRendering = ({ result }) => {
 
 const Container = styled.div`
   width: 100%;
-  min-width: 750px;
+  min-width: 650px;
 
   @media screen and (max-width: 1024px) {
     min-width: 550px;
@@ -192,7 +197,7 @@ const Icon = styled.div`
   height: 16px;
   text-align: center;
   border: 1px solid black;
-  background: rgb(214, 214, 214);
+  background: rgb(216, 216, 216);
   padding: 4px 5px 5px 5px;
   border-radius: 4px;
   font-size: 10px;
