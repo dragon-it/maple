@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import HennessysBGM from "../../assets/slidingPuzzle/backgroundMusic/Hennessys.mp3";
+import HenesysBGM from "../../assets/slidingPuzzle/backgroundMusic/Henesys.mp3";
 import LithHarborBGM from "../../assets/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
 import VolumeIcon from "../../assets/slidingPuzzle/Speaker.svg";
 import MuteIcon from "../../assets/slidingPuzzle/Mute.svg";
 import colors from "../common/color/colors";
 
 export const SlidingPuzzleMusicPlayer = () => {
-  const [bgm, setBgm] = useState(HennessysBGM);
+  const [bgm, setBgm] = useState(HenesysBGM);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [prevVolume, setPrevVolume] = useState(0.5);
@@ -21,7 +21,18 @@ export const SlidingPuzzleMusicPlayer = () => {
   }, [volume]);
 
   const handleBgmChange = (event) => {
-    setBgm(event.target.value);
+    const newBgm = event.target.value;
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = newBgm;
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play();
+      }
+    }
+
+    setBgm(newBgm);
   };
 
   const togglePlayPause = () => {
@@ -53,15 +64,18 @@ export const SlidingPuzzleMusicPlayer = () => {
   };
 
   return (
-    <>
-      <label>
-        배경 음악
-        <CustomSelect value={bgm} onChange={handleBgmChange}>
-          <option value={HennessysBGM}>헤네시스</option>
-          <option value={LithHarborBGM}>리스항구</option>
-        </CustomSelect>
-        <button onClick={togglePlayPause}>{isPlaying ? "❚❚" : "▶"}</button>
-      </label>
+    <Container>
+      <ControlContainer>
+        <label>
+          배경 음악
+          <CustomSelect value={bgm} onChange={handleBgmChange}>
+            <option value={HenesysBGM}>헤네시스</option>
+            <option value={LithHarborBGM}>리스항구</option>
+          </CustomSelect>
+          <button onClick={togglePlayPause}>{isPlaying ? "❚❚" : "▶"}</button>
+        </label>
+      </ControlContainer>
+
       <CustomAudioPlayer>
         <audio ref={audioRef} loop>
           <source src={bgm} type="audio/mpeg" />
@@ -82,25 +96,34 @@ export const SlidingPuzzleMusicPlayer = () => {
           />
         </label>
       </CustomAudioPlayer>
-    </>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  display: flex;
+  background-color: red;
+  border-radius: 5px;
+`;
+
+const ControlContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
 const CustomAudioPlayer = styled.div`
   margin-top: 10px;
+  width: 50%;
 
   button {
-    background-color: #ffffff;
+    background-color: ${colors.main.white2};
     border: none;
     padding: 10px 10px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #ff8800;
-    }
   }
 
   label {
@@ -116,24 +139,21 @@ const CustomAudioPlayer = styled.div`
 `;
 
 const VolumeIconStyled = styled.img`
-  width: 40px;
-  height: 40px;
-  vertical-align: middle;
-  margin-right: 5px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 `;
 
 const CustomSelect = styled.select`
-  margin-left: 10px;
-  padding: 5px 10px;
+  padding: 6px 10px;
   font-size: 16px;
   border-radius: 5px;
   background-color: ${colors.main.white2};
   border: 1px solid ${colors.commonInfo.normalBtn.btnBorder};
   cursor: pointer;
+  transition: all 0.3s;
 
   &:hover {
-    background-color: ${colors.characterInfo.characterStatColor
-      .combatPowerBorder};
+    background-color: ${colors.commonInfo.normalBtn.btnHover};
   }
 `;
