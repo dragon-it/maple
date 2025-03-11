@@ -125,7 +125,7 @@ const ControlContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  color: ${colors.main.white3};
   label {
     display: flex;
     flex-direction: column;

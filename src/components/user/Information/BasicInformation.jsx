@@ -6,6 +6,7 @@ import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
 import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.svg";
 import TanjiroImage from "../../../assets/npc/tanjiro.png";
 import WorldIcons from "../../common/worldIcon/WorldIcons";
+import colors from "../../common/color/colors";
 
 export const BasicInformation = ({ BasicInfo }) => {
   const { theme } = useTheme();
@@ -249,7 +250,7 @@ const Level = styled.div`
   padding: 3px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: ${colors.commonInfo.textShadow};
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   border-right: 1px solid rgba(0, 0, 0, 0.3);
   border-left: 1px solid rgba(0, 0, 0, 0.3);
@@ -282,6 +283,7 @@ const CharacterName = styled.div`
   border-radius: 7px;
   background-color: rgb(60, 194, 216);
   border: 1px solid rgba(0, 0, 0, 0.3);
+  text-shadow: ${colors.commonInfo.textShadow};
   margin-bottom: 1px;
 `;
 
@@ -290,7 +292,7 @@ const Experience = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgb(170, 204, 0);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: ${colors.commonInfo.textShadow};
   font-size: 11px;
   padding: 1px;
   border-radius: 7px;

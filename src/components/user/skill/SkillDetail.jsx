@@ -83,7 +83,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
 
 const Container = styled.div`
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgb(0, 0, 0);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
