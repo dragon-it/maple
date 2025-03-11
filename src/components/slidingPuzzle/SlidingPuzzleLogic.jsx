@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import WinImage from "../../assets/slidingPuzzle/Minigame.win.png";
 import WinSound from "../../assets/slidingPuzzle/Win.mp3";
-import TimerIcon from "../../assets/slidingPuzzle/Clock.svg";
+import TimerIcon from "../../assets/slidingPuzzle/icons/Clock.svg";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
 import colors from "../common/color/colors";
 import PuzzleImages from "./SlidingPuzzleImages";
@@ -141,24 +141,24 @@ export const SlidingPuzzleLogic = () => {
       <HeaderText>SLIDING PUZZLE</HeaderText>
       <OptionWrap>
         <label>
-          퍼즐 크기
-          <select value={size} onChange={handleSizeChange}>
+          <span>퍼즐 크기</span>
+          <CustomSelect value={size} onChange={handleSizeChange}>
             <option value={3}>3x3</option>
             <option value={4}>4x4</option>
-          </select>
+          </CustomSelect>
         </label>
         <label>
-          아트웍 선택
-          <select value={artwork} onChange={handleArtworkChange}>
+          <span>아트웍 선택</span>
+          <CustomSelect value={artwork} onChange={handleArtworkChange}>
             {Object.entries(PuzzleImages).map(([id, { label }]) => (
               <option key={id} value={id}>
                 {label}
               </option>
             ))}
-          </select>
+          </CustomSelect>
         </label>
-        <SlidingPuzzleMusicPlayer />
       </OptionWrap>
+      <SlidingPuzzleMusicPlayer />
       <LevelWrap>
         <Normal onClick={() => handleLevelChange("normal")} level={level}>
           NORMAL
@@ -213,6 +213,8 @@ export const SlidingPuzzleLogic = () => {
 };
 
 const PuzzleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   text-align: center;
   background-color: ${colors.commonInfo.wrapBackground};
   border: 1px solid ${colors.commonInfo.wrapBorder};
@@ -220,6 +222,7 @@ const PuzzleContainer = styled.div`
   outline: 1px solid ${colors.commonInfo.wrapOutline};
   padding: 7px;
   transition: 0.2s;
+  gap: 5px;
 `;
 
 const HeaderText = styled.h1`
@@ -231,16 +234,31 @@ const HeaderText = styled.h1`
 
 const OptionWrap = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-around;
+  gap: 5px;
+  background-color: ${colors.deepBlue.deepBlue4};
+  border: 1px solid ${colors.deepBlue.deepBlue11};
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
 
-  select {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    background-color: ${colors.main.white2};
-    border: 1px solid ${colors.commonInfo.normalBtn.btnBorder};
-    cursor: pointer;
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+`;
+
+const CustomSelect = styled.select`
+  padding: 6px 10px;
+  border-radius: 5px;
+  background-color: ${colors.main.white2};
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: ${colors.commonInfo.normalBtn.btnHover};
   }
 `;
 
@@ -267,12 +285,12 @@ const LevelWrap = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 10px;
-  margin: 10px 0;
+  margin: 5px 0;
 `;
 
 const Normal = styled.button`
   position: relative;
-  width: 60%;
+  width: 90%;
   background: ${colors.commonInfo.normalBtn.btnBackground};
   color: ${colors.commonInfo.normalBtn.btnText};
   font-size: 17px;
@@ -298,7 +316,7 @@ const Normal = styled.button`
 
 const Hard = styled.button`
   position: relative;
-  width: 60%;
+  width: 90%;
   font-size: 17px;
   background: ${colors.commonInfo.hardBtn.btnBackground};
   color: ${colors.commonInfo.hardBtn.btnText};
@@ -391,7 +409,7 @@ const TimerResetWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
+  margin: 3px 0;
 `;
 
 const WinImageWrap = styled.img`
