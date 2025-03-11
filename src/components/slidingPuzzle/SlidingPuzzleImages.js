@@ -11,7 +11,7 @@ import artwork9 from "../../assets/slidingPuzzle/artwork/artwork9.jpg";
 import artwork10 from "../../assets/slidingPuzzle/artwork/artwork10.jpg";
 
 const PuzzleImages = {
-  artwork0: { src: artwork0, label: "카링" },
+  artwork0: { src: artwork0, label: "윷놀이" },
   artwork1: { src: artwork1, label: "소풍" },
   artwork2: { src: artwork2, label: "소풍2" },
   artwork3: { src: artwork3, label: "라라" },

@@ -231,9 +231,17 @@ const HeaderText = styled.h1`
 
 const OptionWrap = styled.div`
   display: flex;
-
   flex-direction: column;
   align-items: center;
+
+  select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: ${colors.main.white2};
+    border: 1px solid ${colors.commonInfo.normalBtn.btnBorder};
+    cursor: pointer;
+  }
 `;
 
 const Reset = styled.button`
