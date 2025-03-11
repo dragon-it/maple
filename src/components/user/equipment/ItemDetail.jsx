@@ -1,10 +1,66 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
+import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
+import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
+import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
+import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
+import starForce_Icon from "../../../assets/optionIcon/starForceIcon.png";
+import rare_Border from "../../../assets/optionIcon/Item.ItemIcon.1.png";
+import epic_Border from "../../../assets/optionIcon/Item.ItemIcon.2.png";
+import unique_Border from "../../../assets/optionIcon/Item.ItemIcon.3.png";
+import legendary_Border from "../../../assets/optionIcon/Item.ItemIcon.4.png";
+import DesiredPart from "./itemDetailDesiredPart";
 
-export const ItemDetail = ({ item, clicked }) => {
+export const ItemDetail = ({ item, clicked, onClose }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 3; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+
+      top = Math.max(0, top);
+      left = Math.max(0, left);
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 1024;
+
   if (!item) {
     // 아이템 정보가 없는 경우
-    return <SelectContainer>아이템을 선택해주세요.</SelectContainer>;
+    return null;
   }
 
   // 옵션 이름을 매핑하는 객체
@@ -73,66 +129,80 @@ export const ItemDetail = ({ item, clicked }) => {
   };
 
   // 옵션 값 수정자를 매핑하는 객체
+  const formatValue = (value, isPercentage = false) =>
+    `${Math.sign(value) >= 0 ? "+" : ""}${value}${isPercentage ? "%" : ""}`;
+
   const optionValueModifierMap = {
-    all_stat: (value) => `+${value}%`,
-    equipment_level_decrease: (value) => `-${value}`,
-    max_hp_rate: (value) => `+${value}%`,
-    max_mp_rate: (value) => `+${value}%`,
-    ignore_monster_armor: (value) => `+${value}%`,
-    boss_damage: (value) => `+${value}%`,
-    damage: (value) => `+${value}%`,
-    default: (value) => `+${Number(value).toLocaleString()}`,
+    all_stat: (value) => formatValue(value, true),
+    equipment_level_decrease: (value) => formatValue(value),
+    max_hp_rate: (value) => formatValue(value, true),
+    max_mp_rate: (value) => formatValue(value, true),
+    max_hp: (value) => formatValue(value),
+    max_mp: (value) => formatValue(value),
+    ignore_monster_armor: (value) => formatValue(value, true),
+    boss_damage: (value) => formatValue(value, true),
+    damage: (value) => formatValue(value, true),
+    default: (value) => formatValue(Number(value).toLocaleString()),
   };
 
   // 등급의 첫 글자를 반환하는 함수
-  const getInitial = (grade) => {
-    switch (grade) {
+  const getInitial = ($grade) => {
+    switch ($grade) {
       case "레어":
-        return "R";
+        return rare_Icon;
       case "에픽":
-        return "E";
+        return epic_Icon;
       case "유니크":
-        return "U";
+        return unique_Icon;
       case "레전드리":
-        return "L";
+        return legendary_Icon;
       default:
         return "";
     }
   };
 
   return (
-    <Container>
-      {/* 클릭 시 PinImage를 보여줌 */}
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
-
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
+    >
       {/* 아이템 이름과 별 관련 정보를 보여주는 래퍼 */}
       <ItemNameWrap>
         {/* StarForce 컴포넌트로 별 표시 */}
         <StarForce
-          noData={item.starforce === 0 || item.starforce === "0"} // starforce가 0 또는 "0"이면 noData 속성에 true를 전달
+          $noData={item.starforce === 0 || item.starforce === "0"} // starforce가 0 또는 "0"이면 noData 속성에 true를 전달
           style={{ display: item.starforce === 0 ? "none" : "block" }} // starforce가 0이면 스타일을 none으로 설정하여 표시하지 않음
         >
           <StartForceFirstLine>
             {/* 첫 번째 줄의 별 (최대 15개) */}
-            {/* 
-            Array.from 메서드를 이용하여 새 배열 생성.
-            첫 번째 인자로 length를 포함한 유사 객체 생성.
-            두 번째 인자로 콜백 함수, 배열의 각 요소에 대해 호출됨. ( _, i ) => ...의 형태로 작성되며, 두 개의 매개변수를 가짐.
-            콜백 함수의 첫 번째 매개변수 _는 배열의 요소 값. 이 경우 배열 요소의 값은 사용되지 않으므로 언더스코어로 표기하여 무시.
-            콜백 함수의 두 번째 매개변수 i는 배열의 인덱스를 나타냄. 0부터 시작하며, 각 요소의 위치를 나타냄.
-             */}
-            {Array.from(
-              { length: Math.min(item.starforce, 15) },
-              (_, i) => ((i + 1) % 5 === 0 ? "★ " : "★") // 별을 5개마다 공백을 추가하여 표시
-            )}
+            {Array.from({ length: Math.min(item.starforce, 15) }, (_, i) => (
+              <React.Fragment key={`star-${i}`}>
+                <StarForceIcon src={starForce_Icon} alt="star" />
+                {(i + 1) % 5 === 0 && (
+                  <span key={`space-${i}`} style={{ margin: "0 3px" }}></span>
+                )}
+              </React.Fragment>
+            ))}
           </StartForceFirstLine>
           <StartForceSecondLine>
             {/* 두 번째 줄의 별 (15개 이상일 때) */}
             {item.starforce > 15 &&
-              Array.from(
-                { length: item.starforce - 15 },
-                (_, i) => ((i + 1) % 5 === 0 ? "★ " : "★") // 별을 5개마다 공백을 추가하여 표시
-              )}
+              Array.from({ length: item.starforce - 15 }, (_, i) => (
+                <React.Fragment key={`star-second-${i}`}>
+                  <StarForceIcon src={starForce_Icon} alt="star" />
+                  {(i + 1) % 5 === 0 && (
+                    <span
+                      key={`space-second-${i}`}
+                      style={{ margin: "0 3px" }}
+                    ></span>
+                  )}
+                </React.Fragment>
+              ))}
           </StartForceSecondLine>
         </StarForce>
 
@@ -160,15 +230,15 @@ export const ItemDetail = ({ item, clicked }) => {
         </h2>
         {/* 잠재 옵션 등급 표시 */}
         {item.potential_option_grade && (
-          <p>{`(${item.potential_option_grade} 아이템)`}</p>
+          <NamePotentialName>{`(${item.potential_option_grade} 아이템)`}</NamePotentialName>
         )}
       </ItemNameWrap>
 
       {/* 아이콘 래퍼 */}
       <IconWrap>
         {/* 아이템 아이콘 이미지 */}
-        <IconImage grade={item.potential_option_grade}>
-          <img src={item.item_icon || item.android_icon} alt="android_icon" />
+        <IconImage $grade={item.potential_option_grade}>
+          <img src={item.item_icon || item.android_icon} alt="item_icon" />
         </IconImage>
       </IconWrap>
 
@@ -180,7 +250,7 @@ export const ItemDetail = ({ item, clicked }) => {
         )}
         {/* 아이템 옵션 정보 표시 */}
         {item.item_total_option &&
-          Object.entries(item.item_total_option).map(([key, value]) => {
+          Object.entries(item.item_total_option).map(([key, value], index) => {
             if (value !== "0" && value !== 0) {
               const modifier =
                 optionValueModifierMap[key] || optionValueModifierMap.default;
@@ -191,27 +261,45 @@ export const ItemDetail = ({ item, clicked }) => {
 
               const addPart =
                 add !== undefined && add !== "0" && add !== 0 ? (
-                  <span style={{ color: "rgb(204, 255, 0)" }}>
+                  <span
+                    style={{
+                      color: "rgb(204, 255, 0)",
+                      padding: "0px 0px 0px 2px",
+                    }}
+                  >
                     {`${modifier(add)}`}
                   </span>
                 ) : null;
+
               const starforcePart =
                 starforce !== undefined &&
                 starforce !== "0" &&
                 starforce !== 0 ? (
-                  <span style={{ color: "rgb(255, 204, 0)" }}>
+                  <span
+                    style={{
+                      color: "rgb(255, 204, 0)",
+                      padding: "0px 0px 0px 2px",
+                    }}
+                  >
                     {`${modifier(starforce)}`}
                   </span>
                 ) : null;
               const basePart =
                 add !== 0 || starforce !== 0 ? (
-                  <span style={{ color: "rgb(255, 255, 255)" }}>{`${modifier(
-                    base
-                  )}`}</span>
+                  <span
+                    style={{
+                      color: "rgb(255, 255, 255)",
+                    }}
+                  >{`${Number(base).toLocaleString()}`}</span>
                 ) : null;
               const etcPart =
                 etc !== undefined && etc !== "0" && etc !== 0 ? (
-                  <span style={{ color: "rgb(170, 170, 255)" }}>
+                  <span
+                    style={{
+                      color: "rgb(170, 170, 255)",
+                      padding: "0px 0px 0px 2px",
+                    }}
+                  >
                     {`${modifier(etc)}`}
                   </span>
                 ) : null;
@@ -234,7 +322,7 @@ export const ItemDetail = ({ item, clicked }) => {
 
               return (
                 <p
-                  key={key}
+                  key={`${key}-${index}`}
                   style={{
                     color:
                       basePart && (addPart || starforcePart || etcPart)
@@ -259,9 +347,30 @@ export const ItemDetail = ({ item, clicked }) => {
         {item.android_description && (
           <ADItemDescription>{item.android_description}</ADItemDescription>
         )}
+
+        {/* 업그레이드 가능 횟수 */}
+        {item.scroll_upgradeable_count &&
+          DesiredPart.includes(item.item_equipment_slot) && (
+            <p>
+              업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
+              <ResilienceCount>
+                (복구 가능 횟수 : {item.scroll_resilience_count})
+              </ResilienceCount>
+            </p>
+          )}
+
+        {/* 황금망치 제련 여부 */}
+        {item.golden_hammer_flag === "적용" && <p>황금 망치 제련 적용</p>}
+
+        {/* 가위 사용 가능 횟수 */}
+        {item.cuttable_count && item.cuttable_count !== "255" && (
+          <CuttableCount>
+            가위 사용 가능 횟수 : {item.cuttable_count}회
+          </CuttableCount>
+        )}
       </ItemOptionWrap>
       <OptionWrap
-        PotenOptions={
+        $PotenOptions={
           item &&
           (item.potential_option_grade ||
             item.additional_potential_option_grade ||
@@ -272,36 +381,36 @@ export const ItemDetail = ({ item, clicked }) => {
       >
         {item.potential_option_grade && (
           <PotentialOptionWrap>
-            <OptionHeader potengrade={item.potential_option_grade}>
-              <OptionInitial potengrade={item.potential_option_grade}>
-                {getInitial(item.potential_option_grade)}
-              </OptionInitial>
+            <OptionHeader $potengrade={item.potential_option_grade}>
+              <OptionInitial
+                $potengrade={item.potential_option_grade}
+                src={getInitial(item.potential_option_grade)}
+                alt="Icon"
+              />
               <span>잠재옵션</span>
             </OptionHeader>
-            {[
-              item.potential_option_1,
-              item.potential_option_2,
-              item.potential_option_3,
-            ].map((option, index) => (
-              <PotentialItems key={index}>{option}</PotentialItems>
-            ))}
+            <PotentialItems>{item.potential_option_1}</PotentialItems>
+            <PotentialItems>{item.potential_option_2}</PotentialItems>
+            <PotentialItems>{item.potential_option_3}</PotentialItems>
           </PotentialOptionWrap>
         )}
         {item.additional_potential_option_grade && (
           <AdditionalOptionWrap>
-            <OptionHeader potengrade={item.additional_potential_option_grade}>
+            <OptionHeader $potengrade={item.additional_potential_option_grade}>
               <OptionInitial
-                potengrade={item.additional_potential_option_grade}
-              >
-                {getInitial(item.additional_potential_option_grade)}
-              </OptionInitial>
+                $potengrade={item.additional_potential_option_grade}
+                src={getInitial(item.additional_potential_option_grade)}
+                alt="Icon"
+              ></OptionInitial>
               <span>에디셔널 잠재옵션</span>
             </OptionHeader>
             <AdditionalItems>
               {item.additional_potential_option_1}
-              <br />
+            </AdditionalItems>
+            <AdditionalItems>
               {item.additional_potential_option_2}
-              <br />
+            </AdditionalItems>
+            <AdditionalItems>
               {item.additional_potential_option_3}
             </AdditionalItems>
           </AdditionalOptionWrap>
@@ -325,35 +434,10 @@ export const ItemDetail = ({ item, clicked }) => {
     </Container>
   );
 };
-const SelectContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 290px;
-  height: 50px;
-  color: white;
-  padding: 0px 10px;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  font-family: maple-light;
-
-  @media screen and (max-width: 1024px) {
-    width: 200px;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 460px;
-  }
-
-  @media screen and (max-width: 576px) {
-    width: 100%;
-  }
-`;
 
 const Container = styled.div`
-  width: 290px;
+  position: fixed;
+  width: 270px;
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
@@ -362,29 +446,56 @@ const Container = styled.div`
   padding: 0px 10px 5px;
   padding-bottom: 3px;
   height: fit-content;
+  font-family: "돋움";
+  white-space: pre-line;
+  z-index: 9999;
 
   @media screen and (max-width: 1024px) {
-    width: 300px;
+    position: relative;
+  }
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    transform: translate(0%, -60%);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(
+      139deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
   }
 `;
+
 const ItemNameWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 1px dashed rgb(89, 85, 82);
   padding-bottom: 10px;
   h2 {
-    font-size: 16px;
+    font-size: 15px;
     padding: 3px 0;
-    line-height: 24px;
     text-align: center;
     span {
       color: rgb(210, 245, 57);
     }
-    p {
-      display: flex;
-    }
   }
+`;
+
+const NamePotentialName = styled.p`
+  font-size: 12px;
 `;
 
 const IconWrap = styled.div`
@@ -392,42 +503,109 @@ const IconWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  border-bottom: 1px dashed rgb(89, 85, 82);
 `;
 
 const IconImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 5px;
+  background-image: url(${iconBackground});
+  background-size: 62px 62px;
+  background-position: center;
+  position: relative;
   img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
   }
-  ${({ grade }) => {
-    switch (grade) {
+  ${({ $grade }) => {
+    switch ($grade) {
       case "레어":
-        return "border: 3px solid rgb(0,154,255); ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 111%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${rare_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       case "에픽":
-        return "border: 3px solid rgb(120,0,239); ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 111%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${epic_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       case "유니크":
-        return "border: 3px solid rgb(255,188,0) ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 111%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${unique_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       case "레전드리":
-        return "border: 3px solid rgb(0,187,136); ";
+        return `&::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 111%;
+          height: 100%;
+          border-radius: 5px;
+          background-image: url(${legendary_Border});
+          background-size: cover;
+          background-position: center;
+        }`;
       default:
-        return "border: 3px solid rgb(134, 130, 132); ";
+        return "";
     }
   }}
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 45px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
+  }
 `;
 
 const StarForce = styled.div`
   color: rgb(255, 204, 0);
-  font-size: 13px;
+  font-size: 12px;
   padding-top: ${(props) => (props.Data ? "0" : "15px")};
+  padding-bottom: ${(props) => (props.Data ? "0" : "3px")};
 `;
 
 const StartForceFirstLine = styled.div``;
@@ -437,66 +615,36 @@ const StartForceSecondLine = styled.div`
   justify-content: center;
 `;
 
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(45deg);
-`;
-
 const ItemOptionWrap = styled.div`
   padding: 5px 0;
-  line-height: 16px;
-  font-size: 12px;
+  line-height: 15px;
+  font-size: 11px;
 `;
 
 const OptionWrap = styled.div`
-  font-size: 13px;
-  white-space: pre-line;
-  ${(props) => !props.PotenOptions && "padding-bottom: 0;"}
-  ${(props) => props.PotenOptions && "border-top: 2px dotted rgb(55, 56, 58);"}
+  font-size: 11px;
+  ${(props) => !props.$PotenOptions && "padding-bottom: 0;"}
+  ${(props) => props.$PotenOptions && "border-top: 1px dashed rgb(89, 85, 82);"}
 `;
 
-const OptionInitial = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+const OptionInitial = styled.img`
   width: 13px;
   height: 13px;
-  box-sizing: border-box;
-  font-size: 11px;
-  border-radius: 3px;
   margin-right: 3px;
-  ${({ potengrade }) => {
-    if (potengrade === "레어")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(0,154,255); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-    if (potengrade === "에픽")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,0,239); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-    if (potengrade === "유니크")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(255,188,0); text-shadow: 0px 0px 1px black, -1px 0px 3px black, 0px -1px 1px black";
-    if (potengrade === "레전드리")
-      return "border: 1px solid rgb(255,255,255); background-color: rgb(120,239,0); text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black";
-  }}
 `;
 
 const OptionHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  ${({ potengrade }) => {
-    if (potengrade === "레어")
+  ${({ $potengrade }) => {
+    if ($potengrade === "레어")
       return "color: rgb(102,225,225); margin-bottom: 2px;";
-    if (potengrade === "에픽")
+    if ($potengrade === "에픽")
       return "color: rgb(153,91,197); margin-bottom: 2px;";
-    if (potengrade === "유니크")
+    if ($potengrade === "유니크")
       return "color: rgb(255,204,0); margin-bottom: 2px;";
-    if (potengrade === "레전드리")
+    if ($potengrade === "레전드리")
       return "color: rgb(204,241,20); margin-bottom: 2px;";
   }}
 `;
@@ -507,28 +655,30 @@ const PotentialOptionWrap = styled.div`
 
 const AdditionalOptionWrap = styled.div`
   padding: 5px 0;
-  border-top: 2px dotted rgb(55, 56, 58);
+  border-top: 1px dashed rgb(89, 85, 82);
 `;
 
 const SoulOptionWrap = styled.div`
-  border-top: 2px dotted rgb(55, 56, 58);
-  padding-top: 3px;
+  border-top: 1px dashed rgb(89, 85, 82);
+  padding: 5px 0px;
   :first-child {
     color: rgb(255, 255, 68);
   }
 `;
 
 const ExOptionWrap = styled.div`
-  border-top: 2px dotted rgb(55, 56, 58);
-  padding-top: 5px;
+  border-top: 1px dashed rgb(89, 85, 82);
+  padding: 5px 0;
 `;
 
 const PotentialItems = styled.div`
-  font-size: 12px;
+  font-size: 11px;
+  margin: 1px;
 `;
 
 const AdditionalItems = styled.div`
-  font-size: 12px;
+  font-size: 11px;
+  margin: 1px;
 `;
 
 const ExOptionHeader = styled.div`
@@ -539,9 +689,8 @@ const ExOptionHeader = styled.div`
 `;
 
 const ExInitial = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  font-size: 10px;
   width: 20px;
   height: 13px;
   margin-right: 3px;
@@ -549,11 +698,10 @@ const ExInitial = styled.div`
   background-color: rgb(255, 51, 51);
   border: 1px solid rgb(255, 255, 255);
   border-radius: 4px;
-  text-shadow: 0px 0px 1px black, -1px 0px 1px black, 0px -1px 1px black;
 `;
 
 const ADItemDescription = styled.div`
-  white-space: normal;
+  white-space: pre-wrap;
 `;
 
 const ADItemGrade = styled.div`
@@ -561,8 +709,22 @@ const ADItemGrade = styled.div`
   flex-direction: column;
 `;
 
-const ADCategory = styled.div``;
+const ADCategory = styled.span``;
 
-const ADGrade = styled.div`
+const ADGrade = styled.span`
   margin-bottom: 10px;
+`;
+
+const StarForceIcon = styled.img`
+  width: 12px;
+  height: 12px;
+`;
+
+const ResilienceCount = styled.span`
+  margin-left: 5px;
+  color: rgb(255, 204, 0);
+`;
+
+const CuttableCount = styled.span`
+  color: rgb(255, 204, 0);
 `;

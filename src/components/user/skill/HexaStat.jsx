@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import hexaStatData from "./HexaStatData";
+import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
 
 const StatInfo = ({ level, name, value }) => {
   return (
@@ -54,10 +55,10 @@ export const HexaStat = ({ Data }) => {
       Data.character_hexa_stat_core_2.length === 0)
   ) {
     return (
-      <Container>
+      <ContainerBox>
         <Header>HEXA STAT</Header>
         <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
-      </Container>
+      </ContainerBox>
     );
   }
 
@@ -105,7 +106,7 @@ export const HexaStat = ({ Data }) => {
       : null;
 
   return (
-    <Container>
+    <ContainerBox>
       <Header>HEXA STAT</Header>
       <StatContainer>
         {firstHexaStatInfo && (
@@ -156,19 +157,9 @@ export const HexaStat = ({ Data }) => {
           </StatWrap>
         )}
       </StatContainer>
-    </Container>
+    </ContainerBox>
   );
 };
-
-const Container = styled.div`
-  background-color: #000000d3;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  color: white;
-  padding: 7px;
-  width: 100%;
-`;
 
 const Header = styled.div`
   font-size: 15px;
@@ -178,13 +169,11 @@ const Header = styled.div`
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
 
-const StatWrap = styled.div`
+const StatWrap = styled.ul`
   font-size: 13px;
 `;
 
-const MainStat = styled.div`
-  display: flex;
-  flex-direction: row;
+const MainStat = styled.li`
   font-weight: bold;
   font-size: 15px;
   @media screen and (max-width: 768px) {
@@ -192,7 +181,7 @@ const MainStat = styled.div`
   }
 `;
 
-const StatInfoContainer = styled.div`
+const StatInfoContainer = styled.li`
   display: flex;
   flex-direction: row;
   gap: 3px;
@@ -202,19 +191,21 @@ const StatInfoContainer = styled.div`
   }
 `;
 
-const StatLevel = styled.div``;
+const StatLevel = styled.span``;
 
-const StatName = styled.div``;
+const StatName = styled.span``;
 
-const StatValue = styled.div``;
+const StatValue = styled.span``;
 
-const SkillNoDataText = styled.div`
-  font-family: maple-light;
-`;
+const SkillNoDataText = styled.p``;
 
 const StatContainer = styled.div`
   display: flex;
   gap: 50px;
+
+  @media screen and (max-width: 1024px) {
+    justify-content: center;
+  }
 
   @media screen and (max-width: 767px) {
     flex-direction: column;
@@ -222,13 +213,12 @@ const StatContainer = styled.div`
   }
 `;
 
-const SlotHeader = styled.div`
+const SlotHeader = styled.li`
   font-family: maple-light;
   color: #ffffff;
   font-size: 15px;
-  border: 1px solid rgb(0, 0, 0);
   border-radius: 10px;
-  background-color: #b665f3;
+  background-color: rgb(182, 101, 243);
   text-align: center;
   margin-bottom: 3px;
 `;

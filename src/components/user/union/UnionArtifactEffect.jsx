@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-export const UnionArtifactEffect = ({ Data, showUnionRaider }) => {
+export const UnionArtifactEffect = ({ Data, activeTab }) => {
   return (
     <Container>
-      {showUnionRaider ? (
+      {activeTab === "raider" ? (
         <>
           <Header>공격대 점령 효과</Header>
           <EffectContainer>
@@ -33,7 +33,6 @@ export const UnionArtifactEffect = ({ Data, showUnionRaider }) => {
 };
 
 const Container = styled.div`
-  border-radius: 5px;
   display: flex;
   gap: 5px;
   flex-direction: column;
@@ -46,34 +45,40 @@ const Container = styled.div`
   color: white;
 `;
 
-const Header = styled.div``;
+const Header = styled.p``;
 
-const EffectContainer = styled.div`
+const EffectContainer = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 3px;
-  height: 100%;
   :hover {
-    background-color: rgb(151, 151, 151);
-    color: rgb(19, 19, 19);
+    filter: brightness(1.4);
   }
 `;
 
-const InfoWrap = styled.div`
+const InfoWrap = styled.li`
   display: flex;
-  flex-direction: row;
   align-items: center;
+  width: 100%;
   padding: 5px;
-  gap: 2px;
-  background-color: rgb(48, 54, 63);
-  border-radius: 5px;
+  border-radius: 3px;
   border: 1px solid rgb(136, 184, 212);
   outline: 1px solid rgb(56, 70, 81);
-  height: 100%;
+  max-width: 300px;
+  font-size: 12px;
+
+  @media screen and (max-width: 1024px) {
+    max-width: 100%;
+  }
 `;
 
-const Level = styled.div`
-  width: 40px;
+const Level = styled.span`
+  width: 35px;
+  flex-shrink: 0; 
 `;
 
-const Name = styled.div``;
+const Name = styled.span`
+  overflow: hidden;
+  white-space: wrap; 
+
+`;

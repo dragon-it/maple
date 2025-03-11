@@ -88,6 +88,10 @@ const Container = styled.div`
   position: relative;
   padding: ${(props) => (props.isGuildDetail ? "0px" : "0px 10px 10px 10px")};
   color: rgb(220, 220, 220);
+
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const Tabs = styled.div`
@@ -166,7 +170,7 @@ const Tab = styled.span`
   font-family: maple-light;
   &:hover {
     background-color: ${(props) =>
-      props.active ? "transparents" : "rgb(117, 117, 117)"};
+      props.active ? "transparents" : "rgb(119, 119, 119)"};
   }
 
   @media screen and (max-width: 768px) {

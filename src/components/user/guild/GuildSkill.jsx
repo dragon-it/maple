@@ -25,6 +25,13 @@ export const GuildSkill = ({ result }) => {
     setSelectedItem(null);
     setClicked(false);
   };
+  
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
+    if (!clicked) {
+      setSelectedItem(null);
+    }
+  };
 
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
@@ -38,7 +45,7 @@ export const GuildSkill = ({ result }) => {
   }, {});
 
   return (
-    <Container>
+    <Container  onMouseOut={handleMouseLeave}>
       {result.guildBasicInformation.guild_skill &&
       result.guildBasicInformation.guild_skill.length > 0 ? (
         <>
@@ -126,7 +133,6 @@ export const GuildSkill = ({ result }) => {
 const Container = styled.div`
   width: 100%;
   color: white;
-  font-family: maple-light;
 `;
 
 const SkillWrap = styled.div`
@@ -155,7 +161,7 @@ const SkillContainer = styled.div`
   gap: 10px;
   background-color: rgb(57, 57, 57);
   padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 `;
 
@@ -166,7 +172,7 @@ const Table = styled.div`
   margin-bottom: 10px;
   padding-bottom: 10px;
   background-color: rgb(57, 57, 57);
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 
   @media screen and (max-width: 1024px) {
@@ -210,8 +216,7 @@ const RightArrow = styled.img`
   height: 40px;
 `;
 
-// 공통 스타일 컴포넌트
-const SkillName = styled.div`
+const SkillName = styled.span`
   font-size: 11px;
   width: 100%;
   text-align: center;
@@ -227,17 +232,18 @@ const SkillIcon = styled.div`
   height: 32px;
 `;
 
-const SkillLevel = styled.div`
+const SkillLevel = styled.span`
   color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
   font-size: 13px;
 `;
 
-const SkillHeader = styled.div`
+const SkillHeader = styled.span`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
+  font-family: maple-light;
 `;
 
-const SkillNoDataText = styled.div`
+const SkillNoDataText = styled.span`
   font-family: maple-light;
 `;

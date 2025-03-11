@@ -86,7 +86,10 @@ export const GuildMember = ({ result }) => {
                   />
                   <DetailName>{member.character_name}</DetailName>
                   <DetailLevel>{member.character_class}</DetailLevel>
-                  <DetailLevel>Lv. {member.character_level}</DetailLevel>
+                  <DetailLevel>
+                    <span>Lv. </span>
+                    <span>{member.character_level}</span>
+                  </DetailLevel>
                 </DetailMember>
               ))}
               {/* <!-- 이미지 보기 미접속 캐릭터 명단 --> */}
@@ -108,7 +111,10 @@ export const GuildMember = ({ result }) => {
                 >
                   <SimpleItems>{member.character_name}</SimpleItems>
                   <SimpleItems>{member.character_class}</SimpleItems>
-                  <SimpleItems>Lv. {member.character_level}</SimpleItems>
+                  <SimpleItems>
+                    <span>Lv. </span>
+                    <span>{member.character_level}</span>
+                  </SimpleItems>
                 </SimpleMember>
               ))}
               {/* <!-- 텍스트 보기 미접속 캐릭터 명단 --> */}
@@ -137,7 +143,7 @@ const DetailChracterWrap = styled.div`
   max-height: 580px;
   padding: 5px;
   overflow-y: scroll;
-  background-color: #424242;
+  background-color:rgb(66, 66, 66);
   border-radius: 5px;
 
   @media screen and (max-width: 767px) {
@@ -154,42 +160,60 @@ const DetailMember = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3px 3px 5px 3px;
-  background-color: #a3a3a3ea;
+  background-color: rgb(153,	153, 153);
   color: #020202;
   border-radius: 5px;
   min-height: 30px;
-  font-family: maple-light;
   cursor: pointer;
   &:hover {
-    background-color: rgb(131, 131, 131);
+    background-color: rgb(136, 136, 136);
   }
 `;
 
 const DetailImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
+  border: 1px solid rgba(61, 61, 61, 0.18);
+  background-color: rgba(117, 117, 117, 0.85);
+  border-bottom: 2px solid rgb(62, 73, 81);
+  border-left: 1px solid rgb(62, 73, 81);
+  border-right: 1px solid rgb(62, 73, 81);
+  box-shadow: rgb(133, 145, 145) 0px 1px 0px;
   transform: scaleX(-1);
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const EmptyImage = styled.div`
-  width: 80px;
-  height: 80px;
-  background-color: #636363ea;
+  width: 96px;
+  height: 96px;
+  border: 1px solid rgba(91, 91, 91, 0.5);
   border-radius: 5px;
+
+  @media screen and (max-width: 1024px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
-const DetailName = styled.div``;
+const DetailName = styled.h5``;
 
-const DetailLevel = styled.div`
+const DetailLevel = styled.span`
   font-size: 12px;
+  span:first-child {
+    color: rgba(44, 44, 44, 0.7);
+  }
 `;
 
-const SimpleItems = styled.div`
+const SimpleItems = styled.span`
   font-size: 13px;
   line-height: 1.5rem;
-  color: rgb(248, 248, 248);
+  color: rgb(247, 247, 247);
   text-align: left;
   width: 20%;
   padding: 2px 0;
@@ -213,7 +237,7 @@ const SortingWrap = styled.div`
   margin-bottom: 5px;
   border: 2px solid rgb(121, 121, 121);
   border-radius: 5px;
-  background-color: rgb(59, 59, 59);
+  background-color: rgb(58, 58, 58);
 `;
 
 const SortingItems = styled.div`
@@ -244,7 +268,7 @@ const ToggleBtn = styled.div`
   top: -31px;
   font-family: maple-light;
   border: 1px solid rgb(0, 0, 0);
-  background-color: rgb(94, 94, 93);
+  background-color: rgb(85, 85, 85);
   border-radius: 5px;
   padding: 3px 4px;
   &:hover {
@@ -266,10 +290,10 @@ const SimpleMember = styled.div`
   justify-content: space-around;
   gap: 10px;
   width: 100%;
-  border-bottom: 1px solid rgba(195, 196, 194, 0.2);
+  border-bottom: 1px solid rgba(195, 195, 195, 0.2);
   min-height: 20px;
   cursor: pointer;
   &:hover {
-    background-color: rgb(78, 78, 78);
+    background-color: rgb(91, 91, 91);
   }
 `;

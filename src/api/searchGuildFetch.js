@@ -6,7 +6,6 @@ const SearchGuildFetch = async (guildName, setResult, setError) => {
 
     if (response) {
       setResult(response);
-      console.log(response);
     } else {
       setError("길드를 찾을 수 없습니다.");
     }

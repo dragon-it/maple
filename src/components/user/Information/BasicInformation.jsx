@@ -4,6 +4,7 @@ import BasicInfoBackground from "./BasicInfoBackground";
 import { useTheme } from "../../../context/ThemeProvider";
 import favorite_true from "../../../assets/favoriteIcon/favorite_Star_True.svg";
 import favorite_false from "../../../assets/favoriteIcon/favorite_Star_False.svg";
+import TanjiroImage from "../../../assets/npc/tanjiro.png";
 import WorldIcons from "../../common/worldIcon/WorldIcons";
 
 export const BasicInformation = ({ BasicInfo }) => {
@@ -104,7 +105,12 @@ export const BasicInformation = ({ BasicInfo }) => {
           <Level>Lv. {BasicInfo.getBasicInformation.character_level}</Level>
           <CharacterImg>
             <img
-              src={BasicInfo.getBasicInformation.character_image}
+              src={
+                BasicInfo.getBasicInformation.character_class ===
+                "카마도 탄지로"
+                  ? TanjiroImage
+                  : BasicInfo.getBasicInformation.character_image
+              }
               alt="character_image"
             />
           </CharacterImg>
@@ -150,7 +156,6 @@ export const BasicInformation = ({ BasicInfo }) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 7px;
   color: white;
   padding: 7px;
   width: 100%;
@@ -159,17 +164,26 @@ const Container = styled.div`
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
   background-color: rgba(59, 66, 75, 0.9);
+
+  @media screen and (max-width: 576px) {
+    padding: 5px;
+    font-size: 11px;
+  }
+
+  @media screen and (max-width: 200px) {
+    padding: 3px;
+    font-size: 10px;
+  }
 `;
 
-const HeaderWrap = styled.div`
+const HeaderWrap = styled.span`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const CharacterHeader = styled.div`
+const CharacterHeader = styled.h2`
   font-size: 15px;
-  font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
@@ -186,7 +200,7 @@ const CharacterBody = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: row;
-  border: 1px solid rgb(36 36 36);
+  border: 1px solid rgb(36, 36, 36);
   border-radius: 5px;
   background-size: cover;
   cursor: pointer;
@@ -239,6 +253,12 @@ const Level = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   border-right: 1px solid rgba(0, 0, 0, 0.3);
   border-left: 1px solid rgba(0, 0, 0, 0.3);
+
+  @media screen and (max-width: 576px) {
+    padding: 2px;
+    margin: 0 5px;
+    font-size: 12px;
+  }
 `;
 
 const CharacterImg = styled.div`
@@ -247,6 +267,11 @@ const CharacterImg = styled.div`
   transform: scaleX(-1);
   width: 110px;
   margin: 2px 0;
+  image-rendering: pixelated;
+
+  @media screen and (max-width: 576px) {
+    width: 90px;
+  }
 `;
 
 const CharacterName = styled.div`
@@ -273,7 +298,7 @@ const Experience = styled.div`
 `;
 
 const Job = styled.div`
-  background-color: rgba(202, 204, 206, 0.9);
+  background-color: rgba(202, 204, 206, 0.8);
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   width: 110px;
@@ -301,11 +326,20 @@ const Contents = styled.div`
   @media screen and (max-width: 576px) {
     width: 90px;
   }
+
+  @media screen and (max-width: 200px) {
+    width: 70px;
+    padding: 3px;
+  }
 `;
 
 const Value = styled.div`
   display: flex;
   color: black;
+
+  img {
+    image-rendering: pixelated;
+  }
 `;
 
 const Title = styled.div`
@@ -328,5 +362,5 @@ const FavoriteIcon = styled.div`
 const WorldIconImg = styled.img`
   width: 15px;
   height: 15px;
-  margin-left: 5px;
+  margin-left: 3px;
 `;

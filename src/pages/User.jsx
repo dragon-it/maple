@@ -12,6 +12,7 @@ import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Guild } from "../components/user/Guild";
 import { useTheme } from "../context/ThemeProvider";
+import { Helmet } from "react-helmet";
 
 export const User = () => {
   const { theme } = useTheme();
@@ -46,6 +47,13 @@ export const User = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${characterName} - 캐릭터 검색`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       {loading ? (
         <LoadingWrap>
           <img
@@ -61,22 +69,37 @@ export const User = () => {
           />
         </ErrorWrap>
       ) : (
-        <Container>
+        <Container $activeTab={activeTab}>
           <HeaderWrap>
             <Tabs>
-              <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+              <Tab
+                onClick={() => handleTabClick(1)}
+                $activeTab={activeTab === 1}
+              >
                 캐릭터 정보
               </Tab>
-              <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+              <Tab
+                onClick={() => handleTabClick(2)}
+                $activeTab={activeTab === 2}
+              >
                 캐릭터 장비
               </Tab>
-              <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+              <Tab
+                onClick={() => handleTabClick(3)}
+                $activeTab={activeTab === 3}
+              >
                 스킬
               </Tab>
-              <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+              <Tab
+                onClick={() => handleTabClick(4)}
+                $activeTab={activeTab === 4}
+              >
                 유니온
               </Tab>
-              <Tab onClick={() => handleTabClick(5)} active={activeTab === 5}>
+              <Tab
+                onClick={() => handleTabClick(5)}
+                $activeTab={activeTab === 5}
+              >
                 길드
               </Tab>
             </Tabs>
@@ -93,12 +116,12 @@ export const User = () => {
           {/* 길드 정보 */}
           {activeTab === 5 &&
             (guildLoading ? (
-              <LoadingWrap>
+              <GuildLoading>
                 <img
                   src={theme === "dark" ? loadingImg_dark : loadingImg_light}
                   alt="로딩 중..."
                 />
-              </LoadingWrap>
+              </GuildLoading>
             ) : (
               <Guild result={result} />
             ))}
@@ -111,7 +134,7 @@ export const User = () => {
 const Container = styled.div`
   position: relative;
   width: fit-content;
-  height: auto;
+  height: fit-content;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
@@ -120,11 +143,11 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
-    width: 90%;
+    min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
   }
 
   @media screen and (max-width: 576px) {
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,11 +158,7 @@ const Container = styled.div`
 const HeaderWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 3px 10px;
-  min-width: 750px;
-  @media screen and (max-width: 1024px) {
-    min-width: 0;
-  }
+  padding: 3px 5px;
 `;
 
 const SearchWrap = styled.div`
@@ -155,16 +174,18 @@ const SearchWrap = styled.div`
     width: 100%;
     margin-bottom: 10px;
   }
-
-  @media screen and (max-width: 576px) {
-  }
 `;
 
 const Tabs = styled.div`
   display: flex;
-  padding: 10px 0;
-  white-space: nowrap;
+  padding: 5px 0;
   font-family: maple-light;
+  font-size: 12px;
+  min-width: 390px;
+
+  @media screen and (max-width: 1024px) {
+    min-width: 0px;
+  }
 `;
 
 const Tab = styled.div`
@@ -173,14 +194,14 @@ const Tab = styled.div`
   margin: 0 5px;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
-  background-color: ${({ theme, active }) =>
-    active ? theme.tabActiveColor : "transparent"};
-  color: ${({ theme, active }) =>
-    active ? theme.tabActiveTextColor : theme.tabColor};
+  background-color: ${({ theme, $activeTab }) =>
+    $activeTab ? theme.tabActiveColor : "transparent"};
+  color: ${({ theme, $activeTab }) =>
+    $activeTab ? theme.tabActiveTextColor : theme.tabColor};
 
   &:hover {
-    background-color: ${({ theme, active }) =>
-      active ? "transparents" : theme.tabHoverColor};
+    background-color: ${({ theme, $activeTab }) =>
+      $activeTab ? "transparents" : theme.tabHoverColor};
   }
 
   @media screen and (max-width: 576px) {
@@ -193,9 +214,33 @@ const LoadingWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: 999;
+
+  img {
+    width: 100px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    img {
+      width: 160px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    img {
+      width: 130px;
+    }
+  }
+`;
+
+const GuildLoading = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  margin-bottom: 10px;
 
   img {
     width: 100px;

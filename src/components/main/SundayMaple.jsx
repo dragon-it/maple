@@ -46,8 +46,8 @@ export const SundayMaple = () => {
   useEffect(() => {
     const fetchNoticeAndDetail = async () => {
       if (notice && notice.event_notice) {
-        const sundayMapleNotices = notice.event_notice.filter(
-          (item) => item.title === "썬데이 메이플"
+        const sundayMapleNotices = notice.event_notice.filter((item) =>
+          item.title.includes("썬데이 메이플")
         );
 
         if (sundayMapleNotices.length > 0) {
@@ -174,8 +174,8 @@ const ContentsWrap = styled.div`
   width: 100%;
   position: relative;
   max-width: 876px;
-  border: 1px solid rgb(30, 38, 47);
-  outline: 2px solid rgb(56, 87, 106);
+  border: 1px solid rgb(33, 40, 48);
+  outline: 2px solid rgb(54, 82, 100);
   background-color: rgb(43, 53, 62);
   border-radius: 20px;
   overflow: hidden;
@@ -201,7 +201,7 @@ const ButtonWrap = styled.div`
 const CloseButton = styled.button`
   position: relative;
   background-color: rgba(255, 255, 255, 0.35);
-  color: #ffffff;
+  color: rgb(255, 255, 255);
   padding: 3px;
   width: 25px;
   height: 25px;
@@ -219,7 +219,7 @@ const SkipDayCheckboxWrapper = styled.div`
   color: rgb(216, 216, 216);
 
   :hover {
-    background: rgba(184, 184, 184, 0.24);
+    background: rgba(184, 184, 184, 0.25);
     border-radius: 5px;
   }
 

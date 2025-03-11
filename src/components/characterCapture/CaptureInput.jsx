@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
 import serchIcon from "../../assets/SearchIcon_small.svg";
+import colors from "../common/color/colors";
 
 export const CaptureInput = ({ setResult, setError }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -98,7 +99,7 @@ const CaptureHead = styled.div`
   width: 100%;
   font-weight: normal;
   margin: 5px 0;
-  text-shadow: 0px 0px 4px rgb(51, 46, 46);
+  text-shadow: 0px 0px 4px ${colors.brownScale.darkBrown};
   color: rgb(24, 24, 24);
   font-size: 15px;
   font-weight: bold;
@@ -174,13 +175,21 @@ const FindMainCheckBox = styled.label`
   border: 1px solid rgb(132, 111, 90);
   border-radius: 5px;
   outline: 2px solid rgb(110, 93, 73);
-  background: linear-gradient(0deg, #8b7b6a 25%, rgba(158, 139, 116, 1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgb(139, 123, 106) 25%,
+    rgb(158, 139, 116) 100%
+  );
   color: rgba(255, 255, 255, 0.8);
   box-shadow: 0px 5px 2px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 
   &:hover {
-    background: linear-gradient(0deg, #a3917d 25%, #b9a388 100%);
+    background: linear-gradient(
+      0deg,
+      rgb(163, 145, 125) 25%,
+      rgb(185, 163, 136) 100%
+    );
   }
 `;
 

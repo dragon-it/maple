@@ -1,14 +1,66 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 export const SkillDetail = ({ item, clicked, onClose }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailRef.current) {
+      const detailRect = detailRef.current.getBoundingClientRect();
+      const detailHeight = detailRect.height; // 실제 높이
+      const detailWidth = detailRect.width; // 실제 너비
+      const offset = 10; // 마우스와 디테일 사이 간격
+
+      let top = mousePosition.y + offset;
+      let left = mousePosition.x + offset;
+
+      // 화면 경계를 초과할 경우 반전 처리
+      if (top + detailHeight > window.innerHeight) {
+        top = mousePosition.y - detailHeight - offset;
+      }
+
+      if (left + detailWidth > window.innerWidth) {
+        left = mousePosition.x - detailWidth - offset;
+      }
+      top = Math.max(0, top);
+      left = Math.max(0, left);
+
+      setDetailPosition({ top, left });
+    }
+  }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 768;
+
+  // item이 없을 경우 처리
   if (!item) {
-    return <SelectContainer>스킬을 선택해주세요.</SelectContainer>;
+    return null;
   }
 
   return (
-    <Container onClick={onClose}>
-      <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
+    <Container
+      ref={detailRef}
+      onClick={onClose}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
+    >
+      <div style={{ position: "relative" }}></div>
       <SkillNameWrap>
         <h2>
           <SkillName>{item.skill_name}</SkillName>
@@ -18,72 +70,67 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
         <IconImage>
           <img src={item.skill_icon} alt="icon" />
         </IconImage>
+        <SkillDescriptionWrap>
+          <p>{item.skill_description}</p>
+        </SkillDescriptionWrap>
       </IconWrap>
-      <SkillDescriptionWrap>
-        <div>{item.skill_description}</div>
-      </SkillDescriptionWrap>
-      <SkillEffect Data={item.skill_effect}>
-        <div>{item.skill_effect}</div>
+      <SkillEffect>
+        <p>{item.skill_effect}</p>
       </SkillEffect>
     </Container>
   );
 };
 
-const SelectContainer = styled.div`
-  position: absolute;
-  right: -292px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 290px;
-  height: 50px;
-  color: white;
-  padding: 0px 10px;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-  font-family: maple-light;
-
-  @media screen and (max-width: 1504px) {
-    display: none;
-  }
-`;
 const Container = styled.div`
-  position: absolute;
-  right: -322px;
-  width: 320px;
-  background-color: #000000;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.55);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
   line-height: 16px;
   color: white;
-  padding: 0px 10px;
-  padding-bottom: 10px;
-
-  @media screen and (max-width: 1504px) {
-    position: fixed;
-    left: 50%;
-    top: 15%;
-    z-index: 99999;
-    transform: translateX(-50%);
-  }
+  padding: 0px 10px 10px 10px;
+  width: 350px;
+  max-height: 600px;
+  overflow-y: auto;
+  font-family: "돋움";
+  z-index: 1000;
 
   @media screen and (max-width: 380px) {
-    width: 292px;
+    max-width: 292px;
+  }
+
+  @media screen and (max-width: 768px) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(
+      139deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
   }
 `;
 
 const SkillNameWrap = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  justify-content: center;
+  padding: 15px 0px 5px 0px;
+
   h2 {
     font-size: 16px;
-    padding: 10px 0;
-    line-height: 24px;
     text-align: center;
   }
 `;
@@ -93,45 +140,54 @@ const SkillName = styled.div``;
 const IconWrap = styled.div`
   padding: 10px 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 2px dotted rgb(55, 56, 58);
+  gap: 10px;
+  border-bottom: 1px dashed rgb(55, 56, 58);
 `;
 
 const IconImage = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
-  background-color: white;
-  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  padding: 1px;
+
   img {
-    width: 50px;
-    height: 50px;
+    height: 100%;
     object-fit: contain;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 45px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
   }
 `;
 
-const PinImage = styled.div`
-  position: absolute;
-  top: -5px;
-  left: -10px;
-  width: 11px;
-  height: 10px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid white;
-  transform: rotate(45deg);
-`;
-
-const SkillDescriptionWrap = styled.div`
-  font-size: 13px;
+const SkillDescriptionWrap = styled.p`
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
   white-space: pre-wrap;
 `;
 
-const SkillEffect = styled.div`
-  font-size: 13px;
+const SkillEffect = styled.p`
+  font-size: 12px;
   white-space: pre-wrap;
-  ${({ Data }) => Data && `margin-top: 10px;`}
+  margin-top: 10px;
 `;
