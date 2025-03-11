@@ -2,12 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import HenesysBGM from "../../assets/slidingPuzzle/backgroundMusic/Henesys.mp3";
 import LithHarborBGM from "../../assets/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
-import VolumeIcon from "../../assets/slidingPuzzle/Speaker.svg";
-import MuteIcon from "../../assets/slidingPuzzle/Mute.svg";
+import TitleBGM from "../../assets/slidingPuzzle/backgroundMusic/Title.mp3";
+import VolumeIcon from "../../assets/slidingPuzzle/icons/Speaker.svg";
+import MuteIcon from "../../assets/slidingPuzzle/icons/Mute.svg";
+import StartIcon from "../../assets/slidingPuzzle/icons/Start.svg";
+import StopIcon from "../../assets/slidingPuzzle/icons/Stop.svg";
 import colors from "../common/color/colors";
 
 export const SlidingPuzzleMusicPlayer = () => {
-  const [bgm, setBgm] = useState(HenesysBGM);
+  const [bgm, setBgm] = useState(TitleBGM);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [prevVolume, setPrevVolume] = useState(0.5);
@@ -67,12 +70,19 @@ export const SlidingPuzzleMusicPlayer = () => {
     <Container>
       <ControlContainer>
         <label>
-          배경 음악
-          <CustomSelect value={bgm} onChange={handleBgmChange}>
-            <option value={HenesysBGM}>헤네시스</option>
-            <option value={LithHarborBGM}>리스항구</option>
-          </CustomSelect>
-          <button onClick={togglePlayPause}>{isPlaying ? "❚❚" : "▶"}</button>
+          <span>배경 음악</span>
+          <ControlContainer>
+            <CustomSelect value={bgm} onChange={handleBgmChange}>
+              <option value={TitleBGM}>로그인</option>
+              <option value={HenesysBGM}>헤네시스</option>
+              <option value={LithHarborBGM}>리스항구</option>
+            </CustomSelect>
+            <PlayBtn
+              onClick={togglePlayPause}
+              src={isPlaying ? StopIcon : StartIcon}
+              alt="play/pause"
+            />
+          </ControlContainer>
         </label>
       </ControlContainer>
 
@@ -101,26 +111,40 @@ export const SlidingPuzzleMusicPlayer = () => {
 };
 
 const Container = styled.div`
-  display: flex;
-  background-color: red;
+  width: 100%;
+  display: block;
+  background-color: ${colors.deepBlue.deepBlue4};
+  border: 1px solid ${colors.deepBlue.deepBlue11};
   border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
 `;
 
 const ControlContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  label {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const CustomAudioPlayer = styled.div`
-  margin-top: 10px;
+  margin: auto;
   width: 50%;
+
+  @media screen and (max-width: 768px) {
+    width: 80%;
+  }
 
   button {
     background-color: ${colors.main.white2};
     border: none;
     padding: 10px 10px;
-    font-size: 16px;
+
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
@@ -128,14 +152,19 @@ const CustomAudioPlayer = styled.div`
 
   label {
     display: flex;
-    margin-top: 10px;
-    font-size: 16px;
   }
+
   input[type="range"] {
     width: 100%;
     margin-top: 5px;
     cursor: pointer;
   }
+`;
+
+const PlayBtn = styled.img`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
 `;
 
 const VolumeIconStyled = styled.img`
@@ -146,10 +175,9 @@ const VolumeIconStyled = styled.img`
 
 const CustomSelect = styled.select`
   padding: 6px 10px;
-  font-size: 16px;
   border-radius: 5px;
+  height: 30px;
   background-color: ${colors.main.white2};
-  border: 1px solid ${colors.commonInfo.normalBtn.btnBorder};
   cursor: pointer;
   transition: all 0.3s;
 

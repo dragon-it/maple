@@ -63,14 +63,14 @@ const colors = {
     deepBlue1: "rgb(42, 49, 58)", // Character Search outline && Ability Wrap Outline
     deepBlue2: "rgb(43, 53, 62)", // Sunday Maple Background
     deepBlue3: "rgba(59, 66, 75, 0.9)", // Character Search Background && Ability Wrap Background
-    deepBlue4: "rgb(80, 92, 101)", // Character Search Border && Ability Wrap Border
+    deepBlue4: "rgb(80, 92, 101)", // Character Search Border && Ability Wrap Border && Sliding Puzzle Background
     deepBlue5: "rgb(68, 79, 89)", // Ability Btn Background
     deepBlue6: "rgb(62, 73, 81)", // Guild Member Image Border
     deepBlue7: "rgb(133, 145, 145)", // Guild Member Image Border
     deepBlue8: "rgb(130, 143, 154)", // Ability Btn Background Not Actve
     deepBlue9: "rgb(69, 77, 87)", // Ability Btn Border Not Actve
     deepBlue10: "rgb(54, 82, 100)", // Guild Member Image Shadow
-    deepBlue11: "rgb(67, 121, 128)",
+    deepBlue11: "rgb(67, 121, 128)", // Sliding Puzzle border
     deepBlue12: "rgb(141, 199, 209)",
     deepBlue13: "rgb(197, 220, 242)",
   },
