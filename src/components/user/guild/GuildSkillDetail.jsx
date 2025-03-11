@@ -36,10 +36,14 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
       if (left + detailWidth > window.innerWidth) {
         left = mousePosition.x - detailWidth - offset;
       }
+      top = Math.max(0, top);
+      left = Math.max(0, left);
 
       setDetailPosition({ top, left });
     }
   }, [mousePosition]);
+
+  const isWideScreen = window.innerWidth > 768;
 
   // item이 없을 경우 처리
   if (!item) {
@@ -50,7 +54,11 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
     <Container
       ref={detailRef}
       onClick={onClose}
-      style={{ top: detailPosition.top, left: detailPosition.left }}
+      style={
+        isWideScreen
+          ? { top: detailPosition.top, left: detailPosition.left }
+          : {}
+      }
     >
       <div style={{ position: "relative" }}>{clicked && <PinImage />}</div>
       <SkillNameWrap>
@@ -75,7 +83,7 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
 
 const Container = styled.div`
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgb(0, 0, 0);
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
@@ -137,6 +145,7 @@ const IconWrap = styled.div`
 `;
 
 const IconImage = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,6 +158,24 @@ const IconImage = styled.div`
   img {
     height: 100%;
     object-fit: contain;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 45px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.6) 44%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    opacity: 1;
+    pointer-events: none;
+    border-radius: 5px;
   }
 `;
 
