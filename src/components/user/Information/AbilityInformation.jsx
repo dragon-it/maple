@@ -68,14 +68,14 @@ export const AbilityInformation = ({ AbilityInfo }) => {
               <PresetButton
                 key={presetNumber}
                 onClick={() => handlePresetChange(presetNumber)}
-                isSelected={selectedPreset === presetNumber}
+                $isSelected={selectedPreset === presetNumber}
               >
                 {presetNumber}
               </PresetButton>
             ))}
           </ButtonWrap>
           <RemainFame>
-            <div>명성치 :</div> {formattedRemainFame}
+            <span>명성치 {formattedRemainFame}</span>
           </RemainFame>
         </ButtonContainer>
       </PresetWrap>
@@ -91,14 +91,9 @@ const Container = styled.div`
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
   background-color: rgba(59, 66, 75, 0.9);
-  font-size: 14px;
+  font-size: 12px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  color: white;
-  img {
-    width: 100%;
-    height: 100%;
-    transition: 1s;
-  }
+  color: rgb(247, 247, 247);
 `;
 
 const NoDataWrap = styled.div`
@@ -109,11 +104,26 @@ const NoDataWrap = styled.div`
 
 const PresetWrap = styled.div`
   line-height: 20px;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0 5px;
+`;
+
+const AbilityHeader = styled.h2`
+  font-size: 15px;
+  color: rgb(220, 252, 2);
+  margin-bottom: 3px;
+`;
+
+const AbilityDetail = styled.div`
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
   p {
     display: flex;
     justify-content: center;
@@ -129,30 +139,12 @@ const PresetWrap = styled.div`
   }
 `;
 
-const AbilityHeader = styled.div`
-  font-size: 15px;
-  font-weight: 700;
-  color: rgb(220, 252, 2);
-  margin-bottom: 5px;
-`;
-const AbilityDetail = styled.div`
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  width: 100%;
-  padding: 3px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-`;
-
-const AbilityGradeHeader = styled.div`
+const AbilityGradeHeader = styled.p`
   font-family: maple-light;
   margin-bottom: 5px;
 `;
 
-const AbilityNoData = styled.div`
+const AbilityNoData = styled.p`
   font-family: maple-light;
 `;
 
@@ -162,21 +154,25 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   height: 25px;
   padding: 0 3px;
-  background-color: #aaa9a9;
+  background-color: rgb(180, 180, 180);
   border-radius: 5px;
-  font-family: maple-light;
 `;
 
-const RemainFame = styled.div`
+const RemainFame = styled.span`
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
   gap: 10px;
   width: 50%;
-  padding: 0 3px;
+  height: 20px;
   font-size: 12px;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: rgba(59, 66, 75, 0.9);
+  border-top: 2px solid rgb(38, 43, 49);
+  border-left: 1px solid rgb(62, 73, 81);
+  border-right: 1px solid rgb(62, 73, 81);
+  box-shadow: 0px 1px 0px rgb(133, 145, 145);
+  color: white;
 `;
 
 const ButtonWrap = styled.div`
@@ -185,17 +181,31 @@ const ButtonWrap = styled.div`
   gap: 5px;
   margin-left: 2px;
 `;
-const PresetHeader = styled.div`
-  font-size: 13px;
+
+const PresetHeader = styled.span`
+  font-size: 14px;
+  font-weight: 700;
   text-shadow: none;
-  color: black;
+  color: rgb(39, 39, 39);
 `;
 
 const PresetButton = styled.button`
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border-radius: 5px;
-  ${(props) => (props.isSelected ? `filter: brightness(0.5);` : "")}
+  width: 20px;
+  height: 20px;
+  color: ${(props) =>
+    props.$isSelected ? "rgb(255, 255, 255)" : "rgb(230, 230, 230)"};
+  background: ${(props) =>
+    props.$isSelected ? "rgb(68, 79, 89)" : "rgb(130, 143, 154)"};
+  border: 1px solid
+    ${(props) => (props.$isSelected ? "rgb(247, 247, 247)" : "rgb(	69, 77, 87)")};
+  &:hover {
+    filter: brightness(1.2);
+  }
 `;
 
 export default AbilityInformation;

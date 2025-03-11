@@ -9,19 +9,20 @@ import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
 import { Header } from "./components/common/header/Header.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
-
 import { SearchGuild } from "./pages/SearchGuild";
-import { SundayMaple } from "./pages/SundayMaple";
 import { Footer } from "./components/common/footer/Footer";
 import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
+import { ExpSimulator } from "./pages/ExpSimulator";
 
 function Layout({ children }) {
   return (
-    <HeaderContentsWrap>
-      <Header />
+    <>
+      <HeaderContentsWrap>
+        <Header />
+      </HeaderContentsWrap>
       {children}
-    </HeaderContentsWrap>
+    </>
   );
 }
 
@@ -31,7 +32,6 @@ function App() {
       <GlobalStyle />
       <Container>
         <Router>
-          <BackgroundImage />
           <Routes>
             <Route
               path="/"
@@ -61,7 +61,9 @@ function App() {
               path="/user/:characterName"
               element={
                 <Layout>
-                  <User />
+                  <UserWrap>
+                    <User />
+                  </UserWrap>
                 </Layout>
               }
             />
@@ -90,18 +92,18 @@ function App() {
               }
             />
             <Route
-              path="/sunday-maple"
-              element={
-                <Layout>
-                  <SundayMaple />
-                </Layout>
-              }
-            />
-            <Route
               path="/random-class"
               element={
                 <Layout>
                   <RandomClass />
+                </Layout>
+              }
+            />
+            <Route
+              path="/exp-simulator"
+              element={
+                <Layout>
+                  <ExpSimulator />
                 </Layout>
               }
             />
@@ -114,6 +116,7 @@ function App() {
               }
             />
           </Routes>
+          <BackgroundImage />
           <Footer />
         </Router>
       </Container>
@@ -126,8 +129,7 @@ export default App;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
-  position: relative;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,5 +141,12 @@ const HeaderContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 1;
+`;
+
+const UserWrap = styled.div`
+  min-height: 85vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

@@ -70,10 +70,7 @@ export const PropensityInformation = ({ propensityData }) => {
           onClick={handleChartClick}
         >
           <PolarGrid />
-          <Tooltip
-            formatter={(value) => `레벨: ${value}`}
-            active={tooltipVisible}
-          />
+          <Tooltip formatter={(value) => `${value}`} active={tooltipVisible} />
           <PolarAngleAxis dataKey="subject" display="none" />
           <Radar
             name="레벨"
@@ -81,6 +78,7 @@ export const PropensityInformation = ({ propensityData }) => {
             stroke="#3498db"
             fill="#3498db"
             fillOpacity={0.6}
+            animationDuration={500}
           />
         </RadarChart>
         <ItemsWrap>
@@ -122,7 +120,6 @@ const Container = styled.div`
 `;
 
 const PropensityItemWrapper = styled.p`
-  background-color: rgb(31, 189, 255);
   width: 120px;
 
   @media screen and (max-width: 576px) {
@@ -134,10 +131,9 @@ const PropensityItemWrapper = styled.p`
   }
 `;
 
-const PropensityHeader = styled.div`
+const PropensityHeader = styled.h2`
   width: 100%;
   font-size: 15px;
-  font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
@@ -150,7 +146,7 @@ const PropensityTextWrap = styled.div`
   padding: 2px;
 `;
 
-const TextWrap = styled.div`
+const TextWrap = styled.span`
   display: flex;
   flex-direction: row;
   p {
@@ -160,7 +156,7 @@ const TextWrap = styled.div`
   }
 `;
 
-const SubjectItems = styled.div`
+const SubjectItems = styled.span`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -203,11 +199,6 @@ const ChartWrap = styled.div`
   z-index: 99;
 `;
 const PropensityName = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
   font-size: 13px;
   p {
     padding: 5px;
@@ -227,10 +218,10 @@ const PropensityName = styled.div`
   }
 `;
 
-const PropenLabel = styled.div`
+const PropenLabel = styled.span`
   padding-right: 5px;
 `;
-const PropenLevel = styled.div`
+const PropenLevel = styled.span`
   width: 40px;
   display: flex;
   justify-content: flex-start;

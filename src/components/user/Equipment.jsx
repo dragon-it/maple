@@ -22,8 +22,7 @@ export const Equipment = ({ result }) => {
 };
 
 const Container = styled.div`
-  padding: 10px;
-  padding-top: 5px;
+  padding: 5px;
 
   @media screen and (max-width: 1024px) {
     display: flex;

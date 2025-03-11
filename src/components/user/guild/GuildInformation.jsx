@@ -8,10 +8,6 @@ import { useNavigate } from "react-router-dom";
 export const GuildInformation = ({ result }) => {
   const navigate = useNavigate();
 
-  const handleMasterInfoPortal = (characterName) => {
-    navigate(`/user/${encodeURIComponent(characterName)}`);
-  };
-
   const {
     guildBasicInformation: {
       guild_master_name = "Unknown",
@@ -33,6 +29,10 @@ export const GuildInformation = ({ result }) => {
       : "순위 없음";
   };
 
+  const handleMasterInfoPortal = (guild_master_name) => {
+    navigate(`/user/${encodeURIComponent(guild_master_name)}`);
+  };
+
   return (
     <Container>
       <BasicInfoSection>
@@ -48,32 +48,32 @@ export const GuildInformation = ({ result }) => {
           <Value>{guild_fame.toLocaleString()}</Value>
           <Value>{guild_point.toLocaleString()}</Value>
           <Value>{guild_member_count.toLocaleString()}</Value>
-          <MasterName onclick={handleMasterInfoPortal}>
+          <MasterName onClick={() => handleMasterInfoPortal(guild_master_name)}>
             {guild_master_name}
           </MasterName>
         </ValueColumn>
       </BasicInfoSection>
       <RankingSection>
-        <GuildRankHeader>길드 랭킹</GuildRankHeader>
+        <GuildRankTitle>길드 랭킹</GuildRankTitle>
         <ItemWrap>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={fame_icon} alt="fame_icon" />
-              <div>주간 명성</div>
+              <p>주간 명성</p>
             </RankingHeader>
             <RankingValue>{getRankingText(fameRanking)}</RankingValue>
           </RankingItem>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={flag_icon} alt="flag_icon" />
-              <div>플래그</div>
+              <p>플래그</p>
             </RankingHeader>
             <RankingValue>{getRankingText(flagRanking)}</RankingValue>
           </RankingItem>
           <RankingItem>
             <RankingHeader>
               <RankingIcon src={suro_icon} alt="suro_icon" />
-              <div>지하 수로</div>
+              <p>지하 수로</p>
             </RankingHeader>
             <RankingValue>{getRankingText(suroRanking)}</RankingValue>
           </RankingItem>
@@ -95,7 +95,7 @@ const BasicInfoSection = styled.div`
   margin-bottom: 20px;
   padding: 10px;
   background-color: rgb(25, 25, 25);
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 `;
 
@@ -106,20 +106,20 @@ const HeaderColumn = styled.div`
   color: rgb(200, 175, 137);
 `;
 
-const ValueColumn = styled.div`
+const ValueColumn = styled.span`
   display: flex;
   flex-direction: column;
   gap: 5px;
 `;
 
-const Header = styled.div``;
+const Header = styled.span``;
 
-const Value = styled.div``;
+const Value = styled.span``;
 
-const MasterName = styled.div`
+const MasterName = styled.span`
   cursor: pointer;
   &:hover {
-    background-color: rgb(78, 78, 78);
+    background-color: rgb(73, 73, 73);
   }
 `;
 
@@ -134,17 +134,17 @@ const RankingItem = styled.div`
   text-align: center;
 `;
 
-const GuildRankHeader = styled.div`
+const GuildRankTitle = styled.div`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
 `;
 
-const RankingHeader = styled.div`
+const RankingHeader = styled.span`
   color: rgb(200, 175, 137);
 `;
 
-const RankingValue = styled.div``;
+const RankingValue = styled.span``;
 
 const ItemWrap = styled.div`
   display: flex;
@@ -153,7 +153,7 @@ const ItemWrap = styled.div`
   gap: 25px;
   padding: 10px;
   background-color: rgb(25, 25, 25);
-  border: 1px solid rgba(255, 255, 255, 0.575);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
 `;
 

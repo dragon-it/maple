@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { formatPowerStat } from "../common/powerStat/PowerStat";
 import npc_Chat_Box from "../../assets/npc/npc_Chat_Box.png";
 import html2canvas from "html2canvas";
+import { Helmet } from "react-helmet";
+import TanjiroImage from "../../assets/npc/tanjiro.png";
 
 const StyledLine = styled.div`
   display: flex;
@@ -189,11 +191,23 @@ export const CaptureRenderingBox = ({ result }) => {
 
   return (
     <Container>
+      <Helmet>
+        <title>{`${character_name} - 캐릭터 캡처`}</title>
+        <meta
+          name="description"
+          content="캐릭터를 이미지로 저장하는 기능입니다."
+        />
+      </Helmet>
       <MainCharacterWrap id="character-wrap" crossOrigin="anonymous">
         <NpcBox src={npc_Chat_Box} alt="대화박스" />
         <CharacterInfo>
           <NpcWrap>
-            <Image src={imageSrc} alt="캐릭터 이미지" />
+            <Image
+              src={
+                character_class === "카마도 탄지로" ? TanjiroImage : imageSrc
+              }
+              alt="캐릭터 이미지"
+            />
             <NickName>{character_name}</NickName>
           </NpcWrap>
           <NpcText>
@@ -232,6 +246,8 @@ const Image = styled.img`
   position: relative;
   top: 9px;
   z-index: -1;
+  image-rendering: pixelated;
+
   @media screen and (max-width: 519px) {
     top: 1.5vw;
   }
@@ -271,9 +287,9 @@ const NickName = styled.span`
   max-height: 23px;
   background: linear-gradient(
     180deg,
-    rgba(150, 149, 143, 1) 0%,
-    rgba(136, 136, 136, 1) 49%,
-    rgba(108, 106, 106, 1) 100%
+    rgb(150, 149, 143) 0%,
+    rgb(136, 136, 136) 49%,
+    rgb(108, 106, 106) 100%
   );
   color: rgb(247, 247, 247);
   border: 2px solid rgb(82, 79, 87);
@@ -315,11 +331,11 @@ const SaveButton = styled.button`
   padding: 8px 18px;
   background: linear-gradient(
     180deg,
-    rgba(255, 221, 85, 1) 20%,
-    rgba(221, 136, 17, 1) 100%
+    rgb(255, 221, 85) 20%,
+    rgb(221, 136, 17) 100%
   );
   color: white;
-  text-shadow: 1px 1px rgba(58, 58, 58, 0.498);
+  text-shadow: 1px 1px rgba(58, 58, 58, 0.5);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
   border: 2px solid rgb(213, 125, 13);
   border-radius: 10px;
@@ -331,7 +347,7 @@ const SaveButton = styled.button`
     background: linear-gradient(
       180deg,
       rgb(255, 230, 132) 20%,
-      rgba(221, 136, 17, 1) 100%
+      rgb(221, 136, 17) 100%
     );
     transform: scale(1.02);
   }
