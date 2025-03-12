@@ -40,3 +40,6 @@ logs/
 
 # 배포 스크립트
 deploy.sh
+
+# 구글 애드센스
+ads.txt
