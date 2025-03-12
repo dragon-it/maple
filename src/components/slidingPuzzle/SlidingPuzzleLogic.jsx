@@ -236,6 +236,7 @@ const OptionWrap = styled.div`
   display: flex;
   justify-content: space-around;
   gap: 5px;
+  color: ${colors.main.white3};
   background-color: ${colors.deepBlue.deepBlue4};
   border: 1px solid ${colors.deepBlue.deepBlue11};
   border-radius: 5px;

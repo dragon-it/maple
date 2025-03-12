@@ -41,7 +41,7 @@ export const Header = () => {
         <Items to={routes.searchGuild}>길드 검색</Items>
         <Items to={routes.randomClass}>랜덤 직업 뽑기</Items>
         <Items to={routes.expSimulator}>Exp 시뮬레이터</Items>
-        <Items to={routes.slidingPuzzle}>퍼즐 슬라이딩</Items>
+        <Items to={routes.slidingPuzzle}>슬라이딩 퍼즐</Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
