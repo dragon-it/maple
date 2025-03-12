@@ -1,4 +1,5 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# GitHub 도움말 참고
+# https://help.github.com/articles/ignoring-files/
 
 # dependencies
 /node_modules
@@ -10,20 +11,36 @@
 
 # production
 /build
+/.next/
+.netlify/
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+.env*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# CI/CD
+.vercel/
+build-*
 
-.vercel
+# 개발 도구 설정 파일
+.vscode/
+.idea/
+*.swp
 
+# 로그 & 캐시 파일
+logs/
+*.log
+
+# 보안 키 & 인증 파일
 *.pem
 *.pub
+
+# 배포 스크립트
+deploy.sh
+
+
+# 구글 애드센스
+ads.txt
