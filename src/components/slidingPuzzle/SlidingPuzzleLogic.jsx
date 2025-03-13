@@ -145,6 +145,7 @@ export const SlidingPuzzleLogic = () => {
           <CustomSelect value={size} onChange={handleSizeChange}>
             <option value={3}>3x3</option>
             <option value={4}>4x4</option>
+            <option value={5}>5x5</option>
           </CustomSelect>
         </label>
         <label>
@@ -238,7 +239,7 @@ const OptionWrap = styled.div`
   gap: 5px;
   color: ${colors.main.white3};
   background-color: ${colors.deepBlue.deepBlue4};
-  border: 1px solid ${colors.deepBlue.deepBlue11};
+  border: 1px solid ${colors.deepBlue.deepBlue10};
   border-radius: 5px;
   padding: 5px;
   font-size: 16px;
@@ -364,7 +365,7 @@ const Tile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.9vw;
+  font-size: 4vh;
   border-radius: 5px;
   cursor: pointer;
   user-select: none;

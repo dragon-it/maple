@@ -114,7 +114,7 @@ const Container = styled.div`
   width: 100%;
   display: block;
   background-color: ${colors.deepBlue.deepBlue4};
-  border: 1px solid ${colors.deepBlue.deepBlue11};
+  border: 1px solid ${colors.deepBlue.deepBlue10};
   border-radius: 5px;
   padding: 5px;
   font-size: 16px;
