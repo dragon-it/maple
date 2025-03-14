@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import mainLightBGI from "../../assets/Henesys.webp";
-import mainDarkBGI from "../../assets/Kerning-City.webp";
+import mainLightBGI from "../../assets/backgruondImg/mainSearch/main_search_BGI_light.webp";
+import mainDarkBGI from "../../assets/backgruondImg/mainSearch/main_search_BGI_dark.webp";
 import findMainLightBGI from "../../assets/backgruondImg/characterCapture/character_capture_light2.webp";
 import findMainDarkBGI from "../../assets/backgruondImg/characterCapture/character_capture_dark.webp";
 import searchGuildDarkBGI from "../../assets/backgruondImg/searchGuild/search_guild_BGI_dark.webp";
@@ -11,6 +11,8 @@ import randomClassDarkBGI from "../../assets/backgruondImg/randomClass/random_cl
 import randomClassLightBGI from "../../assets/backgruondImg/randomClass/random_class_BGI_light.webp";
 import expSimulatorDarkBGI from "../../assets/backgruondImg/expSimulator/exp_simulator_BGI_dark.webp";
 import expSimulatorLightBGI from "../../assets/backgruondImg/expSimulator/exp_simulator_BGI_light.webp";
+import slidingPuzzleLightBGI from "../../assets/backgruondImg/slidingPuzzle/sliding_puzzle_BGI_light.webp";
+import slidingPuzzleDarkBGI from "../../assets/backgruondImg/slidingPuzzle/sliding_puzzle_BGI_dark.webp";
 import { useTheme } from "../../context/ThemeProvider";
 
 export const BackgroundImage = () => {
@@ -30,6 +32,8 @@ export const BackgroundImage = () => {
       return theme === "dark" ? randomClassDarkBGI : randomClassLightBGI;
     } else if (pathname.startsWith("/exp-simulator")) {
       return theme === "dark" ? expSimulatorDarkBGI : expSimulatorLightBGI;
+    } else if (pathname.startsWith("/sliding-puzzle")) {
+      return theme === "dark" ? slidingPuzzleDarkBGI : slidingPuzzleLightBGI;
     } else {
       return theme === "dark" ? mainDarkBGI : mainLightBGI;
     }
