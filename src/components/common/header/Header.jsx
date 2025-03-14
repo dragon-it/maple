@@ -14,6 +14,7 @@ export const Header = () => {
     searchGuild: "/guild-search",
     randomClass: "/random-class",
     expSimulator: "/exp-simulator",
+    slidingPuzzle: "/sliding-puzzle",
   };
 
   const sundayMapleUrl =
@@ -40,14 +41,13 @@ export const Header = () => {
         <Items to={routes.searchGuild}>길드 검색</Items>
         <Items to={routes.randomClass}>랜덤 직업 뽑기</Items>
         <Items to={routes.expSimulator}>Exp 시뮬레이터</Items>
+        <Items to={routes.slidingPuzzle}>슬라이딩 퍼즐</Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <p>
-            썬데이 메이플<OfficialHome>(공홈)</OfficialHome>
-          </p>
+          <p>썬데이 메이플</p>
         </ItemsToHome>
       </ItemContainer>
 
@@ -81,6 +81,7 @@ const PcHeaderContainer = styled.div`
   gap: 10px;
   max-height: 50px;
   font-family: maple-light;
+  font-size: 0.8rem;
   background: ${({ theme }) => theme.headerBgColor};
 
   @media screen and (max-width: 768px) {
@@ -129,12 +130,6 @@ const ItemsToHome = styled.a`
   ${itemStyles};
   text-decoration: none;
   color: inherit;
-`;
-
-const OfficialHome = styled.div`
-  margin-left: 3px;
-  font-size: 12px;
-  display: inline-block;
 `;
 
 const ThemeToggleWrap = styled.div``;

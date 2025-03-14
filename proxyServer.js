@@ -7,8 +7,9 @@ const path = require("path");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 const BASE_URL = "https://open.api.nexon.com";
+const BUILD_DIR = process.env.BUILD_DIR || "build-blue";
+const PORT = process.env.PORT || 80;
 
 app.use(express.json());
 app.use(cors());
@@ -585,11 +586,12 @@ app.get("/api/image-proxy", async (req, res) => {
 app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
 // 빌드된 정적 파일을 서빙하는 미들웨어 설정
-app.use(express.static(path.join(__dirname, "build-blue")));
+app.use(express.static(path.join(__dirname, BUILD_DIR)));
 
+// 모든 요청에 대해 index.html을 서빙
 app.get("*", (req, res) => {
   if (!req.url.startsWith("/api")) {
-    res.sendFile(path.resolve(__dirname, "build-blue", "index.html"));
+    res.sendFile(path.resolve(__dirname, BUILD_DIR, "index.html"));
   } else {
     res.status(404).send("Not Found");
   }
@@ -597,4 +599,5 @@ app.get("*", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Serving from: ${BUILD_DIR}`);
 });

@@ -65,13 +65,16 @@ export const Menu = () => {
         <Menus to={routes.expSimulator} onClick={() => setIsClicked(false)}>
           Exp 시뮬레이터
         </Menus>
+        <Menus to={routes.slidingPuzzle} onClick={() => setIsClicked(false)}>
+          슬라이딩 퍼즐
+        </Menus>
         <MenuLink
           href={sundayMapleUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setIsClicked(false)}
         >
-          썬데이 메이플(공홈)
+          썬데이 메이플
         </MenuLink>
       </MenuContainer>
     </>
@@ -128,7 +131,7 @@ const MenuContainer = styled.div`
   outline: 1px solid rgb(46, 48, 53);
   border: 1px solid rgb(61, 69, 78);
   border-radius: 7px;
-  transition: opacity 0.5s ease, max-height 0.8s ease;
+  transition: opacity 0.7s ease, max-height 0.8s ease;
   text-decoration: none;
   z-index: 9999999;
   box-shadow: ${({ $isClicked }) =>
