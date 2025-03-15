@@ -73,6 +73,7 @@ const colors = {
     deepBlue11: "rgb(67, 121, 128)", // Sliding Puzzle border
     deepBlue12: "rgb(141, 199, 209)",
     deepBlue13: "rgb(197, 220, 242)",
+    deepBlue14: "rgb(52, 77, 92)",
   },
 
   brownScale: {
