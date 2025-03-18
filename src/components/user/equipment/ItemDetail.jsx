@@ -389,9 +389,12 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
               />
               <span>잠재옵션</span>
             </OptionHeader>
-            <PotentialItems>{item.potential_option_1}</PotentialItems>
-            <PotentialItems>{item.potential_option_2}</PotentialItems>
-            <PotentialItems>{item.potential_option_3}</PotentialItems>
+            {item.potential_options &&
+              item.potential_options.map((option, index) => (
+                <PotentialItems key={`potential-option-${index}`}>
+                  {option}
+                </PotentialItems>
+              ))}
           </PotentialOptionWrap>
         )}
         {item.additional_potential_option_grade && (
