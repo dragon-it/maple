@@ -73,6 +73,7 @@ const colors = {
     deepBlue11: "rgb(67, 121, 128)", // Sliding Puzzle border
     deepBlue12: "rgb(141, 199, 209)",
     deepBlue13: "rgb(197, 220, 242)",
+    deepBlue14: "rgb(52, 77, 92)",
   },
 
   brownScale: {
@@ -188,7 +189,6 @@ const colors = {
       etcOption: "rgb(170, 170, 255)", // Item Etc Option Text
       mergeOption: "rgb(102,255,255)", // Item Merge Option Text
     },
-
     itemIconBorderColor: {
       rareGrade: "rgb(0,154,255)", // Item Icon Border (Rare Grade)
       epicGrade: "rgb(120,0,239)", // Item Icon Border (Epic Grade)
@@ -196,7 +196,6 @@ const colors = {
       legendaryGrade: "rgb(0,187,136)", // Item Icon Border (Legendary Grade)
       basicGrade: "rgb(134, 130, 132)", // Item Icon Border (Basic Grade)
     },
-
     itemOptionHeaderColor: {
       rareGrade: "rgb(102,225,225)", // Item Option Header Text (Rare Grade)
       epicGrade: "rgb(153,91,197)", // Item Option Header Text (Epic Grade)

@@ -16,6 +16,7 @@ export const Menu = () => {
     searchGuild: "/guild-search",
     randomClass: "/random-class",
     expSimulator: "/exp-simulator",
+    slidingPuzzle: "/sliding-puzzle",
   };
 
   const sundayMapleUrl =

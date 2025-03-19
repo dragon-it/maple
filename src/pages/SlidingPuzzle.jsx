@@ -7,7 +7,7 @@ export const SlidingPuzzle = () => {
   return (
     <Container>
       <Helmet>
-        <title>Exp 시뮬레이터 - 퍼즐 슬라이딩</title>
+        <title>Exp 시뮬레이터 - 슬라이딩 퍼즐</title>
         <meta name="description" content="슬라이딩 퍼즐 게임입니다" />
       </Helmet>
       <SlidingPuzzleLogic />
