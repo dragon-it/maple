@@ -47,13 +47,63 @@ const findStatData = (name, level, type = "main", characterClass) => {
   return statData;
 };
 
+const processHexaStatInfo = (hexaStatInfo, characterClass) => {
+  if (!hexaStatInfo) return null;
+
+  return {
+    main: findStatData(
+      hexaStatInfo.main_stat_name,
+      hexaStatInfo.main_stat_level,
+      "main",
+      characterClass
+    ),
+    sub1: findStatData(
+      hexaStatInfo.sub_stat_name_1,
+      hexaStatInfo.sub_stat_level_1,
+      "sub",
+      characterClass
+    ),
+    sub2: findStatData(
+      hexaStatInfo.sub_stat_name_2,
+      hexaStatInfo.sub_stat_level_2,
+      "sub",
+      characterClass
+    ),
+  };
+};
+
+const StatSlot = ({ title, statInfo }) =>
+  statInfo && (
+    <StatWrap>
+      <SlotHeader>{title}</SlotHeader>
+      <MainStat>
+        <StatInfo
+          level={statInfo.main.main_stat_level}
+          name={statInfo.main.main_stat_name}
+          value={statInfo.main.value}
+        />
+      </MainStat>
+      <StatInfo
+        level={statInfo.sub1.sub_stat_level}
+        name={statInfo.sub1.sub_stat_name}
+        value={statInfo.sub1.value}
+      />
+      <StatInfo
+        level={statInfo.sub2.sub_stat_level}
+        name={statInfo.sub2.sub_stat_name}
+        value={statInfo.sub2.value}
+      />
+    </StatWrap>
+  );
+
 export const HexaStat = ({ Data }) => {
-  if (
-    (!Data.character_hexa_stat_core ||
-      Data.character_hexa_stat_core.length === 0) &&
-    (!Data.character_hexa_stat_core_2 ||
-      Data.character_hexa_stat_core_2.length === 0)
-  ) {
+  const hasData = [
+    Data.character_hexa_stat_core,
+    Data.character_hexa_stat_core_2,
+    Data.character_hexa_stat_core_3,
+  ].some((core) => core?.length > 0);
+
+  if (!hasData) {
     return (
       <ContainerBox>
         <Header>HEXA STAT</Header>
@@ -62,100 +112,20 @@ export const HexaStat = ({ Data }) => {
     );
   }
 
-  const processHexaStatInfo = (hexaStatInfo, characterClass) => {
-    const mainStatLevelData = findStatData(
-      hexaStatInfo.main_stat_name,
-      hexaStatInfo.main_stat_level,
-      "main",
-      characterClass
-    );
-
-    const subFirstStatLevelData = findStatData(
-      hexaStatInfo.sub_stat_name_1,
-      hexaStatInfo.sub_stat_level_1,
-      "sub",
-      characterClass
-    );
-
-    const subSecondStatLevelData = findStatData(
-      hexaStatInfo.sub_stat_name_2,
-      hexaStatInfo.sub_stat_level_2,
-      "sub",
-      characterClass
-    );
-
-    return {
-      mainStatLevelData,
-      subFirstStatLevelData,
-      subSecondStatLevelData,
-    };
-  };
-
   const characterClass = Data.character_class;
-
-  // 첫 번째와 두 번째 HexaStat 데이터를 처리
-  const firstHexaStatInfo =
-    Data.character_hexa_stat_core && Data.character_hexa_stat_core.length > 0
-      ? processHexaStatInfo(Data.character_hexa_stat_core[0], characterClass)
-      : null;
-
-  const secondHexaStatInfo =
-    Data.character_hexa_stat_core_2 &&
-    Data.character_hexa_stat_core_2.length > 0
-      ? processHexaStatInfo(Data.character_hexa_stat_core_2[0], characterClass)
-      : null;
+  const statInfos = [
+    processHexaStatInfo(Data.character_hexa_stat_core?.[0], characterClass),
+    processHexaStatInfo(Data.character_hexa_stat_core_2?.[0], characterClass),
+    processHexaStatInfo(Data.character_hexa_stat_core_3?.[0], characterClass),
+  ];
 
   return (
     <ContainerBox>
       <Header>HEXA STAT</Header>
       <StatContainer>
-        {firstHexaStatInfo && (
-          <StatWrap>
-            {/* 첫 번째 HexaStat 정보 */}
-            <SlotHeader>첫 번째 슬롯</SlotHeader>
-            <MainStat>
-              <StatInfo
-                level={firstHexaStatInfo.mainStatLevelData.main_stat_level}
-                name={firstHexaStatInfo.mainStatLevelData.main_stat_name}
-                value={firstHexaStatInfo.mainStatLevelData.value}
-              />
-            </MainStat>
-            <StatInfo
-              level={firstHexaStatInfo.subFirstStatLevelData.sub_stat_level}
-              name={firstHexaStatInfo.subFirstStatLevelData.sub_stat_name}
-              value={firstHexaStatInfo.subFirstStatLevelData.value}
-            />
-            <StatInfo
-              level={firstHexaStatInfo.subSecondStatLevelData.sub_stat_level}
-              name={firstHexaStatInfo.subSecondStatLevelData.sub_stat_name}
-              value={firstHexaStatInfo.subSecondStatLevelData.value}
-            />
-          </StatWrap>
-        )}
-
-        {secondHexaStatInfo && (
-          <StatWrap>
-            {/* 두 번째 HexaStat 정보 */}
-            <SlotHeader>두 번째 슬롯</SlotHeader>
-            <MainStat>
-              <StatInfo
-                level={secondHexaStatInfo.mainStatLevelData.main_stat_level}
-                name={secondHexaStatInfo.mainStatLevelData.main_stat_name}
-                value={secondHexaStatInfo.mainStatLevelData.value}
-              />
-            </MainStat>
-            <StatInfo
-              level={secondHexaStatInfo.subFirstStatLevelData.sub_stat_level}
-              name={secondHexaStatInfo.subFirstStatLevelData.sub_stat_name}
-              value={secondHexaStatInfo.subFirstStatLevelData.value}
-            />
-            <StatInfo
-              level={secondHexaStatInfo.subSecondStatLevelData.sub_stat_level}
-              name={secondHexaStatInfo.subSecondStatLevelData.sub_stat_name}
-              value={secondHexaStatInfo.subSecondStatLevelData.value}
-            />
-          </StatWrap>
-        )}
+        <StatSlot title="첫 번째 슬롯" statInfo={statInfos[0]} />
+        <StatSlot title="두 번째 슬롯" statInfo={statInfos[1]} />
+        <StatSlot title="세 번째 슬롯" statInfo={statInfos[2]} />
       </StatContainer>
     </ContainerBox>
   );
