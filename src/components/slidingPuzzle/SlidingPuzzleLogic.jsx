@@ -185,8 +185,7 @@ export const SlidingPuzzleLogic = () => {
               className={tile === 0 ? "empty" : ""} // won 상태에서는 empty 클래스 무시
               onClick={() => handleClick(rowIndex, colIndex)}
               style={{
-                backgroundImage:
-                  tile !== 0 || won ? `url(${imageMap})` : "none", // won일 때 0도 이미지 표시
+                backgroundImage: tile !== 0 ? `url(${imageMap})` : "none",
                 backgroundSize: `${size * 100}% ${size * 100}%`, // 3x3이면 300%, 4x4면 400%
                 backgroundPosition:
                   tile !== 0 || won
