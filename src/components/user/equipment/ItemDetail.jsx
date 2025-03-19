@@ -192,17 +192,20 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
           <StartForceSecondLine>
             {/* 두 번째 줄의 별 (15개 이상일 때) */}
             {item.starforce > 15 &&
-              Array.from({ length: item.starforce - 15 }, (_, i) => (
-                <React.Fragment key={`star-second-${i}`}>
-                  <StarForceIcon src={starForce_Icon} alt="star" />
-                  {(i + 1) % 5 === 0 && (
-                    <span
-                      key={`space-second-${i}`}
-                      style={{ margin: "0 3px" }}
-                    ></span>
-                  )}
-                </React.Fragment>
-              ))}
+              Array.from(
+                { length: Math.min(item.starforce - 15, 15) },
+                (_, i) => (
+                  <React.Fragment key={`star-second-${i}`}>
+                    <StarForceIcon src={starForce_Icon} alt="star" />
+                    {(i + 1) % 5 === 0 && (
+                      <span
+                        key={`space-second-${i}`}
+                        style={{ margin: "0 3px" }}
+                      ></span>
+                    )}
+                  </React.Fragment>
+                )
+              )}
           </StartForceSecondLine>
         </StarForce>
 
