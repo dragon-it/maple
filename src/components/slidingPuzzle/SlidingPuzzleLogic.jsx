@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import WinImage from "../../assets/slidingPuzzle/Minigame.win.png";
-import WinSound from "../../assets/slidingPuzzle/Win.mp3";
 import TimerIcon from "../../assets/slidingPuzzle/icons/Clock.svg";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
 import colors from "../common/color/colors";
@@ -100,7 +99,6 @@ export const SlidingPuzzleLogic = () => {
       if (flattened[i] !== i + 1) return;
     }
     setWon(true);
-    new Audio(WinSound).play();
     setStartTime(null); // 타이머 멈추기
 
     // 0번 타일을 9번 타일로 변경 (size가 4일 경우 조정)
@@ -159,13 +157,13 @@ export const SlidingPuzzleLogic = () => {
           </CustomSelect>
         </label>
       </OptionWrap>
-      <SlidingPuzzleMusicPlayer />
+      <SlidingPuzzleMusicPlayer won={won ? "true" : "false"} />
       <LevelWrap>
-        <Normal onClick={() => handleLevelChange("normal")} level={level}>
+        <Normal onClick={() => handleLevelChange("normal")} $level={level}>
           NORMAL
           {level === "normal" && <LevelIndicator>◀</LevelIndicator>}
         </Normal>
-        <Hard onClick={() => handleLevelChange("hard")} level={level}>
+        <Hard onClick={() => handleLevelChange("hard")} $level={level}>
           HARD
           {level === "hard" && <LevelIndicator>◀</LevelIndicator>}
         </Hard>
@@ -177,16 +175,15 @@ export const SlidingPuzzleLogic = () => {
         </Timer>
         <Reset onClick={handleRestart}>다시하기</Reset>
       </TimerResetWrap>
-      <Board size={size} won={won}>
+      <Board size={size} $won={won}>
         {board.map((row, rowIndex) =>
           row.map((tile, colIndex) => (
             <Tile
-              key={`${rowIndex}-${colIndex}`}
+              key={`${rowIndex}-${colIndex}-${tile}`}
               className={tile === 0 ? "empty" : ""} // won 상태에서는 empty 클래스 무시
               onClick={() => handleClick(rowIndex, colIndex)}
               style={{
-                backgroundImage:
-                  tile !== 0 || won ? `url(${imageMap})` : "none", // won일 때 0도 이미지 표시
+                backgroundImage: tile !== 0 ? `url(${imageMap})` : "none",
                 backgroundSize: `${size * 100}% ${size * 100}%`, // 3x3이면 300%, 4x4면 400%
                 backgroundPosition:
                   tile !== 0 || won
@@ -195,7 +192,7 @@ export const SlidingPuzzleLogic = () => {
                       }%`
                     : "none", // 타일 위치 계산 (won일 때 tile이 9로 바뀜)
               }}
-              won={won}
+              $won={won}
               tile={tile}
               size={size}
               level={level}
@@ -307,8 +304,8 @@ const Normal = styled.button`
     filter: brightness(1.15);
   }
 
-  ${({ level }) =>
-    level === "normal" &&
+  ${({ $level }) =>
+    $level === "normal" &&
     `filter: brightness(1.35); 
     border: ${colors.commonInfo.normalBtn.btnActiveborder};
     outline: ${colors.commonInfo.normalBtn.btnActiveOutline};
@@ -333,8 +330,8 @@ const Hard = styled.button`
     filter: brightness(1.15);
   }
 
-  ${({ level }) =>
-    level === "hard" &&
+  ${({ $level }) =>
+    $level === "hard" &&
     `filter: brightness(1.35); 
     border: ${colors.commonInfo.hardBtn.btnActiveborder};
     outline: ${colors.commonInfo.hardBtn.btnActiveOutline};
@@ -356,10 +353,13 @@ const Board = styled.div`
   max-width: 550px;
   max-height: 550px;
 
-  ${({ won }) => won && `gap: 0px;`}
+  ${({ $won }) => $won && `gap: 0px;`}
 `;
 
-const Tile = styled.div`
+const Tile = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    !["won", "tile", "size", "level", "imageMap"].includes(prop),
+})`
   width: 100%;
   height: 100%;
   display: flex;
@@ -374,7 +374,7 @@ const Tile = styled.div`
     -1px -1px 2px ${colors.main.white0}, 1px -1px 2px ${colors.main.white0},
     -1px 1px 2px ${colors.main.white0};
 
-  &:hover {
+  &:hover:not(.empty) {
     background: ${colors.main.white6};
   }
 
@@ -383,8 +383,8 @@ const Tile = styled.div`
     cursor: default;
   }
 
-  ${({ won }) =>
-    won &&
+  ${({ $won }) =>
+    $won &&
     `
     border-radius: 0px; 
   `}
