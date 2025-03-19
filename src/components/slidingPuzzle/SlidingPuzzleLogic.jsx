@@ -378,6 +378,10 @@ const Tile = styled.div`
     background: ${colors.main.white6};
   }
 
+  &:hover:not(.empty) {
+    background: ${colors.main.white6};
+  }
+
   &.empty {
     background: transparent;
     cursor: default;
