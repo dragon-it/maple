@@ -48,8 +48,17 @@ export const RandomClass = () => {
     return characters[randomIndex];
   };
 
+  const PreloadImages = () => (
+    <div style={{ display: "none" }}>
+      {characters.map((character, index) => (
+        <img key={index} src={character.image} alt="" />
+      ))}
+    </div>
+  );
+
   return (
     <Container>
+      <PreloadImages />
       <Helmet>
         <title>랜덤 직업 뽑기 - 메짱</title>
         <meta
