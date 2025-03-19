@@ -181,7 +181,7 @@ export const SlidingPuzzleLogic = () => {
         {board.map((row, rowIndex) =>
           row.map((tile, colIndex) => (
             <Tile
-              key={`${rowIndex}-${colIndex}`}
+              key={`${rowIndex}-${colIndex}-${tile}`}
               className={tile === 0 ? "empty" : ""} // won 상태에서는 empty 클래스 무시
               onClick={() => handleClick(rowIndex, colIndex)}
               style={{
@@ -372,10 +372,6 @@ const Tile = styled.div`
   text-shadow: 1px 1px 2px ${colors.main.white0},
     -1px -1px 2px ${colors.main.white0}, 1px -1px 2px ${colors.main.white0},
     -1px 1px 2px ${colors.main.white0};
-
-  &:hover {
-    background: ${colors.main.white6};
-  }
 
   &:hover:not(.empty) {
     background: ${colors.main.white6};
