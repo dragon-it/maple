@@ -161,6 +161,13 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
     }
   };
 
+  // 잠재 옵션 배열
+  const potentials = [
+    item.potential_option_1,
+    item.potential_option_2,
+    item.potential_option_3,
+  ];
+
   return (
     <Container
       ref={detailRef}
@@ -392,12 +399,11 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
               />
               <span>잠재옵션</span>
             </OptionHeader>
-            {item.potential_options &&
-              item.potential_options.map((option, index) => (
-                <PotentialItems key={`potential-option-${index}`}>
-                  {option}
-                </PotentialItems>
-              ))}
+            {potentials.map((option, index) => (
+              <PotentialItems key={`potential-${index}`}>
+                {option}
+              </PotentialItems>
+            ))}
           </PotentialOptionWrap>
         )}
         {item.additional_potential_option_grade && (
