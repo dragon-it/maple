@@ -7,21 +7,33 @@ import VolumeIcon from "../../assets/slidingPuzzle/icons/Speaker.svg";
 import MuteIcon from "../../assets/slidingPuzzle/icons/Mute.svg";
 import StartIcon from "../../assets/slidingPuzzle/icons/Start.svg";
 import StopIcon from "../../assets/slidingPuzzle/icons/Stop.svg";
+import WinSound from "../../assets/slidingPuzzle/Win.mp3";
 import colors from "../common/color/colors";
 
-export const SlidingPuzzleMusicPlayer = () => {
+export const SlidingPuzzleMusicPlayer = ({ won }) => {
   const [bgm, setBgm] = useState(TitleBGM);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [prevVolume, setPrevVolume] = useState(0.5);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(null);
+  const prevWonRef = useRef(false);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
+
+  useEffect(() => {
+    // won이 false에서 true로 바뀌고, isPlaying이 true일 때만 WinSound 재생
+    if (won === "true" && prevWonRef.current === false && isPlaying) {
+      const winAudio = new Audio(WinSound);
+      winAudio.play();
+    }
+    // 현재 won 상태를 prevWonRef에 저장
+    prevWonRef.current = won === "true";
+  }, [won, isPlaying]);
 
   const handleBgmChange = (event) => {
     const newBgm = event.target.value;
@@ -90,6 +102,7 @@ export const SlidingPuzzleMusicPlayer = () => {
         <audio ref={audioRef} loop>
           <source src={bgm} type="audio/mpeg" />
         </audio>
+
         <label>
           <VolumeIconStyled
             src={isMuted ? MuteIcon : VolumeIcon}
