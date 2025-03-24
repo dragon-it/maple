@@ -45,14 +45,12 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
         >
           아티팩트
         </TabButton>
-        {/* <TabButton
+        <TabButton
           isActive={activeTab === "champion"}
           onClick={() => setActiveTab("champion")}
         >
           챔피언
-        </TabButton> */}
-
-        {/* 추후 유니온 챔피언 추가할 것 */}
+        </TabButton>
       </TabMenu>
 
       <ContentsWrap activeTab={activeTab}>
@@ -91,11 +89,11 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
               <UnionOccupiedStat Data={Data.unionRaider} />
             </>
           )}
-          {/* {activeTab === "champion" && (
+          {activeTab === "champion" && (
             <ChampionWrap>
               <UnionChampion Data={Data.unionChampion} />
             </ChampionWrap>
-          )} */}
+          )}
         </>
       </ContentsWrap>
     </Wrap>
