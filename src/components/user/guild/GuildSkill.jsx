@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import nobleSkills from "./SkillData";
-import rightArrow from "../../../assets/guild/guildSkill/Right_arrow.svg";
+import rightArrow from "../../../assets/pages/user/guild/guildSkill/Right_arrow.svg";
 import { GuildSkillDetail } from "./GuildSkillDetail";
 
 export const GuildSkill = ({ result }) => {

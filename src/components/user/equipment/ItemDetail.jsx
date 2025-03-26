@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
-import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
-import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
-import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
-import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
-import starForce_Icon from "../../../assets/optionIcon/starForceIcon.png";
-import rare_Border from "../../../assets/optionIcon/Item.ItemIcon.1.png";
-import epic_Border from "../../../assets/optionIcon/Item.ItemIcon.2.png";
-import unique_Border from "../../../assets/optionIcon/Item.ItemIcon.3.png";
-import legendary_Border from "../../../assets/optionIcon/Item.ItemIcon.4.png";
+import epic_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.epic.png";
+import legendary_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.legendary.png";
+import rare_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.rare.png";
+import unique_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.unique.png";
+import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
+import starForce_Icon from "../../../assets/pages/user/equipment/optionIcon/starForceIcon.png";
+import rare_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.1.png";
+import epic_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.2.png";
+import unique_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.3.png";
+import legendary_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.4.png";
 import DesiredPart from "./itemDetailDesiredPart";
 
 export const ItemDetail = ({ item, clicked, onClose }) => {

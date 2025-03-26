@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import WinImage from "../../assets/slidingPuzzle/Minigame.win.png";
-import TimerIcon from "../../assets/slidingPuzzle/icons/Clock.svg";
+import WinImage from "../../assets/pages/slidingPuzzle/Minigame.win.png";
+import TimerIcon from "../../assets/pages/slidingPuzzle/icons/Clock.svg";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
 import colors from "../common/color/colors";
 import PuzzleImages from "./SlidingPuzzleImages";

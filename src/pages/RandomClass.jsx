@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import card_Backgrnd from "../assets/classillust/characterCard.slotBackgrnd.png";
+import card_Backgrnd from "../assets/pages/randomClass/classillust/characterCard.slotBackgrnd.png";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import characters from "../components/randomClass/RandomClassImage";

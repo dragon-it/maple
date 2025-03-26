@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import dark_to_top_icon from "../../assets/sundayMaple/dark_to_top.svg";
-import light_to_top_icon from "../../assets/sundayMaple/light_to_top.svg";
+import dark_to_top_icon from "../../assets/icons/sundayMaple/dark_to_top.svg";
+import light_to_top_icon from "../../assets/icons/sundayMaple/light_to_top.svg";
 import { useTheme } from "../../context/ThemeProvider";
 
 export const SundayMaple = () => {

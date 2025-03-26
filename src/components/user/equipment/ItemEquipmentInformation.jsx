@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import equipmentUi from "../../../assets/ui/equipmentUi/equipUi.png";
-import cashEquipUi from "../../../assets/ui/equipmentUi/cashEquipUi.png";
-import petEquipUi from "../../../assets/ui/equipmentUi/petEquipUi.png";
-import androidEquipUi from "../../../assets/ui/equipmentUi/androidEquipUi.png";
+import equipmentUi from "../../../assets/pages/user/equipment/equipmentUi/equipUi.png";
+import cashEquipUi from "../../../assets/pages/user/equipment/equipmentUi/cashEquipUi.png";
+import petEquipUi from "../../../assets/pages/user/equipment/equipmentUi/petEquipUi.png";
+import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/androidEquipUi.png";
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
 import { ItemSetEffect } from "./ItemSetEffect";
