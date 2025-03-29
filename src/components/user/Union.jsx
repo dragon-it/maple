@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { UnionArtifact } from "./union/UnionArtifact";
 
 export const Union = ({ result }) => {
-  const [activeTab, setActiveTab] = useState("artifact"); 
+  const [activeTab, setActiveTab] = useState("artifact");
 
   return (
     <Container>
@@ -13,6 +13,7 @@ export const Union = ({ result }) => {
           Data={{
             unionArtiFact: result.getCombinedData.getUnionArtiFact,
             unionRaider: result.getCombinedData.getUnionRaider,
+            unionChampion: result.getCombinedData.getUnionChampion,
           }}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -22,6 +23,7 @@ export const Union = ({ result }) => {
             unionArtiFact: result.getCombinedData.getUnionArtiFact,
             union: result.getCombinedData.getUnion,
             unionRaider: result.getCombinedData.getUnionRaider,
+            unionChampion: result.getCombinedData.getUnionChampion,
           }}
           activeTab={activeTab}
         />

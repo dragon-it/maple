@@ -2,7 +2,7 @@ import styled from "styled-components";
 import UnionArtifactIcon from "./UnionArtifactIcon";
 import { UnionRaider } from "./UnionRaider";
 import { UnionOccupiedStat } from "./UnionOccupiedStat";
-// import { UnionChampion } from "./UnionChampion";
+import { UnionChampion } from "./UnionChampion";
 import colors from "../../common/color/colors";
 
 export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
@@ -225,11 +225,11 @@ const TabButton = styled.button`
   }
 `;
 
-// const ChampionWrap = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: rgb(48, 54, 63);
-//   border-radius: 5px;
-//   padding: 20px;
-// `;
+const ChampionWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(48, 54, 63);
+  border-radius: 5px;
+  padding: 20px;
+`;
