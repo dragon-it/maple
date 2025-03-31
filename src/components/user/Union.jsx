@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { UnionInfo } from "./union/UnionInfo";
+import { UnionInfo } from "./union/unionInfo/UnionInfo";
 import styled from "styled-components";
-import { UnionArtifact } from "./union/UnionArtifact";
+import { UnionArtifact } from "./union/unionArtifact/UnionArtifact";
 
 export const Union = ({ result }) => {
   const [activeTab, setActiveTab] = useState("artifact");

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import UnionArtifactIcon from "./UnionArtifactIcon";
-import { UnionRaider } from "./UnionRaider";
-import { UnionOccupiedStat } from "./UnionOccupiedStat";
-import { UnionChampion } from "./UnionChampion";
-import colors from "../../common/color/colors";
+import UnionArtifactIcon from "../unionArtifact/UnionArtifactIcon";
+import { UnionRaider } from "../UnionRaider";
+import { UnionOccupiedStat } from "../unionInfo/UnionOccupiedStat";
+import { UnionChampion } from "../unionChampion/UnionChampion";
+import colors from "../../../common/color/colors";
 
 export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
