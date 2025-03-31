@@ -33,6 +33,7 @@ export const Union = ({ result }) => {
 };
 
 const Container = styled.div`
+  width: 100%;
   position: relative;
   padding: 5px;
 `;

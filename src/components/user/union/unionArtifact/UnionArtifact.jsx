@@ -225,11 +225,4 @@ const TabButton = styled.button`
   }
 `;
 
-const ChampionWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(48, 54, 63);
-  border-radius: 5px;
-  padding: 20px;
-`;
+const ChampionWrap = styled.div``;

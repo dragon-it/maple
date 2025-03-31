@@ -41,11 +41,11 @@ const rank = {
 };
 
 const insignia = {
-  0: { 0: champion_insignia_0_0, 1: champion_insignia_0_1 },
-  1: { 0: champion_insignia_1_0, 1: champion_insignia_1_1 },
-  2: { 0: champion_insignia_2_0, 1: champion_insignia_2_1 },
-  3: { 0: champion_insignia_3_0, 1: champion_insignia_3_1 },
-  4: { 0: champion_insignia_4_0, 1: champion_insignia_4_1 },
+  first: { 0: champion_insignia_0_0, 1: champion_insignia_0_1 },
+  second: { 0: champion_insignia_1_0, 1: champion_insignia_1_1 },
+  third: { 0: champion_insignia_2_0, 1: champion_insignia_2_1 },
+  fourth: { 0: champion_insignia_3_0, 1: champion_insignia_3_1 },
+  fifth: { 0: champion_insignia_4_0, 1: champion_insignia_4_1 },
 };
 
 const icon = {
@@ -57,4 +57,6 @@ const icon = {
   xenon: champion_icon_xenon,
 };
 
-export default { card_Backgrnd, rank, insignia, icon };
+const unionChampionImages = { card_Backgrnd, rank, insignia, icon };
+
+export default unionChampionImages;
