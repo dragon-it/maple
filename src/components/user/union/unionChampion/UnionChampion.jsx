@@ -22,7 +22,7 @@ export const UnionChampion = ({ Data }) => {
           $background={
             Data.union_champion.some(
               (champion) => champion.champion_slot === index + 1
-            ) // 슬롯이 1부터 시작하므로 index + 1
+            ) // 데이터에서 슬롯이이 1부터 시작하므로 index + 1
               ? empty
               : disabled
           }
