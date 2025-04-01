@@ -16,14 +16,15 @@ export const UnionChampion = ({ Data }) => {
 
   return (
     <GridContainer>
+      {/* Array.from으로 길이 6인 배열을 만들어 map으로 6개 슬롯 렌더링 */}
       {Array.from({ length: 6 }).map((_, index) => (
         <GridItem
           key={index}
           $background={
             Data.union_champion.some(
-              (champion) => champion.champion_slot === index + 1
-            ) // 데이터에서 슬롯이이 1부터 시작하므로 index + 1
-              ? empty
+              (champion) => champion.champion_slot === index + 1 // 슬롯이 1부터 시작하므로 index + 1
+            )  // some은 조건에 맞는 챔피언이 있으면 true 반환
+              ? empty 
               : disabled
           }
         />
