@@ -121,7 +121,7 @@ const ContentsWrap = styled.div`
   padding: 5px;
   height: fit-content;
   color: white;
-  width: ${(props) => (props.activeTab === "raider" ? "100%" : "682px")};
+  width: ${(props) => (props.activeTab === "artifact" ? "682px" : "100%")};
   flex-direction: row;
 
   @media screen and (max-width: 1024px) {

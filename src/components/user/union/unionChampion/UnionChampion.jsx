@@ -19,7 +19,7 @@ export const UnionChampion = ({ Data }) => {
       {Array.from({ length: 6 }).map((_, index) => (
         <GridItem
           key={index}
-          background={
+          $background={
             Data.union_champion.some(
               (champion) => champion.champion_slot === index + 1
             ) // 슬롯이 1부터 시작하므로 index + 1
@@ -47,7 +47,7 @@ const GridItem = styled.div`
   height: 338px;
   background-size: cover;
   background-position: center;
-  background-image: ${(props) => `url(${props.background})`};
+  background-image: ${(props) => `url(${props.$background})`};
 
   @media screen and (max-width: 768px) {
     width: 182px;
