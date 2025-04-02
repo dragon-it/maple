@@ -4,15 +4,11 @@ import unionChampionImages from "./unionChampionimages";
 
 console.log(unionChampionImages);
 
-const { card_Backgrnd } = unionChampionImages;
+const { card_Backgrnd, rank, insignia, icon } = unionChampionImages;
 const { empty, disabled } = card_Backgrnd;
 
 export const UnionChampion = ({ Data }) => {
   console.log("Data.union_champion:", Data.union_champion);
-  console.log(
-    "Type:",
-    Array.isArray(Data.union_champion) ? "Array" : typeof Data.union_champion
-  );
 
   return (
     <GridContainer>
@@ -23,8 +19,8 @@ export const UnionChampion = ({ Data }) => {
           $background={
             Data.union_champion.some(
               (champion) => champion.champion_slot === index + 1 // 슬롯이 1부터 시작하므로 index + 1
-            )  // some은 조건에 맞는 챔피언이 있으면 true 반환
-              ? empty 
+            ) // some은 조건에 맞는 챔피언이 있으면 true 반환
+              ? empty
               : disabled
           }
         />

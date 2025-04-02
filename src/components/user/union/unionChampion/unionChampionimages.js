@@ -19,13 +19,6 @@ import champion_insignia_3_1 from "../../../../assets/pages/user/union/champion/
 import champion_insignia_4_0 from "../../../../assets/pages/user/union/champion/insignia/champion_insignia_4_0.png";
 import champion_insignia_4_1 from "../../../../assets/pages/user/union/champion/insignia/champion_insignia_4_1.png";
 
-import champion_icon_archer from "../../../../assets/pages/user/union/champion/classIcons/champion_archer.png";
-import champion_icon_fighter from "../../../../assets/pages/user/union/champion/classIcons/champion_fighter.png";
-import champion_icon_pirate from "../../../../assets/pages/user/union/champion/classIcons/champion_pirate.png";
-import champion_icon_thief from "../../../../assets/pages/user/union/champion/classIcons/champion_thief.png";
-import champion_icon_wizard from "../../../../assets/pages/user/union/champion/classIcons/champion_wizard.png";
-import champion_icon_xenon from "../../../../assets/pages/user/union/champion/classIcons/champion_xenon.png";
-
 const card_Backgrnd = {
   empty: champion_card_Backgrnd_empty,
   disabled: champion_card_Backgrnd_disabled,
@@ -48,15 +41,6 @@ const insignia = {
   fifth: { 0: champion_insignia_4_0, 1: champion_insignia_4_1 },
 };
 
-const icon = {
-  archer: champion_icon_archer,
-  fighter: champion_icon_fighter,
-  pirate: champion_icon_pirate,
-  thief: champion_icon_thief,
-  wizard: champion_icon_wizard,
-  xenon: champion_icon_xenon,
-};
-
-const unionChampionImages = { card_Backgrnd, rank, insignia, icon };
+const unionChampionImages = { card_Backgrnd, rank, insignia };
 
 export default unionChampionImages;
