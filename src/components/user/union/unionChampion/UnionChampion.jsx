@@ -8,6 +8,7 @@ const { empty, disabled } = card_Backgrnd;
 const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
+  console.log(Data);
   const getClassIcon = (championClass) => {
     // 챔피언 클래스에 따른 아이콘 매핑
     if (ClassMapping.warriorClass.includes(championClass))
@@ -36,6 +37,7 @@ export const UnionChampion = ({ Data }) => {
           champion_class: className,
           champion_grade: grade,
           champion_name: name,
+          champion_badge_info: badgeInfo,
         } = champion || {};
 
         return (
@@ -46,16 +48,19 @@ export const UnionChampion = ({ Data }) => {
                 <Grade $grade={rank[grade]} />
                 <Name>{name}</Name>
                 <Rank>
-                  {champion.champion_badge_info.map((badge, index) => (
-                    <BadgeImage
-                      key={index}
-                      src={
-                        insignia[
-                          ["first", "second", "third", "fourth", "fifth"][index]
-                        ]?.[index % 2]
-                      }
-                    />
-                  ))}
+                  {["first", "second", "third", "fourth", "fifth"].map(
+                    (badgeOrder, badgeIndex) => {
+                      // badgeInfo의 길이보다 badgeIndex가 작으면 1, 아니면 0
+                      const badgeVariant =
+                        badgeIndex < badgeInfo.length ? 1 : 0;
+                      return (
+                        <BadgeImage
+                          key={badgeIndex}
+                          src={insignia[badgeOrder]?.[badgeVariant]}
+                        />
+                      );
+                    }
+                  )}
                 </Rank>
               </>
             )}
@@ -65,6 +70,7 @@ export const UnionChampion = ({ Data }) => {
     </GridContainer>
   );
 };
+
 const GridContainer = styled.div`
   display: grid;
   width: 100%;
