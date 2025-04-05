@@ -265,6 +265,10 @@ const colors = {
       gradeColor: "rgb(255, 255, 0)", // Union Grade Text
       gradeShadow: "rgb(219, 250, 46)", // Union Grade Text Shadow
     },
+
+    unionChampion: {
+      classColor: "rgb(166, 186, 193)", // Union Class Text
+    },
   },
 
   characterCapture: {

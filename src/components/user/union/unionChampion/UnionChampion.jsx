@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import unionChampionImages from "./unionChampionimages";
 import ClassData from "../../../common/classIcons/ClassIcons";
+import colors from "../../../common/color/colors";
 
 const { card_Backgrnd, rank, insignia } = unionChampionImages;
 const { empty, disabled } = card_Backgrnd;
@@ -44,10 +45,15 @@ export const UnionChampion = ({ Data }) => {
           <GridItem key={index} $background={champion ? empty : disabled}>
             {champion && (
               <>
-                <Class $icon={getClassIcon(className)} />
-                <Grade $grade={rank[grade]} />
-                <Name>{name}</Name>
-                <Rank>
+                <Grade src={rank[grade]} alt={`${grade} rank`} />
+                <ClassName>{className}</ClassName>
+
+                <NameWrap>
+                  <ClassIcon $icon={getClassIcon(className)} />
+                  <Name>{name}</Name>
+                </NameWrap>
+
+                <Badge>
                   {["first", "second", "third", "fourth", "fifth"].map(
                     (badgeOrder, badgeIndex) => {
                       // badgeInfo의 길이보다 badgeIndex가 작으면 1, 아니면 0
@@ -61,7 +67,7 @@ export const UnionChampion = ({ Data }) => {
                       );
                     }
                   )}
-                </Rank>
+                </Badge>
               </>
             )}
           </GridItem>
@@ -100,43 +106,42 @@ const GridItem = styled.div`
   }
 `;
 
-const Class = styled.div`
-  width: 40px;
-  height: 40px;
+const ClassIcon = styled.div`
+  width: 19px;
+  height: 20px;
   background-image: ${(props) => `url(${props.$icon})`};
   background-size: contain;
-  background-repeat: no-repeat;
   background-position: center;
-  margin-bottom: 10px;
 `;
 
-const Grade = styled.div`
-  width: 50px;
-  height: 50px;
-  background-image: ${(props) => `url(${props.$grade})`};
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 10px;
+const Grade = styled.img`
+  width: 34px;
+  height: auto;
 `;
 
-const Name = styled.div`
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-  text-shadow: 1px 1px 2px black;
-`;
-
-const Rank = styled.div`
+const NameWrap = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   gap: 5px;
 `;
 
+const Name = styled.p`
+  color: ${colors.main.white0};
+  font-size: 15px;
+`;
+
+const Badge = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
 const BadgeImage = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: auto;
+`;
+
+const ClassName = styled.p`
+  color: ${colors.union.unionChampion.classColor};
+  font-size: 14px;
+  text-shadow: 1px 1px 2px black;
 `;
