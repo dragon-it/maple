@@ -500,6 +500,45 @@ app.get("/api/character/information", async (req, res) => {
       }),
     ]);
 
+    // unionChampion에서 챔피언 이름을 가져오는 함수
+    const championNames = Object.values(unionChampion.union_champion).map(
+      (champ) => champ.champion_name
+    );
+
+    const championDetails = await Promise.all(
+      championNames.map(async (name) => {
+        try {
+          // 이름으로 ocid 조회
+          const ocidData = await callMapleStoryAPI("id", {
+            character_name: name,
+          });
+
+          if (!ocidData || !ocidData.ocid) {
+            throw new Error(`OCID not found for character: ${name}`);
+          }
+
+          const ocid = ocidData.ocid;
+
+          // ocid로 캐릭터 기본 정보 조회
+          const characterData = await callMapleStoryAPI("character/basic", {
+            ocid,
+          });
+
+          return {
+            character_name: name,
+            character_image: characterData.character_image,
+            character_level: characterData.character_level,
+          };
+        } catch (err) {
+          console.error(`Error processing character "${name}":`, err.message);
+          return {
+            character_name: name,
+            error: "Failed to fetch character data",
+          };
+        }
+      })
+    );
+
     res.json({
       getBasicInformation: basicData,
       getCharacterStat: stat,
@@ -527,6 +566,7 @@ app.get("/api/character/information", async (req, res) => {
       getUnionRanking: unionLanking,
       getUnionChampion: unionChampion,
       getDojang: dojang,
+      getChampionDetails: championDetails,
     });
   } catch (error) {
     console.error("Combined API error:", error.message);
