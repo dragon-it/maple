@@ -91,7 +91,12 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
           )}
           {activeTab === "champion" && (
             <ChampionWrap>
-              <UnionChampion Data={Data.unionChampion} />
+              <UnionChampion
+                Data={{
+                  unionChampion: Data.unionChampion,
+                  unionChampionDetail: Data.unionChampionDetail,
+                }}
+              />
             </ChampionWrap>
           )}
         </>

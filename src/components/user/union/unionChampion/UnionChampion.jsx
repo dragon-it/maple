@@ -10,6 +10,7 @@ const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
   console.log(Data);
+
   const getClassIcon = (championClass) => {
     // 챔피언 클래스에 따른 아이콘 매핑
     if (ClassMapping.warriorClass.includes(championClass))
@@ -26,13 +27,18 @@ export const UnionChampion = ({ Data }) => {
     return null;
   };
 
+  const { union_champion } = Data.unionChampion;
+  const unionChampionDetail = Data.unionChampionDetail;
+
   return (
     <GridContainer>
       {/* Array.from으로 길이 6인 배열을 만들어 map으로 6개 슬롯 렌더링 */}
       {Array.from({ length: 6 }).map((_, index) => {
-        const champion = Data.union_champion.find(
+        const champion = union_champion.find(
           (champion) => champion.champion_slot === index + 1 // 슬롯이 1부터 시작하므로 index + 1
         );
+
+        const detail = unionChampionDetail[index] || {};
 
         const {
           champion_class: className,
@@ -41,18 +47,28 @@ export const UnionChampion = ({ Data }) => {
           champion_badge_info: badgeInfo,
         } = champion || {};
 
+        const { character_image, character_level } = detail;
+
         return (
           <GridItem key={index} $background={champion ? empty : disabled}>
             {champion && (
               <>
-                <Grade src={rank[grade]} alt={`${grade} rank`} />
+                {/* 랭크, 레벨 Wrap */}
+                <GradeLevelWrap>
+                  <Grade src={rank[grade]} alt={`${grade} rank`} />
+                  {character_level && <Level>Lv.{character_level}</Level>}
+                </GradeLevelWrap>
+
+                {character_image && (
+                  <CharacterImage src={character_image} alt={`${name} image`} />
+                )}
+
                 <ClassName>{className}</ClassName>
 
                 <NameWrap>
                   <ClassIcon $icon={getClassIcon(className)} />
                   <Name>{name}</Name>
                 </NameWrap>
-
                 <Badge>
                   {["first", "second", "third", "fourth", "fifth"].map(
                     (badgeOrder, badgeIndex) => {
@@ -76,6 +92,8 @@ export const UnionChampion = ({ Data }) => {
     </GridContainer>
   );
 };
+
+// ?x=86&y=130&width=172&height=140
 
 const GridContainer = styled.div`
   display: grid;
@@ -106,6 +124,13 @@ const GridItem = styled.div`
   }
 `;
 
+const GradeLevelWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const ClassIcon = styled.div`
   width: 19px;
   height: 20px;
@@ -115,7 +140,7 @@ const ClassIcon = styled.div`
 `;
 
 const Grade = styled.img`
-  width: 34px;
+  width: 32px;
   height: auto;
 `;
 
@@ -144,4 +169,15 @@ const ClassName = styled.p`
   color: ${colors.union.unionChampion.classColor};
   font-size: 14px;
   text-shadow: 1px 1px 2px black;
+`;
+
+const CharacterImage = styled.img`
+  width: 100px;
+  height: auto;
+  margin-top: 10px;
+`;
+
+const Level = styled.p`
+  color: ${colors.main.white0};
+  font-size: 15px;
 `;

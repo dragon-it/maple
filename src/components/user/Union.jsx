@@ -14,6 +14,7 @@ export const Union = ({ result }) => {
             unionArtiFact: result.getCombinedData.getUnionArtiFact,
             unionRaider: result.getCombinedData.getUnionRaider,
             unionChampion: result.getCombinedData.getUnionChampion,
+            unionChampionDetail: result.getCombinedData.getChampionDetails,
           }}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
