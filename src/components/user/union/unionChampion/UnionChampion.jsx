@@ -9,8 +9,6 @@ const { empty, disabled } = card_Backgrnd;
 const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
-  console.log(Data);
-
   // 챔피언 클래스에 따른 아이콘 매핑
   const getClassIcon = (championClass) => {
     if (ClassMapping.warriorClass.includes(championClass))
@@ -209,6 +207,7 @@ const CharacterImage = styled.img`
   height: auto;
   margin-top: 10px;
   z-index: 10;
+  image-rendering: pixelated;
 `;
 
 const Level = styled.p`
