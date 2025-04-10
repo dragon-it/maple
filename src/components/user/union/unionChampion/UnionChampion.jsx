@@ -4,15 +4,15 @@ import unionChampionImages from "./unionChampionimages";
 import ClassData from "../../../common/classIcons/ClassIcons";
 import colors from "../../../common/color/colors";
 
-const { card_Backgrnd, rank, insignia } = unionChampionImages;
+const { card_Backgrnd, rank, insignia, blessing } = unionChampionImages;
 const { empty, disabled } = card_Backgrnd;
 const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
   console.log(Data);
 
+  // 챔피언 클래스에 따른 아이콘 매핑
   const getClassIcon = (championClass) => {
-    // 챔피언 클래스에 따른 아이콘 매핑
     if (ClassMapping.warriorClass.includes(championClass))
       return ClassIcons.fighter;
     if (ClassMapping.mageClass.includes(championClass))
@@ -27,6 +27,22 @@ export const UnionChampion = ({ Data }) => {
     return null;
   };
 
+  // 챔피언 클래스에 따른 블레스 이미지 매핑
+  const getBlessingImage = (championClass, badgeCount) => {
+    const classKey = getClassKey(championClass);
+    return blessing[classKey]?.[badgeCount] || blessing[classKey]?.[0];
+  };
+
+  // 챔피언 클래스에 따른 키 매핑
+  const getClassKey = (championClass) => {
+    if (ClassMapping.warriorClass.includes(championClass)) return "fighter";
+    if (ClassMapping.mageClass.includes(championClass)) return "wizard";
+    if (ClassMapping.archerClass.includes(championClass)) return "archer";
+    if (ClassMapping.thiefClass.includes(championClass)) return "thief";
+    if (ClassMapping.pirateClass.includes(championClass)) return "pirate";
+    return "thief"; // 기본값으로 thief (제논 처리)
+  };
+
   const { union_champion } = Data.unionChampion;
   const unionChampionDetail = Data.unionChampionDetail;
 
@@ -39,6 +55,7 @@ export const UnionChampion = ({ Data }) => {
         );
 
         const detail = unionChampionDetail[index] || {};
+        const { character_image, character_level } = detail;
 
         const {
           champion_class: className,
@@ -46,8 +63,6 @@ export const UnionChampion = ({ Data }) => {
           champion_name: name,
           champion_badge_info: badgeInfo,
         } = champion || {};
-
-        const { character_image, character_level } = detail;
 
         return (
           <GridItem key={index} $background={champion ? empty : disabled}>
@@ -60,15 +75,27 @@ export const UnionChampion = ({ Data }) => {
                 </GradeLevelWrap>
 
                 {character_image && (
-                  <CharacterImage src={character_image} alt={`${name} image`} />
+                  <CharacterImage
+                    src={`${character_image}?x=90&y=130&width=172&height=170`}
+                    alt={`${name} image`}
+                  />
                 )}
 
+                <BlessingImage
+                  src={getBlessingImage(className, badgeInfo.length)}
+                  alt={`${className} blessing`}
+                />
+
+                {/* 직업 이름 */}
                 <ClassName>{className}</ClassName>
 
+                {/* 직업 아이콘, 닉네임 Wrap */}
                 <NameWrap>
                   <ClassIcon $icon={getClassIcon(className)} />
                   <Name>{name}</Name>
                 </NameWrap>
+
+                {/* 배지 아이콘 */}
                 <Badge>
                   {["first", "second", "third", "fourth", "fifth"].map(
                     (badgeOrder, badgeIndex) => {
@@ -93,8 +120,6 @@ export const UnionChampion = ({ Data }) => {
   );
 };
 
-// ?x=86&y=130&width=172&height=140
-
 const GridContainer = styled.div`
   display: grid;
   width: 100%;
@@ -107,16 +132,18 @@ const GridContainer = styled.div`
 `;
 
 const GridItem = styled.div`
+  position: relative;
   width: 182px;
   height: 338px;
-  background-size: cover;
-  background-position: center;
-  background-image: ${(props) => `url(${props.$background})`};
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+  background-size: cover;
+  background-position: center;
+  background-image: ${(props) => `url(${props.$background})`};
   padding: 10px;
+  overflow: hidden;
 
   @media screen and (max-width: 768px) {
     width: 182px;
@@ -124,23 +151,28 @@ const GridItem = styled.div`
   }
 `;
 
+const BlessingImage = styled.img`
+  position: absolute;
+  z-index: 1;
+  top: 15%;
+`;
+
 const GradeLevelWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const ClassIcon = styled.div`
-  width: 19px;
-  height: 20px;
+  width: 17px;
+  height: 18px;
   background-image: ${(props) => `url(${props.$icon})`};
   background-size: contain;
   background-position: center;
 `;
 
 const Grade = styled.img`
-  width: 32px;
   height: auto;
 `;
 
@@ -158,6 +190,7 @@ const Badge = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 `;
 
 const BadgeImage = styled.img`
@@ -169,15 +202,18 @@ const ClassName = styled.p`
   color: ${colors.union.unionChampion.classColor};
   font-size: 14px;
   text-shadow: 1px 1px 2px black;
+  z-index: 10;
 `;
 
 const CharacterImage = styled.img`
-  width: 100px;
   height: auto;
   margin-top: 10px;
+  z-index: 10;
 `;
 
 const Level = styled.p`
-  color: ${colors.main.white0};
+  color: #f6d5af;
   font-size: 15px;
+  font-weight: bold;
+  margin-top: 3px;
 `;

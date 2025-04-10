@@ -37,11 +37,11 @@ import chmapion_bless_pirate_3 from "../../../../assets/pages/user/union/champio
 import chmapion_bless_pirate_4 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.pirate.layera4.png";
 import chmapion_bless_pirate_5 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.pirate.layera5.png";
 
-import chmapion_bless_theif_1 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.theif.layera1.png";
-import chmapion_bless_theif_2 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.theif.layera2.png";
-import chmapion_bless_theif_3 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.theif.layera3.png";
-import chmapion_bless_theif_4 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.theif.layera4.png";
-import chmapion_bless_theif_5 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.theif.layera5.png";
+import chmapion_bless_thief_1 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.thief.layera1.png";
+import chmapion_bless_thief_2 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.thief.layera2.png";
+import chmapion_bless_thief_3 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.thief.layera3.png";
+import chmapion_bless_thief_4 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.thief.layera4.png";
+import chmapion_bless_thief_5 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.thief.layera5.png";
 
 import chmapion_bless_wizard_1 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.wizard.layera1.png";
 import chmapion_bless_wizard_2 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.wizard.layera2.png";
@@ -49,7 +49,7 @@ import chmapion_bless_wizard_3 from "../../../../assets/pages/user/union/champio
 import chmapion_bless_wizard_4 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.wizard.layera4.png";
 import chmapion_bless_wizard_5 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.wizard.layera5.png";
 
-championBlessing.statue.theif.layera1;
+import champion_bless_base_0 from "../../../../assets/pages/user/union/champion/bless/championBlessing.statue.layer1.png";
 
 const card_Backgrnd = {
   empty: champion_card_Backgrnd_empty,
@@ -75,6 +75,7 @@ const insignia = {
 
 const blessing = {
   archer: {
+    0: champion_bless_base_0,
     1: chmapion_bless_archer_1,
     2: chmapion_bless_archer_2,
     3: chmapion_bless_archer_3,
@@ -82,6 +83,7 @@ const blessing = {
     5: chmapion_bless_archer_5,
   },
   fighter: {
+    0: champion_bless_base_0,
     1: chmapion_bless_fighter_1,
     2: chmapion_bless_fighter_2,
     3: chmapion_bless_fighter_3,
@@ -89,20 +91,23 @@ const blessing = {
     5: chmapion_bless_fighter_5,
   },
   pirate: {
+    0: champion_bless_base_0,
     1: chmapion_bless_pirate_1,
     2: chmapion_bless_pirate_2,
     3: chmapion_bless_pirate_3,
     4: chmapion_bless_pirate_4,
     5: chmapion_bless_pirate_5,
   },
-  theif: {
-    1: chmapion_bless_theif_1,
-    2: chmapion_bless_theif_2,
-    3: chmapion_bless_theif_3,
-    4: chmapion_bless_theif_4,
-    5: chmapion_bless_theif_5,
+  thief: {
+    0: champion_bless_base_0,
+    1: chmapion_bless_thief_1,
+    2: chmapion_bless_thief_2,
+    3: chmapion_bless_thief_3,
+    4: chmapion_bless_thief_4,
+    5: chmapion_bless_thief_5,
   },
   wizard: {
+    0: champion_bless_base_0,
     1: chmapion_bless_wizard_1,
     2: chmapion_bless_wizard_2,
     3: chmapion_bless_wizard_3,

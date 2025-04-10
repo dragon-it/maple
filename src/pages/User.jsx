@@ -147,7 +147,7 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 95%;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
