@@ -211,7 +211,7 @@ const CharacterImage = styled.img`
 `;
 
 const Level = styled.p`
-  color: #f6d5af;
+  color: ${colors.union.unionChampion.classColor};
   font-size: 15px;
   font-weight: bold;
   margin-top: 3px;

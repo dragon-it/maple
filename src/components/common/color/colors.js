@@ -267,7 +267,8 @@ const colors = {
     },
 
     unionChampion: {
-      classColor: "rgb(166, 186, 193)", // Union Class Text
+      classColor: "rgb(166, 186, 193)", // Union Champion Class Text
+      levelColor: "rgb(246, 213, 175)", // Union Champion Level Text
     },
   },
 
