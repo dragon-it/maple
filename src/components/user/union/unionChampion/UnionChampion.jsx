@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import UnionChampionImages from "./UnionChampionimages";
 import ClassData from "../../../common/classIcons/ClassIcons";
 import colors from "../../../common/color/colors";
+import { ItemDetailContainer } from "../../../common/itemDetailContainer/ItemDetailContainer";
+import badgeDetails from "./BadgeDetails";
 
 const { card_Backgrnd, rank, insignia, blessing } = UnionChampionImages;
 const { empty, disabled } = card_Backgrnd;
 const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
-  console.log(Data);
+  const [hoveredBadge, setHoveredBadge] = useState(null);
+  const [hoveredChampionSlot, setHoveredChampionSlot] = useState(null);
+
   // 챔피언 클래스에 따른 아이콘 매핑
   const getClassIcon = (championClass) => {
     if (ClassMapping.warriorClass.includes(championClass))
@@ -47,10 +51,9 @@ export const UnionChampion = ({ Data }) => {
 
   return (
     <GridContainer>
-      {/* Array.from으로 길이 6인 배열을 만들어 map으로 6개 슬롯 렌더링 */}
       {Array.from({ length: 6 }).map((_, index) => {
         const champion = union_champion.find(
-          (champion) => champion.champion_slot === index + 1 // 슬롯이 1부터 시작하므로 index + 1
+          (champion) => champion.champion_slot === index + 1
         );
 
         const detail = unionChampionDetail[index] || {};
@@ -67,7 +70,6 @@ export const UnionChampion = ({ Data }) => {
           <GridItem key={index} $background={champion ? empty : disabled}>
             {champion && (
               <>
-                {/* 랭크, 레벨 Wrap */}
                 <GradeLevelWrap>
                   <Grade src={rank[grade]} alt={`${grade} rank`} />
                   {character_level && <Level>Lv.{character_level}</Level>}
@@ -85,27 +87,49 @@ export const UnionChampion = ({ Data }) => {
                   alt={`${className} blessing`}
                 />
 
-                {/* 직업 이름 */}
                 <ClassName>{className}</ClassName>
 
-                {/* 직업 아이콘, 닉네임 Wrap */}
                 <NameWrap>
                   <ClassIcon $icon={getClassIcon(className)} />
                   <Name>{name}</Name>
                 </NameWrap>
 
-                {/* 배지 아이콘 */}
                 <Badge>
                   {["first", "second", "third", "fourth", "fifth"].map(
                     (badgeOrder, badgeIndex) => {
-                      // badgeInfo의 길이보다 badgeIndex가 작으면 1, 아니면 0
                       const badgeVariant =
                         badgeIndex < badgeInfo.length ? 1 : 0;
                       return (
-                        <BadgeImage
+                        <BadgeImageWrapper
                           key={badgeIndex}
-                          src={insignia[badgeOrder]?.[badgeVariant]}
-                        />
+                          onMouseEnter={() =>
+                            badgeVariant === 1 &&
+                            setHoveredBadge({
+                              slot: index,
+                              badgeIndex,
+                            })
+                          }
+                          onMouseLeave={() => setHoveredBadge(null)}
+                        >
+                          <BadgeImage
+                            src={insignia[badgeOrder]?.[badgeVariant]}
+                          />
+                          {hoveredBadge &&
+                            hoveredBadge.slot === index &&
+                            hoveredBadge.badgeIndex === badgeIndex &&
+                            badgeVariant === 1 && (
+                              <ItemDetailContainer
+                                text={
+                                  <div>
+                                    <h3>{badgeDetails[badgeIndex].title}</h3>
+                                    <p>
+                                      {badgeDetails[badgeIndex].description}
+                                    </p>
+                                  </div>
+                                }
+                              />
+                            )}
+                        </BadgeImageWrapper>
                       );
                     }
                   )}
@@ -216,4 +240,9 @@ const Level = styled.p`
   font-size: 15px;
   font-weight: bold;
   margin-top: 3px;
+`;
+
+const BadgeImageWrapper = styled.div`
+  position: relative;
+  display: inline-block;
 `;

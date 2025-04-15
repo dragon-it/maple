@@ -6,6 +6,7 @@ const colors = {
     white0Alpha40: "rgba(255, 255, 255, 0.4)",
     white0Alpha60: "rgba(255, 255, 255, 0.6)",
     white0Alpha80: "rgba(255, 255, 255, 0.8)",
+    white0Alpha90: "rgba(255, 255, 255, 0.9)",
     white1: "rgb(247, 247, 247)", // Ability Btn Border Actve
     white2: "rgb(230, 230, 230)",
     white3: "rgb(220, 220, 220)", // Ability Btn Color Not Active
