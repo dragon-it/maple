@@ -116,6 +116,6 @@ const blessing = {
   },
 };
 
-const unionChampionImages = { card_Backgrnd, rank, insignia, blessing };
+const UnionChampionImages = { card_Backgrnd, rank, insignia, blessing };
 
-export default unionChampionImages;
+export default UnionChampionImages;

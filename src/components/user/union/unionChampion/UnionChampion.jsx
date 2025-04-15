@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import unionChampionImages from "./unionChampionimages";
+import UnionChampionImages from "./UnionChampionimages";
 import ClassData from "../../../common/classIcons/ClassIcons";
 import colors from "../../../common/color/colors";
 
-const { card_Backgrnd, rank, insignia, blessing } = unionChampionImages;
+const { card_Backgrnd, rank, insignia, blessing } = UnionChampionImages;
 const { empty, disabled } = card_Backgrnd;
 const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
+  console.log(Data);
   // 챔피언 클래스에 따른 아이콘 매핑
   const getClassIcon = (championClass) => {
     if (ClassMapping.warriorClass.includes(championClass))
@@ -211,7 +212,7 @@ const CharacterImage = styled.img`
 `;
 
 const Level = styled.p`
-  color: ${colors.union.unionChampion.classColor};
+  color: ${colors.union.unionChampion.levelColor};
   font-size: 15px;
   font-weight: bold;
   margin-top: 3px;
