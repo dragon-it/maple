@@ -219,6 +219,11 @@ const Badge = styled.div`
 const BadgeImage = styled.img`
   width: 32px;
   height: auto;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.3);
+  }
 `;
 
 const ClassName = styled.p`
