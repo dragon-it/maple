@@ -143,7 +143,7 @@ const StatWrap = styled.ul`
   font-size: 13px;
 `;
 
-const MainStat = styled.li`
+const MainStat = styled.div`
   font-weight: bold;
   font-size: 15px;
   @media screen and (max-width: 768px) {
@@ -151,7 +151,7 @@ const MainStat = styled.li`
   }
 `;
 
-const StatInfoContainer = styled.li`
+const StatInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 3px;
@@ -183,7 +183,7 @@ const StatContainer = styled.div`
   }
 `;
 
-const SlotHeader = styled.li`
+const SlotHeader = styled.div`
   font-family: maple-light;
   color: #ffffff;
   font-size: 15px;

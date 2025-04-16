@@ -222,7 +222,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
             <span>{item.soul_name.replace(" 소울 적용", "")}</span>
           )}
           {item.item_name ? (
-            <p>
+            <span>
               <div>
                 {/* 아이템 이름과 스크롤 업그레이드 수치 */}
                 {`${item.item_name}${
@@ -233,7 +233,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
               {item.special_ring_level !== 0 && (
                 <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
               )}
-            </p>
+            </span>
           ) : item.android_name ? (
             <div>{item.android_name}</div>
           ) : null}
@@ -361,12 +361,12 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
         {/* 업그레이드 가능 횟수 */}
         {item.scroll_upgradeable_count &&
           DesiredPart.includes(item.item_equipment_slot) && (
-            <p>
+            <span>
               업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
               <ResilienceCount>
                 (복구 가능 횟수 : {item.scroll_resilience_count})
               </ResilienceCount>
-            </p>
+            </span>
           )}
 
         {/* 황금망치 제련 여부 */}

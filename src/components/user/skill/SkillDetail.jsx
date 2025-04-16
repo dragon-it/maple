@@ -179,14 +179,14 @@ const IconImage = styled.div`
   }
 `;
 
-const SkillDescriptionWrap = styled.p`
+const SkillDescriptionWrap = styled.span`
   width: 100%;
   height: 100%;
   font-size: 12px;
   white-space: pre-wrap;
 `;
 
-const SkillEffect = styled.p`
+const SkillEffect = styled.span`
   font-size: 12px;
   white-space: pre-wrap;
   margin-top: 10px;

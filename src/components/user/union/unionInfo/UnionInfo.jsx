@@ -35,7 +35,7 @@ const selectIcon = (level) => {
   return UnionIcons[rankCategory][rank];
 };
 
-export const UnionInfo = ({ Data, activeTab }) => {
+export const UnionInfo = ({ Data, $activeTab }) => {
   const icon = selectIcon(Data.union.union_level);
 
   const toRoman = (gradeString) => {
@@ -70,7 +70,7 @@ export const UnionInfo = ({ Data, activeTab }) => {
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
-      <UnionArtifactEffect Data={Data} activeTab={activeTab} />
+      <UnionArtifactEffect Data={Data} activeTab={$activeTab} />
     </Container>
   );
 };

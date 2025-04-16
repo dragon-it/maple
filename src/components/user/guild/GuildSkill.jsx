@@ -76,7 +76,9 @@ export const GuildSkill = ({ result }) => {
                           </SkillIcon>
                           <SkillName>{skillInfo.name}</SkillName>
                           <SkillLevel
-                            isMaxLevel={item.skill_level === skillInfo.maxLevel}
+                            $isMaxLevel={
+                              item.skill_level === skillInfo.maxLevel
+                            }
                           >
                             {item.skill_level}/{skillInfo.maxLevel}
                           </SkillLevel>
@@ -106,7 +108,7 @@ export const GuildSkill = ({ result }) => {
                       <SkillName>
                         {nobleSkills.nobleSkillNameMapping[item.skill_name]}
                       </SkillName>
-                      <SkillLevel isMaxLevel={item.skill_level === 15}>
+                      <SkillLevel $isMaxLevel={item.skill_level === 15}>
                         {item.skill_level}/15
                       </SkillLevel>
                     </SkillWrap>
@@ -232,7 +234,7 @@ const SkillIcon = styled.div`
 `;
 
 const SkillLevel = styled.span`
-  color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
+  color: ${({ $isMaxLevel }) => ($isMaxLevel ? "rgb(237,208,103)" : "white")};
   font-size: 13px;
 `;
 

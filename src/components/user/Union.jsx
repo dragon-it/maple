@@ -16,7 +16,7 @@ export const Union = ({ result }) => {
             unionChampion: result.getCombinedData.getUnionChampion,
             unionChampionDetail: result.getCombinedData.getChampionDetails,
           }}
-          activeTab={activeTab}
+          $activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
         <UnionInfo
@@ -26,7 +26,7 @@ export const Union = ({ result }) => {
             unionRaider: result.getCombinedData.getUnionRaider,
             unionChampion: result.getCombinedData.getUnionChampion,
           }}
-          activeTab={activeTab}
+          $activeTab={activeTab}
         />
       </InfoWrap>
     </Container>

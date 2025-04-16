@@ -12,7 +12,6 @@ const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
   const [hoveredBadge, setHoveredBadge] = useState(null);
-  const [hoveredChampionSlot, setHoveredChampionSlot] = useState(null);
 
   // 챔피언 클래스에 따른 아이콘 매핑
   const getClassIcon = (championClass) => {
