@@ -36,9 +36,10 @@ export const Footer = () => {
       <Adsense>
         <ins
           className="adsbygoogle"
-          style={{ display: "inline-block", width: "728px", height: "90px" }}
+          style={{ display: "block" }}
           data-ad-client="ca-pub-9967012422287379"
           data-ad-slot="4851119038"
+          data-ad-format="auto"
           data-full-width-responsive="true"
         ></ins>
       </Adsense>
