@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import colors from "../../../common/color/colors";
 
 export const UnionArtifactEffect = ({ Data, activeTab }) => {
   return (
@@ -59,7 +60,9 @@ const Container = styled.div`
   color: white;
 `;
 
-const Header = styled.p``;
+const Header = styled.p`
+  color: ${colors.union.unionChampion.levelColor};
+`;
 
 const EffectContainer = styled.ul`
   display: flex;
