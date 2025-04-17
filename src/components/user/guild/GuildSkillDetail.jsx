@@ -47,7 +47,7 @@ export const GuildSkillDetail = ({ item, clicked, onClose }) => {
 
   // item이 없을 경우 처리
   if (!item) {
-    return null; // 또는 간단한 메시지 표시
+    return null;
   }
 
   return (
@@ -198,7 +198,7 @@ const SkillDescriptionWrap = styled.span`
   white-space: pre-wrap;
 `;
 
-const SkillEffect = styled.span`
+const SkillEffect = styled.div`
   font-size: 12px;
   white-space: pre-wrap;
   margin-top: 10px;
