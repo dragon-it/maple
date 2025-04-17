@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import sort_icon from "../../../assets/guild/member/Sort_member_icon2.svg";
+import sort_icon from "../../../assets/pages/user/guild/member/Sort_member_icon2.svg";
 
 export const GuildMember = ({ result }) => {
   const [isDetail, setIsDetail] = useState(true);
@@ -143,7 +143,7 @@ const DetailChracterWrap = styled.div`
   max-height: 580px;
   padding: 5px;
   overflow-y: scroll;
-  background-color:rgb(66, 66, 66);
+  background-color: rgb(66, 66, 66);
   border-radius: 5px;
 
   @media screen and (max-width: 767px) {
@@ -160,7 +160,7 @@ const DetailMember = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3px 3px 5px 3px;
-  background-color: rgb(153,	153, 153);
+  background-color: rgb(153, 153, 153);
   color: #020202;
   border-radius: 5px;
   min-height: 30px;

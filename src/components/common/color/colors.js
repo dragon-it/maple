@@ -6,6 +6,7 @@ const colors = {
     white0Alpha40: "rgba(255, 255, 255, 0.4)",
     white0Alpha60: "rgba(255, 255, 255, 0.6)",
     white0Alpha80: "rgba(255, 255, 255, 0.8)",
+    white0Alpha90: "rgba(255, 255, 255, 0.9)",
     white1: "rgb(247, 247, 247)", // Ability Btn Border Actve
     white2: "rgb(230, 230, 230)",
     white3: "rgb(220, 220, 220)", // Ability Btn Color Not Active
@@ -264,6 +265,11 @@ const colors = {
       itemOutline: "rgb(56, 70, 81)", // Union Artifact Effect Item Outline
       gradeColor: "rgb(255, 255, 0)", // Union Grade Text
       gradeShadow: "rgb(219, 250, 46)", // Union Grade Text Shadow
+    },
+
+    unionChampion: {
+      classColor: "rgb(166, 186, 193)", // Union Champion Class Text
+      levelColor: "rgb(246, 213, 175)", // Union Champion Level Text
     },
   },
 

@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import colors from "../../../common/color/colors";
 
 export const UnionArtifactEffect = ({ Data, activeTab }) => {
   return (
     <Container>
-      {activeTab === "raider" ? (
+      {activeTab === "raider" && (
         <>
           <Header>공격대 점령 효과</Header>
           <EffectContainer>
@@ -15,7 +16,9 @@ export const UnionArtifactEffect = ({ Data, activeTab }) => {
             ))}
           </EffectContainer>
         </>
-      ) : (
+      )}
+
+      {activeTab === "artifact" && (
         <>
           <Header>아티팩트 효과</Header>
           <EffectContainer>
@@ -23,6 +26,18 @@ export const UnionArtifactEffect = ({ Data, activeTab }) => {
               <InfoWrap key={index}>
                 <Level>Lv.{artifact.level}</Level>
                 <Name>{artifact.name}</Name>
+              </InfoWrap>
+            ))}
+          </EffectContainer>
+        </>
+      )}
+      {activeTab === "champion" && (
+        <>
+          <Header>챔피언 휘장 효과</Header>
+          <EffectContainer>
+            {Data.unionChampion.champion_badge_total_info.map((stat, index) => (
+              <InfoWrap key={index}>
+                <Name>{stat.stat}</Name>
               </InfoWrap>
             ))}
           </EffectContainer>
@@ -45,7 +60,9 @@ const Container = styled.div`
   color: white;
 `;
 
-const Header = styled.p``;
+const Header = styled.p`
+  color: ${colors.union.unionChampion.levelColor};
+`;
 
 const EffectContainer = styled.ul`
   display: flex;
@@ -74,11 +91,10 @@ const InfoWrap = styled.li`
 
 const Level = styled.span`
   width: 35px;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 `;
 
 const Name = styled.span`
   overflow: hidden;
-  white-space: wrap; 
-
+  white-space: wrap;
 `;

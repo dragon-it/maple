@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import flag_icon from "../../../assets/guild/ranking/Flag_ranking_icon.svg";
-import fame_icon from "../../../assets/guild/ranking/Fame_ranking_icon.svg";
-import suro_icon from "../../../assets/guild/ranking/Suro_ranking_icon.svg";
+import flag_icon from "../../../assets/pages/user/guild/ranking/Flag_ranking_icon.svg";
+import fame_icon from "../../../assets/pages/user/guild/ranking/Fame_ranking_icon.svg";
+import suro_icon from "../../../assets/pages/user/guild/ranking/Suro_ranking_icon.svg";
 import { useNavigate } from "react-router-dom";
 
 export const GuildInformation = ({ result }) => {

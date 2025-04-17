@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Extreme_Elixir from "../../assets/expSimulator/Elixir/Extreme_Elixir.png";
-import Growth_Elixir1 from "../../assets/expSimulator/Elixir/Growth_Elixir1.png";
-import Growth_Elixir2 from "../../assets/expSimulator/Elixir/Growth_Elixir2.png";
-import Growth_Elixir3 from "../../assets/expSimulator/Elixir/Growth_Elixir3.png";
-import Transcendent_Elixir from "../../assets/expSimulator/Elixir/Transcendent_Elixir.png";
-import Typhoon_Elixir from "../../assets/expSimulator/Elixir/Typhoon_Elixir.png";
-import limit_Elixir from "../../assets/expSimulator/Elixir/limit_Elixir.png";
-import Advanced_EXP_Coupon from "../../assets/expSimulator/EXP/Advanced_EXP_icon.png";
-import EXP_Coupon from "../../assets/expSimulator/EXP/EXP_icon.png";
+import Extreme_Elixir from "../../assets/pages/expSimulator/Elixir/Extreme_Elixir.png";
+import Growth_Elixir1 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir1.png";
+import Growth_Elixir2 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir2.png";
+import Growth_Elixir3 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir3.png";
+import Transcendent_Elixir from "../../assets/pages/expSimulator/Elixir/Transcendent_Elixir.png";
+import Typhoon_Elixir from "../../assets/pages/expSimulator/Elixir/Typhoon_Elixir.png";
+import limit_Elixir from "../../assets/pages/expSimulator/Elixir/limit_Elixir.png";
+import Advanced_EXP_Coupon from "../../assets/pages/expSimulator/EXP/Advanced_EXP_icon.png";
+import EXP_Coupon from "../../assets/pages/expSimulator/EXP/EXP_icon.png";
 import ExpData from "./ExpData";
-import iconBackground from "../../assets/optionIcon/Item.ItemIcon.base.png";
+import iconBackground from "../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
 
 export const ExpInput = () => {
   const [level, setLevel] = useState(200);

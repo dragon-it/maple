@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import equipmentUi from "../../../assets/ui/equipmentUi/equipUi.png";
-import cashEquipUi from "../../../assets/ui/equipmentUi/cashEquipUi.png";
-import petEquipUi from "../../../assets/ui/equipmentUi/petEquipUi.png";
-import androidEquipUi from "../../../assets/ui/equipmentUi/androidEquipUi.png";
+import equipmentUi from "../../../assets/pages/user/equipment/equipmentUi/equipUi.png";
+import cashEquipUi from "../../../assets/pages/user/equipment/equipmentUi/cashEquipUi.png";
+import petEquipUi from "../../../assets/pages/user/equipment/equipmentUi/petEquipUi.png";
+import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/androidEquipUi.png";
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
 import { ItemSetEffect } from "./ItemSetEffect";
@@ -125,9 +125,10 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   const handleMouseLeave = () => {
     // 마우스가 Container를 벗어나면 선택된 스킬 초기화
-    if (!clicked) {
+    const isWideScreen = window.innerWidth <= 1024;
+
+    if (!isWideScreen) {
       setSelectedItem(null);
-      setClicked(false);
     }
   };
 
@@ -262,7 +263,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
   }, [currentTab, matchingCashPresetKey, matchingPresetKey]);
 
   return (
-    <Container onMouseLeave={handleMouseLeave}>
+    <Container>
       <ItemInfoDetailWrap>
         <InfoWrap $currentTab={currentTab}>
           <Header>EQUIPMENT</Header>
@@ -312,6 +313,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)}
                       onMouseOver={() => handleItemHover(item)}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <img src={item.item_icon} alt={`icon-${index}`} />
                     </ItemIcon>
@@ -324,6 +326,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                       onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+                      onMouseLeave={handleMouseLeave}
                     >
                       <img src={item.item_icon} alt={`icon-${index}`} />
                     </ItemIcon>
@@ -394,6 +397,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         style={cashPositions[item.cash_item_equipment_slot]}
                         onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
                         onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+                        onMouseLeave={handleMouseLeave}
                       >
                         <img src={item.cash_item_icon} alt={`icon-${index}`} />
                       </ItemIcon>
@@ -460,6 +464,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(1)}
                               onClick={() => handlePetAppearanceInfo(1)}
+                              onMouseLeave={handleMouseLeave}
                             />
                           ) : (
                             <div style={{ width: "42px", height: "42px" }} />
@@ -476,6 +481,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               alt="petEqipIcon"
                               onMouseOver={() => handlePetEquipInfo(1)}
                               onClick={() => handlePetEquipInfo(1)}
+                              onMouseLeave={handleMouseLeave}
                             />
                           ) : (
                             <div style={{ width: "42px", height: "42px" }} />
@@ -493,6 +499,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                                 alt="petAutoSkill1"
                                 onMouseOver={() => handlePetFirstSkillInfo(1)}
                                 onClick={() => handlePetFirstSkillInfo(1)}
+                                onMouseLeave={handleMouseLeave}
                               />
                             ) : (
                               <div style={{ width: "42px", height: "42px" }} />
@@ -509,6 +516,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                                 alt="petAutoSkill2"
                                 onMouseOver={() => handlePetSecondSkillInfo(1)}
                                 onClick={() => handlePetSecondSkillInfo(1)}
+                                onMouseLeave={handleMouseLeave}
                               />
                             ) : (
                               <div style={{ width: "42px", height: "42px" }} />
@@ -528,6 +536,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(2)}
                               onClick={() => handlePetAppearanceInfo(2)}
+                              onMouseLeave={handleMouseLeave}
                             />
                           ) : (
                             <div style={{ width: "42px", height: "42px" }} />
@@ -544,6 +553,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               alt="petEqipIcon"
                               onMouseOver={() => handlePetEquipInfo(2)}
                               onClick={() => handlePetEquipInfo(2)}
+                              onMouseLeave={handleMouseLeave}
                             />
                           ) : (
                             <div style={{ width: "42px", height: "42px" }} />
@@ -561,6 +571,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                                 alt="petAutoSkill1"
                                 onMouseOver={() => handlePetFirstSkillInfo(2)}
                                 onClick={() => handlePetFirstSkillInfo(2)}
+                                onMouseLeave={handleMouseLeave}
                               />
                             ) : (
                               <div style={{ width: "42px", height: "42px" }} />
@@ -577,6 +588,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                                 alt="petAutoSkill2"
                                 onMouseOver={() => handlePetSecondSkillInfo(2)}
                                 onClick={() => handlePetSecondSkillInfo(2)}
+                                onMouseLeave={handleMouseLeave}
                               />
                             ) : (
                               <div style={{ width: "42px", height: "42px" }} />
@@ -596,6 +608,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               alt="Icon"
                               onMouseOver={() => handlePetAppearanceInfo(3)}
                               onClick={() => handlePetAppearanceInfo(3)}
+                              onMouseLeave={handleMouseLeave}
                             />
                           ) : (
                             <div style={{ width: "42px", height: "42px" }} />
@@ -612,6 +625,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                               alt="petEqipIcon"
                               onMouseOver={() => handlePetEquipInfo(3)}
                               onClick={() => handlePetEquipInfo(3)}
+                              onMouseLeave={handleMouseLeave}
                             />
                           ) : (
                             <div style={{ width: "42px", height: "42px" }} />
@@ -629,6 +643,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                                 alt="petAutoSkill1"
                                 onMouseOver={() => handlePetFirstSkillInfo(3)}
                                 onClick={() => handlePetFirstSkillInfo(3)}
+                                onMouseLeave={handleMouseLeave}
                               />
                             ) : (
                               <div style={{ width: "42px", height: "42px" }} />
@@ -645,6 +660,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                                 alt="petAutoSkill2"
                                 onMouseOver={() => handlePetSecondSkillInfo(3)}
                                 onClick={() => handlePetSecondSkillInfo(3)}
+                                onMouseLeave={handleMouseLeave}
                               />
                             ) : (
                               <div style={{ width: "42px", height: "42px" }} />
@@ -671,6 +687,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                         style={ADPositions[item.cash_item_equipment_slot]}
                         onClick={() => handleItemClick(item)}
                         onMouseOver={() => handleItemHover(item)}
+                        onMouseLeave={handleMouseLeave}
                       >
                         <img src={item.cash_item_icon} alt={`icon-${index}`} />
                       </ItemIcon>
@@ -772,7 +789,7 @@ const ItemInfoDetailWrap = styled.div`
   flex-direction: row;
   gap: 3px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     flex-direction: column;
     align-items: center;
     justify-content: center;

@@ -52,16 +52,16 @@ export const Guild = ({ result, isGuildDetail }) => {
             <Level>Lv.{guildInfo.guild_level || "레벨 없음"}</Level>
           </GuildBasicInformation>
           <Tabs>
-            <Tab onClick={() => handleTabClick(1)} active={activeTab === 1}>
+            <Tab onClick={() => handleTabClick(1)} $activeTab={activeTab === 1}>
               길드 정보
             </Tab>
-            <Tab onClick={() => handleTabClick(2)} active={activeTab === 2}>
+            <Tab onClick={() => handleTabClick(2)} $activeTab={activeTab === 2}>
               길드원
             </Tab>
-            <Tab onClick={() => handleTabClick(3)} active={activeTab === 3}>
+            <Tab onClick={() => handleTabClick(3)} $activeTab={activeTab === 3}>
               길드 스킬
             </Tab>
-            <Tab onClick={() => handleTabClick(4)} active={activeTab === 4}>
+            <Tab onClick={() => handleTabClick(4)} $activeTab={activeTab === 4}>
               길드 통계
             </Tab>
           </Tabs>
@@ -162,7 +162,7 @@ const Tab = styled.span`
   justify-content: center;
   align-items: center;
   background-color: ${(props) =>
-    props.active ? "rgb(19, 130, 149)" : "rgb(85, 85, 85)"};
+    props.$activeTab ? "rgb(19, 130, 149)" : "rgb(85, 85, 85)"};
   cursor: pointer;
   border-radius: 3px;
   min-height: 25px;
@@ -170,7 +170,7 @@ const Tab = styled.span`
   font-family: maple-light;
   &:hover {
     background-color: ${(props) =>
-      props.active ? "transparents" : "rgb(119, 119, 119)"};
+      props.$activeTab ? "transparents" : "rgb(119, 119, 119)"};
   }
 
   @media screen and (max-width: 768px) {

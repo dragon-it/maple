@@ -3,13 +3,14 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 dotenv.config();
 
 const app = express();
 const BASE_URL = "https://open.api.nexon.com";
 const BUILD_DIR = process.env.BUILD_DIR || "build-blue";
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(cors());
@@ -465,6 +466,7 @@ app.get("/api/character/information", async (req, res) => {
       union,
       unionArtifact,
       unionRaider,
+      unionChampion,
       dojang,
       unionLanking,
     ] = await Promise.all([
@@ -489,6 +491,7 @@ app.get("/api/character/information", async (req, res) => {
       callMapleStoryAPI("user/union", { ocid }),
       callMapleStoryAPI("user/union-artifact", { ocid }),
       callMapleStoryAPI("user/union-raider", { ocid }),
+      callMapleStoryAPI("user/union-champion", { ocid }),
       callMapleStoryAPI("character/dojang", { ocid }),
       callMapleStoryAPI("ranking/union", {
         ocid,
@@ -496,6 +499,45 @@ app.get("/api/character/information", async (req, res) => {
         page: 1,
       }),
     ]);
+
+    // unionChampion에서 챔피언 이름을 가져오는 함수
+    const championNames = Object.values(unionChampion.union_champion).map(
+      (champ) => champ.champion_name
+    );
+
+    const championDetails = await Promise.all(
+      championNames.map(async (name) => {
+        try {
+          // 이름으로 ocid 조회
+          const ocidData = await callMapleStoryAPI("id", {
+            character_name: name,
+          });
+
+          if (!ocidData || !ocidData.ocid) {
+            throw new Error(`OCID not found for character: ${name}`);
+          }
+
+          const ocid = ocidData.ocid;
+
+          // ocid로 캐릭터 기본 정보 조회
+          const characterData = await callMapleStoryAPI("character/basic", {
+            ocid,
+          });
+
+          return {
+            character_name: name,
+            character_image: characterData.character_image,
+            character_level: characterData.character_level,
+          };
+        } catch (err) {
+          console.error(`Error processing character "${name}":`, err.message);
+          return {
+            character_name: name,
+            error: "Failed to fetch character data",
+          };
+        }
+      })
+    );
 
     res.json({
       getBasicInformation: basicData,
@@ -522,7 +564,9 @@ app.get("/api/character/information", async (req, res) => {
       getUnionArtiFact: unionArtifact,
       getUnionRaider: unionRaider,
       getUnionRanking: unionLanking,
+      getUnionChampion: unionChampion,
       getDojang: dojang,
+      getChampionDetails: championDetails,
     });
   } catch (error) {
     console.error("Combined API error:", error.message);
@@ -585,19 +629,28 @@ app.get("/api/image-proxy", async (req, res) => {
 // ads.txt 제공 설정
 app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
-// 빌드된 정적 파일을 서빙하는 미들웨어 설정
-app.use(express.static(path.join(__dirname, BUILD_DIR)));
+if (process.env.NODE_ENV === "development") {
+  console.log(
+    "🔄 Development mode: Proxying to React dev server (localhost:3000)"
+  );
 
-// 모든 요청에 대해 index.html을 서빙
-app.get("*", (req, res) => {
-  if (!req.url.startsWith("/api")) {
+  app.use(
+    createProxyMiddleware({
+      target: "http://localhost:3000",
+      changeOrigin: true,
+      ws: true, // WebSocket 지원
+      logLevel: "debug",
+    })
+  );
+} else {
+  console.log(`📦 Production mode: Serving from ${BUILD_DIR}`);
+
+  app.use(express.static(path.join(__dirname, BUILD_DIR)));
+  app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, BUILD_DIR, "index.html"));
-  } else {
-    res.status(404).send("Not Found");
-  }
-});
+  });
+}
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Serving from: ${BUILD_DIR}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const SkillDetail = ({ item, clicked, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const [detailPosition, setDetailPosition] = useState(null);
   const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
   }, []);
 
   useEffect(() => {
-    if (detailRef.current) {
+    if (detailRef.current && mousePosition.x !== 0 && mousePosition.y !== 0) {
       const detailRect = detailRef.current.getBoundingClientRect();
       const detailHeight = detailRect.height; // 실제 높이
       const detailWidth = detailRect.width; // 실제 너비
@@ -56,8 +56,10 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
       onClick={onClose}
       style={
         isWideScreen
-          ? { top: detailPosition.top, left: detailPosition.left }
-          : {}
+          ? detailPosition
+            ? { top: detailPosition.top, left: detailPosition.left }
+            : { display: "none" }
+          : { top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
       }
     >
       <div style={{ position: "relative" }}></div>
@@ -179,15 +181,15 @@ const IconImage = styled.div`
   }
 `;
 
-const SkillDescriptionWrap = styled.p`
+const SkillDescriptionWrap = styled.span`
   width: 100%;
   height: 100%;
   font-size: 12px;
   white-space: pre-wrap;
 `;
 
-const SkillEffect = styled.p`
+const SkillEffect = styled.div`
   font-size: 12px;
   white-space: pre-wrap;
-  margin-top: 10px;
+  padding-top: 10px;
 `;

@@ -9,14 +9,8 @@ export const Skill = ({ result }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [clicked, setClicked] = useState(false);
 
-  const handleMouseLeave = () => {
-    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
-    setSelectedItem(null);
-    setClicked(false);
-  };
-
   return (
-    <Container onMouseLeave={handleMouseLeave}>
+    <Container>
       <SkillWrap>
         <HexaStat Data={result.getCombinedData.getHexaMatrixStat} />
         <SkillGrade6

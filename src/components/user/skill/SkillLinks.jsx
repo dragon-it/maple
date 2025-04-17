@@ -28,12 +28,21 @@ export const SkillLinks = ({
     }
   };
 
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
+    const isWideScreen = window.innerWidth <= 768;
+
+    if (!isWideScreen) {
+      setSelectedItem(null);
+    }
+  };
+
   return (
     <ContainerBox>
       {Data.character_link_skill && Data.character_link_skill.length > 0 ? (
         <>
           <SkillHeader>링크 스킬</SkillHeader>
-          <SkillWrap>
+          <SkillWrap onMouseLeave={handleMouseLeave}>
             {Data.character_link_skill.map((item, index) => (
               <SkillSimpleWrap
                 key={item.skill_name}
@@ -93,7 +102,7 @@ const SkillWrap = styled.ul`
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
   }
 

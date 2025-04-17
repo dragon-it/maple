@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
-import serchIcon from "../../assets/SearchIcon_small.svg";
+import serchIcon from "../../assets/icons/searchIcons/SearchIcon_small.svg";
 import colors from "../common/color/colors";
 
 export const CaptureInput = ({ setResult, setError }) => {

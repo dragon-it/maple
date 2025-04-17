@@ -28,12 +28,18 @@ export const SkillGrade6 = ({
     }
   };
 
+  const handleMouseLeave = () => {
+    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
+    setSelectedItem(null);
+    setClicked(false);
+  };
+
   return (
     <ContainerBox>
       {Data.character_skill && Data.character_skill.length > 0 ? (
         <>
           <SkillHeader>HEXA 매트릭스</SkillHeader>
-          <SkillWrap>
+          <SkillWrap onMouseLeave={handleMouseLeave}>
             {Data.character_skill.map((item, index) => (
               <SkillSimpleWrap
                 key={item.skill_name}
@@ -93,7 +99,7 @@ const SkillWrap = styled.ul`
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
   }
 

@@ -139,7 +139,7 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.bgColor};
   z-index: 99;
-  margin-top: 10px;
+  margin: 10px 0px;
 
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
@@ -147,7 +147,7 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 95%;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;

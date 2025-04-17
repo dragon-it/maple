@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import UnionIcons from "./UnionIcon";
-import { UnionArtifactEffect } from "./UnionArtifactEffect";
+import UnionIcons from "../unionInfo/UnionIcon";
+import { UnionArtifactEffect } from "../unionArtifact/UnionArtifactEffect";
 
 const selectIcon = (level) => {
   let baseLevel, rankCategory;
@@ -35,7 +35,7 @@ const selectIcon = (level) => {
   return UnionIcons[rankCategory][rank];
 };
 
-export const UnionInfo = ({ Data, activeTab }) => {
+export const UnionInfo = ({ Data, $activeTab }) => {
   const icon = selectIcon(Data.union.union_level);
 
   const toRoman = (gradeString) => {
@@ -70,7 +70,7 @@ export const UnionInfo = ({ Data, activeTab }) => {
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
-      <UnionArtifactEffect Data={Data} activeTab={activeTab} />
+      <UnionArtifactEffect Data={Data} activeTab={$activeTab} />
     </Container>
   );
 };
@@ -102,7 +102,7 @@ const UnionWrap = styled.div`
 `;
 
 const UnionGrade = styled.div`
-  color:rgb(255, 255, 0);
+  color: rgb(255, 255, 0);
   text-shadow: 0px 0px 3px rgb(219, 250, 46);
   font-size: 20px;
   font-family: maple-light;

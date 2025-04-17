@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import unionRaiderUi from "../../../assets/union/unionRaiderUi.png";
+import unionRaiderUi from "../../../assets/pages/user/union/unionRaiderUi.png";
 
 export const UnionRaider = ({ Data }) => {
   const width = 22;

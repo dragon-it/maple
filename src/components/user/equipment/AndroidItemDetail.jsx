@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
-import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
+import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
 
 export const AndroidItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

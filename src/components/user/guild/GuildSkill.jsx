@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import nobleSkills from "./SkillData";
-import rightArrow from "../../../assets/guild/guildSkill/Right_arrow.svg";
+import rightArrow from "../../../assets/pages/user/guild/guildSkill/Right_arrow.svg";
 import { GuildSkillDetail } from "./GuildSkillDetail";
 
 export const GuildSkill = ({ result }) => {
@@ -25,9 +25,12 @@ export const GuildSkill = ({ result }) => {
     setSelectedItem(null);
     setClicked(false);
   };
+
   const handleMouseLeave = () => {
     // 마우스가 Container를 벗어나면 선택된 스킬 초기화
-    if (!clicked) {
+    const isWideScreen = window.innerWidth <= 768;
+
+    if (!isWideScreen) {
       setSelectedItem(null);
     }
   };
@@ -76,7 +79,9 @@ export const GuildSkill = ({ result }) => {
                           </SkillIcon>
                           <SkillName>{skillInfo.name}</SkillName>
                           <SkillLevel
-                            isMaxLevel={item.skill_level === skillInfo.maxLevel}
+                            $isMaxLevel={
+                              item.skill_level === skillInfo.maxLevel
+                            }
                           >
                             {item.skill_level}/{skillInfo.maxLevel}
                           </SkillLevel>
@@ -106,7 +111,7 @@ export const GuildSkill = ({ result }) => {
                       <SkillName>
                         {nobleSkills.nobleSkillNameMapping[item.skill_name]}
                       </SkillName>
-                      <SkillLevel isMaxLevel={item.skill_level === 15}>
+                      <SkillLevel $isMaxLevel={item.skill_level === 15}>
                         {item.skill_level}/15
                       </SkillLevel>
                     </SkillWrap>
@@ -232,7 +237,7 @@ const SkillIcon = styled.div`
 `;
 
 const SkillLevel = styled.span`
-  color: ${({ isMaxLevel }) => (isMaxLevel ? "rgb(237,208,103)" : "white")};
+  color: ${({ $isMaxLevel }) => ($isMaxLevel ? "rgb(237,208,103)" : "white")};
   font-size: 13px;
 `;
 
