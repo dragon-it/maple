@@ -4,31 +4,39 @@ import FooterText from "./FooterText";
 
 export const Footer = () => {
   useEffect(() => {
-    // 광고 중복 호출 방지를 위한 변수
     let initialized = false;
 
-    // 클라이언트 사이드에서만 애드센스 스크립트 로드
-    const script = document.createElement("script");
-    script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9967012422287379";
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
+    const loadAds = () => {
+      const script = document.createElement("script");
+      script.src =
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9967012422287379";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      document.head.appendChild(script);
 
-    // 스크립트가 로드된 후 광고 삽입
-    script.onload = () => {
-      const ads = document.querySelectorAll(".adsbygoogle");
-      ads.forEach((ad) => {
-        if (!ad.getAttribute("data-adsbygoogle-status") && !initialized) {
-          try {
+      script.onload = () => {
+        try {
+          const ads = document.querySelectorAll(".adsbygoogle");
+          if (ads.length > 0 && !initialized) {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
             initialized = true;
-          } catch (e) {
-            console.error("Adsense Error:", e);
           }
+        } catch (e) {
+          console.error("Adsense Error:", e);
         }
-      });
+      };
+
+      script.onerror = () => {
+        console.error("Failed to load AdSense script");
+      };
     };
+
+    if (document.readyState === "complete") {
+      loadAds();
+    } else {
+      window.addEventListener("load", loadAds);
+      return () => window.removeEventListener("load", loadAds);
+    }
   }, []);
 
   return (
@@ -36,7 +44,7 @@ export const Footer = () => {
       <Adsense>
         <ins
           className="adsbygoogle"
-          style={{ display: "inline-block", width: "100%", height: "auto" }}
+          style={{ display: "block", width: "100%", height: "auto" }}
           data-ad-client="ca-pub-9967012422287379"
           data-ad-slot="4851119038"
           data-ad-format="auto"
@@ -53,6 +61,7 @@ export const Footer = () => {
 
 const Adsense = styled.div`
   width: 100%;
+  min-width: 300px;
   height: auto;
   display: flex;
   justify-content: center;
