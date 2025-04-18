@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { UnionInfo } from "./union/UnionInfo";
+import { UnionInfo } from "./union/unionInfo/UnionInfo";
 import styled from "styled-components";
-import { UnionArtifact } from "./union/UnionArtifact";
+import { UnionArtifact } from "./union/unionArtifact/UnionArtifact";
 
 export const Union = ({ result }) => {
-  const [activeTab, setActiveTab] = useState("artifact"); 
+  const [activeTab, setActiveTab] = useState("artifact");
 
   return (
     <Container>
@@ -13,8 +13,10 @@ export const Union = ({ result }) => {
           Data={{
             unionArtiFact: result.getCombinedData.getUnionArtiFact,
             unionRaider: result.getCombinedData.getUnionRaider,
+            unionChampion: result.getCombinedData.getUnionChampion,
+            unionChampionDetail: result.getCombinedData.getChampionDetails,
           }}
-          activeTab={activeTab}
+          $activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
         <UnionInfo
@@ -22,8 +24,9 @@ export const Union = ({ result }) => {
             unionArtiFact: result.getCombinedData.getUnionArtiFact,
             union: result.getCombinedData.getUnion,
             unionRaider: result.getCombinedData.getUnionRaider,
+            unionChampion: result.getCombinedData.getUnionChampion,
           }}
-          activeTab={activeTab}
+          $activeTab={activeTab}
         />
       </InfoWrap>
     </Container>
@@ -31,6 +34,7 @@ export const Union = ({ result }) => {
 };
 
 const Container = styled.div`
+  width: 100%;
   position: relative;
   padding: 5px;
 `;

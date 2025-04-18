@@ -127,7 +127,7 @@ const Container = styled.div`
     margin: 8px 0;
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1280px) {
     position: relative;
     width: 100%;
     max-height: fit-content;

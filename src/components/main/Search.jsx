@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Logo } from "./Logo";
 import { useNavigate, useLocation } from "react-router-dom";
-import serchIcon from "../../assets/SearchIcon_small.svg";
+import serchIcon from "../../assets/icons/searchIcons/SearchIcon_small.svg";
 
 export const Search = ({ error }) => {
   // 검색어 상태 관리

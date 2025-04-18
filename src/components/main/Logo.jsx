@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import logo_Text from "../../assets/Logo_Text.svg";
+import logo_Text from "../../assets/logos/Logo_Text.svg";
 
 export const Logo = () => {
   const navigate = useNavigate();

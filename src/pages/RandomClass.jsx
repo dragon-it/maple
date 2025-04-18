@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import card_Backgrnd from "../assets/classillust/characterCard.slotBackgrnd.png";
+import card_Backgrnd from "../assets/pages/randomClass/classillust/characterCard.slotBackgrnd.png";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import characters from "../components/randomClass/RandomClassImage";
@@ -73,7 +73,7 @@ export const RandomClass = () => {
             // 애니메이션 중일 때는 순환하는 캐릭터를 보여줌
             <>
               <ClassImage
-                image={characters[currentCharacterIndex].image}
+                $image={characters[currentCharacterIndex].image}
                 $isRolling={isRolling}
                 alt="Character"
               />
@@ -83,7 +83,7 @@ export const RandomClass = () => {
             // 뽑기가 끝나면 선택된 캐릭터를 보여줌
             <>
               <ClassImage
-                image={selectedCharacter ? selectedCharacter.image : null} // 선택된 캐릭터가 없으면 기본 배경만 표시
+                $image={selectedCharacter ? selectedCharacter.image : null} // 선택된 캐릭터가 없으면 기본 배경만 표시
                 alt={selectedCharacter ? "Selected Character" : "Background"}
               />
               {selectedCharacter && (
@@ -163,9 +163,10 @@ const ClassImage = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 5%;
-  border: ${(props) => (props.image ? "3px solid rgb(145, 145, 145)" : "none")};
+  border: ${(props) =>
+    props.$image ? "3px solid rgb(145, 145, 145)" : "none"};
   overflow: hidden;
-  ${(props) => props.image && `background-image: url(${props.image});`}
+  ${(props) => props.$image && `background-image: url(${props.$image});`}
 
   &::after {
     content: "";

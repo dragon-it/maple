@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import HenesysBGM from "../../assets/slidingPuzzle/backgroundMusic/Henesys.mp3";
-import LithHarborBGM from "../../assets/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
-import TitleBGM from "../../assets/slidingPuzzle/backgroundMusic/Title.mp3";
-import VolumeIcon from "../../assets/slidingPuzzle/icons/Speaker.svg";
-import MuteIcon from "../../assets/slidingPuzzle/icons/Mute.svg";
-import StartIcon from "../../assets/slidingPuzzle/icons/Start.svg";
-import StopIcon from "../../assets/slidingPuzzle/icons/Stop.svg";
-import WinSound from "../../assets/slidingPuzzle/Win.mp3";
+import HenesysBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/Henesys.mp3";
+import LithHarborBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
+import TitleBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/Title.mp3";
+import VolumeIcon from "../../assets/pages/slidingPuzzle/icons/Speaker.svg";
+import MuteIcon from "../../assets/pages/slidingPuzzle/icons/Mute.svg";
+import StartIcon from "../../assets/pages/slidingPuzzle/icons/Start.svg";
+import StopIcon from "../../assets/pages/slidingPuzzle/icons/Stop.svg";
+import WinSound from "../../assets/pages/slidingPuzzle/backgroundMusic/Win.mp3";
 import colors from "../common/color/colors";
 
 export const SlidingPuzzleMusicPlayer = ({ won }) => {

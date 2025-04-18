@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import epic_Icon from "../../../assets/optionIcon/Option.epic.png";
-import legendary_Icon from "../../../assets/optionIcon/Option.legendary.png";
-import rare_Icon from "../../../assets/optionIcon/Option.rare.png";
-import unique_Icon from "../../../assets/optionIcon/Option.unique.png";
-import iconBackground from "../../../assets/optionIcon/Item.ItemIcon.base.png";
-import starForce_Icon from "../../../assets/optionIcon/starForceIcon.png";
-import rare_Border from "../../../assets/optionIcon/Item.ItemIcon.1.png";
-import epic_Border from "../../../assets/optionIcon/Item.ItemIcon.2.png";
-import unique_Border from "../../../assets/optionIcon/Item.ItemIcon.3.png";
-import legendary_Border from "../../../assets/optionIcon/Item.ItemIcon.4.png";
+import epic_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.epic.png";
+import legendary_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.legendary.png";
+import rare_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.rare.png";
+import unique_Icon from "../../../assets/pages/user/equipment/optionIcon/Option.unique.png";
+import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
+import starForce_Icon from "../../../assets/pages/user/equipment/optionIcon/starForceIcon.png";
+import rare_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.1.png";
+import epic_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.2.png";
+import unique_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.3.png";
+import legendary_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.4.png";
 import DesiredPart from "./itemDetailDesiredPart";
 
 export const ItemDetail = ({ item, clicked, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [detailPosition, setDetailPosition] = useState({ top: 0, left: 0 });
+  const [detailPosition, setDetailPosition] = useState(null);
   const detailRef = useRef(null);
 
   useEffect(() => {
@@ -30,17 +30,15 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
   }, []);
 
   useEffect(() => {
-    if (detailRef.current) {
+    if (detailRef.current && mousePosition.x !== 0 && mousePosition.y !== 0) {
       const detailRect = detailRef.current.getBoundingClientRect();
-      const detailHeight = detailRect.height; // 실제 높이
-
-      const detailWidth = detailRect.width; // 실제 너비
-      const offset = 3; // 마우스와 디테일 사이 간격
+      const detailHeight = detailRect.height;
+      const detailWidth = detailRect.width;
+      const offset = 10;
 
       let top = mousePosition.y + offset;
       let left = mousePosition.x + offset;
 
-      // 화면 경계를 초과할 경우 반전 처리
       if (top + detailHeight > window.innerHeight) {
         top = mousePosition.y - detailHeight - offset;
       }
@@ -48,7 +46,6 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       if (left + detailWidth > window.innerWidth) {
         left = mousePosition.x - detailWidth - offset;
       }
-
       top = Math.max(0, top);
       left = Math.max(0, left);
 
@@ -174,8 +171,10 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       onClick={onClose}
       style={
         isWideScreen
-          ? { top: detailPosition.top, left: detailPosition.left }
-          : {}
+          ? detailPosition
+            ? { top: detailPosition.top, left: detailPosition.left }
+            : { display: "none" }
+          : { top: "50%", left: "50%", transform: "translate(-50%, -40%)" }
       }
     >
       {/* 아이템 이름과 별 관련 정보를 보여주는 래퍼 */}
@@ -222,7 +221,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
             <span>{item.soul_name.replace(" 소울 적용", "")}</span>
           )}
           {item.item_name ? (
-            <p>
+            <div>
               <div>
                 {/* 아이템 이름과 스크롤 업그레이드 수치 */}
                 {`${item.item_name}${
@@ -233,7 +232,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
               {item.special_ring_level !== 0 && (
                 <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
               )}
-            </p>
+            </div>
           ) : item.android_name ? (
             <div>{item.android_name}</div>
           ) : null}
@@ -361,12 +360,12 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
         {/* 업그레이드 가능 횟수 */}
         {item.scroll_upgradeable_count &&
           DesiredPart.includes(item.item_equipment_slot) && (
-            <p>
+            <span>
               업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
               <ResilienceCount>
                 (복구 가능 횟수 : {item.scroll_resilience_count})
               </ResilienceCount>
-            </p>
+            </span>
           )}
 
         {/* 황금망치 제련 여부 */}
@@ -461,15 +460,6 @@ const Container = styled.div`
   font-family: "돋움";
   white-space: pre-line;
   z-index: 9999;
-
-  @media screen and (max-width: 1024px) {
-    position: relative;
-  }
-
-  @media screen and (max-width: 768px) {
-    position: absolute;
-    transform: translate(0%, -60%);
-  }
 
   &::before {
     content: "";

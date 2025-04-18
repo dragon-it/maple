@@ -5,7 +5,7 @@ import { AbilityInformation } from "./Information/AbilityInformation";
 import { HyperStatInformation } from "./Information/HyperStatInformation";
 import { StatInformation } from "./Information/StatInformation";
 import { PropensityInformation } from "./propensity/PropensityInformation";
-import spirit from "../../assets/spirit.png";
+import spirit from "../../assets/logos/spirit.png";
 import { ExpHistory } from "./Information/ExpHistory";
 
 const Information = ({ result }) => {

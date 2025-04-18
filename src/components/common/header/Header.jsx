@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import logo from "../../../assets/LogoIcon.svg";
-import logo_text from "../../../assets/Logo_Text_Only.svg";
+import logo from "../../../assets/logos/LogoIcon.svg";
+import logo_text from "../../../assets/logos/Logo_Text_Only.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
 
 export const Header = () => {

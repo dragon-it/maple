@@ -1,5 +1,5 @@
 import React from "react";
-import OpenAPILogo from "../../../assets/footerLogo.svg";
+import OpenAPILogo from "../../../assets/logos/footerLogo.svg";
 
 const FooterText = () => (
   <div className="footer-text">

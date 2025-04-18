@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import UnionArtifactIcon from "./UnionArtifactIcon";
-import { UnionRaider } from "./UnionRaider";
-import { UnionOccupiedStat } from "./UnionOccupiedStat";
-// import { UnionChampion } from "./UnionChampion";
-import colors from "../../common/color/colors";
+import UnionArtifactIcon from "../unionArtifact/UnionArtifactIcon";
+import { UnionRaider } from "../UnionRaider";
+import { UnionOccupiedStat } from "../unionInfo/UnionOccupiedStat";
+import { UnionChampion } from "../unionChampion/UnionChampion";
+import colors from "../../../common/color/colors";
 
-export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
+export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
   );
@@ -34,30 +34,28 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
     <Wrap>
       <TabMenu>
         <TabButton
-          isActive={activeTab === "raider"}
+          $isActive={$activeTab === "raider"}
           onClick={() => setActiveTab("raider")}
         >
           공격대
         </TabButton>
         <TabButton
-          isActive={activeTab === "artifact"}
+          $isActive={$activeTab === "artifact"}
           onClick={() => setActiveTab("artifact")}
         >
           아티팩트
         </TabButton>
-        {/* <TabButton
-          isActive={activeTab === "champion"}
+        <TabButton
+          $isActive={$activeTab === "champion"}
           onClick={() => setActiveTab("champion")}
         >
           챔피언
-        </TabButton> */}
-
-        {/* 추후 유니온 챔피언 추가할 것 */}
+        </TabButton>
       </TabMenu>
 
-      <ContentsWrap activeTab={activeTab}>
+      <ContentsWrap $activeTab={$activeTab}>
         <>
-          {activeTab === "artifact" && (
+          {$activeTab === "artifact" && (
             <ArtifactWrap>
               {Data.unionArtiFact.union_artifact_crystal.length === 0 ? (
                 <p>데이터가 없습니다</p>
@@ -83,7 +81,7 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
               )}
             </ArtifactWrap>
           )}
-          {activeTab === "raider" && (
+          {$activeTab === "raider" && (
             <>
               <RaiderWrap>
                 <UnionRaider Data={Data.unionRaider} />
@@ -91,11 +89,16 @@ export const UnionArtifact = ({ Data, activeTab, setActiveTab }) => {
               <UnionOccupiedStat Data={Data.unionRaider} />
             </>
           )}
-          {/* {activeTab === "champion" && (
+          {$activeTab === "champion" && (
             <ChampionWrap>
-              <UnionChampion Data={Data.unionChampion} />
+              <UnionChampion
+                Data={{
+                  unionChampion: Data.unionChampion,
+                  unionChampionDetail: Data.unionChampionDetail,
+                }}
+              />
             </ChampionWrap>
-          )} */}
+          )}
         </>
       </ContentsWrap>
     </Wrap>
@@ -123,7 +126,7 @@ const ContentsWrap = styled.div`
   padding: 5px;
   height: fit-content;
   color: white;
-  width: ${(props) => (props.activeTab === "raider" ? "100%" : "682px")};
+  width: ${(props) => (props.$activeTab === "artifact" ? "682px" : "100%")};
   flex-direction: row;
 
   @media screen and (max-width: 1024px) {
@@ -209,7 +212,7 @@ const TabButton = styled.button`
   height: auto;
   font-size: 12px;
   background-color: ${(props) =>
-    props.isActive
+    props.$isActive
       ? colors.union.unionRaiderColor.TabHoverBackground
       : colors.union.unionRaiderColor.TabBackground};
   color: white;
@@ -227,11 +230,4 @@ const TabButton = styled.button`
   }
 `;
 
-// const ChampionWrap = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: rgb(48, 54, 63);
-//   border-radius: 5px;
-//   padding: 20px;
-// `;
+const ChampionWrap = styled.div``;
