@@ -67,24 +67,6 @@ export const UnionRaider = ({ Data }) => {
 
   return (
     <>
-      <PresetBtnContainer>
-        {PRESETS.map((presetId) => {
-          const num = presetId.split("_")[1];
-          const presetData = Data?.[`union_raider_preset_${num}`];
-
-          return presetData ? (
-            <PresetButton
-              key={presetId}
-              $isActive={selectedPreset === presetId}
-              onClick={() => setSelectedPreset(presetId)}
-            >
-              프리셋{num}
-              {currentPreset === presetId && " (현재 적용중)"}
-            </PresetButton>
-          ) : null;
-        })}
-      </PresetBtnContainer>
-
       <Container width={width * 20}>
         <img src={unionRaiderUi} alt="ui" />
         {Array.from({ length: height * width }).map((_, index) => {
@@ -133,6 +115,23 @@ export const UnionRaider = ({ Data }) => {
               </UnionRaiderPosition>
             ))}
         </RaiderInnerStatWrap>
+        <PresetBtnContainer>
+          {PRESETS.map((presetId) => {
+            const num = presetId.split("_")[1];
+            const presetData = Data?.[`union_raider_preset_${num}`];
+
+            return presetData ? (
+              <PresetButton
+                key={presetId}
+                $isActive={selectedPreset === presetId}
+                onClick={() => setSelectedPreset(presetId)}
+              >
+                프리셋{num}
+                {currentPreset === presetId && " (현재 적용중)"}
+              </PresetButton>
+            ) : null;
+          })}
+        </PresetBtnContainer>
       </Container>
     </>
   );
@@ -205,6 +204,7 @@ const StatItem = styled.div`
 const PresetBtnContainer = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: row;
   gap: 10px;
   margin-bottom: 20px;
 `;
