@@ -6,7 +6,7 @@ export const UnionRaider = ({ Data }) => {
   // 프리셋 목록 상수화
   const PRESETS = [1, 2, 3, 4, 5].map((num) => `preset_${num}`);
 
-  // ← 프리셋 비교 및 초기/현재 프리셋 설정
+  // 프리셋 비교 및 초기/현재 프리셋 설정
   const getPresetMatch = () => {
     if (!Data?.union_block || !Array.isArray(Data.union_block)) {
       return { initialPreset: "preset_1", currentPreset: null };
@@ -49,7 +49,7 @@ export const UnionRaider = ({ Data }) => {
     { default: { left: 10, top: 83 }, mobile: { left: 9, top: 60 } },
   ];
 
-  // ← unionBlock 메모이제이션
+  // unionBlock 메모이제이션
   const unionBlock = useMemo(() => {
     const defaultBlock = Array.isArray(Data?.union_block)
       ? Data.union_block
@@ -91,6 +91,7 @@ export const UnionRaider = ({ Data }) => {
 
           return <Cell key={index} color={color} />;
         })}
+
         <RaiderExternalStat>
           <StatItem style={{ top: "11%", left: "25%" }}>상태이상내성</StatItem>
           <StatItem style={{ top: "11%", right: "30%" }}>획득경험치</StatItem>
@@ -115,7 +116,9 @@ export const UnionRaider = ({ Data }) => {
               </UnionRaiderPosition>
             ))}
         </RaiderInnerStatWrap>
-        <PresetBtnContainer>
+      </Container>
+      <PresetBtnContainer>
+        <BtnWrap>
           {PRESETS.map((presetId) => {
             const num = presetId.split("_")[1];
             const presetData = Data?.[`union_raider_preset_${num}`];
@@ -126,13 +129,16 @@ export const UnionRaider = ({ Data }) => {
                 $isActive={selectedPreset === presetId}
                 onClick={() => setSelectedPreset(presetId)}
               >
-                프리셋{num}
-                {currentPreset === presetId && " (현재 적용중)"}
+                {num}
               </PresetButton>
             ) : null;
           })}
-        </PresetBtnContainer>
-      </Container>
+        </BtnWrap>
+
+        {currentPreset && (
+          <PresetApplyText>현재 적용중인 프리셋</PresetApplyText>
+        )}
+      </PresetBtnContainer>
     </>
   );
 };
@@ -204,20 +210,36 @@ const StatItem = styled.div`
 const PresetBtnContainer = styled.div`
   display: flex;
   justify-content: center;
-  flex-direction: row;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const PresetButton = styled.button`
-  padding: 8px 16px;
-  background-color: ${(props) => (props.$isActive ? "#4ba5c9" : "#ccc")};
-  color: ${(props) => (props.$isActive ? "#fff" : "#000")};
-  border: none;
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 14px;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  color: ${(props) =>
+    props.$isActive ? $colors.main.white0 : $colors.main.white2};
+  background: ${(props) =>
+    props.$isActive ? "rgb(75, 165, 201)" : $colors.deepBlue.deepBlue8};
+  border: 1px solid
+    ${(props) =>
+      props.$isActive ? $colors.main.white1 : $colors.deepBlue.deepBlue9};
   &:hover {
-    background-color: ${(props) => (props.$isActive ? "#4ba5c9" : "#bbb")};
+    filter: brightness(1.15);
   }
+`;
+
+const BtnWrap = styled.div`
+  display: flex;
+  gap: 7px;
+  margin-top: 10px;
+`;
+
+const PresetApplyText = styled.p`
+  margin: 8px;
 `;
