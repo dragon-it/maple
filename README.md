@@ -1,4 +1,4 @@
-[![이미지 설명](./src/assets/Logo.svg)](https://www.mezzang.com)
+[![이미지 설명](./src/assets/logos/Logo.svg)](https://www.mezzang.com)
 
 
 넥슨사의 Open API를 활용하여 인게임 데이터와 맞춤형 정보를 제공하고,
