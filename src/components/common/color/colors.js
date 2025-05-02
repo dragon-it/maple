@@ -75,6 +75,7 @@ const colors = {
     deepBlue12: "rgb(141, 199, 209)",
     deepBlue13: "rgb(197, 220, 242)",
     deepBlue14: "rgb(52, 77, 92)",
+    deepBlue15: "rgb(75, 165, 201)", // UnionRaider Btn Background
   },
 
   brownScale: {
