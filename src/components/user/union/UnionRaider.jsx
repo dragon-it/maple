@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import unionRaiderUi from "../../../assets/pages/user/union/unionRaiderUi.png";
+import colors from "../../common/color/colors";
 
 export const UnionRaider = ({ Data }) => {
   // 프리셋 목록 상수화
@@ -135,8 +136,8 @@ export const UnionRaider = ({ Data }) => {
           })}
         </BtnWrap>
 
-        {currentPreset && (
-          <PresetApplyText>현재 적용중인 프리셋</PresetApplyText>
+        {currentPreset === selectedPreset && (
+          <PresetApplyText>현재 적용중인 프리셋이에요!</PresetApplyText>
         )}
       </PresetBtnContainer>
     </>
@@ -223,12 +224,12 @@ const PresetButton = styled.button`
   width: 30px;
   height: 30px;
   color: ${(props) =>
-    props.$isActive ? $colors.main.white0 : $colors.main.white2};
+    props.$isActive ? colors.main.white0 : colors.main.white2};
   background: ${(props) =>
-    props.$isActive ? "rgb(75, 165, 201)" : $colors.deepBlue.deepBlue8};
+    props.$isActive ? colors.deepBlue.deepBlue15 : colors.deepBlue.deepBlue8};
   border: 1px solid
     ${(props) =>
-      props.$isActive ? $colors.main.white1 : $colors.deepBlue.deepBlue9};
+      props.$isActive ? colors.main.white1 : colors.deepBlue.deepBlue9};
   &:hover {
     filter: brightness(1.15);
   }
@@ -237,9 +238,10 @@ const PresetButton = styled.button`
 const BtnWrap = styled.div`
   display: flex;
   gap: 7px;
-  margin-top: 10px;
+  padding: 10px 5px;
 `;
 
 const PresetApplyText = styled.p`
-  margin: 8px;
+  font-family: maple-light;
+  padding-bottom: 5px;
 `;
