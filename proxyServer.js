@@ -268,7 +268,7 @@ app.get("/api/guild/members", async (req, res) => {
       return res.status(400).json({ error: "Invalid data format" });
     }
 
-    const batchSize = 40; // 한 번에 처리할 멤버 수
+    const batchSize = 20; // 한 번에 처리할 멤버 수
     const membersData = [];
 
     for (let i = 0; i < guildMembers.length; i += batchSize) {
@@ -278,7 +278,7 @@ app.get("/api/guild/members", async (req, res) => {
         batch.map(async (member, index) => {
           try {
             // API 요청 전에 지연 추가 (예: 10ms 딜레이)
-            await sleep(10 * index);
+            await sleep(5 * index);
 
             const ocidData = await callMapleStoryAPI("id", {
               character_name: member,

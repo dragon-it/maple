@@ -140,6 +140,7 @@ const ContentsWrap = styled.div`
 
 const RaiderWrap = styled.div`
   display: flex;
+  flex-direction: column;
   background-color: rgb(56, 60, 69);
   border-radius: 5px;
   border: 2px solid rgb(69, 89, 100);
