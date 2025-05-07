@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import UnionChampionImages from "./UnionChampionimages";
 import ClassData from "../../../common/classIcons/ClassIcons";
@@ -12,6 +13,11 @@ const { ClassIcons, ClassMapping } = ClassData;
 
 export const UnionChampion = ({ Data }) => {
   const [hoveredBadge, setHoveredBadge] = useState(null);
+  const navigate = useNavigate();
+
+  const handleNameClick = (name) => {
+    navigate(`/user/${encodeURIComponent(name)}`);
+  };
 
   // 챔피언 클래스에 따른 아이콘 매핑
   const getClassIcon = (championClass) => {
@@ -90,7 +96,7 @@ export const UnionChampion = ({ Data }) => {
 
                 <NameWrap>
                   <ClassIcon $icon={getClassIcon(className)} />
-                  <Name>{name}</Name>
+                  <Name onClick={() => handleNameClick(name)}>{name}</Name>
                 </NameWrap>
 
                 <Badge>
@@ -200,12 +206,13 @@ const Grade = styled.img`
 
 const NameWrap = styled.div`
   display: flex;
-  gap: 5px;
+  gap: 3px;
 `;
 
 const Name = styled.p`
   color: ${colors.main.white0};
   font-size: 15px;
+  cursor: pointer;
 `;
 
 const Badge = styled.div`
