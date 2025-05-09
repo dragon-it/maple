@@ -15,11 +15,13 @@ import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
 import { SlidingPuzzle } from "./pages/SlidingPuzzle";
+import { Notice } from "./components/common/header/Notice";
 
 function Layout({ children }) {
   return (
     <>
       <HeaderContentsWrap>
+        <Notice />
         <Header />
       </HeaderContentsWrap>
       {children}
