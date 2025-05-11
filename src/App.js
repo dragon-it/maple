@@ -21,8 +21,8 @@ function Layout({ children }) {
   return (
     <>
       <HeaderContentsWrap>
-        <Notice />
         <Header />
+        <Notice />
       </HeaderContentsWrap>
       {children}
     </>
