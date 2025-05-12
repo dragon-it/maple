@@ -5,9 +5,8 @@ import dark_to_top_icon from "../../assets/icons/sundayMaple/dark_to_top.svg";
 import light_to_top_icon from "../../assets/icons/sundayMaple/light_to_top.svg";
 import { useTheme } from "../../context/ThemeProvider";
 
-export const SundayMaple = () => {
+export const SundayMaple = ({ noticeData, loading, error }) => {
   const { theme } = useTheme();
-  const [notice, setNotice] = useState(null);
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
@@ -23,71 +22,45 @@ export const SundayMaple = () => {
   }, []);
 
   useEffect(() => {
-    const fetchNotice = async () => {
-      try {
-        const response = await axios.get("/notice-event", {
-          headers: {
-            "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
-          },
-        });
-        if (response.status === 200) {
-          setNotice(response.data);
-        } else {
-          console.error("Failed to fetch notice data");
-        }
-      } catch (error) {
-        console.error("Error fetching notice data:", error.message);
-      }
-    };
+    const fetchNoticeDetail = async () => {
+      if (loading || error || !noticeData?.event_notice) return;
 
-    fetchNotice();
-  }, []);
+      const sundayMapleNotices = noticeData.event_notice.filter((item) =>
+        item.title.includes("썬데이 메이플")
+      );
 
-  useEffect(() => {
-    const fetchNoticeAndDetail = async () => {
-      if (notice && notice.event_notice) {
-        const sundayMapleNotices = notice.event_notice.filter((item) =>
-          item.title.includes("썬데이 메이플")
-        );
+      if (sundayMapleNotices.length > 0) {
+        const sundayMapleNotice = sundayMapleNotices[0];
+        const sundayMapleNoticeId = Number(sundayMapleNotice.notice_id);
+        const eventEndTime = new Date(sundayMapleNotice.date_event_end);
 
-        if (sundayMapleNotices.length > 0) {
-          const sundayMapleNotice = sundayMapleNotices[0];
-          const sundayMapleNoticeId = Number(sundayMapleNotice.notice_id);
-          const eventEndTime = new Date(sundayMapleNotice.date_event_end);
+        // 현재 시간과 이벤트 종료 시간 비교
+        const currentTime = new Date();
+        if (eventEndTime > currentTime) {
+          try {
+            const response = await axios.get("/notice-event/detail", {
+              params: { notice_id: sundayMapleNoticeId },
+            });
 
-          // 현재 시간과 종료 시간 비교
-          const currentTime = new Date();
-          if (eventEndTime > currentTime) {
-            try {
-              const [noticeDetailResponse] = await Promise.all([
-                axios.get("/notice-event/detail", {
-                  params: { notice_id: sundayMapleNoticeId },
-                }),
-              ]);
-
-              if (noticeDetailResponse.status === 200) {
-                setSundayMapleNoticeDetail(noticeDetailResponse.data);
-                const sundayMapleUrl = noticeDetailResponse.data.url;
-                localStorage.setItem("sundayMaple", sundayMapleUrl);
-              } else {
-                console.error("Failed to fetch notice detail data");
-              }
-            } catch (error) {
-              console.error(
-                "Error fetching notice detail data:",
-                error.message
-              );
+            if (response.status === 200) {
+              setSundayMapleNoticeDetail(response.data);
+              localStorage.setItem("sundayMaple", response.data.url);
+            } else {
+              console.error("공지 상세 데이터를 가져오지 못했습니다.");
             }
-          } else {
-            // 이벤트 종료 시간이 현재보다 이전인 경우, 공지 표시 안함
-            setIsVisible(false);
+          } catch (err) {
+            console.error("공지 상세 데이터 가져오기 오류:", err.message);
           }
+        } else {
+          setIsVisible(false);
         }
+      } else {
+        setIsVisible(false);
       }
     };
 
-    fetchNoticeAndDetail();
-  }, [notice]);
+    fetchNoticeDetail();
+  }, [noticeData, loading, error]);
 
   const extractDesiredContent = (htmlString) => {
     const parser = new DOMParser();
@@ -102,7 +75,7 @@ export const SundayMaple = () => {
     setIsChecked(!isChecked);
     if (!isChecked) {
       const skipUntil = new Date();
-      skipUntil.setDate(skipUntil.getDate() + 1); // 하루동안 보지 않기
+      skipUntil.setDate(skipUntil.getDate() + 1);
       localStorage.setItem("skipDay", skipUntil.toISOString());
       setIsVisible(false);
     }
@@ -112,13 +85,17 @@ export const SundayMaple = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!notice || !notice.event_notice || !isVisible) {
+  if (loading) {
+    return <Container>로딩 중...</Container>;
+  }
+
+  if (error || !isVisible || !sundayMapleNoticeDetail) {
     return null;
   }
 
-  const desiredHtmlContent =
-    sundayMapleNoticeDetail &&
-    extractDesiredContent(sundayMapleNoticeDetail.contents);
+  const desiredHtmlContent = extractDesiredContent(
+    sundayMapleNoticeDetail.contents
+  );
 
   return (
     <Container>

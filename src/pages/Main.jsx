@@ -5,7 +5,7 @@ import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
 import { Helmet } from "react-helmet";
 
-export const Main = () => {
+export const Main = ({ noticeData, loading, error }) => {
   return (
     <Container>
       <Helmet>
@@ -21,7 +21,7 @@ export const Main = () => {
       <FavoriteWrap>
         <Favorite />
       </FavoriteWrap>
-      <SundayMaple />
+      <SundayMaple noticeData={noticeData} loading={loading} error={error} />
     </Container>
   );
 };

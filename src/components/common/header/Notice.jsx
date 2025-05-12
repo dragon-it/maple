@@ -1,66 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled, { keyframes } from "styled-components";
 import colors from "../color/colors";
-import axios from "axios";
 
-export const Notice = () => {
-  const [noticeText, setNoticeText] = useState(null);
+export const Notice = ({ noticeData, isSunday }) => {
+  // 일요일 기본 공지 텍스트
+  const noticeText = isSunday
+    ? "🎉썬데이 메이플 이벤트가 진행 중입니다. 이벤트 기간을 확인하시고 혜택을 꼭 챙기세요!🎉"
+    : null;
 
-  useEffect(() => {
-    const fetchSundayMapleStatus = async () => {
-      try {
-        const response = await axios.get("/notice-event", {
-          headers: {
-            "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
-          },
-        });
-
-        if (response.status === 200) {
-          const sundayMapleEvent = response.data.event_notice.find((item) =>
-            item.title.includes("썬데이 메이플")
-          );
-
-          if (sundayMapleEvent) {
-            const eventEndTime = new Date(sundayMapleEvent.date_event_end);
-            const currentTime = new Date();
-
-            if (eventEndTime > currentTime) {
-              setNoticeText(
-                "썬데이 메이플 이벤트가 진행 중입니다. 이벤트 기간을 확인하시고 혜택을 꼭 챙기세요!"
-              );
-            } else {
-              setNoticeText(null);
-            }
-          }
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 500) {
-          setNoticeText("현재 API 점검 중입니다.");
-        } else {
-          setNoticeText(null);
-        }
-      }
-    };
-
-    // 일요일인지 확인
-    const isSunday = new Date().getDay() === 0;
-    if (isSunday) {
-      setNoticeText(
-        "썬데이 메이플 이벤트가 진행 중입니다. 이벤트 기간을 확인하시고 혜택을 꼭 챙기세요!"
-      );
-    } else {
-      fetchSundayMapleStatus();
-    }
-  }, []);
-
-  // 텍스트가 없으면 컴포넌트 숨김
-  if (!noticeText) {
+  // 공지 텍스트 또는 데이터가 없으면 컴포넌트 숨김
+  if (!noticeText && (!noticeData || !noticeData.event_notice)) {
     return null;
   }
 
+  // 필요에 따라 noticeData에서 특정 공지 표시 가능
+  const displayText =
+    noticeText ||
+    noticeData?.event_notice?.find((item) =>
+      item.title.includes("썬데이 메이플")
+    )?.title ||
+    "활성화된 공지가 없습니다";
+
   return (
     <Container>
-      <Marquee>{noticeText}</Marquee>
+      <Marquee>{displayText}</Marquee>
     </Container>
   );
 };
@@ -77,9 +40,8 @@ const scroll = keyframes`
 const Container = styled.div`
   overflow: hidden;
   position: relative;
-  height: 37px;
+  height: 27px;
   margin: 0;
-  padding: 10px 5px;
   width: 100%;
   background-color: ${colors.main.dark3_1Alpha95};
 `;
@@ -87,7 +49,8 @@ const Container = styled.div`
 const Marquee = styled.div`
   white-space: nowrap;
   color: ${colors.headerColor.noticeText};
-  animation: ${scroll} 15s linear infinite;
+  animation: ${scroll} 20s linear infinite;
+  padding: 5px 5px;
 
   &:hover {
     animation-play-state: paused;
