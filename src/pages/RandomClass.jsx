@@ -106,7 +106,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   margin: 20px 0px;
-  min-height: 82vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;

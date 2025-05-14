@@ -5,7 +5,7 @@ import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
 import { Helmet } from "react-helmet";
 
-export const Main = () => {
+export const Main = ({ noticeData, loading, error }) => {
   return (
     <Container>
       <Helmet>
@@ -21,7 +21,7 @@ export const Main = () => {
       <FavoriteWrap>
         <Favorite />
       </FavoriteWrap>
-      <SundayMaple />
+      <SundayMaple noticeData={noticeData} loading={loading} error={error} />
     </Container>
   );
 };
@@ -32,7 +32,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   margin: 20px 0px;
-  min-height: 82vh;
+  min-height: 100vh;
 `;
 
 const SearchWrap = styled.div`

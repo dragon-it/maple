@@ -24,10 +24,13 @@ const colors = {
     dark0Alpha30: "rgba(0, 0, 0, 0.3)", // Ability Wrap Text Shadow
     dark0Alpha40: "rgba(0, 0, 0, 0.4)",
     dark0Alpha50: "rgba(0, 0, 0, 0.5)", // Favorite Background && CharacterInfo Title Shadow
+    dark0Alpha60: "rgba(0, 0, 0, 0.6)",
+    dark0Alpha80: "rgba(0, 0, 0, 0.8)",
     dark0Alpha90: "rgba(0, 0, 0, 0.9)",
     dark1: "rgb(24, 24, 24)", // Character Capture Text
     dark2: "rgb(39, 39, 39)", // Guild Tab Not Active Background
     dark3: "rgb(51, 51, 51)", // Symbol Background
+    dark3_1Alpha95: "rgba(38, 38, 38, 0.95)",
     dark4: "rgb(55, 56, 58)", // Item, Skill Icon Border Dotted --old
     dark4_1: "rgb(89, 85, 82)", // Item Icon Border Dotted --new && Guild Top Class border
     dark5: "rgb(58, 58, 58)", // Guild Sorting Background
@@ -114,6 +117,10 @@ const colors = {
     blueGreen2: "rgb(141, 199, 209)",
     lightBlue: "rgb(197, 220, 242)", // Hyper Stat Level Text
     lightViolet: "rgb(182, 101, 243)", // Hexa Stat Background
+  },
+
+  headerColor: {
+    noticeText: "rgb(255, 255, 32)", // Notice Text
   },
 
   commonInfo: {
