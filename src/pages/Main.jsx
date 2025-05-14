@@ -32,7 +32,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   margin: 20px 0px;
-  min-height: 82vh;
+  min-height: 100vh;
 `;
 
 const SearchWrap = styled.div`

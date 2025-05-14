@@ -38,11 +38,13 @@ function Layout({ children }) {
     fetchNotice();
   }, []);
 
+  const isSunday = new Date().getDay() === 0;
+
   return (
     <>
       <HeaderContentsWrap>
         <Header />
-        <Notice noticeData={noticeData} isSunday={new Date().getDay() === 0} />
+        <Notice noticeData={noticeData} isSunday={isSunday} error={error} />
       </HeaderContentsWrap>
       {React.cloneElement(children, { noticeData, loading, error })}
     </>
