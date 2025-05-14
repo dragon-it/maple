@@ -48,7 +48,6 @@ export const Footer = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "100%",
             height: "auto",
           }}
           data-ad-client="ca-pub-9967012422287379"
