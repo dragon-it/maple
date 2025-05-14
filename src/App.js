@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider.js";
 import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
-import { Header } from "./components/common/header/Header.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
 import { SearchGuild } from "./pages/SearchGuild";
 import { Footer } from "./components/common/footer/Footer";
@@ -15,17 +14,7 @@ import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
 import { SlidingPuzzle } from "./pages/SlidingPuzzle";
-
-function Layout({ children }) {
-  return (
-    <>
-      <HeaderContentsWrap>
-        <Header />
-      </HeaderContentsWrap>
-      {children}
-    </>
-  );
-}
+import Layout from "./Layout";
 
 function App() {
   return (
@@ -145,15 +134,8 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const HeaderContentsWrap = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const UserWrap = styled.div`
-  min-height: 85vh;
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
