@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import FooterText from "./FooterText";
-
 export const Footer = () => {
   useEffect(() => {
     let initialized = false;
@@ -31,12 +30,31 @@ export const Footer = () => {
       };
     };
 
+    const reloadAds = () => {
+      try {
+        const ads = document.querySelectorAll(".adsbygoogle");
+        ads.forEach((ad) => {
+          ad.innerHTML = ""; // 기존 광고 초기화
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        });
+      } catch (e) {
+        console.error("Adsense Reload Error:", e);
+      }
+    };
+
     if (document.readyState === "complete") {
       loadAds();
     } else {
       window.addEventListener("load", loadAds);
-      return () => window.removeEventListener("load", loadAds);
     }
+
+    // 해상도 변경 시 광고 다시 로드
+    window.addEventListener("resize", reloadAds);
+
+    return () => {
+      window.removeEventListener("load", loadAds);
+      window.removeEventListener("resize", reloadAds);
+    };
   }, []);
 
   return (
@@ -66,11 +84,12 @@ export const Footer = () => {
 };
 
 const Adsense = styled.div`
-  width: 100%;
+  width: 90%;
   min-width: 300px;
   height: auto;
   display: flex;
   justify-content: center;
+  padding: 0px 10px;
 `;
 
 const FooterTextDiv = styled.div`
