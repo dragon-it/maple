@@ -197,10 +197,10 @@ const SymbolWrap = styled.div`
   align-items: center;
   font-size: 12px;
   gap: 5px;
-  flex-wrap: wrap;
 
   @media screen and (max-width: 768px) {
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 `;
 
