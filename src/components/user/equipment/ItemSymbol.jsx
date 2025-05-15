@@ -197,7 +197,13 @@ const SymbolWrap = styled.div`
   align-items: center;
   font-size: 12px;
   gap: 5px;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 768px) {
+    justify-content: space-between;
+  }
 `;
+
 const Items = styled.div`
   display: flex;
   flex-direction: column;
@@ -210,8 +216,9 @@ const Items = styled.div`
   padding: 5px 0;
   border-radius: 5px;
 
-  @media screen and (max-width: 576px) {
-    width: 55px;
+  @media screen and (max-width: 768px) {
+    width: calc(33.33% - 4px);
+    margin-bottom: 5px;
   }
 `;
 
