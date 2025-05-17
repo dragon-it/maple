@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
 import { Helmet } from "react-helmet";
+import { InfoPanel } from "../components/main/InfoPanel";
 
 export const Main = ({ noticeData, loading, error }) => {
   return (
@@ -21,6 +22,7 @@ export const Main = ({ noticeData, loading, error }) => {
       <FavoriteWrap>
         <Favorite />
       </FavoriteWrap>
+      <InfoPanel noticeData={noticeData} error={error} />
       <SundayMaple noticeData={noticeData} loading={loading} error={error} />
     </Container>
   );
@@ -29,6 +31,7 @@ export const Main = ({ noticeData, loading, error }) => {
 const Container = styled.div`
   position: relative;
   display: flex;
+  align-items: center;
   flex-direction: column;
   width: 100%;
   margin: 20px 0px;
