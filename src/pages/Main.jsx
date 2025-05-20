@@ -6,7 +6,7 @@ import { SundayMaple } from "../components/main/SundayMaple";
 import { Helmet } from "react-helmet";
 import { InfoPanel } from "../components/main/InfoPanel";
 
-export const Main = ({ noticeData, loading, error }) => {
+export const Main = ({ noticeData, updateData, loading, error }) => {
   return (
     <Container>
       <Helmet>
@@ -22,7 +22,11 @@ export const Main = ({ noticeData, loading, error }) => {
       <FavoriteWrap>
         <Favorite />
       </FavoriteWrap>
-      <InfoPanel noticeData={noticeData} error={error} />
+      <InfoPanel
+        noticeData={noticeData}
+        updateData={updateData}
+        error={error}
+      />
       <SundayMaple noticeData={noticeData} loading={loading} error={error} />
     </Container>
   );

@@ -3,9 +3,11 @@ import axios from "axios";
 import { Header } from "./components/common/header/Header.jsx";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { getUpdateNotice } from "./api/api";
 
 function Layout({ children }) {
   const [noticeData, setNoticeData] = useState(null);
+  const [updateData, setUpdateData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -38,15 +40,41 @@ function Layout({ children }) {
     fetchNotice();
   }, []);
 
+  useEffect(() => {
+    const fetchUpdate = async () => {
+      try {
+        const response = await getUpdateNotice();
+        if (response) {
+          setUpdateData(response);
+        } else {
+          setError(
+            "현재 API 호출이 원활하지 않습니다. 잠시 후 다시 시도해주세요."
+          );
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUpdate();
+  }, []);
+
   const isSunday = new Date().getDay() === 0;
 
   return (
     <>
       <HeaderContentsWrap>
         <Header />
-        <Notice noticeData={noticeData} isSunday={isSunday} error={error} />
+        <Notice
+          noticeData={noticeData}
+          isSunday={isSunday}
+          error={error}
+          updateData={updateData}
+        />
       </HeaderContentsWrap>
-      {React.cloneElement(children, { noticeData, loading, error })}
+      {React.cloneElement(children, { noticeData, updateData, loading, error })}
     </>
   );
 }
