@@ -147,11 +147,6 @@ const getGuildRanking = async (guildName, worldName) => {
   });
 };
 
-// 업데이트 공지 함수
-const getUpdateNotice = async () => {
-  return callMapleStoryAPI("update-notice");
-};
-
 export {
   callMapleStoryAPI,
   getYesterDayFormatted,
@@ -166,5 +161,4 @@ export {
   getNoticeDetail,
   getCharacterCapture,
   getAllOguildId,
-  getUpdateNotice,
 };
