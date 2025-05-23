@@ -23,7 +23,7 @@ export const Main = ({ noticeData, eventData, loading, error }) => {
         <Favorite />
       </FavoriteWrap>
       <InfoPanel noticeData={noticeData} eventData={eventData} error={error} />
-      <SundayMaple noticeData={noticeData} loading={loading} error={error} />
+      <SundayMaple eventData={eventData} loading={loading} error={error} />
     </Container>
   );
 };

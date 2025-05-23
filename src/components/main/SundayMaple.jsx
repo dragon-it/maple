@@ -5,7 +5,7 @@ import dark_to_top_icon from "../../assets/icons/sundayMaple/dark_to_top.svg";
 import light_to_top_icon from "../../assets/icons/sundayMaple/light_to_top.svg";
 import { useTheme } from "../../context/ThemeProvider";
 
-export const SundayMaple = ({ noticeData, loading, error }) => {
+export const SundayMaple = ({ eventData, loading, error }) => {
   const { theme } = useTheme();
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -23,9 +23,9 @@ export const SundayMaple = ({ noticeData, loading, error }) => {
 
   useEffect(() => {
     const fetchNoticeDetail = async () => {
-      if (loading || error || !noticeData?.event_notice) return;
+      if (loading || error || !eventData?.event_notice) return;
 
-      const sundayMapleNotices = noticeData.event_notice.filter((item) =>
+      const sundayMapleNotices = eventData.event_notice.filter((item) =>
         item.title.includes("썬데이 메이플")
       );
 
@@ -60,7 +60,7 @@ export const SundayMaple = ({ noticeData, loading, error }) => {
     };
 
     fetchNoticeDetail();
-  }, [noticeData, loading, error]);
+  }, [eventData, loading, error]);
 
   const extractDesiredContent = (htmlString) => {
     const parser = new DOMParser();
