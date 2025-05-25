@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import event_Header_Img from "../../assets/pages/main/infoPanel/Event_header_img.png";
-import Notice_Header_Img from "../../assets/pages/main/infoPanel/Event_header_img.png";
+import Notice_Header_Img from "../../assets/pages/main/infoPanel/Notice_header_img2.png";
 
 export const InfoPanel = ({ noticeData, eventData, error }) => {
   const calculateDday = (endDate) => {
@@ -93,7 +93,7 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
       </NoticeWrap>
       <NoticeWrap>
         <Header>
-          <HeaderImg src={event_Header_Img} alt="이벤트" />
+          <HeaderImg src={Notice_Header_Img} alt="이벤트" />
           <span>정보센터</span>
         </Header>
         <List>
@@ -133,6 +133,7 @@ const Container = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
     height: 550px;
+    margin-top: 50px;
   }
 `;
 
@@ -143,10 +144,16 @@ const NoticeWrap = styled.div`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   flex: 1 1 0;
-  min-width: 350px;
-  max-width: 350px;
+  min-width: 400px;
+  max-width: 400px;
+
   height: fit-content;
   border-radius: 5px;
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    min-width: 0px;
+  }
 `;
 
 const Header = styled.h2`
@@ -158,12 +165,9 @@ const Header = styled.h2`
   padding: 3px;
   background-color: rgba(255, 255, 255, 0.05);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 0;
 `;
 
 const List = styled.ul`
-  list-style: none;
-  padding: 0;
   margin: 1px 0;
   height: 180px;
   overflow-y: auto;
@@ -171,19 +175,27 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
 
 const Link = styled.a`
   text-decoration: none;
-  white-space: nowrap;
+  white-space: normal;
   color: inherit;
   text-overflow: ellipsis;
   overflow: hidden;
   &:hover {
     text-decoration: underline;
+  }
+
+  @media screen and (max-width: 768px) {
+    overflow: visible;
   }
 `;
 
@@ -203,6 +215,7 @@ const DdayBadge = styled.span`
 
 const HeaderImg = styled.img`
   height: 62px;
+  image-rendering: pixelated;
 `;
 
 const DateText = styled.span`
