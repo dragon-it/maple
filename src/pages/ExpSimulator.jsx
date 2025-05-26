@@ -32,7 +32,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: 20px 0px;
-  min-height: 100vh;
 `;
 
 const Header = styled.h1`

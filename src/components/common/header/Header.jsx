@@ -60,7 +60,7 @@ export const Header = () => {
 
 const itemStyles = css`
   height: 100%;
-  padding: 10px;
+  padding: 8px;
   transition: 0.15s ease;
   cursor: pointer;
   border-bottom: 3px solid transparent;
@@ -111,7 +111,7 @@ const ItemContainer = styled.div`
   flex-direction: row;
   gap: 10px;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 
