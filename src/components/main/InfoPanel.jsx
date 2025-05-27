@@ -12,7 +12,6 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
 
     // 종료일까지 남은 일수 계산
     const diffDays = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
-
     if (diffDays === 0) return "오늘까지";
     if (diffDays > 0) return `D-${diffDays}`;
     return "종료";
@@ -59,6 +58,15 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
   // 최대 5개만
   const displayNotice = mergedNotice.slice(0, 10);
 
+  // 날짜 포맷팅 함수
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const date = d.getDate();
+    return `${year}.${month}.${date}`;
+  };
+
   return (
     <Container>
       <NoticeWrap>
@@ -100,9 +108,7 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
           {displayNotice.length ? (
             displayNotice.map((notice) => (
               <ListItem key={notice.notice_id}>
-                <DateText>
-                  {new Date(notice.date).toLocaleDateString("ko-KR")}
-                </DateText>
+                <DateText>{formatDate(notice.date)}</DateText>
                 <Link
                   href={notice.url}
                   target="_blank"
@@ -140,7 +146,7 @@ const Container = styled.div`
 const NoticeWrap = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #25282b;
+  background-color: ${({ theme }) => theme.infoPanelColor.ContentsBackground};
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   flex: 1 1 0;
@@ -161,10 +167,8 @@ const Header = styled.h2`
   flex-direction: column;
   align-items: center;
   font-size: 14px;
-  color: #ffffff;
   padding: 3px;
-  background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.infoPanelColor.HeaderBackground};
 `;
 
 const List = styled.ul`
@@ -219,7 +223,7 @@ const HeaderImg = styled.img`
 `;
 
 const DateText = styled.span`
-  min-width: 70px;
-  color: #aaaaaa;
+  min-width: 63px;
+  color: ${({ theme }) => theme.infoPanelColor.DateColor};
   font-size: 0.75rem;
 `;
