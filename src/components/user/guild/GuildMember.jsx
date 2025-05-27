@@ -146,7 +146,7 @@ const DetailChracterWrap = styled.div`
   background-color: rgb(66, 66, 66);
   border-radius: 5px;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
   }
 

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import dark_to_top_icon from "../../assets/icons/sundayMaple/dark_to_top.svg";
-import light_to_top_icon from "../../assets/icons/sundayMaple/light_to_top.svg";
-import { useTheme } from "../../context/ThemeProvider";
+import { Footer } from "../common/footer/Footer";
 
-export const SundayMaple = ({ noticeData, loading, error }) => {
-  const { theme } = useTheme();
+export const SundayMaple = ({ eventData, loading, error }) => {
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
@@ -23,9 +20,9 @@ export const SundayMaple = ({ noticeData, loading, error }) => {
 
   useEffect(() => {
     const fetchNoticeDetail = async () => {
-      if (loading || error || !noticeData?.event_notice) return;
+      if (loading || error || !eventData?.event_notice) return;
 
-      const sundayMapleNotices = noticeData.event_notice.filter((item) =>
+      const sundayMapleNotices = eventData.event_notice.filter((item) =>
         item.title.includes("썬데이 메이플")
       );
 
@@ -60,7 +57,7 @@ export const SundayMaple = ({ noticeData, loading, error }) => {
     };
 
     fetchNoticeDetail();
-  }, [noticeData, loading, error]);
+  }, [eventData, loading, error]);
 
   const extractDesiredContent = (htmlString) => {
     const parser = new DOMParser();
@@ -81,16 +78,16 @@ export const SundayMaple = ({ noticeData, loading, error }) => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   if (loading) {
     return <Container>로딩 중...</Container>;
   }
 
   if (error || !isVisible || !sundayMapleNoticeDetail) {
-    return null;
+    return (
+      <>
+        <Footer />
+      </>
+    );
   }
 
   const desiredHtmlContent = extractDesiredContent(
@@ -114,23 +111,20 @@ export const SundayMaple = ({ noticeData, loading, error }) => {
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
-          <ScrollTopButton onClick={scrollToTop}>
-            <ToTopIcon
-              onClick={scrollToTop}
-              src={theme === "dark" ? dark_to_top_icon : light_to_top_icon}
-              alt="to-top-icon"
-            />
-          </ScrollTopButton>
         </ContentsWrap>
       )}
+      <Footer />
     </Container>
   );
 };
 
 const Container = styled.div`
-  position: relative;
+  position: absolute;
+  transform: translateY(180px);
   width: 100%;
   display: flex;
+  align-items: center;
+  flex-direction: column;
   justify-content: center;
   z-index: 95;
   margin-bottom: 20px;
@@ -148,7 +142,7 @@ const Contents = styled.div`
 const ContentsWrap = styled.div`
   padding: 3px 10px 10px 10px;
   margin: 10px;
-  width: 100%;
+  width: 95%;
   position: relative;
   max-width: 876px;
   border: 1px solid rgb(33, 40, 48);
@@ -210,40 +204,5 @@ const SkipDayCheckboxWrapper = styled.div`
     &:hover {
       color: rgb(255, 255, 255);
     }
-  }
-`;
-
-const ScrollTopButton = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  bottom: 24px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  background-color: ${({ theme }) => theme.toggleBgColor};
-  border: ${({ theme }) => theme.toggleBorderColor};
-  color: ${({ theme }) => theme.toggleColor};
-  border-radius: 20px;
-  cursor: pointer;
-
-  @media screen and (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-  }
-
-  &:hover {
-    filter: brightness(1.4);
-  }
-`;
-
-const ToTopIcon = styled.img`
-  width: 32px;
-  height: 32px;
-
-  @media screen and (max-width: 768px) {
-    width: 25px;
-    height: 25px;
   }
 `;

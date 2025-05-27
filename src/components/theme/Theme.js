@@ -16,6 +16,11 @@ export const light = {
   headerHoverColor: "rgb(38,38,38)",
   headerIconHoverColor: "rgb(230,230,230)",
   footerBgColor: "rgba(255,255,255, 0.35)",
+  infoPanelColor: {
+    HeaderBackground: "rgb(239, 239, 239)",
+    ContentsBackground: "rgb(255,255,255)",
+    DateColor: "rgb(43, 43, 43)",
+  },
 };
 
 export const dark = {
@@ -35,6 +40,11 @@ export const dark = {
   headerHoverColor: "rgb(205,205,205)",
   headerIconHoverColor: "rgb(75, 75, 75)",
   footerBgColor: "rgba(38,38,38, 0.85)",
+  infoPanelColor: {
+    HeaderBackground: "rgba(255, 255, 255, .05)",
+    ContentsBackground: "rgb(37, 40, 43)",
+    DateColor: "rgb(170,170,170)",
+  },
 };
 
 export const theme = {

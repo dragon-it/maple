@@ -60,5 +60,6 @@ const Container = styled.div`
     object-fit: cover;
     width: 100%;
     min-height: 100vh;
+    outline: 1px solid red;
   }
 `;
