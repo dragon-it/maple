@@ -101,7 +101,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0px;
+  margin: 10px 0px;
   min-height: 100vh;
 
   img {
@@ -130,7 +130,7 @@ const HeaderWrap = styled.div`
   }
 
   @media screen and (max-width: 576px) {
-    width: 100%;
+    width: 80%;
   }
 `;
 

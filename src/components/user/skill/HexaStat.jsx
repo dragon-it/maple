@@ -177,7 +177,7 @@ const StatContainer = styled.div`
     justify-content: center;
   }
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     gap: 20px;
   }

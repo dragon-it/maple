@@ -76,6 +76,7 @@ const InputWrap = styled.div`
 const GuildNameInput = styled.input`
   position: relative;
   max-width: 200px;
+  width: 100%;
   padding: 2px 30px 2px 5px;
   border-radius: 5px;
   background: rgb(204, 204, 204);

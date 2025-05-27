@@ -626,6 +626,33 @@ app.get("/api/image-proxy", async (req, res) => {
   }
 });
 
+// 업데이트 목록
+app.get("/notice", async (req, res) => {
+  try {
+    // 병렬로 모든 notice 관련 데이터 요청
+    const [notice, noticeUpdate, noticeCashshop] = await Promise.all([
+      callMapleStoryAPI("notice", {}),
+      callMapleStoryAPI("notice-update", {}),
+      callMapleStoryAPI("notice-cashshop", {}),
+    ]);
+
+    if (!notice || !noticeUpdate || !noticeCashshop) {
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch one or more notice types" });
+    }
+
+    res.json({
+      notice,
+      noticeUpdate,
+      noticeCashshop,
+    });
+  } catch (error) {
+    console.error(`Error during API call: ${error.message}`);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // ads.txt 제공 설정
 app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
