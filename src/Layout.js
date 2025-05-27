@@ -3,12 +3,15 @@ import axios from "axios";
 import { Header } from "./components/common/header/Header.jsx";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+import { Footer } from "./components/common/footer/Footer";
 
 function Layout({ children }) {
   const [eventData, setEventData] = useState(null);
   const [noticeData, setNoticeData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -77,6 +80,7 @@ function Layout({ children }) {
         <Notice isSunday={isSunday} error={error} />
       </HeaderContentsWrap>
       {React.cloneElement(children, { eventData, noticeData, loading, error })}
+      {location.pathname !== "/" && <Footer />}
     </>
   );
 }

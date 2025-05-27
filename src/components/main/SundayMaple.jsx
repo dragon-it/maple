@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import dark_to_top_icon from "../../assets/icons/sundayMaple/dark_to_top.svg";
-import light_to_top_icon from "../../assets/icons/sundayMaple/light_to_top.svg";
-import { useTheme } from "../../context/ThemeProvider";
+import { Footer } from "../common/footer/Footer";
 
 export const SundayMaple = ({ eventData, loading, error }) => {
-  const { theme } = useTheme();
   const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
@@ -26,7 +23,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
       if (loading || error || !eventData?.event_notice) return;
 
       const sundayMapleNotices = eventData.event_notice.filter((item) =>
-        item.title.includes("썬데이 메이플")
+        item.title.includes("하이퍼")
       );
 
       if (sundayMapleNotices.length > 0) {
@@ -81,16 +78,16 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   if (loading) {
     return <Container>로딩 중...</Container>;
   }
 
   if (error || !isVisible || !sundayMapleNoticeDetail) {
-    return null;
+    return (
+      <>
+        <Footer />
+      </>
+    );
   }
 
   const desiredHtmlContent = extractDesiredContent(
@@ -114,26 +111,24 @@ export const SundayMaple = ({ eventData, loading, error }) => {
             <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
           </ButtonWrap>
           <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
-          <ScrollTopButton onClick={scrollToTop}>
-            <ToTopIcon
-              onClick={scrollToTop}
-              src={theme === "dark" ? dark_to_top_icon : light_to_top_icon}
-              alt="to-top-icon"
-            />
-          </ScrollTopButton>
         </ContentsWrap>
       )}
+      <Footer />
     </Container>
   );
 };
 
 const Container = styled.div`
-  position: relative;
+  position: absolute;
+  transform: translateY(50px);
   width: 100%;
   display: flex;
+  align-items: center;
+  flex-direction: column;
   justify-content: center;
   z-index: 95;
   margin-bottom: 20px;
+  overflow: auto;
 `;
 
 const Contents = styled.div`
@@ -210,40 +205,5 @@ const SkipDayCheckboxWrapper = styled.div`
     &:hover {
       color: rgb(255, 255, 255);
     }
-  }
-`;
-
-const ScrollTopButton = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  bottom: 24px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  background-color: ${({ theme }) => theme.toggleBgColor};
-  border: ${({ theme }) => theme.toggleBorderColor};
-  color: ${({ theme }) => theme.toggleColor};
-  border-radius: 20px;
-  cursor: pointer;
-
-  @media screen and (max-width: 768px) {
-    width: 32px;
-    height: 32px;
-  }
-
-  &:hover {
-    filter: brightness(1.4);
-  }
-`;
-
-const ToTopIcon = styled.img`
-  width: 32px;
-  height: 32px;
-
-  @media screen and (max-width: 768px) {
-    width: 25px;
-    height: 25px;
   }
 `;

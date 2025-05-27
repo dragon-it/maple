@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import "./App.css";
 import { Main } from "./pages/Main.jsx";
 import { User } from "./pages/User.jsx";
@@ -9,7 +10,7 @@ import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
 import { SearchGuild } from "./pages/SearchGuild";
-import { Footer } from "./components/common/footer/Footer";
+
 import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
@@ -115,7 +116,6 @@ function App() {
             />
           </Routes>
           <BackgroundImage />
-          <Footer />
         </Router>
       </Container>
     </ThemeProvider>

@@ -133,7 +133,7 @@ const Container = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
     height: 550px;
-    margin-top: 50px;
+    margin: 30px 0;
   }
 `;
 
@@ -144,8 +144,8 @@ const NoticeWrap = styled.div`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   flex: 1 1 0;
-  min-width: 400px;
-  max-width: 400px;
+  min-width: 380px;
+  max-width: 380px;
 
   height: fit-content;
   border-radius: 5px;
@@ -206,7 +206,7 @@ const DdayBadge = styled.span`
   font-weight: bold;
   color: #fff;
   background: ${({ type }) =>
-    type === "today" ? "#ff3300" : type === "end" ? "#bdbdbd" : "#1976d2"};
+    type === "today" ? "#ff3300" : type === "end" ? "#7a7a7a" : "#1976d2"};
   border-radius: 12px;
   padding: 1px 5px;
   margin-right: 8px;
@@ -214,7 +214,7 @@ const DdayBadge = styled.span`
 `;
 
 const HeaderImg = styled.img`
-  height: 62px;
+  height: 69px;
   image-rendering: pixelated;
 `;
 
