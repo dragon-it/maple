@@ -14,9 +14,7 @@ export const Main = ({ noticeData, eventData, loading, error }) => {
   const { theme } = useTheme();
 
   const scrollToTop = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const isSunday = new Date().getDay() === 0;
@@ -30,13 +28,20 @@ export const Main = ({ noticeData, eventData, loading, error }) => {
           content="메이플스토리 캐릭터 검색사이트 메짱입니다."
         />
       </Helmet>
-      <SearchWrap>
-        <Search />
-      </SearchWrap>
-      <FavoriteWrap>
-        <Favorite />
-      </FavoriteWrap>
-      <InfoPanel noticeData={noticeData} eventData={eventData} error={error} />
+      <FunctionalWrap>
+        <SearchWrap>
+          <Search />
+        </SearchWrap>
+        <FavoriteWrap>
+          <Favorite />
+        </FavoriteWrap>
+        <InfoPanel
+          noticeData={noticeData}
+          eventData={eventData}
+          error={error}
+        />
+      </FunctionalWrap>
+
       <SundayMaple eventData={eventData} loading={loading} error={error} />
       {isSunday && (
         <ScrollTopButton onClick={scrollToTop}>
@@ -57,6 +62,8 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%;
+  min-height: 101vh;
+  justify-content: space-between;
 `;
 
 const SearchWrap = styled.div`
@@ -76,6 +83,10 @@ const FavoriteWrap = styled.div`
   width: 100%;
   height: auto;
   z-index: 50;
+`;
+
+const FunctionalWrap = styled.div`
+  width: 100%;
 `;
 
 const ScrollTopButton = styled.div`

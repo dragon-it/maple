@@ -10,7 +10,6 @@ import { GlobalStyle } from "./components/theme/GlobalStyles.js";
 import { Error } from "./pages/Error.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
 import { SearchGuild } from "./pages/SearchGuild";
-
 import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";

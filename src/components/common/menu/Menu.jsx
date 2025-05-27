@@ -123,7 +123,6 @@ const MenuContainer = styled.div`
   height: auto;
   visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
   opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
-  max-height: ${({ $isClicked }) => ($isClicked ? "200px" : "0")};
   top: 50px;
   right: 10px;
   padding: 5px 10px;
@@ -133,11 +132,9 @@ const MenuContainer = styled.div`
   border: 1px solid rgb(61, 69, 78);
   border-radius: 7px;
   transition: opacity 0.7s ease, max-height 0.8s ease;
-  text-decoration: none;
   z-index: 9999999;
   box-shadow: ${({ $isClicked }) =>
     $isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
-  overflow: hidden;
   text-align: center;
 `;
 

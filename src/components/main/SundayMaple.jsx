@@ -23,7 +23,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
       if (loading || error || !eventData?.event_notice) return;
 
       const sundayMapleNotices = eventData.event_notice.filter((item) =>
-        item.title.includes("하이퍼")
+        item.title.includes("썬데이 메이플")
       );
 
       if (sundayMapleNotices.length > 0) {
@@ -120,7 +120,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
 
 const Container = styled.div`
   position: absolute;
-  transform: translateY(50px);
+  transform: translateY(180px);
   width: 100%;
   display: flex;
   align-items: center;
@@ -128,7 +128,6 @@ const Container = styled.div`
   justify-content: center;
   z-index: 95;
   margin-bottom: 20px;
-  overflow: auto;
 `;
 
 const Contents = styled.div`
@@ -143,7 +142,7 @@ const Contents = styled.div`
 const ContentsWrap = styled.div`
   padding: 3px 10px 10px 10px;
   margin: 10px;
-  width: 100%;
+  width: 95%;
   position: relative;
   max-width: 876px;
   border: 1px solid rgb(33, 40, 48);
