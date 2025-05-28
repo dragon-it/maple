@@ -2,8 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import event_Header_Img from "../../assets/pages/main/infoPanel/Event_header_img.png";
 import Notice_Header_Img from "../../assets/pages/main/infoPanel/Notice_header_img2.png";
+import { useNavigate } from "react-router-dom";
+import colors from "../common/color/colors";
 
-export const InfoPanel = ({ noticeData, eventData, error }) => {
+export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
+  const navigate = useNavigate();
   const calculateDday = (endDate) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // 오늘 0시로 맞춤
@@ -68,44 +71,61 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
   };
 
   return (
-    <Container>
-      <NoticeWrap>
-        <Header>
-          <HeaderImg src={event_Header_Img} alt="이벤트" />
-          <span>진행중인 이벤트</span>
-        </Header>
-        <List>
-          {(normalizedEventData[0]?.event_notice || [])
-            .filter((event) => event.date_event_end)
-            .sort(
-              (a, b) => new Date(a.date_event_end) - new Date(b.date_event_end)
-            )
+    <Container error={error}>
+      {error ? (
+        <></>
+      ) : (
+        <NoticeWrap>
+          <Header>
+            <HeaderImg src={event_Header_Img} alt="이벤트" />
+            <span>진행중인 이벤트</span>
+          </Header>
+          <List>
+            {loading ? (
+              <ErrorText>
+                <p>로딩 중...</p>
+              </ErrorText>
+            ) : (
+              (normalizedEventData[0]?.event_notice || [])
+                .filter((event) => event.date_event_end)
+                .sort(
+                  (a, b) =>
+                    new Date(a.date_event_end) - new Date(b.date_event_end)
+                )
+                .map((event) => {
+                  const ddayText = calculateDday(event.date_event_end);
+                  return (
+                    <ListItem key={event.notice_id}>
+                      <DdayBadge type={getDdayType(ddayText)}>
+                        {ddayText}
+                      </DdayBadge>
+                      <Link
+                        href={event.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={event.title}
+                      >
+                        {event.title}
+                      </Link>
+                    </ListItem>
+                  );
+                })
+            )}
+          </List>
+        </NoticeWrap>
+      )}
 
-            .map((event) => {
-              const ddayText = calculateDday(event.date_event_end);
-              return (
-                <ListItem key={event.notice_id}>
-                  <DdayBadge type={getDdayType(ddayText)}>{ddayText}</DdayBadge>
-                  <Link
-                    href={event.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={event.title}
-                  >
-                    {event.title}
-                  </Link>
-                </ListItem>
-              );
-            })}
-        </List>
-      </NoticeWrap>
       <NoticeWrap>
         <Header>
-          <HeaderImg src={Notice_Header_Img} alt="이벤트" />
+          <HeaderImg src={Notice_Header_Img} alt="정보센터" />
           <span>정보센터</span>
         </Header>
         <List>
-          {displayNotice.length ? (
+          {loading ? (
+            <ErrorText>
+              <p>로딩 중...</p>
+            </ErrorText>
+          ) : displayNotice.length > 0 ? (
             displayNotice.map((notice) => (
               <ListItem key={notice.notice_id}>
                 <DateText>{formatDate(notice.date)}</DateText>
@@ -119,9 +139,25 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
                 </Link>
               </ListItem>
             ))
-          ) : (
-            <ListItem>공지 없음</ListItem>
-          )}
+          ) : error ? (
+            <ErrorText>
+              <p>현재 API 점검중입니다.</p>
+              <RecommendText
+                onClick={() => navigate("/sliding-puzzle")}
+                tabIndex={0}
+                role="button"
+                aria-label="슬라이딩 퍼즐로 이동"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ")
+                    navigate("/sliding-puzzle");
+                }}
+              >
+                <p>기다리는 동안</p>
+                <strong>&nbsp;슬라이딩 퍼즐&nbsp;</strong>
+                <p>어때요?</p>
+              </RecommendText>
+            </ErrorText>
+          ) : null}
         </List>
       </NoticeWrap>
     </Container>
@@ -137,27 +173,28 @@ const Container = styled.div`
   height: 450px;
 
   @media screen and (max-width: 768px) {
-    flex-direction: column;
-    height: 550px;
+    flex-direction: ${({ error }) => (error ? "row" : "column;")};
+    height: ${({ error }) => (error ? "auto" : "550px;")};
     margin: 30px 0;
+    width: 70%;
   }
 `;
 
 const NoticeWrap = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.infoPanelColor.ContentsBackground};
+  background-color: ${({ theme }) => theme.infoPanelColor.contentsBackground};
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  border: 1px solid ${colors.greyScale.grey3Alpha50};
   overflow-y: auto;
   flex: 1 1 0;
   min-width: 380px;
   max-width: 380px;
-
+  width: 100%;
   height: fit-content;
   border-radius: 5px;
 
   @media screen and (max-width: 768px) {
-    width: 90%;
     min-width: 0px;
   }
 `;
@@ -168,7 +205,7 @@ const Header = styled.h2`
   align-items: center;
   font-size: 14px;
   padding: 3px;
-  background-color: ${({ theme }) => theme.infoPanelColor.HeaderBackground};
+  background-color: ${({ theme }) => theme.infoPanelColor.headerBackground};
 `;
 
 const List = styled.ul`
@@ -186,6 +223,14 @@ const ListItem = styled.li`
   @media screen and (max-width: 768px) {
     font-size: 0.75rem;
   }
+`;
+
+const ErrorText = styled.span`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const Link = styled.a`
@@ -224,6 +269,43 @@ const HeaderImg = styled.img`
 
 const DateText = styled.span`
   min-width: 63px;
-  color: ${({ theme }) => theme.infoPanelColor.DateColor};
+  color: ${({ theme }) => theme.infoPanelColor.dateColor};
   font-size: 0.75rem;
+`;
+
+const RecommendText = styled.p`
+  width: 90%;
+  margin: 10px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: rgb(30, 38, 47) 0px 0px 3px;
+  font-weight: bold;
+  background: ${({ theme }) => theme.infoPanelColor.toPuzzle.background};
+  border-top: ${({ theme }) => theme.infoPanelColor.toPuzzle.borderTop};
+  outline: ${({ theme }) => theme.infoPanelColor.toPuzzle.outline};
+  box-shadow: ${({ theme }) => theme.infoPanelColor.toPuzzle.boxShadow};
+  min-width: max-content;
+  max-width: 100%;
+
+  strong {
+    color: ${colors.main.dark6};
+    text-shadow: rgb(151, 151, 151) 0px 0px 3px;
+  }
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 4px 6px;
+    margin-top: 10px;
+    flex-direction: column;
+    height: auto;
+  }
 `;
