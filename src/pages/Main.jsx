@@ -87,6 +87,10 @@ const FavoriteWrap = styled.div`
 
 const FunctionalWrap = styled.div`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const ScrollTopButton = styled.div`
