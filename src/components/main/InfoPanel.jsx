@@ -81,31 +81,36 @@ export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
             <span>진행중인 이벤트</span>
           </Header>
           <List>
-            {(normalizedEventData[0]?.event_notice || [])
-              .filter((event) => event.date_event_end)
-              .sort(
-                (a, b) =>
-                  new Date(a.date_event_end) - new Date(b.date_event_end)
-              )
-
-              .map((event) => {
-                const ddayText = calculateDday(event.date_event_end);
-                return (
-                  <ListItem key={event.notice_id}>
-                    <DdayBadge type={getDdayType(ddayText)}>
-                      {ddayText}
-                    </DdayBadge>
-                    <Link
-                      href={event.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={event.title}
-                    >
-                      {event.title}
-                    </Link>
-                  </ListItem>
-                );
-              })}
+            {loading ? (
+              <ErrorText>
+                <p>로딩 중...</p>
+              </ErrorText>
+            ) : (
+              (normalizedEventData[0]?.event_notice || [])
+                .filter((event) => event.date_event_end)
+                .sort(
+                  (a, b) =>
+                    new Date(a.date_event_end) - new Date(b.date_event_end)
+                )
+                .map((event) => {
+                  const ddayText = calculateDday(event.date_event_end);
+                  return (
+                    <ListItem key={event.notice_id}>
+                      <DdayBadge type={getDdayType(ddayText)}>
+                        {ddayText}
+                      </DdayBadge>
+                      <Link
+                        href={event.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={event.title}
+                      >
+                        {event.title}
+                      </Link>
+                    </ListItem>
+                  );
+                })
+            )}
           </List>
         </NoticeWrap>
       )}
@@ -120,7 +125,7 @@ export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
             <ErrorText>
               <p>로딩 중...</p>
             </ErrorText>
-          ) : displayNotice.length ? (
+          ) : displayNotice.length > 0 ? (
             displayNotice.map((notice) => (
               <ListItem key={notice.notice_id}>
                 <DateText>{formatDate(notice.date)}</DateText>
@@ -134,7 +139,7 @@ export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
                 </Link>
               </ListItem>
             ))
-          ) : (
+          ) : error ? (
             <ErrorText>
               <p>현재 API 점검중입니다.</p>
               <RecommendText
@@ -152,7 +157,7 @@ export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
                 <p>어때요?</p>
               </RecommendText>
             </ErrorText>
-          )}
+          ) : null}
         </List>
       </NoticeWrap>
     </Container>
@@ -180,6 +185,7 @@ const NoticeWrap = styled.div`
   flex-direction: column;
   background-color: ${({ theme }) => theme.infoPanelColor.contentsBackground};
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  border: 1px solid ${colors.greyScale.grey3Alpha50};
   overflow-y: auto;
   flex: 1 1 0;
   min-width: 380px;
