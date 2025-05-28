@@ -39,6 +39,7 @@ export const Main = ({ noticeData, eventData, loading, error }) => {
           noticeData={noticeData}
           eventData={eventData}
           error={error}
+          loading={loading}
         />
       </FunctionalWrap>
 

@@ -5,7 +5,7 @@ import Notice_Header_Img from "../../assets/pages/main/infoPanel/Notice_header_i
 import { useNavigate } from "react-router-dom";
 import colors from "../common/color/colors";
 
-export const InfoPanel = ({ noticeData, eventData, error }) => {
+export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
   const navigate = useNavigate();
   const calculateDday = (endDate) => {
     const today = new Date();
@@ -72,48 +72,55 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
 
   return (
     <Container error={error}>
-      {error 
-      ? <></> 
-      :      
+      {error ? (
+        <></>
+      ) : (
+        <NoticeWrap>
+          <Header>
+            <HeaderImg src={event_Header_Img} alt="이벤트" />
+            <span>진행중인 이벤트</span>
+          </Header>
+          <List>
+            {(normalizedEventData[0]?.event_notice || [])
+              .filter((event) => event.date_event_end)
+              .sort(
+                (a, b) =>
+                  new Date(a.date_event_end) - new Date(b.date_event_end)
+              )
+
+              .map((event) => {
+                const ddayText = calculateDday(event.date_event_end);
+                return (
+                  <ListItem key={event.notice_id}>
+                    <DdayBadge type={getDdayType(ddayText)}>
+                      {ddayText}
+                    </DdayBadge>
+                    <Link
+                      href={event.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={event.title}
+                    >
+                      {event.title}
+                    </Link>
+                  </ListItem>
+                );
+              })}
+          </List>
+        </NoticeWrap>
+      )}
+
       <NoticeWrap>
         <Header>
-          <HeaderImg src={event_Header_Img} alt="이벤트" />
-          <span>진행중인 이벤트</span>
-        </Header>
-        <List>
-          {(normalizedEventData[0]?.event_notice || [])
-            .filter((event) => event.date_event_end)
-            .sort(
-              (a, b) => new Date(a.date_event_end) - new Date(b.date_event_end)
-            )
-
-            .map((event) => {
-              const ddayText = calculateDday(event.date_event_end);
-              return (
-                <ListItem key={event.notice_id}>
-                  <DdayBadge type={getDdayType(ddayText)}>{ddayText}</DdayBadge>
-                  <Link
-                    href={event.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={event.title}
-                  >
-                    {event.title}
-                  </Link>
-                </ListItem>
-              );
-            })}
-        </List>
-      </NoticeWrap>}
-
-
-      <NoticeWrap>
-        <Header>
-          <HeaderImg src={Notice_Header_Img} alt="이벤트" />
+          <HeaderImg src={Notice_Header_Img} alt="정보센터" />
           <span>정보센터</span>
         </Header>
         <List>
-          {displayNotice.length ? (
+          {loading ? (
+            <ErrorText>
+              <p>로딩 중...</p>
+            </ErrorText>
+          ) : displayNotice.length ? (
             displayNotice.map((notice) => (
               <ListItem key={notice.notice_id}>
                 <DateText>{formatDate(notice.date)}</DateText>
@@ -135,8 +142,9 @@ export const InfoPanel = ({ noticeData, eventData, error }) => {
                 tabIndex={0}
                 role="button"
                 aria-label="슬라이딩 퍼즐로 이동"
-                onKeyDown={e => {
-                  if (e.key === "Enter" || e.key === " ") navigate("/sliding-puzzle");
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ")
+                    navigate("/sliding-puzzle");
                 }}
               >
                 <p>기다리는 동안</p>
@@ -160,11 +168,10 @@ const Container = styled.div`
   height: 450px;
 
   @media screen and (max-width: 768px) {
-    flex-direction:  ${({error}) => (error ? "row" : "column;")};
-    height: ${({error}) => (error ? "auto" : "550px;")};
+    flex-direction: ${({ error }) => (error ? "row" : "column;")};
+    height: ${({ error }) => (error ? "auto" : "550px;")};
     margin: 30px 0;
-      width: 70%;
-    
+    width: 70%;
   }
 `;
 
@@ -182,7 +189,6 @@ const NoticeWrap = styled.div`
   border-radius: 5px;
 
   @media screen and (max-width: 768px) {
-    width: 65%;
     min-width: 0px;
   }
 `;
