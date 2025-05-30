@@ -17,7 +17,7 @@ export const Main = ({ noticeData, eventData, loading, error }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const isSunday = new Date().getDay() === 0;
+  const isSunday = [5, 6, 0].includes(new Date().getDay()); // 금요일(5), 토요일(6), 일요일(0) 스크롤 버튼 표시
 
   return (
     <Container ref={containerRef}>

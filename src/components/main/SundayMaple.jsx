@@ -12,7 +12,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     const skipDay = localStorage.getItem("skipDay");
     if (skipDay) {
       const skipUntil = new Date(skipDay);
-      if (skipUntil > new Date()) {
+      if (!isNaN(skipUntil.getTime()) && skipUntil > new Date()) {
         setIsVisible(false);
       }
     }
@@ -20,24 +20,30 @@ export const SundayMaple = ({ eventData, loading, error }) => {
 
   useEffect(() => {
     const fetchNoticeDetail = async () => {
-      if (loading || error || !eventData?.event_notice) return;
+      if (loading || error || !eventData) return;
 
-      const sundayMapleNotices = eventData.event_notice.filter((item) =>
+      const notices = eventData.event_notice || eventData;
+      console.log("notices:", notices);
+
+      const sundayMapleNotices = notices.filter((item) =>
         item.title.includes("썬데이 메이플")
       );
+      console.log("sundayMapleNotices:", sundayMapleNotices);
 
       if (sundayMapleNotices.length > 0) {
         const sundayMapleNotice = sundayMapleNotices[0];
         const sundayMapleNoticeId = Number(sundayMapleNotice.notice_id);
         const eventEndTime = new Date(sundayMapleNotice.date_event_end);
-
-        // 현재 시간과 이벤트 종료 시간 비교
         const currentTime = new Date();
-        if (eventEndTime > currentTime) {
+
+        console.log("eventEndTime:", eventEndTime, "currentTime:", currentTime);
+
+        if (eventEndTime.getTime() > currentTime.getTime()) {
           try {
             const response = await axios.get("/notice-event/detail", {
               params: { notice_id: sundayMapleNoticeId },
             });
+            console.log("API response:", response.data);
 
             if (response.status === 200) {
               setSundayMapleNoticeDetail(response.data);
@@ -62,9 +68,8 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   const extractDesiredContent = (htmlString) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlString, "text/html");
-    const desiredContent = doc.querySelector(
-      'div[style="margin: 0px auto; height: 100%; position: relative; max-width: 876px;"]'
-    );
+    const desiredContent = doc.querySelector("div.gen_container");
+    console.log("desiredContent:", desiredContent);
     return desiredContent ? desiredContent.outerHTML : "";
   };
 
@@ -83,6 +88,14 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   }
 
   if (error || !isVisible || !sundayMapleNoticeDetail) {
+    console.log(
+      "Render skipped - error:",
+      error,
+      "isVisible:",
+      isVisible,
+      "sundayMapleNoticeDetail:",
+      sundayMapleNoticeDetail
+    );
     return (
       <>
         <Footer />
@@ -93,6 +106,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   const desiredHtmlContent = extractDesiredContent(
     sundayMapleNoticeDetail.contents
   );
+  console.log("desiredHtmlContent:", desiredHtmlContent);
 
   return (
     <Container>
