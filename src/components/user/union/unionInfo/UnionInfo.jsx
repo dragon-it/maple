@@ -124,7 +124,8 @@ const LevelWrap = styled.div`
 const UnionIcon = styled.div`
   width: 100px;
   height: 100px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
 const Items = styled.div`

@@ -9,7 +9,7 @@
 
 메이플스토리 파트너스로 활동 중입니다.
 
-[메짱 바로가기](https://www.mezzang.com)
+[메짱](https://www.mezzang.com)
 <br>
 [메이플스토리 파트너스](https://partners.maplestory.nexon.com/developers)
 
