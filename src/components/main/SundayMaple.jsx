@@ -23,12 +23,10 @@ export const SundayMaple = ({ eventData, loading, error }) => {
       if (loading || error || !eventData) return;
 
       const notices = eventData.event_notice || eventData;
-      console.log("notices:", notices);
 
       const sundayMapleNotices = notices.filter((item) =>
         item.title.includes("썬데이 메이플")
       );
-      console.log("sundayMapleNotices:", sundayMapleNotices);
 
       if (sundayMapleNotices.length > 0) {
         const sundayMapleNotice = sundayMapleNotices[0];
@@ -36,14 +34,11 @@ export const SundayMaple = ({ eventData, loading, error }) => {
         const eventEndTime = new Date(sundayMapleNotice.date_event_end);
         const currentTime = new Date();
 
-        console.log("eventEndTime:", eventEndTime, "currentTime:", currentTime);
-
         if (eventEndTime.getTime() > currentTime.getTime()) {
           try {
             const response = await axios.get("/notice-event/detail", {
               params: { notice_id: sundayMapleNoticeId },
             });
-            console.log("API response:", response.data);
 
             if (response.status === 200) {
               setSundayMapleNoticeDetail(response.data);
@@ -88,14 +83,6 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   }
 
   if (error || !isVisible || !sundayMapleNoticeDetail) {
-    console.log(
-      "Render skipped - error:",
-      error,
-      "isVisible:",
-      isVisible,
-      "sundayMapleNoticeDetail:",
-      sundayMapleNoticeDetail
-    );
     return (
       <>
         <Footer />
@@ -106,7 +93,6 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   const desiredHtmlContent = extractDesiredContent(
     sundayMapleNoticeDetail.contents
   );
-  console.log("desiredHtmlContent:", desiredHtmlContent);
 
   return (
     <Container>
