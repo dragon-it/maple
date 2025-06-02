@@ -23,9 +23,8 @@ export const SundayMaple = ({ eventData, loading, error }) => {
       if (loading || error || !eventData) return;
 
       const notices = eventData.event_notice || eventData;
-
       const sundayMapleNotices = notices.filter((item) =>
-        item.title.includes("썬데이 메이플")
+        item.title.includes("썬데이")
       );
 
       if (sundayMapleNotices.length > 0) {
@@ -63,7 +62,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   const extractDesiredContent = (htmlString) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlString, "text/html");
-    const desiredContent = doc.querySelector("div.gen_container");
+    const desiredContent = doc.querySelector("img");
     console.log("desiredContent:", desiredContent);
     return desiredContent ? desiredContent.outerHTML : "";
   };
@@ -79,7 +78,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   };
 
   if (loading) {
-    return <Container>로딩 중...</Container>;
+    return <Container isContentsVisible={false}>로딩 중...</Container>;
   }
 
   if (error || !isVisible || !sundayMapleNoticeDetail) {
@@ -94,9 +93,12 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     sundayMapleNoticeDetail.contents
   );
 
+  // ContentsWrap이 보일 때만 Container의 position을 absolute로 설정
+  const isContentsVisible = desiredHtmlContent !== "";
+
   return (
-    <Container>
-      {desiredHtmlContent && (
+    <Container isContentsVisible={isContentsVisible}>
+      {isContentsVisible && (
         <ContentsWrap>
           <ButtonWrap>
             <SkipDayCheckboxWrapper>
@@ -119,7 +121,8 @@ export const SundayMaple = ({ eventData, loading, error }) => {
 };
 
 const Container = styled.div`
-  position: absolute;
+  position: ${({ isContentsVisible }) =>
+    isContentsVisible ? "absolute" : "relative"};
   transform: translateY(180px);
   width: 100%;
   display: flex;
