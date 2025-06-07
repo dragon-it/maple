@@ -4,6 +4,9 @@ import styled, { css } from "styled-components";
 import logo from "../../../assets/logos/LogoIcon.svg";
 import logo_text from "../../../assets/logos/Logo_Text_Only.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
+import login_icon from "../../../assets/login/login-narrow.png";
+import login_icon_wide from "../../../assets/login/login-wide-center.png";
+import { rediectToAuthCode } from "../../../api/oauth2.js";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -50,7 +53,11 @@ export const Header = () => {
           <p>썬데이 메이플</p>
         </ItemsToHome>
       </ItemContainer>
-
+      <LogInIcon
+        src={login_icon_wide}
+        alt="Login"
+        onClick={rediectToAuthCode}
+      ></LogInIcon>
       <ThemeToggleWrap>
         <ThemeToggleButton />
       </ThemeToggleWrap>
@@ -133,3 +140,5 @@ const ItemsToHome = styled.a`
 `;
 
 const ThemeToggleWrap = styled.div``;
+
+const LogInIcon = styled.img``;
