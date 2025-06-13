@@ -112,9 +112,11 @@ export const ItemSymbol = ({ symbolData }) => {
         <SymbolWrap>
           {authenticSymbols.map((item, index) => (
             <Items key={index}>
-              {/* '어센틱' 단어 제거 */}
+              {/* '어센틱', '그랜드' 단어 제거 */}
               <SymbolName>
-                {item.symbol_name.replace("어센틱심볼 :", "")}
+                {item.symbol_name
+                  .replace("어센틱심볼 :", "")
+                  .replace("그랜드", "")}
               </SymbolName>
               <SymbolIcons>
                 <img src={item.symbol_icon} alt={item.symbol_name} />
