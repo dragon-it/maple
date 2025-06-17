@@ -174,6 +174,10 @@ const colors = {
       propensityBackground: "rgb(106, 214, 241)", // Propensity Item Background
       propensityText: "rgb(255, 255, 255)", // Propensity Text
     },
+
+    symbolColor: {
+      arcaneMaxStatShadow: "rgb(91, 86, 159)",
+    },
   },
 
   abilityColor: {
