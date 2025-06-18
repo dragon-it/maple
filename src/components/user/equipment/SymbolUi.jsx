@@ -1,14 +1,14 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arcEquipBackgrnd.png";
-import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/autEquipBackgrnd.png";
-import grandBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandautEquipBackgrnd.png";
-import arcSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arcEquipSymbol.png";
-import arcSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arcEquipSymbolDisabled.png";
-import autSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/autEquipSymbol.png";
-import autSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/autEquipSymbolDisabled.png";
-import grandSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandautEquipSymbol.png";
-import grandSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandautEquipSymbolDisabled.png";
+import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipBackgrnd.png";
+import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipBackgrnd.png";
+import grandBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipBackgrnd.png";
+import arcSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipSymbol.png";
+import arcSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipSymbolDisabled.png";
+import autSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipSymbol.png";
+import autSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipSymbolDisabled.png";
+import grandSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipSymbol.png";
+import grandSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipSymbolDisabled.png";
 import colors from "../../common/color/colors";
 
 export const SymbolUi = ({ symbolData }) => {
