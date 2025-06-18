@@ -7,10 +7,10 @@ import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/and
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
 import { ItemSetEffect } from "./ItemSetEffect";
-import { ItemSymbol } from "./ItemSymbol";
 import { CashItemDetail } from "./CashItemDetail";
 import { PetItemDetail } from "./PetItemDetail";
 import { AndroidItemDetail } from "./AndroidItemDetail";
+import { SymbolUi } from "./SymbolUi";
 
 const positions = {
   모자: { top: "6px", left: "108px" },
@@ -723,7 +723,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
         </DetailWrap>
       </ItemInfoDetailWrap>
       <ItemSetEffect setinfo={EquipData.getSetEffect} />
-      <ItemSymbol symbolData={EquipData.getSymbol} />
+      <SymbolUi symbolData={EquipData.getSymbol} />
     </Container>
   );
 };
