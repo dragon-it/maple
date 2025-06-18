@@ -794,6 +794,7 @@ const ItemInfoDetailWrap = styled.div`
 
 const TabMenu = styled.div`
   display: flex;
+  gap: 2px;
 `;
 
 const TabButton = styled.button`
@@ -809,6 +810,7 @@ const TabButton = styled.button`
       : "rgb(153, 153, 153)"};
   border: 1px solid
     ${({ $isSelected }) => ($isSelected ? "#6ED8EB" : "rgb(119, 119, 119)")};
+  border-bottom: none;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   cursor: pointer;
