@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import equipmentUi from "../../../assets/pages/user/equipment/equipmentUi/equipUi.png";
+import equipmentUi from "../../../assets/pages/user/equipment/equipmentUi/equipUi2.png";
 import cashEquipUi from "../../../assets/pages/user/equipment/equipmentUi/cashEquipUi.png";
 import petEquipUi from "../../../assets/pages/user/equipment/equipmentUi/petEquipUi.png";
 import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/androidEquipUi.png";
+import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
 import { ItemSetEffect } from "./ItemSetEffect";
@@ -13,30 +14,30 @@ import { AndroidItemDetail } from "./AndroidItemDetail";
 import { SymbolUi } from "./SymbolUi";
 
 const positions = {
-  모자: { top: "6px", left: "108px" },
-  얼굴장식: { top: "55px", left: "108px" },
-  눈장식: { top: "104px", left: "108px" },
-  귀고리: { top: "104px", left: "157px" },
-  상의: { top: "154px", left: "108px" },
-  하의: { top: "203px", left: "108px" },
-  신발: { top: "252px", left: "108px" },
-  장갑: { top: "203px", left: "157px" },
-  망토: { top: "203px", left: "206px" },
-  보조무기: { top: "154px", left: "206px" },
-  무기: { top: "154px", left: "59px" },
-  반지1: { top: "6px", left: "10px" },
-  반지2: { top: "55px", left: "10px" },
-  반지3: { top: "104px", left: "10px" },
-  반지4: { top: "154px", left: "10px" },
-  펜던트: { top: "55px", left: "59px" },
-  훈장: { top: "104px", left: "206px" },
-  벨트: { top: "203px", left: "59px" },
-  어깨장식: { top: "154px", left: "157px" },
-  "포켓 아이템": { top: "203px", left: "10px" },
-  "기계 심장": { top: "252px", left: "206px" },
-  뱃지: { top: "55px", left: "206px" },
-  엠블렘: { top: "6px", left: "206px" },
-  펜던트2: { top: "104px", left: "59px" },
+  모자: { top: "39px", right: "60px" },
+  얼굴장식: { top: "39px", left: "60px" },
+  눈장식: { top: "84px", left: "60px" },
+  귀고리: { top: "129px", left: "60px" },
+  상의: { top: "84px", right: "60px" },
+  하의: { top: "129px", right: "60px" },
+  신발: { top: "129px", right: "15px" },
+  장갑: { top: "84px", right: "15px" },
+  망토: { top: "39px", right: "15px" },
+  무기: { top: "219px", left: "105px" },
+  보조무기: { top: "219px", left: "150px" },
+  엠블렘: { top: "219px", left: "195px" },
+  반지1: { top: "174px", left: "15px" },
+  반지2: { top: "129px", left: "15px" },
+  반지3: { top: "84px", left: "15px" },
+  반지4: { top: "39px", left: "15px" },
+  펜던트: { top: "219px", left: "60px" },
+  펜던트2: { top: "174px", left: "60px" },
+  훈장: { top: "174px", right: "15px" },
+  벨트: { top: "219px", left: "15px" },
+  어깨장식: { top: "174px", right: "60px" },
+  "포켓 아이템": { top: "264px", left: "15px" },
+  "기계 심장": { top: "219px", right: "15px" },
+  뱃지: { top: "264px", right: "15px" },
 };
 
 const cashPositions = {
@@ -72,16 +73,19 @@ const ADPositions = {
 };
 
 const PresetButton = styled.button`
-  position: relative;
-  border: 2px solid gray;
-  border-radius: 5px;
-  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${({ $isSelected }) => ($isSelected === "장비" ? "20px" : "auto")};
+  height: ${({ $isSelected }) => ($isSelected === "장비" ? "20px" : "auto")};
   color: white;
+  font-size: 14px;
   cursor: pointer;
-  font-family: maple-light;
-  background: ${({ $isSelected }) => ($isSelected ? "#FFAA00" : "#999999")};
+  border-radius: 3px;
+  background: ${({ $isSelected }) =>
+    $isSelected ? "#4f5358" : "rgb(161, 161, 161)"};
   border: 1px solid
-    ${({ $isSelected }) => ($isSelected ? "#E47733" : "#777777")};
+    ${({ $isSelected }) => ($isSelected ? "#141414" : "rgb(119, 119, 119)")};
 `;
 
 const ItemIcon = styled.div`
@@ -89,8 +93,8 @@ const ItemIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   overflow: hidden;
   cursor: pointer;
   border: ${({ $grade, $gradeColors }) =>
@@ -120,7 +124,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
-
+  console.log(currentTab);
   const [isCloseClick, setIsCloseClick] = useState(false);
 
   const handleMouseLeave = () => {
@@ -297,9 +301,13 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
             {/* 장비탭 처리 */}
             {currentTab === "장비" && (
               <EquipWrap>
-                <BackgroundImageWrap />
+                <BackgroundImageWrap $isSelected={currentTab} />
                 <EquipItems>
-                  <BackgroundImage src={equipmentUi} alt="ui" />
+                  <BackgroundImage
+                    src={equipmentUi}
+                    $isSelected={currentTab}
+                    alt="ui"
+                  />
                   {/* 프리셋 데이터가 없으면 item_equipment 출력 */}
                   {(EquipData[selectedPreset] &&
                   EquipData[selectedPreset].length > 0
@@ -313,19 +321,6 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                       $gradeColors={gradeColors}
                       onClick={() => handleItemClick(item)}
                       onMouseOver={() => handleItemHover(item)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <img src={item.item_icon} alt={`icon-${index}`} />
-                    </ItemIcon>
-                  ))}
-                  {EquipData[selectedPreset]?.map((item, index) => (
-                    <ItemIcon
-                      key={item.item_equipment_slot}
-                      style={positions[item.item_equipment_slot]}
-                      $grade={item.potential_option_grade}
-                      $gradeColors={gradeColors}
-                      onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-                      onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
                       onMouseLeave={handleMouseLeave}
                     >
                       <img src={item.item_icon} alt={`icon-${index}`} />
@@ -350,35 +345,38 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             EquipData.getAndroidEquipment.android_preset_1
                           )
                         }
+                        onMouseLeave={handleMouseLeave}
                       />
                     </ADIcon>
                   ) : (
                     <div style={{ width: "42px", height: "42px" }} />
                   )}
                 </EquipItems>
-                <PresetButtonWrap>
+                <PresetButtonWrap $isSelected={currentTab}>
                   <PresetButtons>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_1")}
                       $isSelected={selectedPreset === "item_equipment_preset_1"}
                     >
-                      <span>프리셋1</span>
+                      <span>1</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_2")}
                       $isSelected={selectedPreset === "item_equipment_preset_2"}
                     >
-                      <span>프리셋2</span>
+                      <span>2</span>
                     </PresetButton>
                     <PresetButton
                       onClick={() => handlePresetChange("preset_3")}
                       $isSelected={selectedPreset === "item_equipment_preset_3"}
                     >
-                      <span>프리셋3</span>
+                      <span>3</span>
                     </PresetButton>
                   </PresetButtons>
                   {matchingPresetKey === selectedPreset && (
-                    <ApplyingPreset>현재 적용중인 프리셋이에요!</ApplyingPreset>
+                    <ApplyingPreset $isSelected={currentTab}>
+                      현재 적용중인 프리셋이에요!
+                    </ApplyingPreset>
                   )}
                 </PresetButtonWrap>
               </EquipWrap>
@@ -763,15 +761,12 @@ const InfoWrap = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
+  ${ContainerCss};
 
   height: ${(props) => {
     switch (props.$currentTab) {
       case "장비":
-        return "450px";
+        return "auto";
       case "캐시":
         return "470px";
       case "펫":
@@ -798,23 +793,30 @@ const ItemInfoDetailWrap = styled.div`
 
 const TabMenu = styled.div`
   display: flex;
+  gap: 2px;
 `;
 
 const TabButton = styled.button`
-  width: 55px;
   height: 27px;
-  padding: 5px;
-  font-family: maple-light;
+  flex: 1;
+  text-shadow: 0px 0px 3px rgb(30, 38, 47);
   font-size: 14px;
+  font-weight: bold;
   color: white;
   background: ${({ $isSelected }) =>
-    $isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+    $isSelected
+      ? "linear-gradient(180deg,rgba(54, 184, 208, 1) 0%, rgba(54, 184, 208, 1) 50%, rgba(34, 149, 184, 1) 100%);"
+      : "rgb(153, 153, 153)"};
   border: 1px solid
-    ${({ $isSelected }) =>
-      $isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+    ${({ $isSelected }) => ($isSelected ? "#6ED8EB" : "rgb(119, 119, 119)")};
+  border-bottom: none;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
 `;
 
 const BaseButton = styled.button`
@@ -825,10 +827,9 @@ const BaseButton = styled.button`
   color: white;
   font-family: maple-light;
   background: ${({ $isSelected }) =>
-    $isSelected ? "rgb(255, 170, 0)" : "rgb(153, 153, 153)"};
+    $isSelected ? "#4f5358" : "rgb(161, 161, 161)"};
   border: 1px solid
-    ${({ $isSelected }) =>
-      $isSelected ? "rgb(228, 119, 51)" : "rgb(119, 119, 119)"};
+    ${({ $isSelected }) => ($isSelected ? "#141414" : "rgb(119, 119, 119)")};
 `;
 
 const UiBackgrnd = styled.div`
@@ -841,13 +842,13 @@ const UiBackgrnd = styled.div`
 `;
 
 const BackgroundImageWrap = styled.div`
-  width: 262px;
-  height: 312px;
+  width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
+  height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
 `;
 
 const BackgroundImage = styled.img`
-  width: 262px;
-  height: 312px;
+  width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
+  height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
   opacity: 0.8;
 `;
 
@@ -856,11 +857,11 @@ const ADIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   cursor: pointer;
-  right: 59px;
-  bottom: 17px;
+  top: 219px;
+  right: 60px;
   img {
     image-rendering: pixelated;
   }
@@ -924,22 +925,25 @@ const EquipItems = styled.div`
 `;
 
 const ApplyingPreset = styled.div`
-  margin-top: 10px;
-  width: 188px;
-  font-family: maple-light;
-  text-align: center;
   position: absolute;
-  color: white;
+  top: ${({ $isSelected }) => ($isSelected === "장비" ? "-36px" : "67px")};
+  right: ${({ $isSelected }) => ($isSelected === "장비" ? "-5px" : "14px")};
+  color: ${({ $isSelected }) => ($isSelected === "장비" ? "#000" : "#fff")};
+  font-family: maple-light;
+  font-size: 15px;
 `;
 
-const PresetButtonWrap = styled.div``;
+const PresetButtonWrap = styled.div`
+  position: ${({ $isSelected }) =>
+    $isSelected === "장비" ? "absolute" : "relative"};
+  bottom: ${({ $isSelected }) => ($isSelected === "장비" ? "12px" : "7px")};
+  right: ${({ $isSelected }) => ($isSelected === "장비" ? "94px" : "2px")};
+`;
 
 const PresetButtons = styled.div`
-  padding: 8px 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  gap: 7px;
+  margin-top: ${({ $isSelected }) => ($isSelected === "장비" ? "0px" : " 5px")};
 `;
 
 const DetailWrap = styled.div`

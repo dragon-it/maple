@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { SkillDetailContainerCss } from "../../common/searchCharacter/ContainerBox";
 
-export const SkillDetail = ({ item, clicked, onClose }) => {
+export const SkillDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [detailPosition, setDetailPosition] = useState(null);
   const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
@@ -64,9 +65,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
     >
       <div style={{ position: "relative" }}></div>
       <SkillNameWrap>
-        <h2>
-          <SkillName>{item.skill_name}</SkillName>
-        </h2>
+        <SkillName>{item.skill_name}</SkillName>
       </SkillNameWrap>
       <IconWrap>
         <IconImage>
@@ -85,10 +84,7 @@ export const SkillDetail = ({ item, clicked, onClose }) => {
 
 const Container = styled.div`
   position: fixed;
-  background-color: rgb(0, 0, 0);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
+  ${SkillDetailContainerCss};
   line-height: 16px;
   color: white;
   padding: 0px 10px 10px 10px;
@@ -137,7 +133,7 @@ const SkillNameWrap = styled.div`
   }
 `;
 
-const SkillName = styled.div``;
+const SkillName = styled.h2``;
 
 const IconWrap = styled.div`
   padding: 10px 0;
@@ -184,12 +180,10 @@ const IconImage = styled.div`
 const SkillDescriptionWrap = styled.span`
   width: 100%;
   height: 100%;
-  font-size: 12px;
   white-space: pre-wrap;
 `;
 
 const SkillEffect = styled.div`
-  font-size: 12px;
   white-space: pre-wrap;
   padding-top: 10px;
 `;
