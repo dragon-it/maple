@@ -103,9 +103,9 @@ export const ItemSetEffect = ({ setinfo }) => {
 };
 
 const Container = styled.div`
-  position: absolute;
-  left: -261px;
-  width: 250px;
+  width: 100%;
+  max-width: 300px;
+  height: fit-content;
   padding: 10px;
   white-space: pre-wrap;
   background: linear-gradient(
@@ -118,7 +118,7 @@ const Container = styled.div`
   border-radius: 7px;
   outline: 1px solid #242b33;
   color: white;
-  max-height: 600px;
+  max-height: 490px;
   overflow-y: scroll;
 
   ul {
@@ -132,10 +132,9 @@ const Container = styled.div`
     margin: 8px 0;
   }
 
-  @media screen and (max-width: 1280px) {
-    position: relative;
-    width: 100%;
-    max-height: fit-content;
+  @media screen and (max-width: 1540px) {
+    max-height: 490px;
+    max-width: 400px;
     left: 0%;
   }
 `;

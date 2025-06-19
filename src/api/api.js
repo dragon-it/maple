@@ -79,7 +79,19 @@ const getGuildBasicInformation = async (oguildId) => {
 
 // 길드 멤버 정보 함수
 const getGuildMembers = async (guildMembers) => {
-  return callMapleStoryAPI("guild/members", { guildMembers });
+  try {
+    const response = await axios.post("/api/guild/members", { guildMembers });
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Failed to fetch guild members");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching guild members:", error.message);
+    return false;
+  }
 };
 
 // Combined API 호출 함수
