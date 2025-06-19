@@ -4,6 +4,7 @@ import equipmentUi from "../../../assets/pages/user/equipment/equipmentUi/equipU
 import cashEquipUi from "../../../assets/pages/user/equipment/equipmentUi/cashEquipUi.png";
 import petEquipUi from "../../../assets/pages/user/equipment/equipmentUi/petEquipUi.png";
 import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/androidEquipUi.png";
+import characterBg from "../../../assets/pages/user/equipment/equipmentUi/characterBg.png";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
@@ -106,7 +107,8 @@ const ItemIcon = styled.div`
   }
 `;
 
-export const ItemEquipmentInformation = ({ EquipData }) => {
+export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
+  console.log(BasicData);
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
   const [selectedPreset, setSelectedPreset] = useState(
@@ -301,6 +303,18 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
             {currentTab === "장비" && (
               <EquipWrap>
                 <BackgroundImageWrap $isSelected={currentTab} />
+                <CharacterImageWrap>
+                  <Bg src={characterBg} />
+                  <img
+                    src={
+                      BasicData?.getBasicInformation?.character_image
+                        ? `${BasicData.getBasicInformation.character_image}?width=131&height=130&y=130`
+                        : undefined
+                    }
+                    alt="character_image"
+                  />
+                  <span>{BasicData?.getBasicInformation?.character_name}</span>
+                </CharacterImageWrap>
                 <EquipItems>
                   <BackgroundImage
                     src={equipmentUi}
@@ -843,6 +857,40 @@ const UiBackgrnd = styled.div`
 const BackgroundImageWrap = styled.div`
   width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
   height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
+`;
+
+const CharacterImageWrap = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 131px;
+  height: 177px;
+  top: 39px;
+  border-radius: 5px;
+
+  img {
+    z-index: 99;
+  }
+
+  span {
+    color: white;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1px 3px;
+    border-radius: 3px;
+    margin-top: 3px;
+    max-width: 75%;
+    white-space: normal;
+    text-align: center;
+    z-index: 99;
+  }
+`;
+
+const Bg = styled.img`
+  position: absolute;
+  border-radius: 5px;
 `;
 
 const BackgroundImage = styled.img`

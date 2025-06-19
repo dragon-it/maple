@@ -15,6 +15,9 @@ export const Equipment = ({ result }) => {
             getPetEquipment: result.getCombinedData.getPetEquipment,
             getAndroidEquipment: result.getCombinedData.getAndroidEquipment,
           }}
+          BasicData={{
+            getBasicInformation: result.getCombinedData.getBasicInformation,
+          }}
         />
       )}
     </Container>
