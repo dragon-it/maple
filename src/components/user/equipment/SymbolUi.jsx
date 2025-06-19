@@ -58,8 +58,6 @@ export const SymbolUi = ({ symbolData }) => {
   const arcStatsObject = getStatObject(arcane);
   const autStatsObject = getStatObject(authentic);
   const grandStatsObject = getStatObject(grand);
-
-  console.log(authentic);
   const getIcon = (arr, idx) => arr[idx]?.symbol_icon || null;
 
   const TextArray = {

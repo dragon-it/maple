@@ -63,7 +63,6 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlString, "text/html");
     const desiredContent = doc.querySelector("img");
-    console.log("desiredContent:", desiredContent);
     return desiredContent ? desiredContent.outerHTML : "";
   };
 

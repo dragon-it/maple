@@ -124,7 +124,6 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
 
   // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
-  console.log(currentTab);
   const [isCloseClick, setIsCloseClick] = useState(false);
 
   const handleMouseLeave = () => {
