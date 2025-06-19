@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
+import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 
 export const CashItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -127,10 +128,7 @@ export const CashItemDetail = ({ item, onClose }) => {
 const Container = styled.div`
   position: fixed;
   width: 270px;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
+  ${ContainerCss};
   color: white;
   padding: 0px 10px 5px;
   padding-bottom: 3px;

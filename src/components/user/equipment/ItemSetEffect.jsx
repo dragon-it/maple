@@ -108,10 +108,15 @@ const Container = styled.div`
   width: 250px;
   padding: 10px;
   white-space: pre-wrap;
-  background-color: rgba(0, 0, 0, 0.9);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
+  background: linear-gradient(
+    180deg,
+    rgba(57, 70, 81, 1) 0%,
+    rgba(46, 55, 62, 1) 9%,
+    rgba(44, 51, 58, 1) 100%
+  );
+  border: 1px solid #4f606b;
+  border-radius: 7px;
+  outline: 1px solid #242b33;
   color: white;
   max-height: 600px;
   overflow-y: scroll;

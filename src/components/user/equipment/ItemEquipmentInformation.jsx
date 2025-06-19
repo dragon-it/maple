@@ -4,6 +4,7 @@ import equipmentUi from "../../../assets/pages/user/equipment/equipmentUi/equipU
 import cashEquipUi from "../../../assets/pages/user/equipment/equipmentUi/cashEquipUi.png";
 import petEquipUi from "../../../assets/pages/user/equipment/equipmentUi/petEquipUi.png";
 import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/androidEquipUi.png";
+import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
 import { ItemSetEffect } from "./ItemSetEffect";
@@ -344,6 +345,7 @@ export const ItemEquipmentInformation = ({ EquipData }) => {
                             EquipData.getAndroidEquipment.android_preset_1
                           )
                         }
+                        onMouseLeave={handleMouseLeave}
                       />
                     </ADIcon>
                   ) : (
@@ -759,10 +761,7 @@ const InfoWrap = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
+  ${ContainerCss};
 
   height: ${(props) => {
     switch (props.$currentTab) {
