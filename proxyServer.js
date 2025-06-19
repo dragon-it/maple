@@ -260,9 +260,9 @@ app.get("/api/ranking/guild", async (req, res) => {
 // 딜레이를 위한 sleep 함수
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-app.get("/api/guild/members", async (req, res) => {
+app.post("/api/guild/members", async (req, res) => {
   try {
-    const { guildMembers } = req.query;
+    const { guildMembers } = req.body;
 
     if (!Array.isArray(guildMembers)) {
       return res.status(400).json({ error: "Invalid data format" });
