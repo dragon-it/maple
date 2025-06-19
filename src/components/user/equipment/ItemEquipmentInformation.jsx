@@ -108,7 +108,6 @@ const ItemIcon = styled.div`
 `;
 
 export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
-  console.log(BasicData);
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
   const [selectedPreset, setSelectedPreset] = useState(
@@ -268,474 +267,513 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   }, [currentTab, matchingCashPresetKey, matchingPresetKey]);
 
   return (
-    <Container>
-      <ItemInfoDetailWrap>
-        <InfoWrap $currentTab={currentTab}>
-          <Header>EQUIPMENT</Header>
-          <TabMenu>
-            <TabButton
-              $isSelected={currentTab === "장비"}
-              onClick={() => handleTabChange("장비")}
-            >
-              장비
-            </TabButton>
-            <TabButton
-              $isSelected={currentTab === "캐시"}
-              onClick={() => handleTabChange("캐시")}
-            >
-              캐시
-            </TabButton>
-            <TabButton
-              $isSelected={currentTab === "펫"}
-              onClick={() => handleTabChange("펫")}
-            >
-              펫
-            </TabButton>
-            <TabButton
-              $isSelected={currentTab === "AD"}
-              onClick={() => handleTabChange("AD")}
-            >
-              AD
-            </TabButton>
-          </TabMenu>
-          <UiBackgrnd>
-            {/* 장비탭 처리 */}
-            {currentTab === "장비" && (
-              <EquipWrap>
-                <BackgroundImageWrap $isSelected={currentTab} />
-                <CharacterImageWrap>
-                  <Bg src={characterBg} />
-                  <img
-                    src={
-                      BasicData?.getBasicInformation?.character_image
-                        ? `${BasicData.getBasicInformation.character_image}?width=131&height=130&y=130`
-                        : undefined
-                    }
-                    alt="character_image"
-                  />
-                  <span>{BasicData?.getBasicInformation?.character_name}</span>
-                </CharacterImageWrap>
-                <EquipItems>
-                  <BackgroundImage
-                    src={equipmentUi}
-                    $isSelected={currentTab}
-                    alt="ui"
-                  />
-                  {/* 프리셋 데이터가 없으면 item_equipment 출력 */}
-                  {(EquipData[selectedPreset] &&
-                  EquipData[selectedPreset].length > 0
-                    ? EquipData[selectedPreset]
-                    : EquipData.item_equipment
-                  )?.map((item, index) => (
-                    <ItemIcon
-                      key={item.item_equipment_slot}
-                      style={positions[item.item_equipment_slot]}
-                      $grade={item.potential_option_grade}
-                      $gradeColors={gradeColors}
-                      onClick={() => handleItemClick(item)}
-                      onMouseOver={() => handleItemHover(item)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <img src={item.item_icon} alt={`icon-${index}`} />
-                    </ItemIcon>
-                  ))}
-                  {EquipData.getAndroidEquipment.android_preset_1
-                    ?.android_icon ? (
-                    <ADIcon>
-                      <img
-                        src={
-                          EquipData.getAndroidEquipment.android_preset_1
-                            ?.android_icon
-                        }
-                        alt="ADicon"
-                        onMouseOver={() =>
-                          handleItemHover(
-                            EquipData.getAndroidEquipment.android_preset_1
-                          )
-                        }
-                        onClick={() =>
-                          handleItemClick(
-                            EquipData.getAndroidEquipment.android_preset_1
-                          )
-                        }
-                        onMouseLeave={handleMouseLeave}
-                      />
-                    </ADIcon>
-                  ) : (
-                    <div style={{ width: "42px", height: "42px" }} />
-                  )}
-                </EquipItems>
-                <PresetButtonWrap $isSelected={currentTab}>
-                  <PresetButtons>
-                    <PresetButton
-                      onClick={() => handlePresetChange("preset_1")}
-                      $isSelected={selectedPreset === "item_equipment_preset_1"}
-                    >
-                      <span>1</span>
-                    </PresetButton>
-                    <PresetButton
-                      onClick={() => handlePresetChange("preset_2")}
-                      $isSelected={selectedPreset === "item_equipment_preset_2"}
-                    >
-                      <span>2</span>
-                    </PresetButton>
-                    <PresetButton
-                      onClick={() => handlePresetChange("preset_3")}
-                      $isSelected={selectedPreset === "item_equipment_preset_3"}
-                    >
-                      <span>3</span>
-                    </PresetButton>
-                  </PresetButtons>
-                  {matchingPresetKey === selectedPreset && (
-                    <ApplyingPreset $isSelected={currentTab}>
-                      현재 적용중인 프리셋이에요!
-                    </ApplyingPreset>
-                  )}
-                </PresetButtonWrap>
-              </EquipWrap>
-            )}
-
-            {/* 캐시탭 처리 */}
-            {currentTab === "캐시" && (
-              <EquipWrap>
-                <BackgroundImageWrap />
-                <EquipItems>
-                  <BackgroundImage src={cashEquipUi} alt="ui" />
-                  {EquipData.getCashItemEquipment[selectedCashPreset]?.map(
-                    (item, index) => (
+    <>
+      <Container>
+        <ItemInfoDetailWrap>
+          <InfoWrap $currentTab={currentTab}>
+            <Header>EQUIPMENT</Header>
+            <TabMenu>
+              <TabButton
+                $isSelected={currentTab === "장비"}
+                onClick={() => handleTabChange("장비")}
+              >
+                장비
+              </TabButton>
+              <TabButton
+                $isSelected={currentTab === "캐시"}
+                onClick={() => handleTabChange("캐시")}
+              >
+                캐시
+              </TabButton>
+              <TabButton
+                $isSelected={currentTab === "펫"}
+                onClick={() => handleTabChange("펫")}
+              >
+                펫
+              </TabButton>
+              <TabButton
+                $isSelected={currentTab === "AD"}
+                onClick={() => handleTabChange("AD")}
+              >
+                AD
+              </TabButton>
+            </TabMenu>
+            <UiBackgrnd>
+              {/* 장비탭 처리 */}
+              {currentTab === "장비" && (
+                <EquipWrap>
+                  <BackgroundImageWrap $isSelected={currentTab} />
+                  <CharacterImageWrap>
+                    <Bg src={characterBg} />
+                    <img
+                      src={
+                        BasicData?.getBasicInformation?.character_image
+                          ? `${BasicData.getBasicInformation.character_image}?width=131&height=130&y=130`
+                          : undefined
+                      }
+                      alt="character_image"
+                    />
+                    <span>
+                      {BasicData?.getBasicInformation?.character_name}
+                    </span>
+                  </CharacterImageWrap>
+                  <EquipItems>
+                    <BackgroundImage
+                      src={equipmentUi}
+                      $isSelected={currentTab}
+                      alt="ui"
+                    />
+                    {/* 프리셋 데이터가 없으면 item_equipment 출력 */}
+                    {(EquipData[selectedPreset] &&
+                    EquipData[selectedPreset].length > 0
+                      ? EquipData[selectedPreset]
+                      : EquipData.item_equipment
+                    )?.map((item, index) => (
                       <ItemIcon
-                        key={item.cash_item_equipment_slot}
-                        style={cashPositions[item.cash_item_equipment_slot]}
-                        onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
-                        onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        <img src={item.cash_item_icon} alt={`icon-${index}`} />
-                      </ItemIcon>
-                    )
-                  )}
-                </EquipItems>
-                <PresetButtonWrap>
-                  <BaseButton
-                    onClick={() => handleCashItemBase()}
-                    $isSelected={
-                      selectedCashPreset === "cash_item_equipment_base"
-                    }
-                  >
-                    <span>BASE</span>
-                  </BaseButton>
-                  <PresetButtons>
-                    <PresetButton
-                      onClick={() => handleCashPresetChange("preset_1")}
-                      $isSelected={
-                        selectedCashPreset === "cash_item_equipment_preset_1"
-                      }
-                    >
-                      <span>프리셋1</span>
-                    </PresetButton>
-                    <PresetButton
-                      onClick={() => handleCashPresetChange("preset_2")}
-                      $isSelected={
-                        selectedCashPreset === "cash_item_equipment_preset_2"
-                      }
-                    >
-                      <span>프리셋2</span>
-                    </PresetButton>
-                    <PresetButton
-                      onClick={() => handleCashPresetChange("preset_3")}
-                      $isSelected={
-                        selectedCashPreset === "cash_item_equipment_preset_3"
-                      }
-                    >
-                      <span>프리셋3</span>
-                    </PresetButton>
-                  </PresetButtons>
-                  {matchingCashPresetKey === selectedCashPreset && (
-                    <ApplyingPreset>현재 적용중인 프리셋이에요!</ApplyingPreset>
-                  )}
-                </PresetButtonWrap>
-              </EquipWrap>
-            )}
-
-            {/* 펫탭 처리 */}
-            {currentTab === "펫" && (
-              <PetEquipWrap>
-                <PetBackgroundImageWrap />
-                <EquipItems>
-                  <PetBackgroundImage src={petEquipUi} alt="ui" />
-                  <PetIconsWrap>
-                    {EquipData.getPetEquipment.pet_1_appearance_icon && (
-                      <PetIcons>
-                        <PetAppearanceIcon>
-                          {EquipData.getPetEquipment.pet_1_appearance_icon ? (
-                            <img
-                              src={
-                                EquipData.getPetEquipment.pet_1_appearance_icon
-                              }
-                              alt="Icon"
-                              onMouseOver={() => handlePetAppearanceInfo(1)}
-                              onClick={() => handlePetAppearanceInfo(1)}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          ) : (
-                            <div style={{ width: "42px", height: "42px" }} />
-                          )}
-                        </PetAppearanceIcon>
-                        <PetEquipShapeIcon>
-                          {EquipData.getPetEquipment.pet_1_equipment
-                            .item_shape_icon ? (
-                            <img
-                              src={
-                                EquipData.getPetEquipment.pet_1_equipment
-                                  .item_shape_icon
-                              }
-                              alt="petEqipIcon"
-                              onMouseOver={() => handlePetEquipInfo(1)}
-                              onClick={() => handlePetEquipInfo(1)}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          ) : (
-                            <div style={{ width: "42px", height: "42px" }} />
-                          )}
-                        </PetEquipShapeIcon>
-                        <PetAutoSkillWrap>
-                          <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment?.pet_1_auto_skill
-                              ?.skill_1_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_1_auto_skill
-                                    .skill_1_icon
-                                }
-                                alt="petAutoSkill1"
-                                onMouseOver={() => handlePetFirstSkillInfo(1)}
-                                onClick={() => handlePetFirstSkillInfo(1)}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAutoSkillIcon>
-                          <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment?.pet_1_auto_skill
-                              ?.skill_2_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_1_auto_skill
-                                    .skill_2_icon
-                                }
-                                alt="petAutoSkill2"
-                                onMouseOver={() => handlePetSecondSkillInfo(1)}
-                                onClick={() => handlePetSecondSkillInfo(1)}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAutoSkillIcon>
-                        </PetAutoSkillWrap>
-                      </PetIcons>
-                    )}
-                    {EquipData.getPetEquipment.pet_2_appearance_icon && (
-                      <PetIcons>
-                        <PetAppearanceIcon>
-                          {EquipData.getPetEquipment.pet_2_appearance_icon ? (
-                            <img
-                              src={
-                                EquipData.getPetEquipment.pet_2_appearance_icon
-                              }
-                              alt="Icon"
-                              onMouseOver={() => handlePetAppearanceInfo(2)}
-                              onClick={() => handlePetAppearanceInfo(2)}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          ) : (
-                            <div style={{ width: "42px", height: "42px" }} />
-                          )}
-                        </PetAppearanceIcon>
-                        <PetEquipShapeIcon>
-                          {EquipData.getPetEquipment.pet_2_equipment
-                            .item_shape_icon ? (
-                            <img
-                              src={
-                                EquipData.getPetEquipment.pet_2_equipment
-                                  .item_shape_icon
-                              }
-                              alt="petEqipIcon"
-                              onMouseOver={() => handlePetEquipInfo(2)}
-                              onClick={() => handlePetEquipInfo(2)}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          ) : (
-                            <div style={{ width: "42px", height: "42px" }} />
-                          )}
-                        </PetEquipShapeIcon>
-                        <PetAutoSkillWrap>
-                          <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment?.pet_2_auto_skill
-                              ?.skill_1_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_2_auto_skill
-                                    .skill_1_icon
-                                }
-                                alt="petAutoSkill1"
-                                onMouseOver={() => handlePetFirstSkillInfo(2)}
-                                onClick={() => handlePetFirstSkillInfo(2)}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAutoSkillIcon>
-                          <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment?.pet_2_auto_skill
-                              ?.skill_2_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_2_auto_skill
-                                    .skill_2_icon
-                                }
-                                alt="petAutoSkill2"
-                                onMouseOver={() => handlePetSecondSkillInfo(2)}
-                                onClick={() => handlePetSecondSkillInfo(2)}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAutoSkillIcon>
-                        </PetAutoSkillWrap>
-                      </PetIcons>
-                    )}
-                    {EquipData.getPetEquipment.pet_3_appearance_icon && (
-                      <PetIcons>
-                        <PetAppearanceIcon>
-                          {EquipData.getPetEquipment.pet_3_appearance_icon ? (
-                            <img
-                              src={
-                                EquipData.getPetEquipment.pet_3_appearance_icon
-                              }
-                              alt="Icon"
-                              onMouseOver={() => handlePetAppearanceInfo(3)}
-                              onClick={() => handlePetAppearanceInfo(3)}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          ) : (
-                            <div style={{ width: "42px", height: "42px" }} />
-                          )}
-                        </PetAppearanceIcon>
-                        <PetEquipShapeIcon>
-                          {EquipData.getPetEquipment.pet_3_equipment
-                            .item_shape_icon ? (
-                            <img
-                              src={
-                                EquipData.getPetEquipment.pet_3_equipment
-                                  .item_shape_icon
-                              }
-                              alt="petEqipIcon"
-                              onMouseOver={() => handlePetEquipInfo(3)}
-                              onClick={() => handlePetEquipInfo(3)}
-                              onMouseLeave={handleMouseLeave}
-                            />
-                          ) : (
-                            <div style={{ width: "42px", height: "42px" }} />
-                          )}
-                        </PetEquipShapeIcon>
-                        <PetAutoSkillWrap>
-                          <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment?.pet_3_auto_skill
-                              ?.skill_1_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_3_auto_skill
-                                    .skill_1_icon
-                                }
-                                alt="petAutoSkill1"
-                                onMouseOver={() => handlePetFirstSkillInfo(3)}
-                                onClick={() => handlePetFirstSkillInfo(3)}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAutoSkillIcon>
-                          <PetAutoSkillIcon>
-                            {EquipData.getPetEquipment?.pet_3_auto_skill
-                              ?.skill_2_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_3_auto_skill
-                                    .skill_2_icon
-                                }
-                                alt="petAutoSkill2"
-                                onMouseOver={() => handlePetSecondSkillInfo(3)}
-                                onClick={() => handlePetSecondSkillInfo(3)}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAutoSkillIcon>
-                        </PetAutoSkillWrap>
-                      </PetIcons>
-                    )}
-                  </PetIconsWrap>
-                </EquipItems>
-              </PetEquipWrap>
-            )}
-
-            {/* 안드로이드탭 처리 */}
-            {currentTab === "AD" && (
-              <EquipWrap>
-                <BackgroundImageWrap />
-                <EquipItems>
-                  <BackgroundImage src={androidEquipUi} alt="ui" />
-                  {EquipData.getAndroidEquipment.android_cash_item_equipment?.map(
-                    (item, index) => (
-                      <ItemIcon
-                        key={item.cash_item_equipment_slot}
-                        style={ADPositions[item.cash_item_equipment_slot]}
+                        key={item.item_equipment_slot}
+                        style={positions[item.item_equipment_slot]}
+                        $grade={item.potential_option_grade}
+                        $gradeColors={gradeColors}
                         onClick={() => handleItemClick(item)}
                         onMouseOver={() => handleItemHover(item)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        <img src={item.cash_item_icon} alt={`icon-${index}`} />
+                        <img src={item.item_icon} alt={`icon-${index}`} />
                       </ItemIcon>
-                    )
-                  )}
-                </EquipItems>
-              </EquipWrap>
-            )}
-          </UiBackgrnd>
-        </InfoWrap>
+                    ))}
+                    {EquipData.getAndroidEquipment.android_preset_1
+                      ?.android_icon ? (
+                      <ADIcon>
+                        <img
+                          src={
+                            EquipData.getAndroidEquipment.android_preset_1
+                              ?.android_icon
+                          }
+                          alt="ADicon"
+                          onMouseOver={() =>
+                            handleItemHover(
+                              EquipData.getAndroidEquipment.android_preset_1
+                            )
+                          }
+                          onClick={() =>
+                            handleItemClick(
+                              EquipData.getAndroidEquipment.android_preset_1
+                            )
+                          }
+                          onMouseLeave={handleMouseLeave}
+                        />
+                      </ADIcon>
+                    ) : (
+                      <div style={{ width: "42px", height: "42px" }} />
+                    )}
+                  </EquipItems>
+                  <PresetButtonWrap $isSelected={currentTab}>
+                    <PresetButtons>
+                      <PresetButton
+                        onClick={() => handlePresetChange("preset_1")}
+                        $isSelected={
+                          selectedPreset === "item_equipment_preset_1"
+                        }
+                      >
+                        <span>1</span>
+                      </PresetButton>
+                      <PresetButton
+                        onClick={() => handlePresetChange("preset_2")}
+                        $isSelected={
+                          selectedPreset === "item_equipment_preset_2"
+                        }
+                      >
+                        <span>2</span>
+                      </PresetButton>
+                      <PresetButton
+                        onClick={() => handlePresetChange("preset_3")}
+                        $isSelected={
+                          selectedPreset === "item_equipment_preset_3"
+                        }
+                      >
+                        <span>3</span>
+                      </PresetButton>
+                    </PresetButtons>
+                    {matchingPresetKey === selectedPreset && (
+                      <ApplyingPreset $isSelected={currentTab}>
+                        현재 적용중인 프리셋이에요!
+                      </ApplyingPreset>
+                    )}
+                  </PresetButtonWrap>
+                </EquipWrap>
+              )}
 
-        <DetailWrap>
-          {currentTab === "캐시" ? (
-            <CashItemDetail item={selectedItem} clicked={clicked} />
-          ) : currentTab === "장비" ? (
-            <ItemDetail
-              item={selectedItem}
-              clicked={clicked}
-              $gradeColors={gradeColors}
-              closeClick={isCloseClick}
-              onClose={handleCloseClick}
-            />
-          ) : currentTab === "펫" ? (
-            <PetItemDetail
-              item={selectedItem}
-              clicked={clicked}
-              onClose={handleCloseClick}
-              closeClick={isCloseClick}
-            />
-          ) : (
-            <AndroidItemDetail item={selectedItem} clicked={clicked} />
-          )}
-        </DetailWrap>
-      </ItemInfoDetailWrap>
-      <ItemSetEffect setinfo={EquipData.getSetEffect} />
+              {/* 캐시탭 처리 */}
+              {currentTab === "캐시" && (
+                <EquipWrap>
+                  <BackgroundImageWrap />
+                  <EquipItems>
+                    <BackgroundImage src={cashEquipUi} alt="ui" />
+                    {EquipData.getCashItemEquipment[selectedCashPreset]?.map(
+                      (item, index) => (
+                        <ItemIcon
+                          key={item.cash_item_equipment_slot}
+                          style={cashPositions[item.cash_item_equipment_slot]}
+                          onClick={() => handleItemClick(item)} // 클릭 시 handleItemClick 함수 호출
+                          onMouseOver={() => handleItemHover(item)} // 마우스 오버 시 handleItemHover 함수 호출
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <img
+                            src={item.cash_item_icon}
+                            alt={`icon-${index}`}
+                          />
+                        </ItemIcon>
+                      )
+                    )}
+                  </EquipItems>
+                  <PresetButtonWrap>
+                    <BaseButton
+                      onClick={() => handleCashItemBase()}
+                      $isSelected={
+                        selectedCashPreset === "cash_item_equipment_base"
+                      }
+                    >
+                      <span>BASE</span>
+                    </BaseButton>
+                    <PresetButtons>
+                      <PresetButton
+                        onClick={() => handleCashPresetChange("preset_1")}
+                        $isSelected={
+                          selectedCashPreset === "cash_item_equipment_preset_1"
+                        }
+                      >
+                        <span>프리셋1</span>
+                      </PresetButton>
+                      <PresetButton
+                        onClick={() => handleCashPresetChange("preset_2")}
+                        $isSelected={
+                          selectedCashPreset === "cash_item_equipment_preset_2"
+                        }
+                      >
+                        <span>프리셋2</span>
+                      </PresetButton>
+                      <PresetButton
+                        onClick={() => handleCashPresetChange("preset_3")}
+                        $isSelected={
+                          selectedCashPreset === "cash_item_equipment_preset_3"
+                        }
+                      >
+                        <span>프리셋3</span>
+                      </PresetButton>
+                    </PresetButtons>
+                    {matchingCashPresetKey === selectedCashPreset && (
+                      <ApplyingPreset>
+                        현재 적용중인 프리셋이에요!
+                      </ApplyingPreset>
+                    )}
+                  </PresetButtonWrap>
+                </EquipWrap>
+              )}
+
+              {/* 펫탭 처리 */}
+              {currentTab === "펫" && (
+                <PetEquipWrap>
+                  <PetBackgroundImageWrap />
+                  <EquipItems>
+                    <PetBackgroundImage src={petEquipUi} alt="ui" />
+                    <PetIconsWrap>
+                      {EquipData.getPetEquipment.pet_1_appearance_icon && (
+                        <PetIcons>
+                          <PetAppearanceIcon>
+                            {EquipData.getPetEquipment.pet_1_appearance_icon ? (
+                              <img
+                                src={
+                                  EquipData.getPetEquipment
+                                    .pet_1_appearance_icon
+                                }
+                                alt="Icon"
+                                onMouseOver={() => handlePetAppearanceInfo(1)}
+                                onClick={() => handlePetAppearanceInfo(1)}
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            ) : (
+                              <div style={{ width: "42px", height: "42px" }} />
+                            )}
+                          </PetAppearanceIcon>
+                          <PetEquipShapeIcon>
+                            {EquipData.getPetEquipment.pet_1_equipment
+                              .item_shape_icon ? (
+                              <img
+                                src={
+                                  EquipData.getPetEquipment.pet_1_equipment
+                                    .item_shape_icon
+                                }
+                                alt="petEqipIcon"
+                                onMouseOver={() => handlePetEquipInfo(1)}
+                                onClick={() => handlePetEquipInfo(1)}
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            ) : (
+                              <div style={{ width: "42px", height: "42px" }} />
+                            )}
+                          </PetEquipShapeIcon>
+                          <PetAutoSkillWrap>
+                            <PetAutoSkillIcon>
+                              {EquipData.getPetEquipment?.pet_1_auto_skill
+                                ?.skill_1_icon ? (
+                                <img
+                                  src={
+                                    EquipData.getPetEquipment.pet_1_auto_skill
+                                      .skill_1_icon
+                                  }
+                                  alt="petAutoSkill1"
+                                  onMouseOver={() => handlePetFirstSkillInfo(1)}
+                                  onClick={() => handlePetFirstSkillInfo(1)}
+                                  onMouseLeave={handleMouseLeave}
+                                />
+                              ) : (
+                                <div
+                                  style={{ width: "42px", height: "42px" }}
+                                />
+                              )}
+                            </PetAutoSkillIcon>
+                            <PetAutoSkillIcon>
+                              {EquipData.getPetEquipment?.pet_1_auto_skill
+                                ?.skill_2_icon ? (
+                                <img
+                                  src={
+                                    EquipData.getPetEquipment.pet_1_auto_skill
+                                      .skill_2_icon
+                                  }
+                                  alt="petAutoSkill2"
+                                  onMouseOver={() =>
+                                    handlePetSecondSkillInfo(1)
+                                  }
+                                  onClick={() => handlePetSecondSkillInfo(1)}
+                                  onMouseLeave={handleMouseLeave}
+                                />
+                              ) : (
+                                <div
+                                  style={{ width: "42px", height: "42px" }}
+                                />
+                              )}
+                            </PetAutoSkillIcon>
+                          </PetAutoSkillWrap>
+                        </PetIcons>
+                      )}
+                      {EquipData.getPetEquipment.pet_2_appearance_icon && (
+                        <PetIcons>
+                          <PetAppearanceIcon>
+                            {EquipData.getPetEquipment.pet_2_appearance_icon ? (
+                              <img
+                                src={
+                                  EquipData.getPetEquipment
+                                    .pet_2_appearance_icon
+                                }
+                                alt="Icon"
+                                onMouseOver={() => handlePetAppearanceInfo(2)}
+                                onClick={() => handlePetAppearanceInfo(2)}
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            ) : (
+                              <div style={{ width: "42px", height: "42px" }} />
+                            )}
+                          </PetAppearanceIcon>
+                          <PetEquipShapeIcon>
+                            {EquipData.getPetEquipment.pet_2_equipment
+                              .item_shape_icon ? (
+                              <img
+                                src={
+                                  EquipData.getPetEquipment.pet_2_equipment
+                                    .item_shape_icon
+                                }
+                                alt="petEqipIcon"
+                                onMouseOver={() => handlePetEquipInfo(2)}
+                                onClick={() => handlePetEquipInfo(2)}
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            ) : (
+                              <div style={{ width: "42px", height: "42px" }} />
+                            )}
+                          </PetEquipShapeIcon>
+                          <PetAutoSkillWrap>
+                            <PetAutoSkillIcon>
+                              {EquipData.getPetEquipment?.pet_2_auto_skill
+                                ?.skill_1_icon ? (
+                                <img
+                                  src={
+                                    EquipData.getPetEquipment.pet_2_auto_skill
+                                      .skill_1_icon
+                                  }
+                                  alt="petAutoSkill1"
+                                  onMouseOver={() => handlePetFirstSkillInfo(2)}
+                                  onClick={() => handlePetFirstSkillInfo(2)}
+                                  onMouseLeave={handleMouseLeave}
+                                />
+                              ) : (
+                                <div
+                                  style={{ width: "42px", height: "42px" }}
+                                />
+                              )}
+                            </PetAutoSkillIcon>
+                            <PetAutoSkillIcon>
+                              {EquipData.getPetEquipment?.pet_2_auto_skill
+                                ?.skill_2_icon ? (
+                                <img
+                                  src={
+                                    EquipData.getPetEquipment.pet_2_auto_skill
+                                      .skill_2_icon
+                                  }
+                                  alt="petAutoSkill2"
+                                  onMouseOver={() =>
+                                    handlePetSecondSkillInfo(2)
+                                  }
+                                  onClick={() => handlePetSecondSkillInfo(2)}
+                                  onMouseLeave={handleMouseLeave}
+                                />
+                              ) : (
+                                <div
+                                  style={{ width: "42px", height: "42px" }}
+                                />
+                              )}
+                            </PetAutoSkillIcon>
+                          </PetAutoSkillWrap>
+                        </PetIcons>
+                      )}
+                      {EquipData.getPetEquipment.pet_3_appearance_icon && (
+                        <PetIcons>
+                          <PetAppearanceIcon>
+                            {EquipData.getPetEquipment.pet_3_appearance_icon ? (
+                              <img
+                                src={
+                                  EquipData.getPetEquipment
+                                    .pet_3_appearance_icon
+                                }
+                                alt="Icon"
+                                onMouseOver={() => handlePetAppearanceInfo(3)}
+                                onClick={() => handlePetAppearanceInfo(3)}
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            ) : (
+                              <div style={{ width: "42px", height: "42px" }} />
+                            )}
+                          </PetAppearanceIcon>
+                          <PetEquipShapeIcon>
+                            {EquipData.getPetEquipment.pet_3_equipment
+                              .item_shape_icon ? (
+                              <img
+                                src={
+                                  EquipData.getPetEquipment.pet_3_equipment
+                                    .item_shape_icon
+                                }
+                                alt="petEqipIcon"
+                                onMouseOver={() => handlePetEquipInfo(3)}
+                                onClick={() => handlePetEquipInfo(3)}
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            ) : (
+                              <div style={{ width: "42px", height: "42px" }} />
+                            )}
+                          </PetEquipShapeIcon>
+                          <PetAutoSkillWrap>
+                            <PetAutoSkillIcon>
+                              {EquipData.getPetEquipment?.pet_3_auto_skill
+                                ?.skill_1_icon ? (
+                                <img
+                                  src={
+                                    EquipData.getPetEquipment.pet_3_auto_skill
+                                      .skill_1_icon
+                                  }
+                                  alt="petAutoSkill1"
+                                  onMouseOver={() => handlePetFirstSkillInfo(3)}
+                                  onClick={() => handlePetFirstSkillInfo(3)}
+                                  onMouseLeave={handleMouseLeave}
+                                />
+                              ) : (
+                                <div
+                                  style={{ width: "42px", height: "42px" }}
+                                />
+                              )}
+                            </PetAutoSkillIcon>
+                            <PetAutoSkillIcon>
+                              {EquipData.getPetEquipment?.pet_3_auto_skill
+                                ?.skill_2_icon ? (
+                                <img
+                                  src={
+                                    EquipData.getPetEquipment.pet_3_auto_skill
+                                      .skill_2_icon
+                                  }
+                                  alt="petAutoSkill2"
+                                  onMouseOver={() =>
+                                    handlePetSecondSkillInfo(3)
+                                  }
+                                  onClick={() => handlePetSecondSkillInfo(3)}
+                                  onMouseLeave={handleMouseLeave}
+                                />
+                              ) : (
+                                <div
+                                  style={{ width: "42px", height: "42px" }}
+                                />
+                              )}
+                            </PetAutoSkillIcon>
+                          </PetAutoSkillWrap>
+                        </PetIcons>
+                      )}
+                    </PetIconsWrap>
+                  </EquipItems>
+                </PetEquipWrap>
+              )}
+
+              {/* 안드로이드탭 처리 */}
+              {currentTab === "AD" && (
+                <EquipWrap>
+                  <BackgroundImageWrap />
+                  <EquipItems>
+                    <BackgroundImage src={androidEquipUi} alt="ui" />
+                    {EquipData.getAndroidEquipment.android_cash_item_equipment?.map(
+                      (item, index) => (
+                        <ItemIcon
+                          key={item.cash_item_equipment_slot}
+                          style={ADPositions[item.cash_item_equipment_slot]}
+                          onClick={() => handleItemClick(item)}
+                          onMouseOver={() => handleItemHover(item)}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <img
+                            src={item.cash_item_icon}
+                            alt={`icon-${index}`}
+                          />
+                        </ItemIcon>
+                      )
+                    )}
+                  </EquipItems>
+                </EquipWrap>
+              )}
+            </UiBackgrnd>
+          </InfoWrap>
+
+          <DetailWrap>
+            {currentTab === "캐시" ? (
+              <CashItemDetail item={selectedItem} clicked={clicked} />
+            ) : currentTab === "장비" ? (
+              <ItemDetail
+                item={selectedItem}
+                clicked={clicked}
+                $gradeColors={gradeColors}
+                closeClick={isCloseClick}
+                onClose={handleCloseClick}
+              />
+            ) : currentTab === "펫" ? (
+              <PetItemDetail
+                item={selectedItem}
+                clicked={clicked}
+                onClose={handleCloseClick}
+                closeClick={isCloseClick}
+              />
+            ) : (
+              <AndroidItemDetail item={selectedItem} clicked={clicked} />
+            )}
+          </DetailWrap>
+        </ItemInfoDetailWrap>
+        <ItemSetEffect setinfo={EquipData.getSetEffect} />
+      </Container>
       <SymbolUi symbolData={EquipData.getSymbol} />
-    </Container>
+    </>
   );
 };
 
@@ -744,14 +782,14 @@ const Container = styled.div`
   white-space: nowrap;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 5px;
   border-radius: 5px;
-  padding: 5px;
   width: 100%;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 652px) {
     flex-direction: column;
-    padding: 0;
+    align-items: center;
   }
 `;
 
@@ -796,6 +834,7 @@ const ItemInfoDetailWrap = styled.div`
   display: flex;
   flex-direction: row;
   gap: 3px;
+  height: fit-content;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
