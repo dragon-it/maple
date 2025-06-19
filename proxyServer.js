@@ -673,7 +673,8 @@ if (process.env.NODE_ENV === "development") {
   console.log(`📦 Production mode: Serving from ${BUILD_DIR}`);
 
   app.use(express.static(path.join(__dirname, BUILD_DIR)));
-  app.get("*", (req, res) => {
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api/")) return next();
     res.sendFile(path.resolve(__dirname, BUILD_DIR, "index.html"));
   });
 }
