@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Extreme_Elixir from "../../assets/pages/expSimulator/Elixir/Extreme_Elixir.png";
+import Union_Elixir from "../../assets/pages/expSimulator/Elixir/Union_Elixir.png";
 import Growth_Elixir1 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir1.png";
 import Growth_Elixir2 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir2.png";
 import Growth_Elixir3 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir3.png";
@@ -17,6 +18,7 @@ export const ExpInput = () => {
   const [currentExp, setCurrentExp] = useState(0);
   const [itemCounts, setItemCounts] = useState({
     "익스트림 성장의 비약": 0,
+    "궁극의 유니온 성장의 비약": 0,
     "성장의 비약 (200~209)": 0,
     "성장의 비약 (200~219)": 0,
     "성장의 비약 (200~229)": 0,
@@ -40,6 +42,7 @@ export const ExpInput = () => {
     setCurrentExp(0);
     setItemCounts({
       "익스트림 성장의 비약": 0,
+      "궁극의 유니온 성장의 비약": 0,
       "성장의 비약 (200~209)": 0,
       "성장의 비약 (200~219)": 0,
       "성장의 비약 (200~229)": 0,
@@ -86,8 +89,10 @@ export const ExpInput = () => {
           if (finalLevel < 260) return; // 260레벨 이상만 사용 가능
         }
 
-        // ✅ 경험치 증가량 계산
-        if (
+        // 경험치 증가량 계산
+        if (item === "궁극의 유니온 성장의 비약") {
+          expIncreaseAmount = 11462335230; // 고정 경험치
+        } else if (
           item === "EXP 교환권 (200~260)" ||
           item === "상급 EXP 교환권 (260~)"
         ) {
@@ -138,6 +143,7 @@ export const ExpInput = () => {
 
   const itemImages = {
     "익스트림 성장의 비약": Extreme_Elixir,
+    "궁극의 유니온 성장의 비약": Union_Elixir,
     "성장의 비약 (200~209)": Growth_Elixir1,
     "성장의 비약 (200~219)": Growth_Elixir2,
     "성장의 비약 (200~229)": Growth_Elixir3,
