@@ -13,6 +13,7 @@ import { CashItemDetail } from "./CashItemDetail";
 import { PetItemDetail } from "./PetItemDetail";
 import { AndroidItemDetail } from "./AndroidItemDetail";
 import { SymbolUi } from "./SymbolUi";
+import { SymbolCalculator } from "./SymbolCalculator";
 
 const positions = {
   모자: { top: "39px", right: "60px" },
@@ -773,6 +774,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
         <ItemSetEffect setinfo={EquipData.getSetEffect} />
       </Container>
       <SymbolUi symbolData={EquipData.getSymbol} />
+      <SymbolCalculator symbolData={EquipData.getSymbol} />
     </>
   );
 };

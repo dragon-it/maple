@@ -276,7 +276,6 @@ const Wrap = styled.div`
   justify-content: center;
   gap: 5px;
   color: ${colors.main.white0};
-  margin-top: 5px;
 
   @media screen and (max-width: 652px) {
     flex-direction: column;
