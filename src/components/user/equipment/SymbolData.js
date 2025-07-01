@@ -69,3 +69,9 @@ const grandAuthenticSymbolsCost = {
     2068300000, 2576000000, 3126900000, 3718000000,
   ],
 };
+
+export default {
+  arcaneSymbolsCost,
+  authenticSymbolsCost,
+  grandAuthenticSymbolsCost,
+};
