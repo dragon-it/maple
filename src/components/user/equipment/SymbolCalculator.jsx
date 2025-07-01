@@ -26,7 +26,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   console.log("어센틱 포스:", authenticForce);
 
   const getSymbolCost = (name, level, arcaneSymbolsCost) => {
-    const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, ""); // 예: "아케인심볼 : 모라스" → "모라스"
+    const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
     console.log("region:", region, "level:", level);
     const costList = arcaneSymbolsCost[region];
     console.log(costList);
@@ -41,16 +41,6 @@ export const SymbolCalculator = ({ symbolData }) => {
     );
   }, 0);
   console.log("총 소비 메소:", totalArcaneCost.toLocaleString());
-
-  const totalAuthenticCost = symbols.slice(6).reduce((sum, s) => {
-    return (
-      sum +
-      getSymbolCost(s.symbol_name, s.symbol_level, {
-        ...authenticSymbolsCost,
-        ...grandAuthenticSymbolsCost,
-      })
-    );
-  }, 0);
 
   const renderGroup = (group) =>
     group.map(
