@@ -21,26 +21,55 @@ export const SymbolCalculator = ({ symbolData }) => {
   console.log("아케인 포스:", arcaneForce);
 
   const authenticForce = symbols
-    .slice(6)
+    .slice(6, 12)
+    .reduce((sum, s) => sum + Number(s.symbol_force), 0);
+  console.log("어센틱 포스:", authenticForce);
+
+  const grandAuthenticForce = symbols
+    .slice(12)
     .reduce((sum, s) => sum + Number(s.symbol_force), 0);
   console.log("어센틱 포스:", authenticForce);
 
   const getSymbolCost = (name, level, arcaneSymbolsCost) => {
     const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
-    console.log("region:", region, "level:", level);
     const costList = arcaneSymbolsCost[region];
-    console.log(costList);
 
     if (!costList) return 0;
     return costList.slice(0, level).reduce((acc, v) => acc + v, 0);
   };
 
-  const totalArcaneCost = symbols.slice(0, 6).reduce((sum, s) => {
-    return (
-      sum + getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost)
+  const totalArcaneCost = symbols
+    .slice(0, 6)
+    .reduce(
+      (sum, s) =>
+        sum + getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
+      0
     );
-  }, 0);
-  console.log("총 소비 메소:", totalArcaneCost.toLocaleString());
+
+  const totalAuthenticCost = symbols
+    .slice(6, 12)
+    .reduce(
+      (sum, s) =>
+        sum +
+        getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
+      0
+    );
+
+  const totalGrandCost = symbols
+    .slice(12)
+    .reduce(
+      (sum, s) =>
+        sum +
+        getSymbolCost(s.symbol_name, s.symbol_level, grandAuthenticSymbolsCost),
+      0
+    );
+
+  const toEokMan = (v) =>
+    v >= 100000000
+      ? `${Math.floor(v / 100000000)}억 ${Math.floor(
+          (v % 100000000) / 10000
+        )}만`
+      : `${Math.floor(v / 10000)}만`;
 
   const renderGroup = (group) =>
     group.map(
@@ -61,22 +90,38 @@ export const SymbolCalculator = ({ symbolData }) => {
       <HeaderName>심볼 계산기</HeaderName>
       {group1.length > 0 && (
         <GroupWrap>
-          <SectionTitle>아케인 심볼</SectionTitle>
-          <>{renderGroup(group1)}</>
+          <ResultWrap>
+            <SectionTitle>아케인 심볼</SectionTitle>
+            <p>아케인 포스 : {arcaneForce}</p>
+            <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
+          </ResultWrap>
+          <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
         </GroupWrap>
       )}
       {group2.length > 0 && (
         <GroupWrap>
-          <SectionTitle>어센틱 심볼</SectionTitle>
-          <>{renderGroup(group2)}</>
+          <ResultWrap>
+            <SectionTitle>어센틱 심볼</SectionTitle>
+            <p>어센틱 포스 : {authenticForce}</p>
+            <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
+          </ResultWrap>
+          <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
         </GroupWrap>
       )}
       {group3.length > 0 && (
         <GroupWrap>
-          <SectionTitle>그랜드 어센틱 심볼</SectionTitle>
-          <>{renderGroup(group3)}</>
+          <ResultWrap>
+            <SectionTitle>그랜드 어센틱 심볼</SectionTitle>
+            <p>어센틱 포스 : {grandAuthenticForce}</p>
+            <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p>
+          </ResultWrap>
+          <SymbolIconWrap>{renderGroup(group3)}</SymbolIconWrap>
         </GroupWrap>
       )}
+      <>
+        총 소비 메소 :{" "}
+        {toEokMan(totalArcaneCost + totalAuthenticCost + totalGrandCost)} 메소
+      </>
     </Container>
   );
 };
@@ -97,10 +142,18 @@ const GroupWrap = styled.div`
 `;
 
 const SectionTitle = styled.h3`
-  margin-top: 20px;
-  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
   color: #ccc;
   font-size: 18px;
+`;
+
+const ResultWrap = styled.div``;
+
+const SymbolIconWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 `;
 
 const SymbolCard = styled.div`
