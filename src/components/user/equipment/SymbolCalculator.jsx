@@ -77,7 +77,10 @@ export const SymbolCalculator = ({ symbolData }) => {
         <SymbolCard key={symbol_name + index}>
           <Icon src={symbol_icon} alt={symbol_name} />
           <Name>
-            {symbol_name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "")}
+            {symbol_name.replace(
+              /(어센틱심볼 : |아케인심볼 : |그랜드 |아일랜드 )/g,
+              ""
+            )}
           </Name>
           <Level>레벨: {symbol_level}</Level>
           <Force>포스: {symbol_force}</Force>
@@ -89,24 +92,24 @@ export const SymbolCalculator = ({ symbolData }) => {
     <Container>
       <HeaderName>심볼 계산기</HeaderName>
       {group1.length > 0 && (
-        <GroupWrap>
+        <ArcaneGroupWrap>
           <ResultWrap>
             <SectionTitle>아케인 심볼</SectionTitle>
             <p>아케인 포스 : {arcaneForce}</p>
             <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
           </ResultWrap>
           <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
-        </GroupWrap>
+        </ArcaneGroupWrap>
       )}
       {group2.length > 0 && (
-        <GroupWrap>
+        <AuthenticGroupWrap>
           <ResultWrap>
             <SectionTitle>어센틱 심볼</SectionTitle>
             <p>어센틱 포스 : {authenticForce}</p>
             <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
           </ResultWrap>
           <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
-        </GroupWrap>
+        </AuthenticGroupWrap>
       )}
       {group3.length > 0 && (
         <GroupWrap>
@@ -135,32 +138,51 @@ const Container = styled.div`
 
 const HeaderName = styled.h2``;
 
-const GroupWrap = styled.div`
+const ArcaneGroupWrap = styled.div`
+  background: linear-gradient(180deg, #2a2c4b 0%, #3d4172 100%);
+  border-radius: 12px;
+  padding: 16px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 12px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+`;
+
+const AuthenticGroupWrap = styled(ArcaneGroupWrap)`
+  background: linear-gradient(180deg, #2e4d72 0%, #45699c 100%);
+`;
+
+const GroupWrap = styled(ArcaneGroupWrap)`
+  background: linear-gradient(180deg, #4a3c58 0%, #6a5174 100%);
+`;
+
+const ResultWrap = styled.div`
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #fff;
+  font-weight: bold;
+  line-height: 1.4;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
 `;
 
 const SectionTitle = styled.h3`
-  display: flex;
-  flex-direction: column;
-  color: #ccc;
-  font-size: 18px;
+  font-size: 20px;
+  color: #ffffff;
+  margin-bottom: 8px;
 `;
-
-const ResultWrap = styled.div``;
 
 const SymbolIconWrap = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 5px;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
 
 const SymbolCard = styled.div`
   background-color: #222;
   border-radius: 8px;
   padding: 2px;
-  width: 90px;
+  width: 85px;
   color: #fff;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
@@ -169,7 +191,6 @@ const SymbolCard = styled.div`
 const Icon = styled.img`
   width: 40px;
   height: 40px;
-  margin-bottom: 8px;
 `;
 
 const Name = styled.div`
