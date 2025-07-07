@@ -88,6 +88,34 @@ export const SymbolCalculator = ({ symbolData }) => {
       )
     );
 
+  const getNextCost = (name, level, costData) => {
+    const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
+    const costList = costData[region];
+    if (!costList || level >= costList.length - 1) return Infinity;
+    return costList[level];
+  };
+
+  const upgradeRecommendations = symbols
+    .map((s) => {
+      let costTable;
+      if (s.symbol_name.includes("아케인")) {
+        costTable = arcaneSymbolsCost;
+      } else if (s.symbol_name.includes("어센틱")) {
+        costTable = authenticSymbolsCost;
+      } else if (s.symbol_name.includes("그랜드")) {
+        costTable = grandAuthenticSymbolsCost;
+      }
+
+      const nextCost = getNextCost(s.symbol_name, s.symbol_level, costTable);
+
+      return {
+        ...s,
+        nextCost,
+      };
+    })
+    .filter((s) => s.nextCost !== Infinity) // 만렙 제외
+    .sort((a, b) => a.nextCost - b.nextCost); // 비용 오름차순
+
   return (
     <Container>
       <HeaderName>심볼 계산기</HeaderName>
@@ -125,6 +153,21 @@ export const SymbolCalculator = ({ symbolData }) => {
         총 소비 메소 :{" "}
         {toEokMan(totalArcaneCost + totalAuthenticCost + totalGrandCost)} 메소
       </>
+      {upgradeRecommendations.length > 0 && (
+        <ResultWrap>
+          <SectionTitle>강화 추천 순위</SectionTitle>
+          {upgradeRecommendations.slice(0, 10).map((s, i) => (
+            <div key={s.symbol_name + i}>
+              {i + 1}.{" "}
+              {s.symbol_name.replace(
+                /(어센틱심볼 : |아케인심볼 : |그랜드 )/g,
+                ""
+              )}{" "}
+              → 강화 비용: {toEokMan(s.nextCost)} 메소
+            </div>
+          ))}
+        </ResultWrap>
+      )}
     </Container>
   );
 };
