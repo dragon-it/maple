@@ -1,6 +1,7 @@
 import React from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
+import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
 
 export const SymbolCalculator = ({ symbolData }) => {
   const symbols = symbolData.symbol || [];
@@ -177,6 +178,8 @@ const Container = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   gap: 12px;
+  ${ContainerCss};
+  padding: 10px;
 `;
 
 const HeaderName = styled.h2``;
@@ -188,6 +191,7 @@ const ArcaneGroupWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border: 1px solid #4f606b;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
 `;
 
@@ -219,6 +223,7 @@ const SymbolIconWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  justify-content: center;
 `;
 
 const SymbolCard = styled.div`
