@@ -122,12 +122,25 @@ export const SymbolCalculator = ({ symbolData }) => {
       costTable = grandAuthenticSymbolsCost;
     }
 
-    return getUpgradeSteps(s.symbol_name, s.symbol_level, costTable);
+    return getUpgradeSteps(s.symbol_name, s.symbol_level, costTable).map(
+      (step) => ({
+        ...step,
+        symbol_icon: s.symbol_icon,
+      })
+    );
   });
 
   const sortedUpgradeSteps = allUpgradeSteps
     .filter((step) => step.cost !== Infinity)
     .sort((a, b) => a.cost - b.cost);
+
+  // 심볼 이름에서 불필요한 부분 제거
+  const getSymbolShortName = (name) =>
+    name
+      .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "")
+      .replace("소멸의 ", "")
+      .replace("아일랜드", "")
+      .trim();
 
   return (
     <Container>
@@ -168,16 +181,18 @@ export const SymbolCalculator = ({ symbolData }) => {
       </>
       <ResultWrap>
         <SectionTitle>강화 추천</SectionTitle>
-        {sortedUpgradeSteps.slice(0, 10).map((step, i) => (
-          <div key={`${step.symbol_name}-${step.from}-${i}`}>
-            {i + 1}.{" "}
-            {step.symbol_name.replace(
-              /(어센틱심볼 : |아케인심볼 : |그랜드 )/g,
-              ""
-            )}{" "}
-            {step.from} ➝ {step.to}, 강화 비용: {toEokMan(step.cost)} 메소
-          </div>
-        ))}
+        <CardWrap>
+          {sortedUpgradeSteps.slice(0, 10).map((step, i) => (
+            <SymbolCard key={`${step.symbol_name}-${step.from}-${i}`}>
+              <Icon src={step.symbol_icon} alt={step.symbol_name} />
+              <Name>{getSymbolShortName(step.symbol_name)}</Name>
+              <Level>
+                {step.from} → {step.to}
+              </Level>
+              <Force>{toEokMan(step.cost)} 메소</Force>
+            </SymbolCard>
+          ))}
+        </CardWrap>
       </ResultWrap>
     </Container>
   );
@@ -185,7 +200,6 @@ export const SymbolCalculator = ({ symbolData }) => {
 
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   gap: 12px;
   ${ContainerCss};
@@ -214,6 +228,8 @@ const GroupWrap = styled(ArcaneGroupWrap)`
 `;
 
 const ResultWrap = styled.div`
+  display: flex;
+  flex-direction: column;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 12px 16px;
@@ -240,7 +256,7 @@ const SymbolCard = styled.div`
   background-color: #222;
   border-radius: 8px;
   padding: 2px;
-  width: 85px;
+  flex: 1;
   color: #fff;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
@@ -257,9 +273,14 @@ const Name = styled.div`
 `;
 
 const Level = styled.div`
-  font-size: 14px;
+  font-size: 12px;
 `;
 
-const Force = styled.div`
-  font-size: 14px;
+const Force = styled.p`
+  font-size: 12px;
+`;
+
+const CardWrap = styled.div`
+  display: flex;
+  gap: 5px;
 `;
