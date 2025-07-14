@@ -31,6 +31,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     .reduce((sum, s) => sum + Number(s.symbol_force), 0);
   console.log("어센틱 포스:", authenticForce);
 
+  // 심볼 비용 계산 함수
   const getSymbolCost = (name, level, arcaneSymbolsCost) => {
     const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
     const costList = arcaneSymbolsCost[region];
@@ -39,6 +40,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     return costList.slice(0, level).reduce((acc, v) => acc + v, 0);
   };
 
+  // 각 그룹별 심볼 비용 계산
   const totalArcaneCost = symbols
     .slice(0, 6)
     .reduce(
@@ -65,7 +67,15 @@ export const SymbolCalculator = ({ symbolData }) => {
       0
     );
 
-  //
+  // 심볼 이름에서 불필요한 부분 제거
+  const getSymbolShortName = (name) =>
+    name
+      .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "")
+      .replace("소멸의 ", "")
+      .replace("아일랜드", "")
+      .trim();
+
+  // 메소 단위 변환 함수
   const toEokMan = (v) =>
     v >= 100000000
       ? `${Math.floor(v / 100000000)}억 ${Math.floor(
@@ -73,17 +83,13 @@ export const SymbolCalculator = ({ symbolData }) => {
         )}만`
       : `${Math.floor(v / 10000)}만`;
 
+  // 그룹별 심볼 출력 함수
   const renderGroup = (group) =>
     group.map(
       ({ symbol_name, symbol_icon, symbol_level, symbol_force }, index) => (
         <SymbolCard key={symbol_name + index}>
           <Icon src={symbol_icon} alt={symbol_name} />
-          <Name>
-            {symbol_name
-              .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 |아일랜드 )/g, "")
-              .replace("소멸의 ", "")
-              .replace("아일랜드", "")}
-          </Name>
+          <Name>{getSymbolShortName(symbol_name)}</Name>
           <Level>Lv. {symbol_level}</Level>
           <Force>
             {group === group1 ? `ARC +${symbol_force}` : `AUT +${symbol_force}`}
@@ -138,14 +144,6 @@ export const SymbolCalculator = ({ symbolData }) => {
     .sort((a, b) => a.cost - b.cost);
 
   console.log("강화 순서 추천:", sortedUpgradeSteps);
-
-  // 심볼 이름에서 불필요한 부분 제거
-  const getSymbolShortName = (name) =>
-    name
-      .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "")
-      .replace("소멸의 ", "")
-      .replace("아일랜드", "")
-      .trim();
 
   return (
     symbols.length > 0 && (
