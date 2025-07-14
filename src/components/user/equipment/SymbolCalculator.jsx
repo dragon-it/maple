@@ -65,6 +65,7 @@ export const SymbolCalculator = ({ symbolData }) => {
       0
     );
 
+  //
   const toEokMan = (v) =>
     v >= 100000000
       ? `${Math.floor(v / 100000000)}억 ${Math.floor(
@@ -78,18 +79,20 @@ export const SymbolCalculator = ({ symbolData }) => {
         <SymbolCard key={symbol_name + index}>
           <Icon src={symbol_icon} alt={symbol_name} />
           <Name>
-            {symbol_name.replace(
-              /(어센틱심볼 : |아케인심볼 : |그랜드 |아일랜드 )/g,
-              ""
-            )}
+            {symbol_name
+              .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 |아일랜드 )/g, "")
+              .replace("소멸의 ", "")
+              .replace("아일랜드", "")}
           </Name>
-          <Level>레벨: {symbol_level}</Level>
-          <Force>포스: {symbol_force}</Force>
+          <Level>Lv. {symbol_level}</Level>
+          <Force>
+            {group === group1 ? `ARC +${symbol_force}` : `AUT +${symbol_force}`}
+          </Force>
         </SymbolCard>
       )
     );
 
-  const getUpgradeSteps = (name, level, costData, maxUpgrade = 3) => {
+  const getUpgradeSteps = (name, level, costData, maxUpgrade = 10) => {
     const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
     const costList = costData[region];
     if (!costList) return [];
@@ -99,7 +102,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     for (let i = 1; i <= maxUpgrade; i++) {
       const from = level + i - 1;
       const to = level + i;
-      if (to >= costList.length) break;
+      if (to >= costList.length + 1) break;
 
       steps.push({
         symbol_name: name,
@@ -134,6 +137,8 @@ export const SymbolCalculator = ({ symbolData }) => {
     .filter((step) => step.cost !== Infinity)
     .sort((a, b) => a.cost - b.cost);
 
+  console.log("강화 순서 추천:", sortedUpgradeSteps);
+
   // 심볼 이름에서 불필요한 부분 제거
   const getSymbolShortName = (name) =>
     name
@@ -143,58 +148,62 @@ export const SymbolCalculator = ({ symbolData }) => {
       .trim();
 
   return (
-    <Container>
-      <HeaderName>심볼 계산기</HeaderName>
-      {group1.length > 0 && (
-        <ArcaneGroupWrap>
+    symbols.length > 0 && (
+      <Container>
+        <HeaderName>심볼 계산기</HeaderName>
+        {group1.length > 0 && (
+          <ArcaneGroupWrap>
+            <ResultWrap>
+              <SectionTitle>아케인 심볼</SectionTitle>
+              <p>아케인 포스 : {arcaneForce}</p>
+              <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
+            </ResultWrap>
+            <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
+          </ArcaneGroupWrap>
+        )}
+        {group2.length > 0 && (
+          <AuthenticGroupWrap>
+            <ResultWrap>
+              <SectionTitle>어센틱 심볼</SectionTitle>
+              <p>어센틱 포스 : {authenticForce}</p>
+              <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
+            </ResultWrap>
+            <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
+          </AuthenticGroupWrap>
+        )}
+        {group3.length > 0 && (
+          <GroupWrap>
+            <ResultWrap>
+              <SectionTitle>그랜드 어센틱 심볼</SectionTitle>
+              <p>어센틱 포스 : {grandAuthenticForce}</p>
+              <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p>
+            </ResultWrap>
+            <SymbolIconWrap>{renderGroup(group3)}</SymbolIconWrap>
+          </GroupWrap>
+        )}
+        <>
+          총 소비 메소 :{" "}
+          {toEokMan(totalArcaneCost + totalAuthenticCost + totalGrandCost)} 메소
+        </>
+        {sortedUpgradeSteps.length > 0 && (
           <ResultWrap>
-            <SectionTitle>아케인 심볼</SectionTitle>
-            <p>아케인 포스 : {arcaneForce}</p>
-            <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
+            <SectionTitle>가성비 심볼 강화 순서</SectionTitle>
+            <CardWrap>
+              {sortedUpgradeSteps.slice(0, 10).map((step, i) => (
+                <SymbolCard key={`${step.symbol_name}-${step.from}-${i}`}>
+                  <Icon src={step.symbol_icon} alt={step.symbol_name} />
+                  <Name>{getSymbolShortName(step.symbol_name)}</Name>
+                  <Level>
+                    {step.from} → {step.to}
+                  </Level>
+                  <Force>{toEokMan(step.cost)} 메소</Force>
+                </SymbolCard>
+              ))}
+            </CardWrap>
           </ResultWrap>
-          <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
-        </ArcaneGroupWrap>
-      )}
-      {group2.length > 0 && (
-        <AuthenticGroupWrap>
-          <ResultWrap>
-            <SectionTitle>어센틱 심볼</SectionTitle>
-            <p>어센틱 포스 : {authenticForce}</p>
-            <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
-          </ResultWrap>
-          <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
-        </AuthenticGroupWrap>
-      )}
-      {group3.length > 0 && (
-        <GroupWrap>
-          <ResultWrap>
-            <SectionTitle>그랜드 어센틱 심볼</SectionTitle>
-            <p>어센틱 포스 : {grandAuthenticForce}</p>
-            <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p>
-          </ResultWrap>
-          <SymbolIconWrap>{renderGroup(group3)}</SymbolIconWrap>
-        </GroupWrap>
-      )}
-      <>
-        총 소비 메소 :{" "}
-        {toEokMan(totalArcaneCost + totalAuthenticCost + totalGrandCost)} 메소
-      </>
-      <ResultWrap>
-        <SectionTitle>강화 추천</SectionTitle>
-        <CardWrap>
-          {sortedUpgradeSteps.slice(0, 10).map((step, i) => (
-            <SymbolCard key={`${step.symbol_name}-${step.from}-${i}`}>
-              <Icon src={step.symbol_icon} alt={step.symbol_name} />
-              <Name>{getSymbolShortName(step.symbol_name)}</Name>
-              <Level>
-                {step.from} → {step.to}
-              </Level>
-              <Force>{toEokMan(step.cost)} 메소</Force>
-            </SymbolCard>
-          ))}
-        </CardWrap>
-      </ResultWrap>
-    </Container>
+        )}
+      </Container>
+    )
   );
 };
 
@@ -268,12 +277,11 @@ const Icon = styled.img`
 `;
 
 const Name = styled.div`
-  font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 1px;
 `;
 
 const Level = styled.div`
-  font-size: 12px;
+  font-size: 11px;
 `;
 
 const Force = styled.p`
