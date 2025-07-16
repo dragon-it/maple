@@ -2,34 +2,33 @@ import React from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
+import arrow_icon from "../../../assets/icons/etc/arrow_icon.svg";
+import meso_icon from "../../../assets/icons/etc/meso_icon.png";
 
 export const SymbolCalculator = ({ symbolData }) => {
   const symbols = symbolData.symbol || [];
-  const group1 = symbols.slice(0, 6);
-  const group2 = symbols.slice(6, 12);
-  const group3 = symbols.slice(12);
+  const group1 = symbols.slice(0, 6); // 아케인 심볼
+  const group2 = symbols.slice(6, 12); // 어센틱 심볼
+  const group3 = symbols.slice(12); // 그랜드 어센틱 심볼
 
   const { arcaneSymbolsCost, authenticSymbolsCost, grandAuthenticSymbolsCost } =
     symbolCost;
-  console.log("아케인 심볼 비용:", arcaneSymbolsCost);
-  console.log("어센틱 심볼 비용:", authenticSymbolsCost);
-  console.log("그랜드 어센틱 심볼 비용:", grandAuthenticSymbolsCost);
 
   // 아케인 심볼, 어센틱 심볼 포스 합계 계산
-  const arcaneForce = symbols
-    .slice(0, 6)
-    .reduce((sum, s) => sum + Number(s.symbol_force), 0);
-  console.log("아케인 포스:", arcaneForce);
+  const arcaneForce = group1.reduce(
+    (sum, s) => sum + Number(s.symbol_force),
+    0
+  );
 
-  const authenticForce = symbols
-    .slice(6, 12)
-    .reduce((sum, s) => sum + Number(s.symbol_force), 0);
-  console.log("어센틱 포스:", authenticForce);
+  const authenticForce = group2.reduce(
+    (sum, s) => sum + Number(s.symbol_force),
+    0
+  );
 
-  const grandAuthenticForce = symbols
-    .slice(12)
-    .reduce((sum, s) => sum + Number(s.symbol_force), 0);
-  console.log("어센틱 포스:", authenticForce);
+  const grandAuthenticForce = group3.reduce(
+    (sum, s) => sum + Number(s.symbol_force),
+    0
+  );
 
   // 심볼 비용 계산 함수
   const getSymbolCost = (name, level, arcaneSymbolsCost) => {
@@ -98,9 +97,9 @@ export const SymbolCalculator = ({ symbolData }) => {
       )
     );
 
-  const getUpgradeSteps = (name, level, costData, maxUpgrade = 10) => {
+  const getUpgradeSteps = (name, level, symbolCost, maxUpgrade = 10) => {
     const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
-    const costList = costData[region];
+    const costList = symbolCost[region];
     if (!costList) return [];
 
     const steps = [];
@@ -121,34 +120,66 @@ export const SymbolCalculator = ({ symbolData }) => {
     return steps;
   };
 
-  const allUpgradeSteps = symbols.flatMap((s) => {
-    let costTable;
-    if (s.symbol_name.includes("아케인")) {
-      costTable = arcaneSymbolsCost;
-    } else if (s.symbol_name.includes("어센틱")) {
-      costTable = authenticSymbolsCost;
-    } else if (s.symbol_name.includes("그랜드")) {
-      costTable = grandAuthenticSymbolsCost;
-    }
-
-    return getUpgradeSteps(s.symbol_name, s.symbol_level, costTable).map(
-      (step) => ({
-        ...step,
-        symbol_icon: s.symbol_icon,
-      })
+  const getStepsForGroup = (group, symbolCost) =>
+    group.flatMap((s) =>
+      getUpgradeSteps(s.symbol_name, s.symbol_level, symbolCost).map(
+        (step) => ({
+          ...step,
+          symbol_icon: s.symbol_icon,
+        })
+      )
     );
-  });
 
-  const sortedUpgradeSteps = allUpgradeSteps
-    .filter((step) => step.cost !== Infinity)
-    .sort((a, b) => a.cost - b.cost);
+  const arcaneSteps = getStepsForGroup(group1, arcaneSymbolsCost);
+  const authenticSteps = getStepsForGroup(group2, authenticSymbolsCost);
+  const grandSteps = getStepsForGroup(group3, grandAuthenticSymbolsCost);
 
-  console.log("강화 순서 추천:", sortedUpgradeSteps);
+  const sortSteps = (steps) =>
+    steps.filter((s) => s.cost !== Infinity).sort((a, b) => a.cost - b.cost);
+
+  const sortedArcaneSteps = sortSteps(arcaneSteps);
+  const sortedAuthenticSteps = sortSteps(authenticSteps);
+  const sortedGrandSteps = sortSteps(grandSteps);
+
+  // 강화 비용 렌더링 함수
+  const renderUpgradeSteps = (title, steps) =>
+    steps.length > 0 && (
+      <ResultWrap>
+        <SectionTitle>{title}</SectionTitle>
+        <CardWrap>
+          {steps.slice(0, 10).map((step, i) => (
+            <>
+              <SymbolCard key={`${step.symbol_name}-${step.from}-${i}`}>
+                <Icon src={step.symbol_icon} alt={step.symbol_name} />
+                <Name>{getSymbolShortName(step.symbol_name)}</Name>
+                <Level>
+                  {step.from} → {step.to}
+                </Level>
+                <Force>{toEokMan(step.cost)} 메소</Force>
+              </SymbolCard>
+              <img src={arrow_icon} alt="arrow" />
+            </>
+          ))}
+        </CardWrap>
+      </ResultWrap>
+    );
 
   return (
     symbols.length > 0 && (
       <Container>
         <HeaderName>심볼 계산기</HeaderName>
+        {/* 소비 메소 warp */}
+        <>
+          <p>소비 메소</p>
+          <p> 아케인 심볼 소비 메소</p>
+
+          <p> 어센틱 심볼 소비 메소</p>
+
+          <p> 그랜드 어센틱 심볼 소비 메소</p>
+          <p> 총 소비 메소</p>
+          <p>백분율 도달율 그래프</p>
+        </>
+
         {group1.length > 0 && (
           <ArcaneGroupWrap>
             <ResultWrap>
@@ -157,6 +188,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
+            {renderUpgradeSteps("아케인 심볼 강화 순서", sortedArcaneSteps)}
           </ArcaneGroupWrap>
         )}
         {group2.length > 0 && (
@@ -167,6 +199,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
+            {renderUpgradeSteps("어센틱 심볼 강화 순서", sortedAuthenticSteps)}
           </AuthenticGroupWrap>
         )}
         {group3.length > 0 && (
@@ -177,29 +210,16 @@ export const SymbolCalculator = ({ symbolData }) => {
               <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group3)}</SymbolIconWrap>
+            {renderUpgradeSteps(
+              "그랜드 어센틱 심볼 강화 순서",
+              sortedGrandSteps
+            )}
           </GroupWrap>
         )}
         <>
           총 소비 메소 :{" "}
           {toEokMan(totalArcaneCost + totalAuthenticCost + totalGrandCost)} 메소
         </>
-        {sortedUpgradeSteps.length > 0 && (
-          <ResultWrap>
-            <SectionTitle>가성비 심볼 강화 순서</SectionTitle>
-            <CardWrap>
-              {sortedUpgradeSteps.slice(0, 10).map((step, i) => (
-                <SymbolCard key={`${step.symbol_name}-${step.from}-${i}`}>
-                  <Icon src={step.symbol_icon} alt={step.symbol_name} />
-                  <Name>{getSymbolShortName(step.symbol_name)}</Name>
-                  <Level>
-                    {step.from} → {step.to}
-                  </Level>
-                  <Force>{toEokMan(step.cost)} 메소</Force>
-                </SymbolCard>
-              ))}
-            </CardWrap>
-          </ResultWrap>
-        )}
       </Container>
     )
   );
