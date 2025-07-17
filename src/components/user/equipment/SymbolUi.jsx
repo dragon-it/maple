@@ -1,14 +1,14 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arcEquipBackgrnd.png";
-import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/autEquipBackgrnd.png";
-import grandBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandautEquipBackgrnd.png";
-import arcSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arcEquipSymbol.png";
-import arcSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arcEquipSymbolDisabled.png";
-import autSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/autEquipSymbol.png";
-import autSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/autEquipSymbolDisabled.png";
-import grandSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandautEquipSymbol.png";
-import grandSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandautEquipSymbolDisabled.png";
+import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipBackgrnd.png";
+import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipBackgrnd.png";
+import grandBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipBackgrnd.png";
+import arcSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipSymbol.png";
+import arcSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipSymbolDisabled.png";
+import autSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipSymbol.png";
+import autSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipSymbolDisabled.png";
+import grandSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipSymbol.png";
+import grandSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipSymbolDisabled.png";
 import colors from "../../common/color/colors";
 
 export const SymbolUi = ({ symbolData }) => {
@@ -58,7 +58,10 @@ export const SymbolUi = ({ symbolData }) => {
   const arcStatsObject = getStatObject(arcane);
   const autStatsObject = getStatObject(authentic);
   const grandStatsObject = getStatObject(grand);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   const getIcon = (arr, idx) => arr[idx]?.symbol_icon || null;
 
   const TextArray = {
@@ -249,8 +252,15 @@ const SymbolWrap = styled.div`
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
   color: ${colors.main.white0};
+  margin-top: 5px;
+
+  @media screen and (max-width: 652px) {
+    flex-direction: column;
+  }
 `;
 
 const Section = styled.div`

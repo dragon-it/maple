@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
+<<<<<<< HEAD
+=======
+import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
+>>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
 
 export const AndroidItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -127,10 +131,14 @@ export const AndroidItemDetail = ({ item, onClose }) => {
 const Container = styled.div`
   position: fixed;
   width: 270px;
+<<<<<<< HEAD
   background-color: #000000;
   border-radius: 5px;
   border: 1px solid white;
   outline: 1px solid black;
+=======
+  ${ContainerCss};
+>>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   color: white;
   padding: 0px 10px 5px;
   padding-bottom: 3px;

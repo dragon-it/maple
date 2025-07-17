@@ -103,6 +103,7 @@ export const ItemSetEffect = ({ setinfo }) => {
 };
 
 const Container = styled.div`
+<<<<<<< HEAD
   position: absolute;
   left: -261px;
   width: 250px;
@@ -114,6 +115,24 @@ const Container = styled.div`
   outline: 1px solid black;
   color: white;
   max-height: 600px;
+=======
+  width: 100%;
+  max-width: 300px;
+  height: fit-content;
+  padding: 10px;
+  white-space: pre-wrap;
+  background: linear-gradient(
+    180deg,
+    rgba(57, 70, 81, 1) 0%,
+    rgba(46, 55, 62, 1) 9%,
+    rgba(44, 51, 58, 1) 100%
+  );
+  border: 1px solid #4f606b;
+  border-radius: 7px;
+  outline: 1px solid #242b33;
+  color: white;
+  max-height: 490px;
+>>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   overflow-y: scroll;
 
   ul {
@@ -127,10 +146,16 @@ const Container = styled.div`
     margin: 8px 0;
   }
 
+<<<<<<< HEAD
   @media screen and (max-width: 1280px) {
     position: relative;
     width: 100%;
     max-height: fit-content;
+=======
+  @media screen and (max-width: 1540px) {
+    max-height: 490px;
+    max-width: 400px;
+>>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
     left: 0%;
   }
 `;

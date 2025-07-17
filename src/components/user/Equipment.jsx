@@ -15,6 +15,9 @@ export const Equipment = ({ result }) => {
             getPetEquipment: result.getCombinedData.getPetEquipment,
             getAndroidEquipment: result.getCombinedData.getAndroidEquipment,
           }}
+          BasicData={{
+            getBasicInformation: result.getCombinedData.getBasicInformation,
+          }}
         />
       )}
     </Container>
@@ -26,6 +29,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
