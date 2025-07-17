@@ -89,7 +89,10 @@ export const SymbolCalculator = ({ symbolData }) => {
         <SymbolCard key={symbol_name + index}>
           <Icon src={symbol_icon} alt={symbol_name} />
           <Name>{getSymbolShortName(symbol_name)}</Name>
-          <Level>Lv. {symbol_level}</Level>
+          <Level>
+            Lv. {symbol_level === 20 && group1 ? "max" : symbol_level}/
+            {group === group1 ? "20" : "11"}
+          </Level>
           <Force>
             {group === group1 ? `ARC +${symbol_force}` : `AUT +${symbol_force}`}
           </Force>
@@ -147,9 +150,9 @@ export const SymbolCalculator = ({ symbolData }) => {
       <ResultWrap>
         <SectionTitle>{title}</SectionTitle>
         <CardWrap>
-          {steps.slice(0, 10).map((step, i) => (
-            <>
-              <SymbolCard key={`${step.symbol_name}-${step.from}-${i}`}>
+          {steps.slice(0, 10).map((step, i, arr) => (
+            <React.Fragment key={`${step.symbol_name}-${step.from}-${i}`}>
+              <SymbolCard>
                 <Icon src={step.symbol_icon} alt={step.symbol_name} />
                 <Name>{getSymbolShortName(step.symbol_name)}</Name>
                 <Level>
@@ -157,8 +160,8 @@ export const SymbolCalculator = ({ symbolData }) => {
                 </Level>
                 <Force>{toEokMan(step.cost)} 메소</Force>
               </SymbolCard>
-              <img src={arrow_icon} alt="arrow" />
-            </>
+              {i < arr.length - 1 && <img src={arrow_icon} alt="arrow" />}
+            </React.Fragment>
           ))}
         </CardWrap>
       </ResultWrap>
@@ -184,8 +187,12 @@ export const SymbolCalculator = ({ symbolData }) => {
           <ArcaneGroupWrap>
             <ResultWrap>
               <SectionTitle>아케인 심볼</SectionTitle>
-              <p>아케인 포스 : {arcaneForce}</p>
+              <p>
+                아케인 포스 : {arcaneForce} / 1320(Max){" "}
+                {(1320 - arcaneForce) / 10}번 강화 필요
+              </p>
               <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
+              <p>풀강까지 남은 메소 : {toEokMan(totalArcaneCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
             {renderUpgradeSteps("아케인 심볼 강화 순서", sortedArcaneSteps)}
@@ -195,7 +202,10 @@ export const SymbolCalculator = ({ symbolData }) => {
           <AuthenticGroupWrap>
             <ResultWrap>
               <SectionTitle>어센틱 심볼</SectionTitle>
-              <p>어센틱 포스 : {authenticForce}</p>
+              <p>
+                어센틱 포스 : {authenticForce} / 770(Max){" "}
+                {(770 - authenticForce) / 10}번 강화 필요
+              </p>
               <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
