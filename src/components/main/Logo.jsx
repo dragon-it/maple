@@ -27,4 +27,8 @@ const StyledContainer = styled.div`
   img {
     width: 62px;
   }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
 `;

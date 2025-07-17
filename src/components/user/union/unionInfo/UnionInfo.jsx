@@ -42,11 +42,11 @@ export const UnionInfo = ({ Data, $activeTab }) => {
     // 로마 숫자 배열
     const roman = ["I", "II", "III", "IV", "V"];
     // gradeString에서 숫자 추출
-    const num = parseInt(gradeString.match(/\d+/)[0], 10);
+    const num = parseInt(gradeString?.match(/\d+/)[0], 10);
     // 추출된 숫자를 로마 숫자로 변환
     const romanNumeral = roman[num - 1]; // 배열은 0부터 시작하므로 num - 1을 사용
     // 원래 문자열에서 숫자를 로마 숫자로 대체
-    return gradeString.replace(num, romanNumeral);
+    return gradeString?.replace(num, romanNumeral);
   };
 
   // Data.union_grade에서 숫자를 로마 숫자로 변환

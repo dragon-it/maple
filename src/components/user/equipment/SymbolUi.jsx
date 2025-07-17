@@ -58,8 +58,6 @@ export const SymbolUi = ({ symbolData }) => {
   const arcStatsObject = getStatObject(arcane);
   const autStatsObject = getStatObject(authentic);
   const grandStatsObject = getStatObject(grand);
-
-  console.log(authentic);
   const getIcon = (arr, idx) => arr[idx]?.symbol_icon || null;
 
   const TextArray = {
@@ -274,8 +272,15 @@ const SymbolWrap = styled.div`
 const Wrap = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
   color: ${colors.main.white0};
+  margin-top: 5px;
+
+  @media screen and (max-width: 652px) {
+    flex-direction: column;
+  }
 `;
 
 const Section = styled.div`

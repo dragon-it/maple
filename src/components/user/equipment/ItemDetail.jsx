@@ -449,10 +449,15 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
 const Container = styled.div`
   position: fixed;
   width: 270px;
-  background-color: #000000;
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
+  background: linear-gradient(
+    180deg,
+    rgba(57, 70, 81, 0.97) 0%,
+    rgba(46, 55, 62, 0.97) 9%,
+    rgba(44, 51, 58, 0.97) 100%
+  );
+  border: 1px solid #4f606b;
+  border-radius: 7px;
+  outline: 1px solid #242b33;
   color: white;
   padding: 0px 10px 5px;
   padding-bottom: 3px;
@@ -466,17 +471,17 @@ const Container = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 50px;
+    width: 55px;
     height: 50px;
     background: linear-gradient(
       139deg,
       rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 42%,
       rgba(255, 255, 255, 0) 100%
     );
     opacity: 1;
     pointer-events: none;
-    border-radius: 5px;
+    border-radius: 7px;
   }
 `;
 
