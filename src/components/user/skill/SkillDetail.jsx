@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-<<<<<<< HEAD
-
-export const SkillDetail = ({ item, clicked, onClose }) => {
-=======
 import { SkillDetailContainerCss } from "../../common/searchCharacter/ContainerBox";
 
 export const SkillDetail = ({ item, onClose }) => {
->>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [detailPosition, setDetailPosition] = useState(null);
   const detailRef = useRef(null); // 스킬 디테일의 크기를 추적
@@ -70,13 +65,7 @@ export const SkillDetail = ({ item, onClose }) => {
     >
       <div style={{ position: "relative" }}></div>
       <SkillNameWrap>
-<<<<<<< HEAD
-        <h2>
-          <SkillName>{item.skill_name}</SkillName>
-        </h2>
-=======
         <SkillName>{item.skill_name}</SkillName>
->>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
       </SkillNameWrap>
       <IconWrap>
         <IconImage>
@@ -95,14 +84,7 @@ export const SkillDetail = ({ item, onClose }) => {
 
 const Container = styled.div`
   position: fixed;
-<<<<<<< HEAD
-  background-color: rgb(0, 0, 0);
-  border-radius: 5px;
-  border: 1px solid white;
-  outline: 1px solid black;
-=======
   ${SkillDetailContainerCss};
->>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   line-height: 16px;
   color: white;
   padding: 0px 10px 10px 10px;
@@ -151,11 +133,7 @@ const SkillNameWrap = styled.div`
   }
 `;
 
-<<<<<<< HEAD
-const SkillName = styled.div``;
-=======
 const SkillName = styled.h2``;
->>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
 
 const IconWrap = styled.div`
   padding: 10px 0;
@@ -202,18 +180,10 @@ const IconImage = styled.div`
 const SkillDescriptionWrap = styled.span`
   width: 100%;
   height: 100%;
-<<<<<<< HEAD
-  font-size: 12px;
-=======
->>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   white-space: pre-wrap;
 `;
 
 const SkillEffect = styled.div`
-<<<<<<< HEAD
-  font-size: 12px;
-=======
->>>>>>> 814ba54931f7ce5697f65750e5891d99df60ba22
   white-space: pre-wrap;
   padding-top: 10px;
 `;

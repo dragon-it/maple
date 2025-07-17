@@ -911,6 +911,7 @@ const CharacterImageWrap = styled.div`
 
   img {
     z-index: 99;
+    max-width: 131px;
   }
 
   span {
