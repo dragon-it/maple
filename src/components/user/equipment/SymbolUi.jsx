@@ -63,151 +63,175 @@ export const SymbolUi = ({ symbolData }) => {
   const TextArray = {
     display: "flex",
     justifyContent: "space-between",
-    width: "100px",
+    width: "90px",
+  };
+
+  const TextArrayDisabled = {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "70px",
+    marginTop: "30px",
   };
 
   return (
     <Wrap>
       {/* 아케인 심볼 섹션: arcane이 있을 때만 렌더링 */}
-      {arcane.length > 0 && (
-        <Section $bg={arcBack}>
-          <StatBox>
-            <ForceText>
-              <div style={TextArray}>
-                <span>ARC</span>
-                <span>+{totalArcaneForce}</span>
+      <Section $bg={arcBack}>
+        {arcane.length <= 0 && (
+          <ConditionText>
+            <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
+            <span style={{ color: "rgb(197, 236, 0)" }}>[LV.200] </span>또
+            하나의 힘, 아케인포스
+          </ConditionText>
+        )}
+        <StatBox>
+          <ForceText>
+            <div style={arcane.length <= 0 ? TextArrayDisabled : TextArray}>
+              <span>ARC</span>
+              <span>+{totalArcaneForce}</span>
+            </div>
+          </ForceText>
+          <StatText>
+            {Object.entries(arcStatsObject).map(([key, value]) => (
+              <div key={key} style={TextArray}>
+                <span>{key}</span>
+                <span>+{key === "HP" ? formatNumber(value) : value}</span>
               </div>
-            </ForceText>
-            <StatText>
-              {Object.entries(arcStatsObject).map(([key, value]) => (
-                <div key={key} style={TextArray}>
-                  <span>{key}</span>
-                  <span>+{key === "HP" ? formatNumber(value) : value}</span>
-                </div>
-              ))}
-            </StatText>
-          </StatBox>
-          <ArcGrid>
-            {Array.from({ length: 6 }).map((_, idx) => {
-              const icon = getIcon(arcane, idx);
-              return (
-                <Slot key={idx}>
-                  <ARCSlotImg
-                    src={icon ? arcSymbol : arcSymbolDisabled}
-                    alt="slot"
-                  />
-                  <SymbolWrap>
-                    {icon && <SymbolImg src={icon} alt="symbol" />}
-                  </SymbolWrap>
-                  <ARCSymbolInfo>
-                    {arcane[idx]?.symbol_level && (
-                      <p>Lv.{arcane[idx].symbol_level}</p>
-                    )}
-                    <MaxLevel>
-                      {arcane[idx]?.symbol_level === 20 && <p>MAX</p>}
-                    </MaxLevel>
-                  </ARCSymbolInfo>
-                </Slot>
-              );
-            })}
-          </ArcGrid>
-        </Section>
-      )}
+            ))}
+          </StatText>
+        </StatBox>
+        <ArcGrid>
+          {Array.from({ length: 6 }).map((_, idx) => {
+            const icon = getIcon(arcane, idx);
+            return (
+              <Slot key={idx}>
+                <ARCSlotImg
+                  src={icon ? arcSymbol : arcSymbolDisabled}
+                  alt="slot"
+                />
+                <SymbolWrap>
+                  {icon && <SymbolImg src={icon} alt="symbol" />}
+                </SymbolWrap>
+                <ARCSymbolInfo>
+                  {arcane[idx]?.symbol_level && (
+                    <p>Lv.{arcane[idx].symbol_level}</p>
+                  )}
+                  <MaxLevel>
+                    {arcane[idx]?.symbol_level === 20 && <p>MAX</p>}
+                  </MaxLevel>
+                </ARCSymbolInfo>
+              </Slot>
+            );
+          })}
+        </ArcGrid>
+      </Section>
 
       {/* 어센틱 심볼 섹션: authentic이 있을 때만 렌더링 */}
-      {authentic.length > 0 && (
-        <Section $bg={autBack}>
-          <StatBox>
-            <ForceText>
-              <div style={TextArray}>
-                <span>AUT</span>
-                <span>+{totalAuthenticForce}</span>
-              </div>
-            </ForceText>
-            <StatText>
-              {Object.entries(autStatsObject).map(([key, value]) => (
-                <div key={key} style={TextArray}>
-                  <span>{key}</span>
-                  <span>+{key === "HP" ? formatNumber(value) : value}</span>
-                </div>
-              ))}
-            </StatText>
-          </StatBox>
+      <Section $bg={autBack}>
+        {authentic.length <= 0 && (
+          <ConditionText>
+            <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
+            <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.260] </span>또
+            하나의 힘, 어센틱포스
+          </ConditionText>
+        )}
 
-          <AutGrid>
-            {Array.from({ length: 6 }).map((_, idx) => {
-              const icon = getIcon(authentic, idx);
-              return (
-                <Slot key={idx}>
-                  <AUTSlotImg
-                    src={icon ? autSymbol : autSymbolDisabled}
-                    alt="slot"
-                  />
-                  <AUTSymbolWrap>
-                    {icon && <SymbolImg src={icon} alt="symbol" />}
-                  </AUTSymbolWrap>
-                  <AUTSymbolInfo>
-                    {authentic[idx]?.symbol_level && (
-                      <p>Lv.{authentic[idx].symbol_level}</p>
-                    )}
-                    <MaxLevel>
-                      {authentic[idx]?.symbol_level === 11 && <p>MAX</p>}
-                    </MaxLevel>
-                  </AUTSymbolInfo>
-                </Slot>
-              );
-            })}
-          </AutGrid>
-        </Section>
-      )}
+        <StatBox>
+          <ForceText>
+            <div style={authentic.length <= 0 ? TextArrayDisabled : TextArray}>
+              <span>AUT</span>
+              <span>+{totalAuthenticForce}</span>
+            </div>
+          </ForceText>
+          <StatText>
+            {Object.entries(autStatsObject).map(([key, value]) => (
+              <div key={key} style={TextArray}>
+                <span>{key}</span>
+                <span>+{key === "HP" ? formatNumber(value) : value}</span>
+              </div>
+            ))}
+          </StatText>
+        </StatBox>
+
+        <AutGrid>
+          {Array.from({ length: 6 }).map((_, idx) => {
+            const icon = getIcon(authentic, idx);
+            return (
+              <Slot key={idx}>
+                <AUTSlotImg
+                  src={icon ? autSymbol : autSymbolDisabled}
+                  alt="slot"
+                />
+                <AUTSymbolWrap>
+                  {icon && <SymbolImg src={icon} alt="symbol" />}
+                </AUTSymbolWrap>
+                <AUTSymbolInfo>
+                  {authentic[idx]?.symbol_level && (
+                    <p>Lv.{authentic[idx].symbol_level}</p>
+                  )}
+                  <MaxLevel>
+                    {authentic[idx]?.symbol_level === 11 && <p>MAX</p>}
+                  </MaxLevel>
+                </AUTSymbolInfo>
+              </Slot>
+            );
+          })}
+        </AutGrid>
+      </Section>
 
       {/* 그랜드 어센틱 심볼 섹션: grand가 있을 때만 렌더링 */}
-      {grand.length > 0 && (
-        <Section $bg={grandBack}>
-          <StatBox>
-            <ForceText>
-              <div style={TextArray}>
-                <span>AUT</span>
-                <span>+{totalGrandAuthenticForce}</span>
+      <Section $bg={grandBack}>
+        {grand.length <= 0 && (
+          <ConditionText>
+            <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
+            <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.290] </span>
+            [탈라하트] 새로운 움직임
+          </ConditionText>
+        )}
+
+        <StatBox>
+          <ForceText>
+            <div style={grand.length <= 0 ? TextArrayDisabled : TextArray}>
+              <span>AUT</span>
+              <span>+{totalGrandAuthenticForce}</span>
+            </div>
+          </ForceText>
+
+          <StatText>
+            {Object.entries(grandStatsObject).map(([key, value]) => (
+              <div key={key} style={TextArray}>
+                <span>{key}</span>
+                <span>+{key === "AUT" ? `${value}` : `${value}%`}</span>
               </div>
-            </ForceText>
+            ))}
+          </StatText>
+        </StatBox>
 
-            <StatText>
-              {Object.entries(grandStatsObject).map(([key, value]) => (
-                <div key={key} style={TextArray}>
-                  <span>{key}</span>
-                  <span>+{key === "AUT" ? `${value}` : `${value}%`}</span>
-                </div>
-              ))}
-            </StatText>
-          </StatBox>
-
-          <GrandGrid>
-            {Array.from({ length: 3 }).map((_, idx) => {
-              const icon = getIcon(grand, idx);
-              return (
-                <Slot key={idx}>
-                  <GrandSlotImg
-                    src={icon ? grandSymbol : grandSymbolDisabled}
-                    alt="slot"
-                  />
-                  <GrandSymbolWrap>
-                    {icon && <SymbolImg src={icon} alt="symbol" />}
-                  </GrandSymbolWrap>
-                  <GrandSymbolInfo>
-                    {grand[idx]?.symbol_level && (
-                      <p>Lv.{grand[idx].symbol_level}</p>
-                    )}
-                    <MaxLevel>
-                      {grand[idx]?.symbol_level === 11 && <p>MAX</p>}
-                    </MaxLevel>
-                  </GrandSymbolInfo>
-                </Slot>
-              );
-            })}
-          </GrandGrid>
-        </Section>
-      )}
+        <GrandGrid>
+          {Array.from({ length: 3 }).map((_, idx) => {
+            const icon = getIcon(grand, idx);
+            return (
+              <Slot key={idx}>
+                <GrandSlotImg
+                  src={icon ? grandSymbol : grandSymbolDisabled}
+                  alt="slot"
+                />
+                <GrandSymbolWrap>
+                  {icon && <SymbolImg src={icon} alt="symbol" />}
+                </GrandSymbolWrap>
+                <GrandSymbolInfo>
+                  {grand[idx]?.symbol_level && (
+                    <p>Lv.{grand[idx].symbol_level}</p>
+                  )}
+                  <MaxLevel>
+                    {grand[idx]?.symbol_level === 11 && <p>MAX</p>}
+                  </MaxLevel>
+                </GrandSymbolInfo>
+              </Slot>
+            );
+          })}
+        </GrandGrid>
+      </Section>
     </Wrap>
   );
 };
@@ -305,8 +329,11 @@ const StatText = styled.div`
 
 const MaxLevel = styled.p`
   text-shadow: 0 0 3px ${colors.main.dark0};
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
+  backdrop-filter: blur(10px);
+  line-height: 0.8;
+  margin-top: 2px;
 `;
 
 const SymbolImg = styled.img`
@@ -316,6 +343,19 @@ const SymbolImg = styled.img`
   object-fit: contain;
   display: block;
   image-rendering: pixelated;
+`;
+
+const ConditionText = styled.p`
+  position: relative;
+  color: ${colors.main.white0};
+  text-shadow: 0 0 2px ${colors.main.dark0};
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: pre;
+  top: 24px;
+  text-align: center;
+  z-index: 2;
 `;
 
 // 아케인 심볼 섹션
@@ -336,7 +376,7 @@ const ARCSlotImg = styled.img`
 const ARCSymbolInfo = styled.div`
   ${baseSymbolInfo};
   text-shadow: 0 0 2px ${colors.characterInfo.symbolColor.arcaneMaxStatShadow};
-  top: 45px;
+  top: 55px;
 `;
 
 // 어센틱 심볼 섹션
@@ -357,7 +397,7 @@ const AUTSymbolWrap = styled.div`
 
 const AUTSymbolInfo = styled.div`
   ${baseSymbolInfo};
-  top: 45px;
+  top: 54px;
 `;
 
 // 그랜드 어센틱 심볼 섹션
@@ -381,5 +421,5 @@ const GrandGrid = styled.div`
 
 const GrandSymbolInfo = styled.div`
   ${baseSymbolInfo};
-  top: 46px;
+  top: 55px;
 `;
