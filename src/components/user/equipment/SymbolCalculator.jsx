@@ -4,11 +4,13 @@ import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
 import arrow_icon from "../../../assets/icons/etc/arrow_icon.svg";
 import meso_icon from "../../../assets/icons/etc/meso_icon.png";
+import arcane_icon from "../../../assets/icons/etc/arcane_icon2.png";
+import authentic_icon from "../../../assets/icons/etc/authentic_icon2.png";
 
 export const SymbolCalculator = ({ symbolData }) => {
   const symbols = symbolData.symbol || [];
   const group1 = symbols.slice(0, 6); // 아케인 심볼
-  const group2 = symbols.slice(6, 12); // 어센틱 심볼
+  const group2 = symbols.slice(6); // 어센틱 심볼
   const group3 = symbols.slice(12); // 그랜드 어센틱 심볼
 
   const { arcaneSymbolsCost, authenticSymbolsCost, grandAuthenticSymbolsCost } =
@@ -49,7 +51,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     );
 
   const totalAuthenticCost = symbols
-    .slice(6, 12)
+    .slice(6)
     .reduce(
       (sum, s) =>
         sum +
@@ -65,6 +67,9 @@ export const SymbolCalculator = ({ symbolData }) => {
         getSymbolCost(s.symbol_name, s.symbol_level, grandAuthenticSymbolsCost),
       0
     );
+
+  // 총 소비 메소 계산
+  const totalCost = totalArcaneCost + totalAuthenticCost + totalGrandCost;
 
   // 심볼 이름에서 불필요한 부분 제거
   const getSymbolShortName = (name) =>
@@ -90,11 +95,20 @@ export const SymbolCalculator = ({ symbolData }) => {
           <Icon src={symbol_icon} alt={symbol_name} />
           <Name>{getSymbolShortName(symbol_name)}</Name>
           <Level>
-            Lv. {symbol_level === 20 && group1 ? "max" : symbol_level}/
-            {group === group1 ? "20" : "11"}
+            Lv {symbol_level}/{group === group1 ? "20" : "11"}
           </Level>
           <Force>
-            {group === group1 ? `ARC +${symbol_force}` : `AUT +${symbol_force}`}
+            {group === group1 ? (
+              <>
+                <ForceIcon src={arcane_icon} alt="force_icon" />
+                {symbol_force}
+              </>
+            ) : (
+              <>
+                <ForceIcon src={authentic_icon} alt="authentic_icon" />
+                {symbol_force}
+              </>
+            )}
           </Force>
         </SymbolCard>
       )
@@ -153,12 +167,15 @@ export const SymbolCalculator = ({ symbolData }) => {
           {steps.slice(0, 10).map((step, i, arr) => (
             <React.Fragment key={`${step.symbol_name}-${step.from}-${i}`}>
               <SymbolCard>
-                <Icon src={step.symbol_icon} alt={step.symbol_name} />
+                <Icon src={step.symbol_icon} alt="symbol_name" />
                 <Name>{getSymbolShortName(step.symbol_name)}</Name>
                 <Level>
-                  {step.from} → {step.to}
+                  Lv {step.from} → Lv {step.to}
                 </Level>
-                <Force>{toEokMan(step.cost)} 메소</Force>
+                <Force>
+                  <MesoIcon src={meso_icon} alt="meso_icon" />
+                  {toEokMan(step.cost)}
+                </Force>
               </SymbolCard>
               {i < arr.length - 1 && <img src={arrow_icon} alt="arrow" />}
             </React.Fragment>
@@ -172,26 +189,30 @@ export const SymbolCalculator = ({ symbolData }) => {
       <Container>
         <HeaderName>심볼 계산기</HeaderName>
         {/* 소비 메소 warp */}
-        <>
-          <p>소비 메소</p>
+        <ArcaneGroupWrap>
+          <p>
+            소비 <MesoIcon src={meso_icon} alt="meso_icon" />
+          </p>
           <p> 아케인 심볼 소비 메소</p>
-
+          <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
           <p> 어센틱 심볼 소비 메소</p>
-
-          <p> 그랜드 어센틱 심볼 소비 메소</p>
+          <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
+          {/* <p> 그랜드 어센틱 심볼 소비 메소</p>
+          <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p> */}
           <p> 총 소비 메소</p>
+          <p>소비 메소 : {toEokMan(totalCost)}메소</p>
           <p>백분율 도달율 그래프</p>
-        </>
+        </ArcaneGroupWrap>
 
         {group1.length > 0 && (
           <ArcaneGroupWrap>
             <ResultWrap>
               <SectionTitle>아케인 심볼</SectionTitle>
               <p>
-                아케인 포스 : {arcaneForce} / 1320(Max){" "}
-                {(1320 - arcaneForce) / 10}번 강화 필요
+                <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
+                {arcaneForce} / 1320(Max) {(1320 - arcaneForce) / 10}번 강화
+                필요
               </p>
-              <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
               <p>풀강까지 남은 메소 : {toEokMan(totalArcaneCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
@@ -203,21 +224,25 @@ export const SymbolCalculator = ({ symbolData }) => {
             <ResultWrap>
               <SectionTitle>어센틱 심볼</SectionTitle>
               <p>
-                어센틱 포스 : {authenticForce} / 770(Max){" "}
-                {(770 - authenticForce) / 10}번 강화 필요
+                <AuthenticForceIcon src={authentic_icon} alt="authentic_icon" />{" "}
+                {authenticForce} / 770(Max) {(770 - authenticForce) / 10}번 강화
+                필요
               </p>
-              <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
+              <p>풀강까지 남은 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
             {renderUpgradeSteps("어센틱 심볼 강화 순서", sortedAuthenticSteps)}
           </AuthenticGroupWrap>
         )}
-        {group3.length > 0 && (
+        {/* {group3.length > 0 && (
           <GroupWrap>
             <ResultWrap>
               <SectionTitle>그랜드 어센틱 심볼</SectionTitle>
               <p>어센틱 포스 : {grandAuthenticForce}</p>
-              <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p>
+              <p>
+                풀강까지 남은 메소 : {toEokMan(totalArcaneCost)}{" "}
+                <MesoIcon src={meso_icon} alt="meso_icon" />
+              </p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group3)}</SymbolIconWrap>
             {renderUpgradeSteps(
@@ -225,11 +250,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               sortedGrandSteps
             )}
           </GroupWrap>
-        )}
-        <>
-          총 소비 메소 :{" "}
-          {toEokMan(totalArcaneCost + totalAuthenticCost + totalGrandCost)} 메소
-        </>
+        )} */}
       </Container>
     )
   );
@@ -293,7 +314,7 @@ const SymbolCard = styled.div`
   background-color: #222;
   border-radius: 8px;
   padding: 2px;
-  flex: 1;
+  flex: 1 110px;
   color: #fff;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
@@ -319,4 +340,29 @@ const Force = styled.p`
 const CardWrap = styled.div`
   display: flex;
   gap: 5px;
+`;
+
+const ForceIcon = styled.img`
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  margin-right: 2px;
+`;
+
+const ArcaneForceIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  vertical-align: top;
+`;
+
+const AuthenticForceIcon = styled.img`
+  width: 18px;
+  height: 20px;
+  vertical-align: top;
+`;
+
+const MesoIcon = styled.img`
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
 `;
