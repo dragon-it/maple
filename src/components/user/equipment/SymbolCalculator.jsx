@@ -6,6 +6,7 @@ import arrow_icon from "../../../assets/icons/etc/arrow_icon.svg";
 import meso_icon from "../../../assets/icons/etc/meso_icon.png";
 import arcane_icon from "../../../assets/icons/etc/arcane_icon2.png";
 import authentic_icon from "../../../assets/icons/etc/authentic_icon2.png";
+import colors from "../../common/color/colors.js";
 
 export const SymbolCalculator = ({ symbolData }) => {
   const symbols = symbolData.symbol || [];
@@ -13,8 +14,12 @@ export const SymbolCalculator = ({ symbolData }) => {
   const group2 = symbols.slice(6); // 어센틱 심볼
   const group3 = symbols.slice(12); // 그랜드 어센틱 심볼
 
-  const { arcaneSymbolsCost, authenticSymbolsCost, grandAuthenticSymbolsCost } =
-    symbolCost;
+  const {
+    arcaneSymbolsCost,
+    authenticSymbolsCost,
+    grandAuthenticSymbolsCost,
+    totalSymbolCost,
+  } = symbolCost;
 
   // 아케인 심볼, 어센틱 심볼 포스 합계 계산
   const arcaneForce = group1.reduce(
@@ -105,7 +110,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               </>
             ) : (
               <>
-                <ForceIcon src={authentic_icon} alt="authentic_icon" />
+                <AuthenticForceIcon src={authentic_icon} alt="authentic_icon" />
                 {symbol_force}
               </>
             )}
@@ -170,7 +175,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                 <Icon src={step.symbol_icon} alt="symbol_name" />
                 <Name>{getSymbolShortName(step.symbol_name)}</Name>
                 <Level>
-                  Lv {step.from} → Lv {step.to}
+                  {step.from} → {step.to}
                 </Level>
                 <Force>
                   <MesoIcon src={meso_icon} alt="meso_icon" />
@@ -187,7 +192,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   return (
     symbols.length > 0 && (
       <Container>
-        <HeaderName>심볼 계산기</HeaderName>
+        <HeaderName>SYMBOL CALCULATOR</HeaderName>
         {/* 소비 메소 warp */}
         <ArcaneGroupWrap>
           <p>
@@ -208,12 +213,16 @@ export const SymbolCalculator = ({ symbolData }) => {
           <ArcaneGroupWrap>
             <ResultWrap>
               <SectionTitle>아케인 심볼</SectionTitle>
-              <p>
+              <span>
                 <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
-                {arcaneForce} / 1320(Max) {(1320 - arcaneForce) / 10}번 강화
+                <ForceValue>{arcaneForce} / 1320</ForceValue>
+                <MaxLevel>(MAX)</MaxLevel> → {(1320 - arcaneForce) / 10}번 강화
                 필요
+              </span>
+              <p>
+                풀강까지 남은 메소 :{" "}
+                {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)} 메소
               </p>
-              <p>풀강까지 남은 메소 : {toEokMan(totalArcaneCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
             {renderUpgradeSteps("아케인 심볼 강화 순서", sortedArcaneSteps)}
@@ -223,12 +232,19 @@ export const SymbolCalculator = ({ symbolData }) => {
           <AuthenticGroupWrap>
             <ResultWrap>
               <SectionTitle>어센틱 심볼</SectionTitle>
+              <span>
+                <AuthenticForceHeaderIcon
+                  src={authentic_icon}
+                  alt="authentic_icon"
+                />{" "}
+                <ForceValue>{authenticForce} / 770</ForceValue>
+                <MaxLevel>(MAX)</MaxLevel> → {(770 - authenticForce) / 10}번
+                강화 필요
+              </span>
               <p>
-                <AuthenticForceIcon src={authentic_icon} alt="authentic_icon" />{" "}
-                {authenticForce} / 770(Max) {(770 - authenticForce) / 10}번 강화
-                필요
+                풀강까지 남은 메소 :{" "}
+                {toEokMan(totalSymbolCost.어센틱 - totalAuthenticCost)} 메소
               </p>
-              <p>풀강까지 남은 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
             {renderUpgradeSteps("어센틱 심볼 강화 순서", sortedAuthenticSteps)}
@@ -262,23 +278,29 @@ const Container = styled.div`
   gap: 12px;
   ${ContainerCss};
   padding: 10px;
+  color: #fff;
 `;
 
-const HeaderName = styled.h2``;
+const HeaderName = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220, 252, 2);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+`;
 
 const ArcaneGroupWrap = styled.div`
-  background: linear-gradient(180deg, #2a2c4b 0%, #3d4172 100%);
+  background: linear-gradient(180deg, #434575 0%, #3d4172 100%);
   border-radius: 12px;
-  padding: 16px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: 1px solid #4f606b;
+  border: 2px solid #4f606b;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
 `;
 
 const AuthenticGroupWrap = styled(ArcaneGroupWrap)`
-  background: linear-gradient(180deg, #2e4d72 0%, #45699c 100%);
+  background: linear-gradient(180deg, #375b88 0%, #45699c 100%);
 `;
 
 const GroupWrap = styled(ArcaneGroupWrap)`
@@ -291,7 +313,6 @@ const ResultWrap = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 12px 16px;
-  color: #fff;
   font-weight: bold;
   line-height: 1.4;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
@@ -299,7 +320,7 @@ const ResultWrap = styled.div`
 
 const SectionTitle = styled.h3`
   font-size: 20px;
-  color: #ffffff;
+
   margin-bottom: 8px;
 `;
 
@@ -315,23 +336,21 @@ const SymbolCard = styled.div`
   border-radius: 8px;
   padding: 2px;
   flex: 1 110px;
-  color: #fff;
+
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 `;
 
 const Icon = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 `;
 
 const Name = styled.div`
   margin-bottom: 1px;
 `;
 
-const Level = styled.div`
-  font-size: 11px;
-`;
+const Level = styled.div``;
 
 const Force = styled.p`
   font-size: 12px;
@@ -356,6 +375,13 @@ const ArcaneForceIcon = styled.img`
 `;
 
 const AuthenticForceIcon = styled.img`
+  width: 16px;
+  height: 18px;
+  vertical-align: text-top;
+  margin-right: 2px;
+`;
+
+const AuthenticForceHeaderIcon = styled.img`
   width: 18px;
   height: 20px;
   vertical-align: top;
@@ -365,4 +391,16 @@ const MesoIcon = styled.img`
   width: 16px;
   height: 16px;
   vertical-align: top;
+  margin-right: 2px;
+`;
+
+const MaxLevel = styled.span`
+  text-shadow: 0 0 2px ${colors.main.dark0};
+  color: ${colors.subColor.yellow2};
+  font-size: 13px;
+  font-weight: bold;
+`;
+
+const ForceValue = styled.span`
+  word-spacing: -4px;
 `;

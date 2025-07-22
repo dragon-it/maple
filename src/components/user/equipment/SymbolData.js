@@ -74,8 +74,14 @@ const grandAuthenticSymbolsCost = {
   ],
 };
 
+const totalSymbolCost = {
+  아케인: 2317550000,
+  어센틱: 51978300000,
+};
+
 export default {
   arcaneSymbolsCost,
   authenticSymbolsCost,
   grandAuthenticSymbolsCost,
+  totalSymbolCost,
 };
