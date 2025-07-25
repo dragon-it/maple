@@ -7,6 +7,7 @@ import meso_icon from "../../../assets/icons/etc/meso_icon.png";
 import arcane_icon from "../../../assets/icons/etc/arcane_icon2.png";
 import authentic_icon from "../../../assets/icons/etc/authentic_icon2.png";
 import colors from "../../common/color/colors.js";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 export const SymbolCalculator = ({ symbolData }) => {
   const symbols = symbolData.symbol || [];
@@ -28,11 +29,6 @@ export const SymbolCalculator = ({ symbolData }) => {
   );
 
   const authenticForce = group2.reduce(
-    (sum, s) => sum + Number(s.symbol_force),
-    0
-  );
-
-  const grandAuthenticForce = group3.reduce(
     (sum, s) => sum + Number(s.symbol_force),
     0
   );
@@ -189,6 +185,38 @@ export const SymbolCalculator = ({ symbolData }) => {
       </ResultWrap>
     );
 
+  const getPieData = (value, max, label) => [
+    { name: label, value },
+    { name: "남은 수치", value: max - value },
+  ];
+
+  const COLORS = ["#00C49F", "#333"];
+
+  const renderPieChart = (title, value, max) => (
+    <div style={{ textAlign: "center" }}>
+      <h4>{title}</h4>
+      <PieChart width={160} height={160}>
+        <Pie
+          data={getPieData(value, max, "현재 수치")}
+          cx="50%"
+          cy="50%"
+          innerRadius={45}
+          outerRadius={60}
+          startAngle={90}
+          endAngle={-270}
+          paddingAngle={2}
+          dataKey="value"
+        >
+          {getPieData(value, max, "현재 수치").map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+      <p>{((value / max) * 100).toFixed(1)}%</p>
+    </div>
+  );
+
   return (
     symbols.length > 0 && (
       <Container>
@@ -196,14 +224,12 @@ export const SymbolCalculator = ({ symbolData }) => {
         {/* 소비 메소 warp */}
         <ArcaneGroupWrap>
           <p>
-            소비 <MesoIcon src={meso_icon} alt="meso_icon" />
+            소비 메소 <MesoIcon src={meso_icon} alt="meso_icon" />
           </p>
           <p> 아케인 심볼 소비 메소</p>
           <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
           <p> 어센틱 심볼 소비 메소</p>
           <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
-          {/* <p> 그랜드 어센틱 심볼 소비 메소</p>
-          <p>소비 메소 : {toEokMan(totalGrandCost)} 메소</p> */}
           <p> 총 소비 메소</p>
           <p>소비 메소 : {toEokMan(totalCost)}메소</p>
           <p>백분율 도달율 그래프</p>
@@ -250,23 +276,12 @@ export const SymbolCalculator = ({ symbolData }) => {
             {renderUpgradeSteps("어센틱 심볼 강화 순서", sortedAuthenticSteps)}
           </AuthenticGroupWrap>
         )}
-        {/* {group3.length > 0 && (
-          <GroupWrap>
-            <ResultWrap>
-              <SectionTitle>그랜드 어센틱 심볼</SectionTitle>
-              <p>어센틱 포스 : {grandAuthenticForce}</p>
-              <p>
-                풀강까지 남은 메소 : {toEokMan(totalArcaneCost)}{" "}
-                <MesoIcon src={meso_icon} alt="meso_icon" />
-              </p>
-            </ResultWrap>
-            <SymbolIconWrap>{renderGroup(group3)}</SymbolIconWrap>
-            {renderUpgradeSteps(
-              "그랜드 어센틱 심볼 강화 순서",
-              sortedGrandSteps
-            )}
-          </GroupWrap>
-        )} */}
+
+        <p>백분율 도달율 그래프</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+          {renderPieChart("아케인 포스", arcaneForce, 1320)}
+          {renderPieChart("어센틱 포스", authenticForce, 770)}
+        </div>
       </Container>
     )
   );
