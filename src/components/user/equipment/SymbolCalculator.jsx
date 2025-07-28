@@ -173,10 +173,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                 <Level>
                   {step.from} → {step.to}
                 </Level>
-                <Force>
-                  <MesoIcon src={meso_icon} alt="meso_icon" />
-                  {toEokMan(step.cost)}
-                </Force>
+                <Force>{toEokMan(step.cost)}</Force>
               </SymbolCard>
               {i < arr.length - 1 && <img src={arrow_icon} alt="arrow" />}
             </React.Fragment>
@@ -193,9 +190,9 @@ export const SymbolCalculator = ({ symbolData }) => {
   const COLORS = ["#00C49F", "#333"];
 
   const renderPieChart = (title, value, max) => (
-    <div style={{ textAlign: "center" }}>
+    <ArcaneGroupWrap style={{ textAlign: "center", position: "relative" }}>
       <h4>{title}</h4>
-      <PieChart width={160} height={160}>
+      <PieChart width={180} height={130}>
         <Pie
           data={getPieData(value, max, "현재 수치")}
           cx="50%"
@@ -204,7 +201,7 @@ export const SymbolCalculator = ({ symbolData }) => {
           outerRadius={60}
           startAngle={90}
           endAngle={-270}
-          paddingAngle={2}
+          paddingAngle={0}
           dataKey="value"
         >
           {getPieData(value, max, "현재 수치").map((entry, index) => (
@@ -213,8 +210,13 @@ export const SymbolCalculator = ({ symbolData }) => {
         </Pie>
         <Tooltip />
       </PieChart>
-      <p>{((value / max) * 100).toFixed(1)}%</p>
-    </div>
+      <ForcePercent>
+        <p>
+          {value} / {max}
+        </p>
+        {((value / max) * 100).toFixed(1)} %
+      </ForcePercent>
+    </ArcaneGroupWrap>
   );
 
   return (
@@ -223,16 +225,13 @@ export const SymbolCalculator = ({ symbolData }) => {
         <HeaderName>SYMBOL CALCULATOR</HeaderName>
         {/* 소비 메소 warp */}
         <ArcaneGroupWrap>
-          <p>
-            소비 메소 <MesoIcon src={meso_icon} alt="meso_icon" />
-          </p>
+          <SectionTitle>소비 메소</SectionTitle>
           <p> 아케인 심볼 소비 메소</p>
           <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
           <p> 어센틱 심볼 소비 메소</p>
           <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
           <p> 총 소비 메소</p>
           <p>소비 메소 : {toEokMan(totalCost)}메소</p>
-          <p>백분율 도달율 그래프</p>
         </ArcaneGroupWrap>
 
         {group1.length > 0 && (
@@ -251,7 +250,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               </p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
-            {renderUpgradeSteps("아케인 심볼 강화 순서", sortedArcaneSteps)}
+            {renderUpgradeSteps("아케인 심볼 강화 추천", sortedArcaneSteps)}
           </ArcaneGroupWrap>
         )}
         {group2.length > 0 && (
@@ -273,11 +272,11 @@ export const SymbolCalculator = ({ symbolData }) => {
               </p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
-            {renderUpgradeSteps("어센틱 심볼 강화 순서", sortedAuthenticSteps)}
+            {renderUpgradeSteps("어센틱 심볼 강화 추천", sortedAuthenticSteps)}
           </AuthenticGroupWrap>
         )}
 
-        <p>백분율 도달율 그래프</p>
+        <SectionTitle>포스 도달율</SectionTitle>
         <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
           {renderPieChart("아케인 포스", arcaneForce, 1320)}
           {renderPieChart("어센틱 포스", authenticForce, 770)}
@@ -417,5 +416,14 @@ const MaxLevel = styled.span`
 `;
 
 const ForceValue = styled.span`
+  word-spacing: -4px;
+`;
+
+const ForcePercent = styled.p`
+  position: absolute;
+  width: 100%;
+  top: 49%;
+  left: 0%;
+  z-index: 0;
   word-spacing: -4px;
 `;
