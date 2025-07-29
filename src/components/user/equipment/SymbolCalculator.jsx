@@ -191,8 +191,8 @@ export const SymbolCalculator = ({ symbolData }) => {
 
   const renderPieChart = (title, value, max) => (
     <ArcaneGroupWrap style={{ textAlign: "center", position: "relative" }}>
-      <h4>{title}</h4>
-      <PieChart width={180} height={130}>
+      <h3>{title}</h3>
+      <PieChart width={180} height={125}>
         <Pie
           data={getPieData(value, max, "현재 수치")}
           cx="50%"
@@ -208,7 +208,7 @@ export const SymbolCalculator = ({ symbolData }) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip />
+        <Tooltip zIndex={99} />
       </PieChart>
       <ForcePercent>
         <p>
@@ -224,15 +224,36 @@ export const SymbolCalculator = ({ symbolData }) => {
       <Container>
         <HeaderName>SYMBOL CALCULATOR</HeaderName>
         {/* 소비 메소 warp */}
-        <ArcaneGroupWrap>
-          <SectionTitle>소비 메소</SectionTitle>
-          <p> 아케인 심볼 소비 메소</p>
-          <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
-          <p> 어센틱 심볼 소비 메소</p>
-          <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
-          <p> 총 소비 메소</p>
-          <p>소비 메소 : {toEokMan(totalCost)}메소</p>
-        </ArcaneGroupWrap>
+        <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>
+          <AnalyzeGroupWrap>
+            <SectionTitle>소비 메소</SectionTitle>
+
+            <p> 아케인 심볼 소비 메소</p>
+            <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
+
+            <p> 어센틱 심볼 소비 메소</p>
+            <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
+            <p> 총 소비 메소</p>
+            <p>소비 메소 : {toEokMan(totalCost)}메소</p>
+          </AnalyzeGroupWrap>
+          <AnalyzeGroupWrap>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "5px",
+                flexDirection: "column",
+              }}
+            >
+              <SectionTitle>포스 도달율</SectionTitle>
+              <ChartWrap>
+                {renderPieChart("아케인 포스", arcaneForce, 1320)}
+                {renderPieChart("어센틱 포스", authenticForce, 770)}
+              </ChartWrap>
+            </div>
+          </AnalyzeGroupWrap>
+        </div>
 
         {group1.length > 0 && (
           <ArcaneGroupWrap>
@@ -275,12 +296,6 @@ export const SymbolCalculator = ({ symbolData }) => {
             {renderUpgradeSteps("어센틱 심볼 강화 추천", sortedAuthenticSteps)}
           </AuthenticGroupWrap>
         )}
-
-        <SectionTitle>포스 도달율</SectionTitle>
-        <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-          {renderPieChart("아케인 포스", arcaneForce, 1320)}
-          {renderPieChart("어센틱 포스", authenticForce, 770)}
-        </div>
       </Container>
     )
   );
@@ -334,8 +349,13 @@ const ResultWrap = styled.div`
 
 const SectionTitle = styled.h3`
   font-size: 20px;
-
   margin-bottom: 8px;
+  font-weight: 700;
+  background-color: #48c9da;
+  color: #222b2c;
+  width: fit-content;
+  padding: 2px 4px;
+  border-radius: 5px;
 `;
 
 const SymbolIconWrap = styled.div`
@@ -424,6 +444,23 @@ const ForcePercent = styled.p`
   width: 100%;
   top: 49%;
   left: 0%;
-  z-index: 0;
+  font-weight: 700;
   word-spacing: -4px;
+`;
+
+const AnalyzeGroupWrap = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: rgb(77, 87, 99);
+  border: 2px solid #4f606b;
+  border-radius: 7px;
+  outline: 1px solid #242b33;
+`;
+
+const ChartWrap = styled.div`
+  display: flex;
+  gap: 5px;
 `;
