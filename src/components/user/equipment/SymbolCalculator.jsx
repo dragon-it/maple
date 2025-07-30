@@ -224,17 +224,39 @@ export const SymbolCalculator = ({ symbolData }) => {
       <Container>
         <HeaderName>SYMBOL CALCULATOR</HeaderName>
         {/* 소비 메소 warp */}
-        <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>
+        <div style={{ display: "flex", flexDirection: "row", gap: "7px" }}>
           <AnalyzeGroupWrap>
-            <SectionTitle>소비 메소</SectionTitle>
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <SectionTitle>소비 메소</SectionTitle>
+            </span>
+            <div>
+              <MesoTitle> 아케인 심볼 소비 메소</MesoTitle>
+              <MesoUsed>
+                <MesoIcon src={meso_icon} alt="meso_icon" />
+                <span>{toEokMan(totalArcaneCost)} </span>
+              </MesoUsed>
+            </div>
+            <div>
+              <MesoTitle> 어센틱 심볼 소비 메소</MesoTitle>
+              <MesoUsed>
+                <MesoIcon src={meso_icon} alt="meso_icon" />{" "}
+                <span> {toEokMan(totalAuthenticCost)} </span>
+              </MesoUsed>
+            </div>
 
-            <p> 아케인 심볼 소비 메소</p>
-            <p>소비 메소 : {toEokMan(totalArcaneCost)} 메소</p>
-
-            <p> 어센틱 심볼 소비 메소</p>
-            <p>소비 메소 : {toEokMan(totalAuthenticCost)} 메소</p>
-            <p> 총 소비 메소</p>
-            <p>소비 메소 : {toEokMan(totalCost)}메소</p>
+            <div>
+              <MesoTitle> 총 소비 메소</MesoTitle>
+              <MesoUsed>
+                <MesoIcon src={meso_icon} alt="meso_icon" />
+                <span> {toEokMan(totalCost)} </span>
+              </MesoUsed>
+            </div>
           </AnalyzeGroupWrap>
           <AnalyzeGroupWrap>
             <div
@@ -242,7 +264,6 @@ export const SymbolCalculator = ({ symbolData }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                gap: "5px",
                 flexDirection: "column",
               }}
             >
@@ -262,12 +283,15 @@ export const SymbolCalculator = ({ symbolData }) => {
               <span>
                 <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
                 <ForceValue>{arcaneForce} / 1320</ForceValue>
-                <MaxLevel>(MAX)</MaxLevel> → {(1320 - arcaneForce) / 10}번 강화
-                필요
+                <MaxLevel>(MAX)</MaxLevel> →
+                <span style={{ fontSize: "17px" }}>
+                  {(1320 - arcaneForce) / 10}
+                </span>
+                번 강화 필요
               </span>
               <p>
                 풀강까지 남은 메소 :{" "}
-                {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)} 메소
+                {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)}
               </p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group1)}</SymbolIconWrap>
@@ -284,12 +308,20 @@ export const SymbolCalculator = ({ symbolData }) => {
                   alt="authentic_icon"
                 />{" "}
                 <ForceValue>{authenticForce} / 770</ForceValue>
-                <MaxLevel>(MAX)</MaxLevel> → {(770 - authenticForce) / 10}번
-                강화 필요
+                <MaxLevel>(MAX)</MaxLevel> →{" "}
+                <span
+                  style={{
+                    fontSize: "17px",
+                    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  {(770 - authenticForce) / 10}
+                </span>
+                번 강화 필요
               </span>
               <p>
                 풀강까지 남은 메소 :{" "}
-                {toEokMan(totalSymbolCost.어센틱 - totalAuthenticCost)} 메소
+                {toEokMan(totalSymbolCost.어센틱 - totalAuthenticCost)}
               </p>
             </ResultWrap>
             <SymbolIconWrap>{renderGroup(group2)}</SymbolIconWrap>
@@ -304,7 +336,7 @@ export const SymbolCalculator = ({ symbolData }) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 7px;
   ${ContainerCss};
   padding: 10px;
   color: #fff;
@@ -348,13 +380,13 @@ const ResultWrap = styled.div`
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 8px;
   font-weight: 700;
-  background-color: #48c9da;
+  background-color: #69d7e6;
   color: #222b2c;
   width: fit-content;
-  padding: 2px 4px;
+  padding: 2px 6px;
   border-radius: 5px;
 `;
 
@@ -422,10 +454,11 @@ const AuthenticForceHeaderIcon = styled.img`
 `;
 
 const MesoIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  vertical-align: top;
-  margin-right: 2px;
+  width: auto;
+  height: 100%;
+  padding: 2px;
+  background-color: rgb(122, 121, 117);
+  border-radius: 9px 0px 0px 9px;
 `;
 
 const MaxLevel = styled.span`
@@ -463,4 +496,26 @@ const AnalyzeGroupWrap = styled.div`
 const ChartWrap = styled.div`
   display: flex;
   gap: 5px;
+`;
+
+const MesoUsed = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 10px;
+  height: 35px;
+  font-size: 15px;
+  border-radius: 10px;
+  background-color: rgba(59, 66, 75, 0.9);
+  border-top: 2px solid rgb(38, 43, 49);
+  border-left: 1px solid rgb(62, 73, 81);
+  border-right: 1px solid rgb(62, 73, 81);
+  box-shadow: 0px 1px 0px rgb(133, 145, 145);
+  color: white;
+`;
+
+const MesoTitle = styled.p`
+  font-weight: 700;
+  color: #ffffff;
 `;
