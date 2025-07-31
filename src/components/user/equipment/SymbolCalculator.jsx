@@ -92,7 +92,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   const renderGroup = (group) =>
     group.map(
       ({ symbol_name, symbol_icon, symbol_level, symbol_force }, index) => (
-        <SymbolCard key={symbol_name + index}>
+        <SymbolInfoCard key={symbol_name + index}>
           <Icon src={symbol_icon} alt={symbol_name} />
           <Name>{getSymbolShortName(symbol_name)}</Name>
           <Level>
@@ -111,7 +111,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               </>
             )}
           </Force>
-        </SymbolCard>
+        </SymbolInfoCard>
       )
     );
 
@@ -165,16 +165,16 @@ export const SymbolCalculator = ({ symbolData }) => {
       <ResultWrap>
         <SectionTitle>{title}</SectionTitle>
         <CardWrap>
-          {steps.slice(0, 10).map((step, i, arr) => (
+          {steps.slice(0, 12).map((step, i, arr) => (
             <React.Fragment key={`${step.symbol_name}-${step.from}-${i}`}>
-              <SymbolCard>
+              <UpgradeSymbolCard>
                 <Icon src={step.symbol_icon} alt="symbol_name" />
                 <Name>{getSymbolShortName(step.symbol_name)}</Name>
                 <Level>
                   {step.from} → {step.to}
                 </Level>
                 <Force>{toEokMan(step.cost)}</Force>
-              </SymbolCard>
+              </UpgradeSymbolCard>
               {i < arr.length - 1 && <img src={arrow_icon} alt="arrow" />}
             </React.Fragment>
           ))}
@@ -187,12 +187,23 @@ export const SymbolCalculator = ({ symbolData }) => {
     { name: "남은 수치", value: max - value },
   ];
 
-  const COLORS = ["#00C49F", "#333"];
+  const arcaneColors = ["url(#arcaneGradient)", "#333"];
+  const authenticColors = ["url(#authenticGradient)", "#333"];
 
   const renderPieChart = (title, value, max) => (
     <ArcaneGroupWrap style={{ textAlign: "center", position: "relative" }}>
       <h3>{title}</h3>
       <PieChart width={180} height={125}>
+        <defs>
+          <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#434575" />
+            <stop offset="100%" stopColor="#3d4172" />
+          </linearGradient>
+          <linearGradient id="authenticGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#375b88" />
+            <stop offset="100%" stopColor="#45699c" />
+          </linearGradient>
+        </defs>
         <Pie
           data={getPieData(value, max, "현재 수치")}
           cx="50%"
@@ -205,7 +216,14 @@ export const SymbolCalculator = ({ symbolData }) => {
           dataKey="value"
         >
           {getPieData(value, max, "현재 수치").map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={
+                title === "아케인 포스"
+                  ? arcaneColors[index % arcaneColors.length]
+                  : authenticColors[index % authenticColors.length]
+              }
+            />
           ))}
         </Pie>
         <Tooltip zIndex={99} />
@@ -340,6 +358,7 @@ const Container = styled.div`
   ${ContainerCss};
   padding: 10px;
   color: #fff;
+  max-width: 660px;
 `;
 
 const HeaderName = styled.div`
@@ -350,7 +369,7 @@ const HeaderName = styled.div`
 `;
 
 const ArcaneGroupWrap = styled.div`
-  background: linear-gradient(180deg, #434575 0%, #3d4172 100%);
+  background: linear-gradient(180deg, #4d5863 0%, #3e4754 100%);
   border-radius: 12px;
   padding: 5px;
   display: flex;
@@ -391,20 +410,40 @@ const SectionTitle = styled.h3`
 `;
 
 const SymbolIconWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: 8px;
-  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  margin: 0 auto;
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
-const SymbolCard = styled.div`
-  background-color: #222;
+const SymbolInfoCard = styled.div`
+  background: linear-gradient(180deg, #2b313a 0%, #1e222a 100%);
   border-radius: 8px;
   padding: 2px;
-  flex: 1 110px;
-
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+`;
+
+const UpgradeSymbolCard = styled(SymbolInfoCard)`
+  width: 80px;
+  height: 100px;
+  border: 1px solid rgba(211, 211, 211, 0.5);
 `;
 
 const Icon = styled.img`
@@ -425,6 +464,7 @@ const Force = styled.p`
 const CardWrap = styled.div`
   display: flex;
   gap: 5px;
+  flex-wrap: wrap;
 `;
 
 const ForceIcon = styled.img`
