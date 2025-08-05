@@ -301,11 +301,20 @@ export const SymbolCalculator = ({ symbolData }) => {
               <span>
                 <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
                 <ForceValue>{arcaneForce} / 1320</ForceValue>
-                <MaxLevel>(MAX)</MaxLevel> →
-                <span style={{ fontSize: "17px" }}>
-                  {(1320 - arcaneForce) / 10}
-                </span>
-                번 강화 필요
+                <MaxLevel>(MAX)</MaxLevel> →{" "}
+                <span
+                  style={{
+                    fontSize: "17px",
+                    backgroundColor: "rgba(255, 246, 122, 0.9)",
+                    padding: "0px 2px",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    color: "#000",
+                  }}
+                >
+                  {(1320 - arcaneForce) / 10}번
+                </span>{" "}
+                강화 필요
               </span>
               <p>
                 풀강까지 남은 메소 :{" "}
@@ -330,12 +339,16 @@ export const SymbolCalculator = ({ symbolData }) => {
                 <span
                   style={{
                     fontSize: "17px",
-                    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "rgba(255, 246, 122, 0.9)",
+                    padding: "0px 2px",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
+                    color: "#000",
                   }}
                 >
-                  {(770 - authenticForce) / 10}
-                </span>
-                번 강화 필요
+                  {(770 - authenticForce) / 10}번
+                </span>{" "}
+                강화 필요
               </span>
               <p>
                 풀강까지 남은 메소 :{" "}
@@ -369,7 +382,7 @@ const HeaderName = styled.div`
 `;
 
 const ArcaneGroupWrap = styled.div`
-  background: linear-gradient(180deg, #4d5863 0%, #3e4754 100%);
+  background: linear-gradient(180deg, #434575 0%, #3d4172 100%);
   border-radius: 12px;
   padding: 5px;
   display: flex;
@@ -393,7 +406,6 @@ const ResultWrap = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 12px 16px;
-  font-weight: bold;
   line-height: 1.4;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
 `;
@@ -402,10 +414,15 @@ const SectionTitle = styled.h3`
   font-size: 18px;
   margin-bottom: 8px;
   font-weight: 700;
-  background-color: #69d7e6;
-  color: #222b2c;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgb(0, 0, 0) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  color: #ffffff;
   width: fit-content;
-  padding: 2px 6px;
+  padding: 2px 12px;
   border-radius: 5px;
 `;
 
@@ -528,7 +545,7 @@ const AnalyzeGroupWrap = styled.div`
   justify-content: space-between;
   padding: 10px;
   background-color: rgb(77, 87, 99);
-  border: 2px solid #4f606b;
+  border: 1px solid #4f606b;
   border-radius: 7px;
   outline: 1px solid #242b33;
 `;
