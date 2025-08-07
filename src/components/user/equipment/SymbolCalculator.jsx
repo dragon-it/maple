@@ -191,7 +191,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   const authenticColors = ["url(#authenticGradient)", "#333"];
 
   const renderPieChart = (title, value, max) => (
-    <ArcaneGroupWrap style={{ textAlign: "center", position: "relative" }}>
+    <ReachWrap style={{ textAlign: "center", position: "relative" }}>
       <h3>{title}</h3>
       <PieChart width={180} height={125}>
         <defs>
@@ -234,7 +234,7 @@ export const SymbolCalculator = ({ symbolData }) => {
         </p>
         {((value / max) * 100).toFixed(1)} %
       </ForcePercent>
-    </ArcaneGroupWrap>
+    </ReachWrap>
   );
 
   return (
@@ -285,7 +285,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                 flexDirection: "column",
               }}
             >
-              <SectionTitle>포스 도달율</SectionTitle>
+              <SectionTitle>포스 도달률</SectionTitle>
               <ChartWrap>
                 {renderPieChart("아케인 포스", arcaneForce, 1320)}
                 {renderPieChart("어센틱 포스", authenticForce, 770)}
@@ -371,7 +371,7 @@ const Container = styled.div`
   ${ContainerCss};
   padding: 10px;
   color: #fff;
-  max-width: 660px;
+  max-width: 634px;
 `;
 
 const HeaderName = styled.div`
@@ -388,7 +388,7 @@ const ArcaneGroupWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: 2px solid #4f606b;
+  border: 1px solid #4f606b;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
 `;
 
@@ -396,8 +396,8 @@ const AuthenticGroupWrap = styled(ArcaneGroupWrap)`
   background: linear-gradient(180deg, #375b88 0%, #45699c 100%);
 `;
 
-const GroupWrap = styled(ArcaneGroupWrap)`
-  background: linear-gradient(180deg, #4a3c58 0%, #6a5174 100%);
+const ReachWrap = styled(ArcaneGroupWrap)`
+  background: #2c323a;
 `;
 
 const ResultWrap = styled.div`
@@ -458,7 +458,7 @@ const SymbolInfoCard = styled.div`
 `;
 
 const UpgradeSymbolCard = styled(SymbolInfoCard)`
-  width: 80px;
+  width: 78px;
   height: 100px;
   border: 1px solid rgba(211, 211, 211, 0.5);
 `;
@@ -487,14 +487,14 @@ const CardWrap = styled.div`
 const ForceIcon = styled.img`
   width: 16px;
   height: 16px;
-  vertical-align: top;
+  vertical-align: bottom;
   margin-right: 2px;
 `;
 
 const ArcaneForceIcon = styled.img`
   width: 20px;
   height: 20px;
-  vertical-align: top;
+  vertical-align: bottom;
 `;
 
 const AuthenticForceIcon = styled.img`
@@ -507,7 +507,7 @@ const AuthenticForceIcon = styled.img`
 const AuthenticForceHeaderIcon = styled.img`
   width: 18px;
   height: 20px;
-  vertical-align: top;
+  vertical-align: bottom;
 `;
 
 const MesoIcon = styled.img`
