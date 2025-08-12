@@ -144,33 +144,12 @@ export const SymbolCalculator = ({ symbolData }) => {
                 </Level>
                 <Price>{toEokMan(step.cost)}</Price>
               </UpgradeSymbolCard>
-              {i < arr.length - 1 && <ArrowIcon />}
+              {i < arr.length && <ArrowIcon />}
             </React.Fragment>
           ))}
         </CardWrap>
       </SuggesttWrap>
     );
-
-  // 파이차트 크기 상태 관리
-  const [pieSize, setPieSize] = useState({
-    width: window.innerWidth <= 652 ? 165 : 180,
-    height: window.innerWidth <= 652 ? 125 : 125,
-    innerRadius: window.innerWidth <= 652 ? 25 : 45,
-    outerRadius: window.innerWidth <= 652 ? 40 : 60,
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setPieSize({
-        width: window.innerWidth <= 652 ? 120 : 180,
-        height: window.innerWidth <= 652 ? 125 : 125,
-        innerRadius: window.innerWidth <= 652 ? 25 : 45,
-        outerRadius: window.innerWidth <= 652 ? 40 : 60,
-      });
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // 파이 차트 데이터 생성
   const getPieData = (value, max, label) => [
@@ -195,26 +174,27 @@ export const SymbolCalculator = ({ symbolData }) => {
       height: 140px;
     }
   `;
-
   const renderPieChart = (title, value, max) => (
     <ReachWrap style={{ textAlign: "center", position: "relative" }}>
       <h3>{title}</h3>
       <PieChartWrap>
-        <PieChart width={pieSize.width} height={pieSize.height} zIndex={9999}>
+        <PieChart width={123} height={123} zIndex={9999}>
           <defs>
             <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop stopColor="#484b97" />
+              <stop offset="0%" stopColor="#434575" />
+              <stop offset="100%" stopColor="#3d4172" />
             </linearGradient>
             <linearGradient id="authenticGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop stopColor="#4781cc" />
+              <stop offset="0%" stopColor="#375b88" />
+              <stop offset="100%" stopColor="#45699c" />
             </linearGradient>
           </defs>
           <Pie
             data={getPieData(value, max, "현재 수치")}
             cx="50%"
             cy="50%"
-            innerRadius={pieSize.innerRadius}
-            outerRadius={pieSize.outerRadius}
+            innerRadius={45}
+            outerRadius={60}
             startAngle={90}
             endAngle={-270}
             paddingAngle={0}
@@ -522,6 +502,10 @@ const CardWrap = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
+
+  @media screen and (max-width: 652px) {
+    gap: 7px;
+  }
 `;
 
 const ArcaneForceIcon = styled.img`
