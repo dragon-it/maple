@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
@@ -6,6 +6,8 @@ import { ReactComponent as ArrowIcon } from "../../../assets/icons/etc/arrow_ico
 import meso_icon from "../../../assets/icons/etc/meso_icon.png";
 import arcane_icon from "../../../assets/icons/etc/arcane_icon2.png";
 import authentic_icon from "../../../assets/icons/etc/authentic_icon2.png";
+import good_taxpayer_arcane_icon from "../../../assets/pages/user/equipment/symbolIcon/Good_Taxpayer_Arcane.png";
+import good_taxpayer_authentic_icon from "../../../assets/pages/user/equipment/symbolIcon/Good_Taxpayer_Authentic.png";
 import colors from "../../common/color/colors.js";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
@@ -14,19 +16,16 @@ export const SymbolCalculator = ({ symbolData }) => {
   const group1 = symbols.slice(0, 6); // 아케인 심볼
   const group2 = symbols.slice(6); // 어센틱 심볼
 
-  const {
-    arcaneSymbolsCost,
-    authenticSymbolsCost,
-    grandAuthenticSymbolsCost,
-    totalSymbolCost,
-  } = symbolCost;
+  const { arcaneSymbolsCost, authenticSymbolsCost, totalSymbolCost } =
+    symbolCost;
 
-  // 아케인 심볼, 어센틱 심볼 포스 합계 계산
+  // 아케인 심볼 포스 합계 계산
   const arcaneForce = group1.reduce(
     (sum, s) => sum + Number(s.symbol_force),
     0
   );
 
+  // 어센틱 심볼 포스 합계 계산
   const authenticForce = group2.reduce(
     (sum, s) => sum + Number(s.symbol_force),
     0
@@ -59,24 +58,13 @@ export const SymbolCalculator = ({ symbolData }) => {
       0
     );
 
-  const totalGrandCost = symbols
-    .slice(12)
-    .reduce(
-      (sum, s) =>
-        sum +
-        getSymbolCost(s.symbol_name, s.symbol_level, grandAuthenticSymbolsCost),
-      0
-    );
-
   // 총 소비 메소 계산
-  const totalCost = totalArcaneCost + totalAuthenticCost + totalGrandCost;
+  const totalCost = totalArcaneCost + totalAuthenticCost;
 
   // 심볼 이름에서 불필요한 부분 제거
   const getSymbolShortName = (name) =>
     name
-      .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "")
-      .replace("소멸의 ", "")
-      .replace("아일랜드", "")
+      .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 |소멸의 |아일랜드)/g, "")
       .trim();
 
   // 메소 단위 변환 함수
@@ -130,8 +118,8 @@ export const SymbolCalculator = ({ symbolData }) => {
   const sortedAuthenticSteps = sortSteps(authenticSteps);
 
   // 강화 비용 렌더링 함수
-  const renderUpgradeSteps = (steps) =>
-    steps.length > 0 && (
+  const renderUpgradeSteps = (steps, type) =>
+    steps.length > 0 ? (
       <SuggesttWrap>
         <CardWrap>
           {steps.slice(0, 12).map((step, i, arr) => (
@@ -144,17 +132,28 @@ export const SymbolCalculator = ({ symbolData }) => {
                 </Level>
                 <Price>{toEokMan(step.cost)}</Price>
               </UpgradeSymbolCard>
-              {i < arr.length && <ArrowIcon />}
+              {i < arr.length - 1 && <ArrowIcon />}
             </React.Fragment>
           ))}
         </CardWrap>
+      </SuggesttWrap>
+    ) : (
+      <SuggesttWrap>
+        <GoodTaxpayer
+          src={
+            type === "arcane"
+              ? good_taxpayer_arcane_icon
+              : good_taxpayer_authentic_icon
+          }
+          alt="good_taxpayer"
+        />
       </SuggesttWrap>
     );
 
   // 파이 차트 데이터 생성
   const getPieData = (value, max, label) => [
     { name: label, value },
-    { name: "남은 수치", value: max - value },
+    { name: "남은 포스", value: max - value },
   ];
 
   // 심볼별 스타일
@@ -174,6 +173,7 @@ export const SymbolCalculator = ({ symbolData }) => {
       height: 140px;
     }
   `;
+
   const renderPieChart = (title, value, max) => (
     <ReachWrap style={{ textAlign: "center", position: "relative" }}>
       <h3>{title}</h3>
@@ -181,16 +181,20 @@ export const SymbolCalculator = ({ symbolData }) => {
         <PieChart width={123} height={123} zIndex={9999}>
           <defs>
             <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#434575" />
+              <stop offset="0%" stopColor="#5a5e9c" />
               <stop offset="100%" stopColor="#3d4172" />
             </linearGradient>
             <linearGradient id="authenticGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#375b88" />
+              <stop offset="0%" stopColor="#5c8ac2" />
               <stop offset="100%" stopColor="#45699c" />
+            </linearGradient>
+            <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(224, 83, 83)" />
+              <stop offset="100%" stopColor="rgb(169, 68, 68)" />
             </linearGradient>
           </defs>
           <Pie
-            data={getPieData(value, max, "현재 수치")}
+            data={getPieData(value, max, "현재 포스")}
             cx="50%"
             cy="50%"
             innerRadius={45}
@@ -198,15 +202,18 @@ export const SymbolCalculator = ({ symbolData }) => {
             startAngle={90}
             endAngle={-270}
             paddingAngle={0}
+            animationDuration={700}
             dataKey="value"
           >
-            {getPieData(value, max, "현재 수치").map((entry, index) => (
+            {getPieData(value, max, "현재 포스").map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={
-                  title === "아케인 포스"
-                    ? arcaneColors[index % arcaneColors.length]
-                    : authenticColors[index % authenticColors.length]
+                  index === 0
+                    ? title === "아케인 포스"
+                      ? arcaneColors[0]
+                      : authenticColors[0]
+                    : "url(#redGradient)"
                 }
               />
             ))}
@@ -306,7 +313,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                 풀강까지 남은 메소 :{" "}
                 {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)}
               </p>
-              {renderUpgradeSteps(sortedArcaneSteps)}
+              {renderUpgradeSteps(sortedArcaneSteps, "arcane")}
             </ResultWrap>
           </ArcaneGroupWrap>
         )}
@@ -341,7 +348,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                 풀강까지 남은 메소 :{" "}
                 {toEokMan(totalSymbolCost.어센틱 - totalAuthenticCost)}
               </p>
-              {renderUpgradeSteps(sortedAuthenticSteps)}
+              {renderUpgradeSteps(sortedAuthenticSteps, "authentic")}
             </ResultWrap>
           </AuthenticGroupWrap>
         )}
@@ -351,12 +358,13 @@ export const SymbolCalculator = ({ symbolData }) => {
 };
 
 const Container = styled.div`
+  ${ContainerCss};
   display: flex;
   flex-direction: column;
   gap: 7px;
-  ${ContainerCss};
+  width: 100%;
   padding: 10px;
-  color: #fff;
+  color: ${colors.main.white0};
   max-width: 634px;
 
   @media screen and (max-width: 652px) {
@@ -367,27 +375,35 @@ const Container = styled.div`
 const HeaderName = styled.div`
   font-size: 15px;
   font-weight: 700;
-  color: rgb(220, 252, 2);
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+  color: ${colors.subColor.darkYellow0};
+  text-shadow: 1px 1px ${colors.main.dark0Alpha25};
 `;
 
 const ArcaneGroupWrap = styled.div`
-  background: linear-gradient(180deg, #434575 0%, #3d4172 100%);
+  background: linear-gradient(
+    180deg,
+    rgb(67, 69, 117) 0%,
+    rgb(61, 65, 114) 100%
+  );
   border-radius: 12px;
   padding: 5px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: 1px solid #4f606b;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgb(79, 96, 107);
+  box-shadow: 0 4px 4px ${colors.main.dark0Alpha50};
 `;
 
 const AuthenticGroupWrap = styled(ArcaneGroupWrap)`
-  background: linear-gradient(180deg, #375b88 0%, #45699c 100%);
+  background: linear-gradient(
+    180deg,
+    rgb(55, 91, 136) 0%,
+    rgb(69, 105, 156) 100%
+  );
 `;
 
 const ReachWrap = styled(ArcaneGroupWrap)`
-  background: #384049;
+  background: rgb(56, 64, 73);
 `;
 
 const MesoForceCalWrap = styled.div`
@@ -406,8 +422,9 @@ const ResultWrap = styled.div`
   background-color: rgb(21 23 30 / 50%);
   border-radius: 8px;
   padding: 12px 16px;
+  margin-top: 2px;
   line-height: 1.4;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 1px ${colors.main.dark0Alpha30};
 `;
 
 const SuggesttWrap = styled.div`
@@ -432,49 +449,41 @@ const SectionTitle = styled.h3`
   width: fit-content;
   padding: 2px 12px;
 
-  /* 아케인 심볼*/
   ${(props) =>
-    props.children === "아케인 심볼 강화 계산" &&
+    props.$type === "arcane" &&
     `
       border-left: 3px solid rgb(122, 59, 223);
       background: linear-gradient(
-    90deg,
-    rgb(0, 0, 0) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+        90deg,
+        rgb(0, 0, 0) 50%,
+        rgba(0, 0, 0, 0) 100%
+      );
     `}
 
-  /* 어센틱 심볼*/
   ${(props) =>
-    props.children === "어센틱 심볼 강화 계산" &&
+    props.$type === "authentic" &&
     `
       border-left: 3px solid rgb(53, 87, 236);
       background: linear-gradient(
-    90deg,
-    rgb(0, 0, 0) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+        90deg,
+        rgb(0, 0, 0) 50%,
+        rgba(0, 0, 0, 0) 100%
+      );
     `}
 `;
 
-const SymbolInfoCard = styled.div`
-  background: linear-gradient(180deg, #2b313a 0%, #1e222a 100%);
-  border-radius: 8px;
-  padding: 2px;
-  width: 100%;
-  height: 100%;
+const UpgradeSymbolCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-`;
-
-const UpgradeSymbolCard = styled(SymbolInfoCard)`
   width: 78px;
   height: 100px;
   border: 1px solid rgba(211, 211, 211, 0.5);
+  background: linear-gradient(180deg, rgb(43, 49, 58) 0%, rgb(30, 34, 42) 100%);
+  border-radius: 8px;
+  padding: 2px;
+  box-shadow: 0 2px 6px ${colors.main.dark0Alpha50};
 `;
 
 const Icon = styled.img`
@@ -488,7 +497,7 @@ const Name = styled.div`
 `;
 
 const Level = styled.div`
-  background-color: #525252;
+  background-color: rgb(82, 82, 82);
   border-radius: 4px;
   padding: 0px 2px;
 `;
@@ -524,7 +533,7 @@ const MesoIcon = styled.img`
   width: auto;
   height: 100%;
   padding: 2px;
-  background-color: rgb(122, 121, 117);
+  background-color: ${colors.greyScale.grey5Alpha85};
   border-radius: 9px 0px 0px 9px;
 `;
 
@@ -554,9 +563,9 @@ const AnalyzeGroupWrap = styled.div`
   flex-direction: column;
   padding: 10px;
   background-color: rgb(77, 87, 99);
-  border: 1px solid #4f606b;
+  border: 1px solid rgb(79, 96, 107);
   border-radius: 7px;
-  outline: 1px solid #242b33;
+  outline: 1px solid ${colors.commonInfo.wrapOutline};
 `;
 
 const ChartWrap = styled.div`
@@ -567,8 +576,10 @@ const ChartWrap = styled.div`
 const MesoUsed = styled.span`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   width: 100%;
+  padding-right: 5px;
   margin-bottom: 10px;
   height: 35px;
   font-size: 15px;
@@ -576,10 +587,14 @@ const MesoUsed = styled.span`
   background-color: rgba(59, 66, 75, 0.9);
   border: 1px solid rgb(38, 43, 49);
   box-shadow: 0px 1px 0px rgb(133, 145, 145);
-  color: white;
 `;
 
 const MesoTitle = styled.p`
   font-weight: 700;
-  color: #ffffff;
+  margin-bottom: 2px;
+`;
+
+const GoodTaxpayer = styled.img`
+  width: 150px;
+  margin: 0 auto;
 `;
