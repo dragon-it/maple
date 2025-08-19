@@ -79,9 +79,16 @@ const totalSymbolCost = {
   어센틱: 51978300000,
 };
 
+const ARCANE_MAX = 1320;
+const AUTHENTIC_MAX = 770;
+const CLEAN_RE = /(어센틱심볼 : |아케인심볼 : |그랜드 |소멸의 |아일랜드)/g;
+
 export default {
   arcaneSymbolsCost,
   authenticSymbolsCost,
   grandAuthenticSymbolsCost,
   totalSymbolCost,
+  ARCANE_MAX,
+  AUTHENTIC_MAX,
+  CLEAN_RE,
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
@@ -16,24 +16,30 @@ export const SymbolCalculator = ({ symbolData }) => {
   const group1 = symbols.slice(0, 6); // 아케인 심볼
   const group2 = symbols.slice(6); // 어센틱 심볼
 
-  const { arcaneSymbolsCost, authenticSymbolsCost, totalSymbolCost } =
-    symbolCost;
+  const {
+    arcaneSymbolsCost,
+    authenticSymbolsCost,
+    totalSymbolCost,
+    ARCANE_MAX,
+    AUTHENTIC_MAX,
+    CLEAN_RE,
+  } = symbolCost;
 
   // 아케인 심볼 포스 합계 계산
-  const arcaneForce = group1.reduce(
-    (sum, s) => sum + Number(s.symbol_force),
-    0
+  const arcaneForce = useMemo(
+    () => group1.reduce((sum, s) => sum + Number(s.symbol_force), 0),
+    [group1]
   );
 
   // 어센틱 심볼 포스 합계 계산
-  const authenticForce = group2.reduce(
-    (sum, s) => sum + Number(s.symbol_force),
-    0
+  const authenticForce = useMemo(
+    () => group2.reduce((sum, s) => sum + Number(s.symbol_force), 0),
+    [group2]
   );
 
   // 심볼 비용 계산 함수
   const getSymbolCost = (name, level, arcaneSymbolsCost) => {
-    const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
+    const region = name.replace(CLEAN_RE, "");
     const costList = arcaneSymbolsCost[region];
 
     if (!costList) return 0;
@@ -41,22 +47,31 @@ export const SymbolCalculator = ({ symbolData }) => {
   };
 
   // 각 그룹별 심볼 비용 계산
-  const totalArcaneCost = symbols
-    .slice(0, 6)
-    .reduce(
-      (sum, s) =>
-        sum + getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
-      0
-    );
+  const totalArcaneCost = useMemo(
+    () =>
+      symbols
+        .slice(0, 6)
+        .reduce(
+          (sum, s) =>
+            sum +
+            getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
+          0
+        ),
+    [symbols, arcaneSymbolsCost]
+  );
 
-  const totalAuthenticCost = symbols
-    .slice(6)
-    .reduce(
-      (sum, s) =>
-        sum +
-        getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
-      0
-    );
+  const totalAuthenticCost = useMemo(
+    () =>
+      symbols
+        .slice(6)
+        .reduce(
+          (sum, s) =>
+            sum +
+            getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
+          0
+        ),
+    [symbols, authenticSymbolsCost]
+  );
 
   // 총 소비 메소 계산
   const totalCost = totalArcaneCost + totalAuthenticCost;
@@ -68,20 +83,24 @@ export const SymbolCalculator = ({ symbolData }) => {
       .trim();
 
   // 메소 단위 변환 함수
-  const toEokMan = (v) =>
-    v >= 100000000
-      ? `${Math.floor(v / 100000000)}억 ${Math.floor(
-          (v % 100000000) / 10000
-        )}만`
-      : `${Math.floor(v / 10000)}만`;
+  const toEokMan = (v) => {
+    const eok = Math.floor(v / 1e8); // 1e8 = 100,000,000
+    const man = Math.floor((v % 1e8) / 1e4); // 1e4 = 10,000
+    return eok ? `${eok}억 ${man}만` : `${man}만`;
+  };
 
-  const getUpgradeSteps = (name, level, symbolCost, maxUpgrade = 10) => {
+  const getUpgradeSteps = (
+    name,
+    level,
+    symbolCost,
+    symbol_icon,
+    maxUpgrade = 10
+  ) => {
     const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
     const costList = symbolCost[region];
     if (!costList) return [];
 
     const steps = [];
-
     for (let i = 1; i <= maxUpgrade; i++) {
       const from = level + i - 1;
       const to = level + i;
@@ -92,20 +111,15 @@ export const SymbolCalculator = ({ symbolData }) => {
         from,
         to,
         cost: costList[from],
+        symbol_icon,
       });
     }
-
     return steps;
   };
 
   const getStepsForGroup = (group, symbolCost) =>
     group.flatMap((s) =>
-      getUpgradeSteps(s.symbol_name, s.symbol_level, symbolCost).map(
-        (step) => ({
-          ...step,
-          symbol_icon: s.symbol_icon,
-        })
-      )
+      getUpgradeSteps(s.symbol_name, s.symbol_level, symbolCost, s.symbol_icon)
     );
 
   const arcaneSteps = getStepsForGroup(group1, arcaneSymbolsCost);
@@ -156,10 +170,6 @@ export const SymbolCalculator = ({ symbolData }) => {
     { name: "남은 포스", value: max - value },
   ];
 
-  // 심볼별 스타일
-  const arcaneColors = ["url(#arcaneGradient)", "#333"];
-  const authenticColors = ["url(#authenticGradient)", "#333"];
-
   // 파이 차트 스타일
   const PieChartWrap = styled.div`
     width: 180px;
@@ -174,11 +184,27 @@ export const SymbolCalculator = ({ symbolData }) => {
     }
   `;
 
+  const [pieSize, setPieSize] = useState({
+    width: window.innerWidth <= 652 ? 100 : 180,
+    height: window.innerWidth <= 652 ? 100 : 125,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setPieSize({
+        width: window.innerWidth <= 652 ? 100 : 180,
+        height: window.innerWidth <= 652 ? 100 : 125,
+      });
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const renderPieChart = (title, value, max) => (
     <ReachWrap style={{ textAlign: "center", position: "relative" }}>
       <h3>{title}</h3>
       <PieChartWrap>
-        <PieChart width={123} height={123} zIndex={9999}>
+        <PieChart width={pieSize.width} height={pieSize.height}>
           <defs>
             <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#5a5e9c" />
@@ -211,8 +237,8 @@ export const SymbolCalculator = ({ symbolData }) => {
                 fill={
                   index === 0
                     ? title === "아케인 포스"
-                      ? arcaneColors[0]
-                      : authenticColors[0]
+                      ? "url(#arcaneGradient)"
+                      : "url(#authenticGradient)"
                     : "url(#redGradient)"
                 }
               />
@@ -280,8 +306,8 @@ export const SymbolCalculator = ({ symbolData }) => {
             >
               <SectionTitle>포스 도달률</SectionTitle>
               <ChartWrap>
-                {renderPieChart("아케인 포스", arcaneForce, 1320)}
-                {renderPieChart("어센틱 포스", authenticForce, 770)}
+                {renderPieChart("아케인 포스", arcaneForce, ARCANE_MAX)}
+                {renderPieChart("어센틱 포스", authenticForce, AUTHENTIC_MAX)}
               </ChartWrap>
             </div>
           </AnalyzeGroupWrap>
@@ -293,7 +319,9 @@ export const SymbolCalculator = ({ symbolData }) => {
               <SectionTitle $type="arcane">아케인 심볼 강화 계산</SectionTitle>
               <span>
                 <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
-                <ForceValue>{arcaneForce} / 1320</ForceValue>
+                <ForceValue>
+                  {arcaneForce} / {ARCANE_MAX}
+                </ForceValue>
                 <MaxLevel>(MAX)</MaxLevel> →{" "}
                 <span
                   style={{
@@ -305,7 +333,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                     color: "#000",
                   }}
                 >
-                  {(1320 - arcaneForce) / 10}번
+                  {(ARCANE_MAX - arcaneForce) / 10}번
                 </span>{" "}
                 강화 필요
               </span>
@@ -328,7 +356,9 @@ export const SymbolCalculator = ({ symbolData }) => {
                   src={authentic_icon}
                   alt="authentic_icon"
                 />{" "}
-                <ForceValue>{authenticForce} / 770</ForceValue>
+                <ForceValue>
+                  {authenticForce} / {AUTHENTIC_MAX}
+                </ForceValue>
                 <MaxLevel>(MAX)</MaxLevel> →{" "}
                 <span
                   style={{
@@ -340,7 +370,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                     color: "#000",
                   }}
                 >
-                  {(770 - authenticForce) / 10}번
+                  {(AUTHENTIC_MAX - authenticForce) / 10}번
                 </span>{" "}
                 강화 필요
               </span>
