@@ -23,6 +23,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     ARCANE_MAX,
     AUTHENTIC_MAX,
     CLEAN_RE,
+    CLEAN_RE2,
   } = symbolCost;
 
   // 아케인 심볼 포스 합계 계산
@@ -39,7 +40,7 @@ export const SymbolCalculator = ({ symbolData }) => {
 
   // 심볼 비용 계산 함수
   const getSymbolCost = (name, level, arcaneSymbolsCost) => {
-    const region = name.replace(CLEAN_RE, "");
+    const region = name.replace(CLEAN_RE2, "");
     const costList = arcaneSymbolsCost[region];
 
     if (!costList) return 0;
@@ -77,10 +78,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   const totalCost = totalArcaneCost + totalAuthenticCost;
 
   // 심볼 이름에서 불필요한 부분 제거
-  const getSymbolShortName = (name) =>
-    name
-      .replace(/(어센틱심볼 : |아케인심볼 : |그랜드 |소멸의 |아일랜드)/g, "")
-      .trim();
+  const getSymbolShortName = (name) => name.replace(CLEAN_RE, "").trim();
 
   // 메소 단위 변환 함수
   const toEokMan = (v) => {
@@ -96,7 +94,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     symbol_icon,
     maxUpgrade = 10
   ) => {
-    const region = name.replace(/(어센틱심볼 : |아케인심볼 : |그랜드 )/g, "");
+    const region = name.replace(CLEAN_RE2, "");
     const costList = symbolCost[region];
     if (!costList) return [];
 

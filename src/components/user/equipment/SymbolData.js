@@ -1,6 +1,6 @@
 const arcaneSymbolsCost = {
   "소멸의 여로": [
-    0, 0, 1230000, 1660000, 2260000, 3060000, 4040000, 5220000, 6600000,
+    0, 970000, 1230000, 1660000, 2260000, 3060000, 4040000, 5220000, 6600000,
     8180000, 9990000, 12010000, 14260000, 16740000, 19450000, 22420000,
     25630000, 29100000, 32830000, 36820000,
   ],
@@ -75,13 +75,14 @@ const grandAuthenticSymbolsCost = {
 };
 
 const totalSymbolCost = {
-  아케인: 2317550000,
+  아케인: 2318520000,
   어센틱: 51978300000,
 };
 
 const ARCANE_MAX = 1320;
 const AUTHENTIC_MAX = 770;
 const CLEAN_RE = /(어센틱심볼 : |아케인심볼 : |그랜드 |소멸의 |아일랜드)/g;
+const CLEAN_RE2 = /(어센틱심볼 : |아케인심볼 : |그랜드 )/g;
 
 export default {
   arcaneSymbolsCost,
@@ -91,4 +92,5 @@ export default {
   ARCANE_MAX,
   AUTHENTIC_MAX,
   CLEAN_RE,
+  CLEAN_RE2,
 };
