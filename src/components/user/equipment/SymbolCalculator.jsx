@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
@@ -12,6 +12,7 @@ import colors from "../../common/color/colors.js";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 export const SymbolCalculator = ({ symbolData }) => {
+  const [excludeGrandAuthentic, setExcludeGrandAuthentic] = useState(false);
   const symbols = symbolData.symbol || [];
   const group1 = symbols.slice(0, 6); // 아케인 심볼
   const group2 = symbols.slice(6); // 어센틱 심볼
@@ -24,86 +25,111 @@ export const SymbolCalculator = ({ symbolData }) => {
     AUTHENTIC_MAX,
     CLEAN_RE,
     CLEAN_RE2,
+    GRAND_AUTHENTIC_SYMBOLS,
+    GRAND_AUTHENTIC_FORCE,
   } = symbolCost;
 
+  // 탈라하트(그랜드 어센틱) 심볼 데이터 추출
+  const grandAuthenticSymbol = group2.find((s) =>
+    GRAND_AUTHENTIC_SYMBOLS.includes(
+      s.symbol_name.replace(CLEAN_RE2, "").trim()
+    )
+  );
+
+  // 탈라하트 11렙까지의 총 메소 계산
+  const grandAuthenticCost = grandAuthenticSymbol
+    ? authenticSymbolsCost[
+        grandAuthenticSymbol.symbol_name.replace(CLEAN_RE2, "").trim()
+      ]
+        .slice(0, 11)
+        .reduce((acc, v) => acc + v, 0)
+    : 0;
+
   // 아케인 심볼 포스 합계 계산
-  const arcaneForce = useMemo(
-    () => group1.reduce((sum, s) => sum + Number(s.symbol_force), 0),
-    [group1]
+  const arcaneForce = group1.reduce(
+    (sum, s) => sum + Number(s.symbol_force),
+    0
   );
 
   // 어센틱 심볼 포스 합계 계산
-  const authenticForce = useMemo(
-    () => group2.reduce((sum, s) => sum + Number(s.symbol_force), 0),
-    [group2]
-  );
+  const authenticForce = group2
+    .filter((s) =>
+      excludeGrandAuthentic
+        ? !GRAND_AUTHENTIC_SYMBOLS.includes(
+            s.symbol_name.replace(CLEAN_RE2, "").trim()
+          )
+        : true
+    )
+    .reduce((sum, s) => sum + Number(s.symbol_force), 0);
 
   // 심볼 비용 계산 함수
-  const getSymbolCost = (name, level, arcaneSymbolsCost) => {
+  const getSymbolCost = (name, level, costTable) => {
     const region = name.replace(CLEAN_RE2, "");
-    const costList = arcaneSymbolsCost[region];
-
+    const costList = costTable[region];
     if (!costList) return 0;
     return costList.slice(0, level).reduce((acc, v) => acc + v, 0);
   };
 
-  // 각 그룹별 심볼 비용 계산
-  const totalArcaneCost = useMemo(
-    () =>
-      symbols
-        .slice(0, 6)
-        .reduce(
-          (sum, s) =>
-            sum +
-            getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
-          0
-        ),
-    [symbols, arcaneSymbolsCost]
-  );
+  // 아케인 심볼 총 비용 계산
+  const totalArcaneCost = symbols
+    .slice(0, 6)
+    .reduce(
+      (sum, s) =>
+        sum + getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
+      0
+    );
 
-  const totalAuthenticCost = useMemo(
-    () =>
-      symbols
-        .slice(6)
-        .reduce(
-          (sum, s) =>
-            sum +
-            getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
-          0
-        ),
-    [symbols, authenticSymbolsCost]
-  );
+  // 어센틱 심볼 총 비용 계산
+  const totalAuthenticCost = symbols
+    .slice(6)
+    .filter((s) =>
+      excludeGrandAuthentic
+        ? !GRAND_AUTHENTIC_SYMBOLS.includes(
+            s.symbol_name.replace(CLEAN_RE2, "").trim()
+          )
+        : true
+    )
+    .reduce(
+      (sum, s) =>
+        sum +
+        getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
+      0
+    );
 
-  // 총 소비 메소 계산
+  // 총 비용 계산
   const totalCost = totalArcaneCost + totalAuthenticCost;
 
   // 심볼 이름에서 불필요한 부분 제거
   const getSymbolShortName = (name) => name.replace(CLEAN_RE, "").trim();
 
-  // 메소 단위 변환 함수
+  // 문자열을 숫자로 변환하는 함수
+  const toNum = (v, d = 0) => (Number.isFinite(Number(v)) ? Number(v) : d);
+
+  // 메소 단위로 변환
   const toEokMan = (v) => {
-    const eok = Math.floor(v / 1e8); // 1e8 = 100,000,000
-    const man = Math.floor((v % 1e8) / 1e4); // 1e4 = 10,000
+    const n = toNum(v, 0);
+    const eok = Math.floor(n / 1e8);
+    const man = Math.floor((n % 1e8) / 1e4);
     return eok ? `${eok}억 ${man}만` : `${man}만`;
   };
 
+  // 심볼 업그레이드 단계 계산
   const getUpgradeSteps = (
     name,
     level,
-    symbolCost,
+    costTable,
     symbol_icon,
     maxUpgrade = 10
   ) => {
+    const base = Number(level) || 0;
     const region = name.replace(CLEAN_RE2, "");
-    const costList = symbolCost[region];
+    const costList = costTable[region];
     if (!costList) return [];
-
     const steps = [];
     for (let i = 1; i <= maxUpgrade; i++) {
-      const from = level + i - 1;
-      const to = level + i;
+      const from = base + i - 1;
+      const to = base + i;
       if (to >= costList.length + 1) break;
-
       steps.push({
         symbol_name: name,
         from,
@@ -115,21 +141,58 @@ export const SymbolCalculator = ({ symbolData }) => {
     return steps;
   };
 
-  const getStepsForGroup = (group, symbolCost) =>
+  // 그룹별 업그레이드 단계 계산
+  const getStepsForGroup = (group, costTable) =>
     group.flatMap((s) =>
-      getUpgradeSteps(s.symbol_name, s.symbol_level, symbolCost, s.symbol_icon)
+      getUpgradeSteps(s.symbol_name, s.symbol_level, costTable, s.symbol_icon)
     );
 
-  const arcaneSteps = getStepsForGroup(group1, arcaneSymbolsCost);
-  const authenticSteps = getStepsForGroup(group2, authenticSymbolsCost);
+  // 아케인 심볼 업그레이드 단계 정렬
+  const sortedArcaneSteps = () =>
+    getStepsForGroup(group1, arcaneSymbolsCost)
+      .filter((s) => s.cost !== Infinity)
+      .sort((a, b) => a.cost - b.cost);
 
-  const sortSteps = (steps) =>
-    steps.filter((s) => s.cost !== Infinity).sort((a, b) => a.cost - b.cost);
+  // 어센틱 심볼 업그레이드 단계 정렬
+  const sortedAuthenticSteps = () =>
+    getStepsForGroup(
+      group2.filter((s) =>
+        excludeGrandAuthentic
+          ? !GRAND_AUTHENTIC_SYMBOLS.includes(
+              s.symbol_name.replace(CLEAN_RE2, "").trim()
+            )
+          : true
+      ),
+      authenticSymbolsCost
+    )
+      .filter((s) => s.cost !== Infinity)
+      .sort((a, b) => a.cost - b.cost);
 
-  const sortedArcaneSteps = sortSteps(arcaneSteps);
-  const sortedAuthenticSteps = sortSteps(authenticSteps);
+  // 어센틱 포스 최대값 (그랜드 제외 옵션 적용)
+  const authenticMax = excludeGrandAuthentic
+    ? AUTHENTIC_MAX - GRAND_AUTHENTIC_FORCE
+    : AUTHENTIC_MAX;
 
-  // 강화 비용 렌더링 함수
+  // 풀강까지 남은 메소 (그랜드 제외 옵션 적용)
+  const authenticRemainCost = excludeGrandAuthentic
+    ? totalSymbolCost.어센틱 - totalAuthenticCost - grandAuthenticCost
+    : totalSymbolCost.어센틱 - totalAuthenticCost;
+
+  // SSR 가드: window는 effect에서만 사용
+  const [pieSize, setPieSize] = useState({ width: 180, height: 125 });
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleResize = () => {
+      setPieSize({
+        width: window.innerWidth <= 652 ? 100 : 180,
+        height: window.innerWidth <= 652 ? 100 : 125,
+      });
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const renderUpgradeSteps = (steps, type) =>
     steps.length > 0 ? (
       <SuggesttWrap>
@@ -137,7 +200,10 @@ export const SymbolCalculator = ({ symbolData }) => {
           {steps.slice(0, 12).map((step, i, arr) => (
             <React.Fragment key={`${step.symbol_name}-${step.from}-${i}`}>
               <UpgradeSymbolCard>
-                <Icon src={step.symbol_icon} alt="symbol_name" />
+                <Icon
+                  src={step.symbol_icon}
+                  alt={getSymbolShortName(step.symbol_name)}
+                />
                 <Name>{getSymbolShortName(step.symbol_name)}</Name>
                 <Level>
                   {step.from} → {step.to}
@@ -162,226 +228,233 @@ export const SymbolCalculator = ({ symbolData }) => {
       </SuggesttWrap>
     );
 
-  // 파이 차트 데이터 생성
-  const getPieData = (value, max, label) => [
-    { name: label, value },
-    { name: "남은 포스", value: max - value },
-  ];
+  const renderPieChart = (title, value, max) => {
+    const data = [
+      { name: "현재 포스", value },
+      { name: "남은 포스", value: Math.max(0, max - value) },
+    ];
+    return (
+      <ReachWrap style={{ textAlign: "center", position: "relative" }}>
+        <h3>{title}</h3>
+        <PieChartWrap>
+          <PieChart width={pieSize.width} height={pieSize.height}>
+            <defs>
+              <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#5a5e9c" />
+                <stop offset="100%" stopColor="#3d4172" />
+              </linearGradient>
+              <linearGradient
+                id="authenticGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#5c8ac2" />
+                <stop offset="100%" stopColor="#45699c" />
+              </linearGradient>
+              <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="rgba(224, 83, 83)" />
+                <stop offset="100%" stopColor="rgb(169, 68, 68)" />
+              </linearGradient>
+            </defs>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={45}
+              outerRadius={60}
+              startAngle={90}
+              endAngle={-270}
+              paddingAngle={0}
+              animationDuration={700}
+              dataKey="value"
+            >
+              {data.map((_, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    index === 0
+                      ? title === "아케인 포스"
+                        ? "url(#arcaneGradient)"
+                        : "url(#authenticGradient)"
+                      : "url(#redGradient)"
+                  }
+                />
+              ))}
+            </Pie>
+            <Tooltip wrapperStyle={{ zIndex: 9999 }} />
+          </PieChart>
+        </PieChartWrap>
+        <ForcePercent>
+          <p>
+            {value} / {max}
+          </p>
+          {((value / max) * 100).toFixed(1)} %
+        </ForcePercent>
+      </ReachWrap>
+    );
+  };
 
-  // 파이 차트 스타일
-  const PieChartWrap = styled.div`
-    width: 180px;
-    height: 125px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    @media screen and (max-width: 652px) {
-      width: 150px;
-      height: 140px;
-    }
-  `;
-
-  const [pieSize, setPieSize] = useState({
-    width: window.innerWidth <= 652 ? 100 : 180,
-    height: window.innerWidth <= 652 ? 100 : 125,
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setPieSize({
-        width: window.innerWidth <= 652 ? 100 : 180,
-        height: window.innerWidth <= 652 ? 100 : 125,
-      });
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const renderPieChart = (title, value, max) => (
-    <ReachWrap style={{ textAlign: "center", position: "relative" }}>
-      <h3>{title}</h3>
-      <PieChartWrap>
-        <PieChart width={pieSize.width} height={pieSize.height}>
-          <defs>
-            <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#5a5e9c" />
-              <stop offset="100%" stopColor="#3d4172" />
-            </linearGradient>
-            <linearGradient id="authenticGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#5c8ac2" />
-              <stop offset="100%" stopColor="#45699c" />
-            </linearGradient>
-            <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="rgba(224, 83, 83)" />
-              <stop offset="100%" stopColor="rgb(169, 68, 68)" />
-            </linearGradient>
-          </defs>
-          <Pie
-            data={getPieData(value, max, "현재 포스")}
-            cx="50%"
-            cy="50%"
-            innerRadius={45}
-            outerRadius={60}
-            startAngle={90}
-            endAngle={-270}
-            paddingAngle={0}
-            animationDuration={700}
-            dataKey="value"
-          >
-            {getPieData(value, max, "현재 포스").map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={
-                  index === 0
-                    ? title === "아케인 포스"
-                      ? "url(#arcaneGradient)"
-                      : "url(#authenticGradient)"
-                    : "url(#redGradient)"
-                }
-              />
-            ))}
-          </Pie>
-          <Tooltip wrapperStyle={{ zIndex: 9999 }} />
-        </PieChart>
-      </PieChartWrap>
-      <ForcePercent>
-        <p>
-          {value} / {max}
-        </p>
-        {((value / max) * 100).toFixed(1)} %
-      </ForcePercent>
-    </ReachWrap>
-  );
+  if (!symbols.length) return null;
 
   return (
-    symbols.length > 0 && (
-      <Container>
-        <HeaderName>SYMBOL CALCULATOR</HeaderName>
-        {/* 소비 메소 warp */}
-        <MesoForceCalWrap>
-          <AnalyzeGroupWrap>
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <SectionTitle>소비 메소</SectionTitle>
-            </span>
-            <div>
-              <MesoTitle> 아케인 심볼 소비 메소</MesoTitle>
-              <MesoUsed>
-                <MesoIcon src={meso_icon} alt="meso_icon" />
-                <span>{toEokMan(totalArcaneCost)} </span>
-              </MesoUsed>
-            </div>
-            <div>
-              <MesoTitle> 어센틱 심볼 소비 메소</MesoTitle>
-              <MesoUsed>
-                <MesoIcon src={meso_icon} alt="meso_icon" />{" "}
-                <span> {toEokMan(totalAuthenticCost)} </span>
-              </MesoUsed>
-            </div>
+    <Container>
+      <HeaderName>SYMBOL CALCULATOR</HeaderName>
 
-            <div>
-              <MesoTitle> 총 소비 메소</MesoTitle>
-              <MesoUsed>
-                <MesoIcon src={meso_icon} alt="meso_icon" />
-                <span> {toEokMan(totalCost)} </span>
-              </MesoUsed>
-            </div>
-          </AnalyzeGroupWrap>
-          <AnalyzeGroupWrap>
+      <MesoForceCalWrap>
+        <AnalyzeGroupWrap>
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <SectionTitle>소비 메소</SectionTitle>
+          </span>
+
+          <div>
+            <MesoTitle> 아케인 심볼 소비 메소</MesoTitle>
+            <MesoUsed>
+              <MesoIcon src={meso_icon} alt="meso_icon" />
+              <span>{toEokMan(totalArcaneCost)}</span>
+            </MesoUsed>
+          </div>
+
+          <div>
+            <MesoTitle> 어센틱 심볼 소비 메소</MesoTitle>
+            <MesoUsed>
+              <MesoIcon src={meso_icon} alt="meso_icon" />
+              <span>{toEokMan(totalAuthenticCost)}</span>
+            </MesoUsed>
+          </div>
+
+          <div>
+            <MesoTitle> 총 소비 메소</MesoTitle>
+            <MesoUsed>
+              <MesoIcon src={meso_icon} alt="meso_icon" />
+              <span>{toEokMan(totalCost)}</span>
+            </MesoUsed>
+          </div>
+        </AnalyzeGroupWrap>
+
+        <AnalyzeGroupWrap>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <SectionTitle>포스 도달률</SectionTitle>
+            <ChartWrap>
+              {renderPieChart("아케인 포스", arcaneForce, ARCANE_MAX)}
+              {renderPieChart(
+                "어센틱 포스",
+                authenticForce,
+                excludeGrandAuthentic
+                  ? AUTHENTIC_MAX - GRAND_AUTHENTIC_FORCE
+                  : AUTHENTIC_MAX
+              )}
+            </ChartWrap>
+          </div>
+        </AnalyzeGroupWrap>
+      </MesoForceCalWrap>
+
+      {group1.length > 0 && (
+        <ArcaneGroupWrap>
+          <ResultWrap>
+            <SectionTitle $type="arcane">아케인 심볼 강화 계산</SectionTitle>
+            <span>
+              <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
+              <ForceValue>
+                {arcaneForce} / {ARCANE_MAX}
+              </ForceValue>
+              <MaxLevel>(MAX)</MaxLevel> →{" "}
+              <span
+                style={{
+                  fontSize: "16px",
+                  backgroundColor: "rgba(255, 246, 122, 0.9)",
+                  padding: "0px 2px",
+                  borderRadius: "4px",
+                  fontWeight: "bold",
+                  color: "rgb(0, 0, 0)",
+                }}
+              >
+                {(ARCANE_MAX - arcaneForce) / 10}번
+              </span>{" "}
+              강화 필요
+            </span>
+            <p>
+              풀강까지 남은 메소 :{" "}
+              {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)}
+            </p>
+            {renderUpgradeSteps(sortedArcaneSteps(), "arcane")}
+          </ResultWrap>
+        </ArcaneGroupWrap>
+      )}
+
+      {group2.length > 0 && (
+        <AuthenticGroupWrap>
+          <ResultWrap>
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
                 alignItems: "center",
-                flexDirection: "column",
+                justifyContent: "space-between",
               }}
             >
-              <SectionTitle>포스 도달률</SectionTitle>
-              <ChartWrap>
-                {renderPieChart("아케인 포스", arcaneForce, ARCANE_MAX)}
-                {renderPieChart("어센틱 포스", authenticForce, AUTHENTIC_MAX)}
-              </ChartWrap>
-            </div>
-          </AnalyzeGroupWrap>
-        </MesoForceCalWrap>
-
-        {group1.length > 0 && (
-          <ArcaneGroupWrap>
-            <ResultWrap>
-              <SectionTitle $type="arcane">아케인 심볼 강화 계산</SectionTitle>
-              <span>
-                <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
-                <ForceValue>
-                  {arcaneForce} / {ARCANE_MAX}
-                </ForceValue>
-                <MaxLevel>(MAX)</MaxLevel> →{" "}
-                <span
-                  style={{
-                    fontSize: "16px",
-                    backgroundColor: "rgba(255, 246, 122, 0.9)",
-                    padding: "0px 2px",
-                    borderRadius: "4px",
-                    fontWeight: "bold",
-                    color: "#000",
-                  }}
-                >
-                  {(ARCANE_MAX - arcaneForce) / 10}번
-                </span>{" "}
-                강화 필요
-              </span>
-              <p>
-                풀강까지 남은 메소 :{" "}
-                {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)}
-              </p>
-              {renderUpgradeSteps(sortedArcaneSteps, "arcane")}
-            </ResultWrap>
-          </ArcaneGroupWrap>
-        )}
-        {group2.length > 0 && (
-          <AuthenticGroupWrap>
-            <ResultWrap>
               <SectionTitle $type="authentic">
                 어센틱 심볼 강화 계산
               </SectionTitle>
-              <span>
-                <AuthenticForceHeaderIcon
-                  src={authentic_icon}
-                  alt="authentic_icon"
-                />{" "}
-                <ForceValue>
-                  {authenticForce} / {AUTHENTIC_MAX}
-                </ForceValue>
-                <MaxLevel>(MAX)</MaxLevel> →{" "}
-                <span
-                  style={{
-                    fontSize: "17px",
-                    backgroundColor: "rgba(255, 246, 122, 0.9)",
-                    padding: "0px 2px",
-                    borderRadius: "4px",
-                    fontWeight: "bold",
-                    color: "#000",
-                  }}
-                >
-                  {(AUTHENTIC_MAX - authenticForce) / 10}번
-                </span>{" "}
-                강화 필요
-              </span>
-              <p>
-                풀강까지 남은 메소 :{" "}
-                {toEokMan(totalSymbolCost.어센틱 - totalAuthenticCost)}
-              </p>
-              {renderUpgradeSteps(sortedAuthenticSteps, "authentic")}
-            </ResultWrap>
-          </AuthenticGroupWrap>
-        )}
-      </Container>
-    )
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  fontSize: "14px",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={excludeGrandAuthentic}
+                  onChange={(e) => setExcludeGrandAuthentic(e.target.checked)}
+                  style={{ marginRight: "4px" }}
+                />
+                그랜드 어센틱 심볼 제외
+              </label>
+            </div>
+            <span>
+              <AuthenticForceHeaderIcon
+                src={authentic_icon}
+                alt="authentic_icon"
+              />{" "}
+              <ForceValue>
+                {authenticForce} / {authenticMax}
+              </ForceValue>
+              <MaxLevel>(MAX)</MaxLevel> →{" "}
+              <span
+                style={{
+                  fontSize: "17px",
+                  backgroundColor: "rgba(255, 246, 122, 0.9)",
+                  padding: "0px 2px",
+                  borderRadius: "4px",
+                  fontWeight: "bold",
+                  color: "rgb(0, 0, 0)",
+                }}
+              >
+                {(authenticMax - authenticForce) / 10}번
+              </span>{" "}
+              강화 필요
+            </span>
+            <p>풀강까지 남은 메소 : {toEokMan(authenticRemainCost)}</p>
+            {renderUpgradeSteps(sortedAuthenticSteps(), "authentic")}
+          </ResultWrap>
+        </AuthenticGroupWrap>
+      )}
+    </Container>
   );
 };
 
@@ -481,22 +554,14 @@ const SectionTitle = styled.h3`
     props.$type === "arcane" &&
     `
       border-left: 3px solid rgb(122, 59, 223);
-      background: linear-gradient(
-        90deg,
-        rgb(0, 0, 0) 50%,
-        rgba(0, 0, 0, 0) 100%
-      );
+      background: linear-gradient(90deg, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
     `}
 
   ${(props) =>
     props.$type === "authentic" &&
     `
       border-left: 3px solid rgb(53, 87, 236);
-      background: linear-gradient(
-        90deg,
-        rgb(0, 0, 0) 50%,
-        rgba(0, 0, 0, 0) 100%
-      );
+      background: linear-gradient(90deg, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
     `}
 `;
 
@@ -625,4 +690,17 @@ const MesoTitle = styled.p`
 const GoodTaxpayer = styled.img`
   width: 150px;
   margin: 0 auto;
+`;
+
+const PieChartWrap = styled.div`
+  width: 180px;
+  height: 125px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 652px) {
+    width: 150px;
+    height: 140px;
+  }
 `;

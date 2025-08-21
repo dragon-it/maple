@@ -83,6 +83,8 @@ const ARCANE_MAX = 1320;
 const AUTHENTIC_MAX = 770;
 const CLEAN_RE = /(어센틱심볼 : |아케인심볼 : |그랜드 |소멸의 |아일랜드)/g;
 const CLEAN_RE2 = /(어센틱심볼 : |아케인심볼 : |그랜드 )/g;
+const GRAND_AUTHENTIC_SYMBOLS = ["탈라하트", "Grand2", "Grand3"]; // 추후 추가될 그랜드 어센틱 심볼
+const GRAND_AUTHENTIC_FORCE = 110; // 그랜드 어센틱 심볼의 포스 증가량, 추후 추가될 심볼에 따라 변경할 것
 
 export default {
   arcaneSymbolsCost,
@@ -93,4 +95,6 @@ export default {
   AUTHENTIC_MAX,
   CLEAN_RE,
   CLEAN_RE2,
+  GRAND_AUTHENTIC_SYMBOLS,
+  GRAND_AUTHENTIC_FORCE,
 };
