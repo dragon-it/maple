@@ -261,17 +261,22 @@ const Level = styled.div`
     font-size: 12px;
   }
 `;
-
 const CharacterImg = styled.div`
-  display: flex;
-  justify-content: center;
-  transform: scaleX(-1);
-  width: 110px;
-  margin: 2px 0;
-  image-rendering: pixelated;
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 2px auto;
+  overflow: hidden;
 
-  @media screen and (max-width: 576px) {
-    width: 90px;
+  img {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -53%) scaleX(-1);
+    image-rendering: pixelated;
+    object-fit: cover;
   }
 `;
 
