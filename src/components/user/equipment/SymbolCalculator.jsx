@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
@@ -28,22 +28,6 @@ export const SymbolCalculator = ({ symbolData }) => {
     GRAND_AUTHENTIC_SYMBOLS,
     GRAND_AUTHENTIC_FORCE,
   } = symbolCost;
-
-  // 탈라하트(그랜드 어센틱) 심볼 데이터 추출
-  const grandAuthenticSymbol = group2.find((s) =>
-    GRAND_AUTHENTIC_SYMBOLS.includes(
-      s.symbol_name.replace(CLEAN_RE2, "").trim()
-    )
-  );
-
-  // 탈라하트 11렙까지의 총 메소 계산
-  const grandAuthenticCost = grandAuthenticSymbol
-    ? authenticSymbolsCost[
-        grandAuthenticSymbol.symbol_name.replace(CLEAN_RE2, "").trim()
-      ]
-        .slice(0, 11)
-        .reduce((acc, v) => acc + v, 0)
-    : 0;
 
   // 아케인 심볼 포스 합계 계산
   const arcaneForce = group1.reduce(
@@ -175,23 +159,8 @@ export const SymbolCalculator = ({ symbolData }) => {
 
   // 풀강까지 남은 메소 (그랜드 제외 옵션 적용)
   const authenticRemainCost = excludeGrandAuthentic
-    ? totalSymbolCost.어센틱 - totalAuthenticCost - grandAuthenticCost
+    ? totalSymbolCost.어센틱 - totalAuthenticCost - totalSymbolCost.그랜드어센틱
     : totalSymbolCost.어센틱 - totalAuthenticCost;
-
-  // SSR 가드: window는 effect에서만 사용
-  const [pieSize, setPieSize] = useState({ width: 180, height: 125 });
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const handleResize = () => {
-      setPieSize({
-        width: window.innerWidth <= 652 ? 100 : 180,
-        height: window.innerWidth <= 652 ? 100 : 125,
-      });
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const renderUpgradeSteps = (steps, type) =>
     steps.length > 0 ? (
@@ -237,7 +206,7 @@ export const SymbolCalculator = ({ symbolData }) => {
       <ReachWrap style={{ textAlign: "center", position: "relative" }}>
         <h3>{title}</h3>
         <PieChartWrap>
-          <PieChart width={pieSize.width} height={pieSize.height}>
+          <PieChart width={180} height={125}>
             <defs>
               <linearGradient id="arcaneGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#5a5e9c" />
@@ -399,13 +368,7 @@ export const SymbolCalculator = ({ symbolData }) => {
       {group2.length > 0 && (
         <AuthenticGroupWrap>
           <ResultWrap>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
+            <HeaderWrap>
               <SectionTitle $type="authentic">
                 어센틱 심볼 강화 계산
               </SectionTitle>
@@ -413,19 +376,24 @@ export const SymbolCalculator = ({ symbolData }) => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "4px",
                   fontSize: "14px",
+                  cursor: "pointer",
                 }}
               >
                 <input
                   type="checkbox"
                   checked={excludeGrandAuthentic}
                   onChange={(e) => setExcludeGrandAuthentic(e.target.checked)}
-                  style={{ marginRight: "4px" }}
+                  style={{
+                    marginRight: "4px",
+                    width: "16px",
+                    height: "16px",
+                    cursor: "pointer",
+                  }}
                 />
                 그랜드 어센틱 심볼 제외
               </label>
-            </div>
+            </HeaderWrap>
             <span>
               <AuthenticForceHeaderIcon
                 src={authentic_icon}
@@ -534,12 +502,24 @@ const SuggesttWrap = styled.div`
   background-color: rgb(21 23 30 / 50%);
   border-radius: 8px;
   padding: 4px 4px;
+  margin-top: 8px;
   line-height: 1.4;
+`;
+
+const HeaderWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  @media screen and (max-width: 652px) {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
 `;
 
 const SectionTitle = styled.h3`
   font-size: 18px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   font-weight: 700;
   background: linear-gradient(
     90deg,
@@ -663,7 +643,12 @@ const AnalyzeGroupWrap = styled.div`
 
 const ChartWrap = styled.div`
   display: flex;
+  width: 100%;
   gap: 5px;
+
+  @media screen and (max-width: 652px) {
+    flex-direction: column;
+  }
 `;
 
 const MesoUsed = styled.span`
@@ -693,14 +678,9 @@ const GoodTaxpayer = styled.img`
 `;
 
 const PieChartWrap = styled.div`
-  width: 180px;
+  width: 100%;
   height: 125px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media screen and (max-width: 652px) {
-    width: 150px;
-    height: 140px;
-  }
 `;

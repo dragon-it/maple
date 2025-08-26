@@ -76,7 +76,8 @@ const grandAuthenticSymbolsCost = {
 
 const totalSymbolCost = {
   아케인: 2318520000,
-  어센틱: 51978300000,
+  어센틱: 51978300000, // 그랜드 어센틱 심볼 포함
+  그랜드어센틱: 16072800000, // 그랜드 어센틱 심볼만
 };
 
 const ARCANE_MAX = 1320;
