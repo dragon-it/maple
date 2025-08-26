@@ -306,17 +306,17 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                   <BackgroundImageWrap $isSelected={currentTab} />
                   <CharacterImageWrap>
                     <Bg src={characterBg} />
-                    <img
+                    <CharacterImg
                       src={
                         BasicData?.getBasicInformation?.character_image
-                          ? `${BasicData.getBasicInformation.character_image}?width=131&height=130&y=130`
+                          ? BasicData.getBasicInformation.character_image
                           : undefined
                       }
                       alt="character_image"
                     />
-                    <span>
+                    <Name>
                       {BasicData?.getBasicInformation?.character_name}
-                    </span>
+                    </Name>
                   </CharacterImageWrap>
                   <EquipItems>
                     <BackgroundImage
@@ -904,34 +904,46 @@ const CharacterImageWrap = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 131px;
   height: 177px;
   top: 39px;
   border-radius: 5px;
+  overflow: hidden;
+  z-index: 99;
+`;
 
-  img {
-    z-index: 99;
-  }
+const CharacterImg = styled.img`
+  width: 100%;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -53%) scaleX(-1);
+  image-rendering: pixelated;
+  object-fit: cover;
+`;
 
-  span {
-    color: white;
-    font-size: 13px;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 1px 3px;
-    border-radius: 3px;
-    margin-top: 3px;
-    max-width: 75%;
-    white-space: normal;
-    text-align: center;
-    z-index: 99;
-  }
+const Name = styled.div`
+  position: absolute;
+  max-width: 75%;
+  color: white;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 1px 3px;
+  border-radius: 3px;
+  margin-top: 3px;
+  white-space: normal;
+  text-align: center;
+  z-index: 99;
+  top: 130px;
 `;
 
 const Bg = styled.img`
   position: absolute;
+  max-width: 131px;
   border-radius: 5px;
+  width: 100%;
 `;
 
 const BackgroundImage = styled.img`
