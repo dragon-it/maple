@@ -80,7 +80,7 @@ export const SymbolUi = ({ symbolData }) => {
         {arcane.length <= 0 && (
           <ConditionText>
             <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
-            <span style={{ color: "rgb(197, 236, 0)" }}>[LV.200] </span>또
+            <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.200] </span>또
             하나의 힘, 아케인포스
           </ConditionText>
         )}
@@ -117,7 +117,7 @@ export const SymbolUi = ({ symbolData }) => {
                     <p>Lv.{arcane[idx].symbol_level}</p>
                   )}
                   <MaxLevel>
-                    {arcane[idx]?.symbol_level === 20 && <p>MAX</p>}
+                    {arcane[idx]?.symbol_level === 20 && <span>MAX</span>}
                   </MaxLevel>
                 </ARCSymbolInfo>
               </Slot>
@@ -170,7 +170,7 @@ export const SymbolUi = ({ symbolData }) => {
                     <p>Lv.{authentic[idx].symbol_level}</p>
                   )}
                   <MaxLevel>
-                    {authentic[idx]?.symbol_level === 11 && <p>MAX</p>}
+                    {authentic[idx]?.symbol_level === 11 && <span>MAX</span>}
                   </MaxLevel>
                 </AUTSymbolInfo>
               </Slot>
@@ -224,7 +224,7 @@ export const SymbolUi = ({ symbolData }) => {
                     <p>Lv.{grand[idx].symbol_level}</p>
                   )}
                   <MaxLevel>
-                    {grand[idx]?.symbol_level === 11 && <p>MAX</p>}
+                    {grand[idx]?.symbol_level === 11 && <span>MAX</span>}
                   </MaxLevel>
                 </GrandSymbolInfo>
               </Slot>
@@ -276,7 +276,6 @@ const Wrap = styled.div`
   justify-content: center;
   gap: 5px;
   color: ${colors.main.white0};
-  margin-top: 5px;
 
   @media screen and (max-width: 652px) {
     flex-direction: column;
@@ -345,7 +344,7 @@ const SymbolImg = styled.img`
   image-rendering: pixelated;
 `;
 
-const ConditionText = styled.p`
+const ConditionText = styled.div`
   position: relative;
   color: ${colors.main.white0};
   text-shadow: 0 0 2px ${colors.main.dark0};
