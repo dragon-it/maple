@@ -87,7 +87,7 @@ const CLEAN_RE2 = /(어센틱심볼 : |아케인심볼 : |그랜드 )/g;
 const GRAND_AUTHENTIC_SYMBOLS = ["탈라하트", "Grand2", "Grand3"]; // 추후 추가될 그랜드 어센틱 심볼
 const GRAND_AUTHENTIC_FORCE = 110; // 그랜드 어센틱 심볼의 포스 증가량, 추후 추가될 심볼에 따라 변경할 것
 
-export default {
+const symbolData = {
   arcaneSymbolsCost,
   authenticSymbolsCost,
   grandAuthenticSymbolsCost,
@@ -99,3 +99,5 @@ export default {
   GRAND_AUTHENTIC_SYMBOLS,
   GRAND_AUTHENTIC_FORCE,
 };
+
+export default symbolData;
