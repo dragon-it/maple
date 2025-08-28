@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import styled, { css } from "styled-components";
 import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipBackgrnd.png";
 import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipBackgrnd.png";
@@ -10,10 +10,28 @@ import autSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/
 import grandSymbol from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipSymbol.png";
 import grandSymbolDisabled from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/grandaut_EquipSymbolDisabled.png";
 import colors from "../../common/color/colors";
+import symbolDataJs from "./SymbolData";
+import { InfoPopup } from "./SymbolPopup";
 
 export const SymbolUi = ({ symbolData }) => {
-  const list = symbolData?.symbol || [];
+  const [hoveredKey, setHoveredKey] = useState(null);
+  const [clickedKey, setClickedKey] = useState(null);
+  const openByHover = useCallback((key) => setHoveredKey(key), []);
+  const closeHover = useCallback(() => setHoveredKey(null), []);
+  const toggleClick = useCallback((key) => {
+    setClickedKey((prev) => (prev === key ? null : key));
+  }, []);
 
+  const isOpen = useCallback(
+    (key) => {
+      // PC hover 우선, 모바일 클릭 토글
+      return hoveredKey === key || clickedKey === key;
+    },
+    [hoveredKey, clickedKey]
+  );
+
+  const pick = (arr, idx) => (arr && arr[idx] ? arr[idx] : null);
+  const list = symbolData?.symbol || [];
   const arcane = list.filter((s) => s.symbol_name.includes("아케인"));
   const authentic = list.filter(
     (s) => s.symbol_name.includes("어센틱") && !s.symbol_name.includes("그랜드")
@@ -73,6 +91,67 @@ export const SymbolUi = ({ symbolData }) => {
     marginTop: "30px",
   };
 
+  // 게이지 퍼센트 계산 함수
+  const getGrowthPct = (s) => {
+    const g = parseInt(s?.symbol_growth_count, 10) || 0;
+    const r = parseInt(s?.symbol_require_growth_count, 10) || 0;
+    if (r <= 0) return 0;
+    const pct = Math.round((g / r) * 100);
+    return Math.max(0, Math.min(100, pct));
+  };
+
+  // 심볼 레벨업에 필요한 갯수 데이터
+  const REQUIRE_MAP = {
+    ...symbolDataJs.arcaneSymbolsRequire,
+    ...symbolDataJs.authenticSymbolsRequire,
+  };
+
+  // 심볼 레벨업에 필요한 갯수 가져오는 함수
+  // 배열 길이 = 최대 레벨
+  const getMaxLevel = (name) => {
+    const arr = REQUIRE_MAP[name] || [];
+    return arr.length;
+  };
+
+  // 심볼 레벨업 시뮬레이션 함수
+  const simulateUpgrades = (symbol) => {
+    if (!symbol?.symbol_name) return null;
+    const name = symbol.symbol_name;
+    const arr = REQUIRE_MAP[name] || [];
+    if (arr.length === 0) return null;
+
+    const level = Number(symbol.symbol_level) || 0;
+    const growth = Number(symbol.symbol_growth_count) || 0;
+    const maxLevel = getMaxLevel(name);
+    const nextNeed = level >= maxLevel ? 0 : arr[level - 1];
+
+    let remain = growth;
+    // 현재 레벨부터 시작
+    let curr = level;
+    let ups = 0;
+
+    // 다음 레벨업에 필요한 갯수가 남은 성장치보다 작거나 같을 때까지 반복
+    while (curr < maxLevel && remain >= arr[curr - 1]) {
+      remain -= arr[curr - 1];
+      curr += 1;
+      ups += 1;
+    }
+
+    // 만렙까지 필요한 갯수 계산
+    const toMaxTotal = arr.slice(level - 1).reduce((a, b) => a + b, 0);
+
+    const needToMax = toMaxTotal - growth;
+
+    return {
+      name,
+      level,
+      growth,
+      nextNeed,
+      ups,
+      needToMax,
+    };
+  };
+
   return (
     <Wrap>
       {/* 아케인 심볼 섹션: arcane이 있을 때만 렌더링 */}
@@ -103,8 +182,17 @@ export const SymbolUi = ({ symbolData }) => {
         <ArcGrid>
           {Array.from({ length: 6 }).map((_, idx) => {
             const icon = getIcon(arcane, idx);
+            const key = `ARC-${idx}`;
+            const symbol = pick(arcane, idx);
+            const popupData = symbol ? simulateUpgrades(symbol) : null;
+
             return (
-              <Slot key={idx}>
+              <Slot
+                key={idx}
+                onMouseEnter={() => symbol && openByHover(key)}
+                onMouseLeave={closeHover}
+                onClick={() => symbol && toggleClick(key)}
+              >
                 <ARCSlotImg
                   src={icon ? arcSymbol : arcSymbolDisabled}
                   alt="slot"
@@ -116,10 +204,23 @@ export const SymbolUi = ({ symbolData }) => {
                   {arcane[idx]?.symbol_level && (
                     <p>Lv.{arcane[idx].symbol_level}</p>
                   )}
-                  <MaxLevel>
-                    {arcane[idx]?.symbol_level === 20 && <span>MAX</span>}
-                  </MaxLevel>
+                  {arcane[idx] ? (
+                    arcane[idx].symbol_level === 20 ? (
+                      <MaxLevel>
+                        <span>MAX</span>
+                      </MaxLevel>
+                    ) : (
+                      <ArcGaugeWrap>
+                        <GaugeFill $pct={getGrowthPct(arcane[idx])} />
+                      </ArcGaugeWrap>
+                    )
+                  ) : null}
                 </ARCSymbolInfo>
+
+                {/* 팝업 */}
+                {isOpen(key) && popupData && (
+                  <InfoPopup data={popupData} compact />
+                )}
               </Slot>
             );
           })}
@@ -156,8 +257,17 @@ export const SymbolUi = ({ symbolData }) => {
         <AutGrid>
           {Array.from({ length: 6 }).map((_, idx) => {
             const icon = getIcon(authentic, idx);
+            const key = `AUT-${idx}`;
+            const symbol = pick(authentic, idx);
+            const popupData = symbol ? simulateUpgrades(symbol) : null;
+
             return (
-              <Slot key={idx}>
+              <Slot
+                key={idx}
+                onMouseEnter={() => symbol && openByHover(key)}
+                onMouseLeave={closeHover}
+                onClick={() => symbol && toggleClick(key)}
+              >
                 <AUTSlotImg
                   src={icon ? autSymbol : autSymbolDisabled}
                   alt="slot"
@@ -169,10 +279,22 @@ export const SymbolUi = ({ symbolData }) => {
                   {authentic[idx]?.symbol_level && (
                     <p>Lv.{authentic[idx].symbol_level}</p>
                   )}
-                  <MaxLevel>
-                    {authentic[idx]?.symbol_level === 11 && <span>MAX</span>}
-                  </MaxLevel>
+                  {authentic[idx] ? (
+                    authentic[idx].symbol_level === 11 ? (
+                      <MaxLevel>
+                        <span>MAX</span>
+                      </MaxLevel>
+                    ) : (
+                      <AutGaugeWrap>
+                        <GaugeFill $pct={getGrowthPct(authentic[idx])} />
+                      </AutGaugeWrap>
+                    )
+                  ) : null}
                 </AUTSymbolInfo>
+
+                {isOpen(key) && popupData && (
+                  <InfoPopup data={popupData} compact />
+                )}
               </Slot>
             );
           })}
@@ -210,8 +332,17 @@ export const SymbolUi = ({ symbolData }) => {
         <GrandGrid>
           {Array.from({ length: 3 }).map((_, idx) => {
             const icon = getIcon(grand, idx);
+            const key = `GRAND-${idx}`;
+            const symbol = pick(grand, idx);
+            const popupData = symbol ? simulateUpgrades(symbol) : null;
+
             return (
-              <Slot key={idx}>
+              <Slot
+                key={idx}
+                onMouseEnter={() => symbol && openByHover(key)}
+                onMouseLeave={closeHover}
+                onClick={() => symbol && toggleClick(key)}
+              >
                 <GrandSlotImg
                   src={icon ? grandSymbol : grandSymbolDisabled}
                   alt="slot"
@@ -223,10 +354,22 @@ export const SymbolUi = ({ symbolData }) => {
                   {grand[idx]?.symbol_level && (
                     <p>Lv.{grand[idx].symbol_level}</p>
                   )}
-                  <MaxLevel>
-                    {grand[idx]?.symbol_level === 11 && <span>MAX</span>}
-                  </MaxLevel>
+                  {grand[idx] ? (
+                    grand[idx].symbol_level === 11 ? (
+                      <MaxLevel>
+                        <span>MAX</span>
+                      </MaxLevel>
+                    ) : (
+                      <GrandGaugeWrap>
+                        <GaugeFill $pct={getGrowthPct(grand[idx])} />
+                      </GrandGaugeWrap>
+                    )
+                  ) : null}
                 </GrandSymbolInfo>
+
+                {isOpen(key) && popupData && (
+                  <InfoPopup data={popupData} compact />
+                )}
               </Slot>
             );
           })}
@@ -311,7 +454,6 @@ const Slot = styled.div`
   display: flex;
 
   &:hover {
-    filter: brightness(1.1);
     cursor: pointer;
   }
 `;
@@ -400,7 +542,6 @@ const AUTSymbolInfo = styled.div`
 `;
 
 // 그랜드 어센틱 심볼 섹션
-
 const GrandSymbolWrap = styled.div`
   ${baseSymbolWrapStyle};
   width: 42px;
@@ -421,4 +562,39 @@ const GrandGrid = styled.div`
 const GrandSymbolInfo = styled.div`
   ${baseSymbolInfo};
   top: 55px;
+`;
+
+// 게이지 공통 스타일
+const CommonGaugeWrap = css`
+  width: 32px;
+  height: 6px;
+  border-radius: 999px;
+  border: 1px solid ${colors.main.dark0Alpha10};
+  margin-top: 5px;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  margin-left: 2px;
+`;
+
+const ArcGaugeWrap = styled.div`
+  ${CommonGaugeWrap}
+`;
+
+// 게이지 진행도 스타일
+const GaugeFill = styled.div`
+  height: 100%;
+  width: ${(p) => `${p.$pct}%`};
+  background: ${colors.main.white0};
+`;
+
+const AutGaugeWrap = styled.div`
+  ${CommonGaugeWrap}
+  margin-left: 0px;
+`;
+
+const GrandGaugeWrap = styled.div`
+  ${CommonGaugeWrap}
+  width: 32px;
+  margin-top: 6px;
+  margin-left: 0px;
 `;
