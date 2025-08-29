@@ -236,7 +236,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               startAngle={90}
               endAngle={-270}
               paddingAngle={0}
-              animationDuration={700}
+              animationDuration={400}
               dataKey="value"
             >
               {data.map((_, index) => (
@@ -621,7 +621,7 @@ const ForceValue = styled.span`
   word-spacing: -4px;
 `;
 
-const ForcePercent = styled.p`
+const ForcePercent = styled.span`
   position: absolute;
   width: 100%;
   top: 49%;
