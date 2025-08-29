@@ -467,9 +467,10 @@ const StatText = styled.div`
   text-shadow: 1px 1px 2px ${colors.main.dark2};
 `;
 
-const MaxLevel = styled.p`
+const MaxLevel = styled.div`
   text-shadow: 0 0 3px ${colors.main.dark0};
-  font-size: 14px;
+  font-size: 15px;
+  padding: 0px 2px;
   font-weight: bold;
   backdrop-filter: blur(10px);
   line-height: 0.8;

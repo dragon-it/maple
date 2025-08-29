@@ -81,19 +81,16 @@ export const UnionChampion = ({ Data }) => {
                 </GradeLevelWrap>
 
                 {character_image && (
-                  <CharacterImage
-                    src={`${character_image}?x=90&y=130&width=172&height=170`}
-                    alt={`${name} image`}
-                  />
+                  <CharacterImage>
+                    <img src={character_image} alt={`${name} image`} />
+                  </CharacterImage>
                 )}
 
                 <BlessingImage
                   src={getBlessingImage(className, badgeInfo.length)}
                   alt={`${className} blessing`}
                 />
-
                 <ClassName>{className}</ClassName>
-
                 <NameWrap>
                   <ClassIcon $icon={getClassIcon(className)} />
                   <Name onClick={() => handleNameClick(name)}>{name}</Name>
@@ -239,11 +236,24 @@ const ClassName = styled.p`
   z-index: 10;
 `;
 
-const CharacterImage = styled.img`
-  height: auto;
-  margin-top: 10px;
-  z-index: 10;
-  image-rendering: pixelated;
+const CharacterImage = styled.div`
+  position: relative;
+  width: 162px;
+  height: 175px;
+  margin: 2px auto;
+  overflow: hidden;
+  z-index: 999;
+
+  img {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-51%, -47%) scaleX(-1);
+    image-rendering: pixelated;
+    object-fit: cover;
+  }
 `;
 
 const Level = styled.p`
