@@ -139,7 +139,6 @@ export const SymbolUi = ({ symbolData }) => {
 
     // 만렙까지 필요한 갯수 계산
     const toMaxTotal = arr.slice(level - 1).reduce((a, b) => a + b, 0);
-
     const needToMax = toMaxTotal - growth;
 
     return {
