@@ -96,6 +96,7 @@ const colors = {
     red0: "rgb(255, 25, 25)", // Guild Class Statistic Text
     red0Alpha50: "rgba(255, 51, 0, 0.5)",
     red0Alpha90: "rgba(255, 51, 0, 0.9)",
+    red1: "rgb(224, 83, 83)",
     deepRed: "rgb(81, 21, 25)",
     deepPink: "rgb(173, 92, 92)",
     warmBrown: "rgb(235, 136, 112)",
@@ -173,6 +174,10 @@ const colors = {
     propensityColor: {
       propensityBackground: "rgb(106, 214, 241)", // Propensity Item Background
       propensityText: "rgb(255, 255, 255)", // Propensity Text
+    },
+
+    symbolColor: {
+      arcaneMaxStatShadow: "rgb(91, 86, 159)",
     },
   },
 

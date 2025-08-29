@@ -12,7 +12,6 @@ const StyledLine = styled.div`
   margin: 1px 0;
   color: rgb(0, 0, 0);
   gap: 5px;
-  line-height: 1;
 
   @media screen and (max-width: 519px) {
     gap: 2px;
@@ -36,10 +35,9 @@ const Label = styled.span`
 const Value = styled.span`
   display: flex;
   align-items: center;
-  width: 70%;
 
   @media screen and (max-width: 519px) {
-    font-size: 3vw;
+    font-size: 2vw;
     word-spacing: -1px;
   }
 `;
@@ -121,20 +119,17 @@ export const CaptureRenderingBox = ({ result }) => {
     ?.final_stat?.[42] || { stat_value: 0 };
 
   const characterInfoLines = [
-    { label: "닉네임", value: character_name || "-" },
-    { label: "전투력", value: formatPowerStat(powerValue) || "-" },
-    { label: "유니온", value: `${union_level}` || "-" },
-    { label: "인기도", value: `${popularity}` || "-" },
+    { label: "닉네임", value: String(character_name ?? "-") },
+    { label: "전투력", value: String(formatPowerStat(powerValue) ?? "-") },
+    { label: "유니온", value: String(union_level ?? "-") },
+    { label: "인기도", value: String(popularity ?? "-") },
   ];
 
   const characterInfoLinesSecond = [
-    {
-      label: "레벨",
-      value: `${character_level}` || "-",
-    },
-    { label: "직업", value: character_class || "-" },
-    { label: "월드", value: world_name || "-" },
-    { label: "길드", value: character_guild_name || "-" },
+    { label: "레벨", value: String(character_level ?? "-") },
+    { label: "직업", value: String(character_class ?? "-") },
+    { label: "월드", value: String(world_name ?? "-") },
+    { label: "길드", value: String(character_guild_name ?? "-") },
   ];
 
   const [imageSrc, setImageSrc] = useState(character_image || "");
@@ -239,17 +234,18 @@ const MainCharacterWrap = styled.div`
 `;
 
 const Image = styled.img`
-  width: 90%;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
-  z-index: 10;
-  transform: scaleX(-1);
   position: relative;
-  top: 9px;
+  top: 0px;
   z-index: -1;
+  transform: translate(0%, -6%) scaleX(-1);
   image-rendering: pixelated;
 
   @media screen and (max-width: 519px) {
-    top: 1.5vw;
+    transform: translate(-2%, -16%) scaleX(-1);
+    height: 100px;
   }
 `;
 
@@ -259,10 +255,6 @@ const NpcBox = styled.img`
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-
-  @media screen and (max-width: 280px) {
-    border-radius: 5px;
-  }
 `;
 
 const CharacterInfo = styled.div`
@@ -275,15 +267,12 @@ const CharacterInfo = styled.div`
   justify-content: space-around;
   align-items: center;
   padding: 13px 13px 36px 17px;
-
-  @media screen and (max-width: 519px) {
-    padding: 23px 21px 36px 4vw;
-  }
 `;
 
 const NickName = styled.span`
-  position: relative;
+  position: absolute;
   width: 100%;
+  bottom: 0;
   max-height: 23px;
   background: linear-gradient(
     180deg,
@@ -297,19 +286,23 @@ const NickName = styled.span`
   text-align: center;
   font-size: 1em;
   border: 2px solid rgba(230, 230, 230, 0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translate(0%, -430%);
   white-space: nowrap;
 
   @media screen and (max-width: 519px) {
+    transform: translate(-5%, 30%);
     font-size: 2.3vw;
   }
 `;
 
 const NpcWrap = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 23%;
-  flex-grow: 1;
 `;
 
 const NpcText = styled.div`
@@ -319,10 +312,10 @@ const NpcText = styled.div`
   overflow-wrap: break-word;
   white-space: normal;
   margin-left: 10px;
+  white-space: nowrap;
 
   @media screen and (max-width: 519px) {
-    white-space: nowrap;
-    font-size: 2.6vw;
+    white-space: pre-wrap;
   }
 `;
 
@@ -351,6 +344,7 @@ const SaveButton = styled.button`
     );
     transform: scale(1.02);
   }
+  z-index: 999;
 `;
 
 const LineColumn = styled.div`

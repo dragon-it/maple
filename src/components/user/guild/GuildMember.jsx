@@ -80,10 +80,12 @@ export const GuildMember = ({ result }) => {
                   key={index}
                   onClick={() => handleMemberPortal(member.character_name)}
                 >
-                  <DetailImage
-                    src={member.character_image || ""}
-                    alt={"character_name"}
-                  />
+                  <ImageWrap>
+                    <DetailImage
+                      src={member.character_image || ""}
+                      alt={"character_name"}
+                    />
+                  </ImageWrap>
                   <DetailName>{member.character_name}</DetailName>
                   <DetailLevel>{member.character_class}</DetailLevel>
                   <DetailLevel>
@@ -95,7 +97,7 @@ export const GuildMember = ({ result }) => {
               {/* <!-- 이미지 보기 미접속 캐릭터 명단 --> */}
               {emptyMembers.map((member, index) => (
                 <DetailMember key={index}>
-                  <EmptyImage></EmptyImage>
+                  <EmptyImage>미접속 캐릭터</EmptyImage>
                   <DetailName>{member.character_name}</DetailName>
                 </DetailMember>
               ))}
@@ -140,9 +142,7 @@ const DetailChracterWrap = styled.div`
   grid-template-columns: repeat(5, 1fr);
   width: 100%;
   gap: 3px;
-  max-height: 580px;
   padding: 5px;
-  overflow-y: scroll;
   background-color: rgb(66, 66, 66);
   border-radius: 5px;
 
@@ -170,35 +170,42 @@ const DetailMember = styled.div`
   }
 `;
 
-const DetailImage = styled.img`
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
+const ImageWrap = styled.div`
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 2px auto;
   border: 1px solid rgba(61, 61, 61, 0.18);
-  background-color: rgba(117, 117, 117, 0.85);
+  background-color: rgb(117, 117, 117);
   border-bottom: 2px solid rgb(62, 73, 81);
   border-left: 1px solid rgb(62, 73, 81);
   border-right: 1px solid rgb(62, 73, 81);
   box-shadow: rgb(133, 145, 145) 0px 1px 0px;
-  transform: scaleX(-1);
-  border-radius: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+`;
 
-  @media screen and (max-width: 1024px) {
-    width: 80px;
-    height: 80px;
-  }
+const DetailImage = styled.img`
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -53%) scaleX(-1);
+  image-rendering: pixelated;
+  object-fit: cover;
 `;
 
 const EmptyImage = styled.div`
   width: 96px;
   height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid rgba(91, 91, 91, 0.5);
+  background-color: rgb(117, 117, 117);
   border-radius: 5px;
-
-  @media screen and (max-width: 1024px) {
-    width: 80px;
-    height: 80px;
-  }
+  text-align: center;
 `;
 
 const DetailName = styled.h5``;

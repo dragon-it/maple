@@ -44,6 +44,7 @@ import class43 from "../../assets/pages/randomClass/classillust/char43.webp";
 import class44 from "../../assets/pages/randomClass/classillust/char44.webp";
 import class45 from "../../assets/pages/randomClass/classillust/char45.webp";
 import class46 from "../../assets/pages/randomClass/classillust/char46.webp";
+import class47 from "../../assets/pages/randomClass/classillust/char47.webp";
 
 const characters = [
   { id: 1, name: "히어로", image: class1 },
@@ -92,6 +93,7 @@ const characters = [
   { id: 44, name: "은월", image: class44 },
   { id: 45, name: "엔젤릭버스터", image: class45 },
   { id: 46, name: "아크", image: class46 },
+  { id: 47, name: "렌", image: class47 },
 ];
 
 export default characters;

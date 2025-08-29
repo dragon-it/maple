@@ -132,7 +132,7 @@ const InfoWrap = styled.div`
 
   img {
     display: flex;
-    transition: 1s;
+    max-width: 96px;
   }
 
   @media screen and (max-width: 1300px) {
