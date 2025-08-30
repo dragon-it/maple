@@ -1,7 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { Main } from "./pages/Main.jsx";
 import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider.js";
@@ -18,104 +18,106 @@ import { UserPage } from "./pages/UserPage";
 
 function App() {
   return (
-    <ThemeProvider>
-      <GlobalStyle />
-      <Container>
-        <Router>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Layout>
-                  <Main />
-                </Layout>
-              }
-            />
-            <Route
-              path="/character-capture"
-              element={
-                <Layout>
-                  <CharacterCapture />
-                </Layout>
-              }
-            />
-            <Route
-              path="/character-capture/:characterName"
-              element={
-                <Layout>
-                  <CharacterCapture />
-                </Layout>
-              }
-            />
-            <Route
-              path="/user/:characterName"
-              element={
-                <Layout>
-                  <UserPage />
-                </Layout>
-              }
-            />
-            <Route
-              path="/guild-search"
-              element={
-                <Layout>
-                  <SearchGuild />
-                </Layout>
-              }
-            />
-            <Route
-              path="/guild-search/:guildName"
-              element={
-                <Layout>
-                  <SearchGuild />
-                </Layout>
-              }
-            />
-            <Route
-              path="/guild-search/:guildName/:worldName"
-              element={
-                <Layout>
-                  <SearchGuild />
-                </Layout>
-              }
-            />
-            <Route
-              path="/random-class"
-              element={
-                <Layout>
-                  <RandomClass />
-                </Layout>
-              }
-            />
-            <Route
-              path="/exp-simulator"
-              element={
-                <Layout>
-                  <ExpSimulator />
-                </Layout>
-              }
-            />
-            <Route
-              path="/sliding-puzzle"
-              element={
-                <Layout>
-                  <SlidingPuzzle />
-                </Layout>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <Layout>
-                  <Error errorMessage="페이지를 찾을 수 없습니다." />
-                </Layout>
-              }
-            />
-          </Routes>
-          <BackgroundImage />
-        </Router>
-      </Container>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider>
+        <GlobalStyle />
+        <Container>
+          <Router>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Layout>
+                    <Main />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/character-capture"
+                element={
+                  <Layout>
+                    <CharacterCapture />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/character-capture/:characterName"
+                element={
+                  <Layout>
+                    <CharacterCapture />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/user/:characterName"
+                element={
+                  <Layout>
+                    <UserPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/guild-search"
+                element={
+                  <Layout>
+                    <SearchGuild />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/guild-search/:guildName"
+                element={
+                  <Layout>
+                    <SearchGuild />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/guild-search/:guildName/:worldName"
+                element={
+                  <Layout>
+                    <SearchGuild />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/random-class"
+                element={
+                  <Layout>
+                    <RandomClass />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/exp-simulator"
+                element={
+                  <Layout>
+                    <ExpSimulator />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/sliding-puzzle"
+                element={
+                  <Layout>
+                    <SlidingPuzzle />
+                  </Layout>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <Layout>
+                    <Error errorMessage="페이지를 찾을 수 없습니다." />
+                  </Layout>
+                }
+              />
+            </Routes>
+            <BackgroundImage />
+          </Router>
+        </Container>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }
 

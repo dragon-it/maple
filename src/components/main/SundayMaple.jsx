@@ -77,7 +77,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   };
 
   if (loading) {
-    return <Container isContentsVisible={false}>로딩 중...</Container>;
+    return <Container $isContentsVisible={false}>로딩 중...</Container>;
   }
 
   if (error || !isVisible || !sundayMapleNoticeDetail) {
@@ -96,7 +96,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   const isContentsVisible = desiredHtmlContent !== "";
 
   return (
-    <Container isContentsVisible={isContentsVisible}>
+    <Container $isContentsVisible={isContentsVisible}>
       {isContentsVisible && (
         <ContentsWrap>
           <ButtonWrap>
@@ -120,8 +120,8 @@ export const SundayMaple = ({ eventData, loading, error }) => {
 };
 
 const Container = styled.div`
-  position: ${({ isContentsVisible }) =>
-    isContentsVisible ? "absolute" : "relative"};
+  position: ${({ $isContentsVisible }) =>
+    $isContentsVisible ? "absolute" : "relative"};
   transform: translateY(180px);
   width: 100%;
   display: flex;

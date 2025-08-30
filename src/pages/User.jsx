@@ -12,7 +12,7 @@ import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Guild } from "../components/user/Guild";
 import { useTheme } from "../context/ThemeProvider";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export const User = () => {
   const { theme } = useTheme();

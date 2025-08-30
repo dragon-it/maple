@@ -3,7 +3,7 @@ import { Search } from "../components/main/Search";
 import styled from "styled-components";
 import { Favorite } from "../components/user/favorite/Favorite";
 import { SundayMaple } from "../components/main/SundayMaple";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { InfoPanel } from "../components/main/InfoPanel";
 import dark_to_top_icon from "../assets/icons/sundayMaple/dark_to_top.svg";
 import light_to_top_icon from "../assets/icons/sundayMaple/light_to_top.svg";

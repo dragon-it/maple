@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useTheme } from "../context/ThemeProvider";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";

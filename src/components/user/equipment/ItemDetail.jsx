@@ -255,7 +255,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
       <ItemOptionWrap>
         {/* 장비 분류 표시 */}
         {item.item_equipment_part && (
-          <div>장비 분류 : {item.item_equipment_part}</div>
+          <p>장비 분류 : {item.item_equipment_part}</p>
         )}
         {/* 아이템 옵션 정보 표시 */}
         {item.item_total_option &&
@@ -360,12 +360,12 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
         {/* 업그레이드 가능 횟수 */}
         {item.scroll_upgradeable_count &&
           DesiredPart.includes(item.item_equipment_slot) && (
-            <span>
+            <p>
               업그레이드 가능 횟수 : {item.scroll_upgradeable_count}
               <ResilienceCount>
                 (복구 가능 횟수 : {item.scroll_resilience_count})
               </ResilienceCount>
-            </span>
+            </p>
           )}
 
         {/* 황금망치 제련 여부 */}
@@ -732,6 +732,6 @@ const ResilienceCount = styled.span`
   color: rgb(255, 204, 0);
 `;
 
-const CuttableCount = styled.span`
+const CuttableCount = styled.p`
   color: rgb(255, 204, 0);
 `;

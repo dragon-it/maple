@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { SlidingPuzzleLogic } from "../components/slidingPuzzle/SlidingPuzzleLogic";
 
 export const SlidingPuzzle = () => {
   return (
     <Container>
       <Helmet>
-        <title>Exp 시뮬레이터 - 슬라이딩 퍼즐</title>
+        <title>슬라이딩 퍼즐 - 메짱</title>
         <meta name="description" content="슬라이딩 퍼즐 게임입니다" />
       </Helmet>
       <SlidingPuzzleLogic />
