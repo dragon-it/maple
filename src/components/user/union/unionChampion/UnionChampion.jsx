@@ -82,7 +82,7 @@ export const UnionChampion = ({ Data }) => {
 
                 {character_image && (
                   <CharacterImage>
-                    <img src={character_image} alt={`${name} image`} />
+                    <img src={character_image} alt={name} />
                   </CharacterImage>
                 )}
 
