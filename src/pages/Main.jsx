@@ -9,6 +9,7 @@ import dark_to_top_icon from "../assets/icons/sundayMaple/dark_to_top.svg";
 import light_to_top_icon from "../assets/icons/sundayMaple/light_to_top.svg";
 import { useTheme } from "../context/ThemeProvider";
 import { useNoticeEvent } from "../context/NoticeEventContext";
+import { Footer } from "../components/common/footer/Footer";
 
 export const Main = () => {
   const { eventData, noticeData, loading, error } = useNoticeEvent();
@@ -55,6 +56,7 @@ export const Main = () => {
           />
         </ScrollTopButton>
       )}
+      <Footer />
     </Container>
   );
 };
