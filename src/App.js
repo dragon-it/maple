@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import { Main } from "./pages/Main.jsx";
-import { User } from "./pages/User.jsx";
 import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider.js";
 import { GlobalStyle } from "./components/theme/GlobalStyles.js";
@@ -15,6 +14,7 @@ import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
 import { SlidingPuzzle } from "./pages/SlidingPuzzle";
 import Layout from "./Layout";
+import { UserPage } from "./pages/UserPage";
 
 function App() {
   return (
@@ -51,9 +51,7 @@ function App() {
               path="/user/:characterName"
               element={
                 <Layout>
-                  <UserWrap>
-                    <User />
-                  </UserWrap>
+                  <UserPage />
                 </Layout>
               }
             />
@@ -131,12 +129,4 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-`;
-
-const UserWrap = styled.div`
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;

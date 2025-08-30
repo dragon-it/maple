@@ -8,8 +8,10 @@ import { InfoPanel } from "../components/main/InfoPanel";
 import dark_to_top_icon from "../assets/icons/sundayMaple/dark_to_top.svg";
 import light_to_top_icon from "../assets/icons/sundayMaple/light_to_top.svg";
 import { useTheme } from "../context/ThemeProvider";
+import { useNoticeEvent } from "../context/NoticeEventContext";
 
-export const Main = ({ noticeData, eventData, loading, error }) => {
+export const Main = () => {
+  const { eventData, noticeData, loading, error } = useNoticeEvent();
   const containerRef = useRef(null);
   const { theme } = useTheme();
 
