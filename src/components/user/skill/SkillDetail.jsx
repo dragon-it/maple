@@ -184,6 +184,5 @@ const SkillDescriptionWrap = styled.span`
 `;
 
 const SkillEffect = styled.div`
-  white-space: pre-wrap;
   padding-top: 10px;
 `;
