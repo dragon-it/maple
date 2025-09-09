@@ -76,21 +76,21 @@ export const SkillGradeBox = ({
 const SkillHeader = styled.h2`
   font-size: 15px;
   color: rgb(220, 252, 2);
-  margin-bottom: 6px;
+  margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
 
 const SkillGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 2px;
   width: 100%;
 `;
 
 const SkillItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   font-size: 12px;
   cursor: pointer;
   padding: 2px;
@@ -99,7 +99,6 @@ const SkillItem = styled.li`
 
   &:hover {
     background-color: rgb(91, 91, 91);
-    transform: translateY(-1px);
     img {
       transform: scale(1.1);
     }
@@ -110,7 +109,6 @@ const SkillIcon = styled.img`
   width: 32px;
   height: 32px;
   flex: 0 0 32px;
-  transition: transform 0.1s ease;
 `;
 
 const SkillNameLevelWrap = styled.span`
@@ -123,6 +121,7 @@ const SkillName = styled.span``;
 
 const SkillLevel = styled.span`
   opacity: 0.85;
+  font-size: 14px;
   @media (max-width: 576px) {
     font-size: 10px;
   }
