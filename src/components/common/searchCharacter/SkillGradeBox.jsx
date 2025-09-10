@@ -74,7 +74,7 @@ export const SkillGradeBox = ({
 };
 
 const SkillHeader = styled.h2`
-  font-size: 15px;
+  font-size: 16px;
   color: rgb(220, 252, 2);
   margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
@@ -91,7 +91,7 @@ const SkillItem = styled.li`
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   padding: 2px;
   border-radius: 8px;
@@ -121,8 +121,5 @@ const SkillName = styled.span``;
 
 const SkillLevel = styled.span`
   opacity: 0.85;
-  font-size: 14px;
-  @media (max-width: 576px) {
-    font-size: 10px;
-  }
+  font-size: 13px;
 `;

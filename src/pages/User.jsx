@@ -144,6 +144,7 @@ const Container = styled.div`
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
+    width: ${({ $activeTab }) => ($activeTab === 3 ? "95%" : "fit-content")};
   }
 
   @media screen and (max-width: 576px) {

@@ -10,8 +10,9 @@ const StatInfo = ({ level, name, value }) => {
   return (
     <StatInfoContainer>
       <StatLevel>Lv.{level}</StatLevel>
-      <StatName>{name}</StatName>
-      <StatValue>+{value}</StatValue>
+      <StatName>
+        {name} +{value}
+      </StatName>
     </StatInfoContainer>
   );
 };
@@ -153,23 +154,18 @@ export const HexaStat = ({ Data }) => {
 };
 
 const Header = styled.div`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
 
-const StatWrap = styled.div`
-  font-size: 13px;
-`;
+const StatWrap = styled.div``;
 
 const MainStat = styled.div`
   font-weight: bold;
   font-size: 15px;
-  @media screen and (max-width: 768px) {
-    justify-content: center;
-  }
 `;
 
 const StatInfoContainer = styled.div`
@@ -180,7 +176,6 @@ const StatInfoContainer = styled.div`
 
 const StatLevel = styled.span``;
 const StatName = styled.span``;
-const StatValue = styled.span``;
 const SkillNoDataText = styled.p``;
 
 const StatContainer = styled.div`
@@ -191,22 +186,19 @@ const StatContainer = styled.div`
   }
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    width: 100%;
   }
 `;
 
 const SlotBody = styled.div`
   display: grid;
   grid-template-columns: 42px 1fr;
-  align-items: start;
-  font-size: 12px;
+  align-items: center;
+  font-size: 13px;
   padding: 6px 8px;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(54, 63, 66, 0.692);
-  transition: background-color 0.12s ease;
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
+  border: 1px solid rgba(115, 121, 122, 0.7);
 `;
 
 const LeftCol = styled.div`
