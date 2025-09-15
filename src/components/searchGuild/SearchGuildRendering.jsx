@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { SearchGuildDetail } from "./SearchGuildDetail";
 import WorldIcons from "../common/worldIcon/WorldIcons";
 

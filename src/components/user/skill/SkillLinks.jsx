@@ -42,9 +42,9 @@ export const SkillLinks = ({
       {Data.character_link_skill && Data.character_link_skill.length > 0 ? (
         <>
           <SkillHeader>링크 스킬</SkillHeader>
-          <SkillWrap onMouseLeave={handleMouseLeave}>
+          <SkillGrid onMouseLeave={handleMouseLeave}>
             {Data.character_link_skill.map((item, index) => (
-              <SkillSimpleWrap
+              <SkillItem
                 key={item.skill_name}
                 onClick={() => handleItemClick(item)}
                 onMouseOver={() => handleItemHover(item)}
@@ -54,9 +54,9 @@ export const SkillLinks = ({
                   <SkillName>{item.skill_name}</SkillName>
                   <SkillLevel>Lv.{item.skill_level}</SkillLevel>
                 </SkillNameLevelWrap>
-              </SkillSimpleWrap>
+              </SkillItem>
             ))}
-          </SkillWrap>
+          </SkillGrid>
           {/* SkillDetail 컴포넌트는 조건부로 렌더링 */}
           {selectedItem && (
             <SkillDetail
@@ -80,60 +80,53 @@ export const SkillLinks = ({
 const SkillHeader = styled.h2`
   font-size: 15px;
   color: rgb(220, 252, 2);
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
 
-const SkillWrap = styled.ul`
+const SkillGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
-  width: 970px;
-  color: white;
-  :hover {
-    background-color: rgb(91, 91, 91);
-    img {
-      transform: scale(1.2);
-    }
-  }
-
-  @media screen and (max-width: 1024px) {
-    width: auto;
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media screen and (max-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 2px;
+  width: 100%;
 `;
 
 const SkillIcon = styled.img`
   width: 32px;
   height: 32px;
+  flex: 0 0 32px;
 `;
 
-const SkillSimpleWrap = styled.li`
+const SkillItem = styled.li`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  font-size: 12px;
   gap: 5px;
+  font-size: 12px;
   cursor: pointer;
+  padding: 2px;
+  border-radius: 8px;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+
+  &:hover {
+    background-color: rgb(91, 91, 91);
+    img {
+      transform: scale(1.1);
+    }
+  }
 `;
 
 const SkillNameLevelWrap = styled.span`
   display: flex;
   flex-direction: column;
+  line-height: 1.1;
 `;
 
 const SkillName = styled.span``;
 
 const SkillLevel = styled.span`
-  @media screen and (max-width: 576px) {
+  opacity: 0.85;
+  font-size: 14px;
+  @media (max-width: 576px) {
     font-size: 10px;
   }
 `;

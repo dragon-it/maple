@@ -15,7 +15,6 @@ export const GlobalStyle = createGlobalStyle`
       Dotum,
       "Noto Sans",
       "Noto Sans CJK KR",
-      maple-light,
       "Montserrat",
       "Helvetica Neue",
       "NanumSquare";

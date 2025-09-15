@@ -7,7 +7,7 @@ import {
 } from "../../api/api";
 import { useParams } from "react-router-dom";
 import { Guild } from "../user/Guild";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import loadingImg_light from "../../assets/loading/loading_light.gif";
 import loadingImg_dark from "../../assets/loading/loading_dark.gif";

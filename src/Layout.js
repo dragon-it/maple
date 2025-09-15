@@ -1,10 +1,11 @@
 import { Notice } from "./components/common/header/Notice";
 import axios from "axios";
 import { Header } from "./components/common/header/Header.jsx";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { Footer } from "./components/common/footer/Footer";
+import { NoticeEventProvider } from "./context/NoticeEventContext";
 
 function Layout({ children }) {
   const [eventData, setEventData] = useState(null);
@@ -14,74 +15,46 @@ function Layout({ children }) {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchEvent = async () => {
+    const ctrl = new AbortController();
+
+    (async () => {
       try {
-        const response = await axios.get("/notice-event", {
-          headers: {
-            "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
-          },
-        });
-        if (response.status === 200) {
-          setEventData(response.data);
-        } else {
-          console.error(
-            "현재 API 호출이 원활하지 않습니다. 잠시 후 다시 시도해주세요."
-          );
-          setError(
-            "현재 API 호출이 원활하지 않습니다. 잠시 후 다시 시도해주세요."
-          );
-        }
+        const headers = { "x-nxopen-api-key": process.env.REACT_APP_API_KEY };
+        const [ev, no] = await Promise.all([
+          axios.get("/notice-event", { headers, signal: ctrl.signal }),
+          axios.get("/notice", { headers, signal: ctrl.signal }),
+        ]);
+        if (ev.status === 200) setEventData(ev.data);
+        if (no.status === 200) setNoticeData(no.data);
       } catch (err) {
-        console.error("공지 데이터 가져오기 오류:", err.message);
+        if (axios.isCancel?.(err) || err.name === "CanceledError") return;
+        console.error("공지/이벤트 가져오기 오류:", err.message);
         setError(err.message);
       } finally {
         setLoading(false);
       }
-    };
+    })();
 
-    fetchEvent();
-  }, []);
-
-  useEffect(() => {
-    const fetchNotice = async () => {
-      try {
-        const response = await axios.get("/notice", {
-          headers: {
-            "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
-          },
-        });
-        if (response.status === 200) {
-          setNoticeData(response.data);
-        } else {
-          console.error(
-            "현재 API 호출이 원활하지 않습니다. 잠시 후 다시 시도해주세요."
-          );
-          setError(
-            "현재 API 호출이 원활하지 않습니다. 잠시 후 다시 시도해주세요."
-          );
-        }
-      } catch (err) {
-        console.error("공지 데이터 가져오기 오류:", err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNotice();
+    return () => ctrl.abort();
   }, []);
 
   const isSunday = new Date().getDay() === 0;
 
+  // 리렌더 최적화
+  const contextValue = useMemo(
+    () => ({ eventData, noticeData, loading, error }),
+    [eventData, noticeData, loading, error]
+  );
+
   return (
-    <>
+    <NoticeEventProvider value={contextValue}>
       <HeaderContentsWrap>
         <Header />
         <Notice isSunday={isSunday} error={error} />
       </HeaderContentsWrap>
-      {React.cloneElement(children, { eventData, noticeData, loading, error })}
+      {children}
       {location.pathname !== "/" && <Footer />}
-    </>
+    </NoticeEventProvider>
   );
 }
 

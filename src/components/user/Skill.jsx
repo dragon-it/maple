@@ -1,39 +1,63 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { SkillLinks } from "./skill/SkillLinks";
-import { SkillGrade5 } from "./skill/SkillGrade5";
-import { SkillGrade6 } from "./skill/SkillGrade6";
 import { HexaStat } from "./skill/HexaStat";
+import { SkillGradeBox } from "../common/searchCharacter/SkillGradeBox";
 
 export const Skill = ({ result }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [clicked, setClicked] = useState(false);
 
+  const skills = result?.getCombinedData?.getSkill ?? {};
+  // 렌더 순서 고정
+  const SKILL_GRADES = useMemo(
+    () => [
+      "0",
+      "1",
+      "1.5",
+      "2",
+      "2.5",
+      "3",
+      "4",
+      "hyperpassive",
+      "hyperactive",
+      "5",
+      "6",
+    ],
+    []
+  );
+
   return (
     <Container>
       <SkillWrap>
-        <HexaStat Data={result.getCombinedData.getHexaMatrixStat} />
-        <SkillGrade6
-          Data={result.getCombinedData.getSkill.grade6}
-          clicked={clicked}
-          setClicked={setClicked}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-        />
-        <SkillGrade5
-          Data={result.getCombinedData.getSkill.grade5}
-          clicked={clicked}
-          setClicked={setClicked}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-        />
-        <SkillLinks
-          Data={result.getCombinedData.getLinkSkill}
-          clicked={clicked}
-          setClicked={setClicked}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-        />
+        {/* HEXA 스탯 */}
+        {result?.getCombinedData?.getHexaMatrixStat && (
+          <HexaStat Data={result.getCombinedData.getHexaMatrixStat} />
+        )}
+
+        {/* 스킬 박스 전부 순회 */}
+        {SKILL_GRADES.map((gradeKey) => (
+          <SkillGradeBox
+            key={gradeKey}
+            grade={gradeKey}
+            data={skills[gradeKey]}
+            clicked={clicked}
+            setClicked={setClicked}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+          />
+        ))}
+
+        {/* 링크 스킬 */}
+        {result?.getCombinedData?.getLinkSkill && (
+          <SkillLinks
+            Data={result.getCombinedData.getLinkSkill}
+            clicked={clicked}
+            setClicked={setClicked}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+          />
+        )}
       </SkillWrap>
     </Container>
   );
