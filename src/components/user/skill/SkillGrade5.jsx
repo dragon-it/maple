@@ -12,6 +12,9 @@ export const SkillGrade5 = ({
 }) => {
   const [isCloseClick, setIsCloseClick] = useState(false);
 
+  const isHoverDisabled = () =>
+    typeof window !== "undefined" && window.innerWidth <= 768;
+
   const handleCloseClick = () => {
     setClicked(false);
     setSelectedItem(null);
@@ -23,6 +26,9 @@ export const SkillGrade5 = ({
   };
 
   const handleItemHover = (item) => {
+    if (isHoverDisabled()) {
+      return;
+    }
     if (!clicked) {
       setSelectedItem(item);
     }
