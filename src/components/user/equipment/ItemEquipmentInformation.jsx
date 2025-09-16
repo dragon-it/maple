@@ -128,6 +128,9 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const [currentTab, setCurrentTab] = useState("장비");
   const [isCloseClick, setIsCloseClick] = useState(false);
 
+  const isHoverDisabled = () =>
+    typeof window !== "undefined" && window.innerWidth <= 768;
+
   const handleMouseLeave = () => {
     // 마우스가 Container를 벗어나면 선택된 스킬 초기화
     const isWideScreen = window.innerWidth <= 1024;
@@ -146,6 +149,9 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
   // 마우스 hover 함수
   const handleItemHover = (item) => {
+    if (isHoverDisabled()) {
+      return;
+    }
     if (!clicked) {
       // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
       setSelectedItem(item);
@@ -198,7 +204,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   };
 
   // PetAppearanceIcon 컴포넌트에서 사용할 정보 처리 함수 (장착 펫 데이터)
-  const handlePetAppearanceInfo = (index) => {
+  const handlePetAppearanceInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isHoverDisabled()) {
+      return;
+    }
     const petInfo = petInformationData(index);
     if (!clicked) {
       // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
@@ -216,7 +225,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   };
 
   // PetEquipShapeIcon 컴포넌트에서 사용할 정보 처리 함수 (펫 장비 데이터)
-  const handlePetEquipInfo = (index) => {
+  const handlePetEquipInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isHoverDisabled()) {
+      return;
+    }
     const petInfo = petInformationData(index);
     if (!clicked) {
       // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
@@ -227,7 +239,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   };
 
   // 펫 첫 번째 스킬 정보 처리 함수
-  const handlePetFirstSkillInfo = (index) => {
+  const handlePetFirstSkillInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isHoverDisabled()) {
+      return;
+    }
     const petInfo = petInformationData(index);
     if (!clicked) {
       // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
@@ -239,7 +254,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   };
 
   // 펫 두 번째 스킬 정보 처리 함수
-  const handlePetSecondSkillInfo = (index) => {
+  const handlePetSecondSkillInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isHoverDisabled()) {
+      return;
+    }
     const petInfo = petInformationData(index);
     if (!clicked) {
       // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
@@ -488,8 +506,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .pet_1_appearance_icon
                                 }
                                 alt="Icon"
-                                onMouseOver={() => handlePetAppearanceInfo(1)}
-                                onClick={() => handlePetAppearanceInfo(1)}
+                                onMouseOver={() =>
+                                  handlePetAppearanceInfo(1, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetAppearanceInfo(1, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -505,8 +527,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .item_shape_icon
                                 }
                                 alt="petEqipIcon"
-                                onMouseOver={() => handlePetEquipInfo(1)}
-                                onClick={() => handlePetEquipInfo(1)}
+                                onMouseOver={() =>
+                                  handlePetEquipInfo(1, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetEquipInfo(1, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -523,8 +549,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                       .skill_1_icon
                                   }
                                   alt="petAutoSkill1"
-                                  onMouseOver={() => handlePetFirstSkillInfo(1)}
-                                  onClick={() => handlePetFirstSkillInfo(1)}
+                                  onMouseOver={() =>
+                                    handlePetFirstSkillInfo(1, "hover")
+                                  }
+                                  onClick={() =>
+                                    handlePetFirstSkillInfo(1, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -543,9 +573,11 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                   }
                                   alt="petAutoSkill2"
                                   onMouseOver={() =>
-                                    handlePetSecondSkillInfo(1)
+                                    handlePetSecondSkillInfo(1, "hover")
                                   }
-                                  onClick={() => handlePetSecondSkillInfo(1)}
+                                  onClick={() =>
+                                    handlePetSecondSkillInfo(1, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -567,8 +599,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .pet_2_appearance_icon
                                 }
                                 alt="Icon"
-                                onMouseOver={() => handlePetAppearanceInfo(2)}
-                                onClick={() => handlePetAppearanceInfo(2)}
+                                onMouseOver={() =>
+                                  handlePetAppearanceInfo(2, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetAppearanceInfo(2, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -584,8 +620,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .item_shape_icon
                                 }
                                 alt="petEqipIcon"
-                                onMouseOver={() => handlePetEquipInfo(2)}
-                                onClick={() => handlePetEquipInfo(2)}
+                                onMouseOver={() =>
+                                  handlePetEquipInfo(2, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetEquipInfo(2, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -602,8 +642,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                       .skill_1_icon
                                   }
                                   alt="petAutoSkill1"
-                                  onMouseOver={() => handlePetFirstSkillInfo(2)}
-                                  onClick={() => handlePetFirstSkillInfo(2)}
+                                  onMouseOver={() =>
+                                    handlePetFirstSkillInfo(2, "hover")
+                                  }
+                                  onClick={() =>
+                                    handlePetFirstSkillInfo(2, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -622,9 +666,11 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                   }
                                   alt="petAutoSkill2"
                                   onMouseOver={() =>
-                                    handlePetSecondSkillInfo(2)
+                                    handlePetSecondSkillInfo(2, "hover")
                                   }
-                                  onClick={() => handlePetSecondSkillInfo(2)}
+                                  onClick={() =>
+                                    handlePetSecondSkillInfo(2, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -646,8 +692,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .pet_3_appearance_icon
                                 }
                                 alt="Icon"
-                                onMouseOver={() => handlePetAppearanceInfo(3)}
-                                onClick={() => handlePetAppearanceInfo(3)}
+                                onMouseOver={() =>
+                                  handlePetAppearanceInfo(3, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetAppearanceInfo(3, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -663,8 +713,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .item_shape_icon
                                 }
                                 alt="petEqipIcon"
-                                onMouseOver={() => handlePetEquipInfo(3)}
-                                onClick={() => handlePetEquipInfo(3)}
+                                onMouseOver={() =>
+                                  handlePetEquipInfo(3, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetEquipInfo(3, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -681,8 +735,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                       .skill_1_icon
                                   }
                                   alt="petAutoSkill1"
-                                  onMouseOver={() => handlePetFirstSkillInfo(3)}
-                                  onClick={() => handlePetFirstSkillInfo(3)}
+                                  onMouseOver={() =>
+                                    handlePetFirstSkillInfo(3, "hover")
+                                  }
+                                  onClick={() =>
+                                    handlePetFirstSkillInfo(3, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -701,9 +759,11 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                   }
                                   alt="petAutoSkill2"
                                   onMouseOver={() =>
-                                    handlePetSecondSkillInfo(3)
+                                    handlePetSecondSkillInfo(3, "hover")
                                   }
-                                  onClick={() => handlePetSecondSkillInfo(3)}
+                                  onClick={() =>
+                                    handlePetSecondSkillInfo(3, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (

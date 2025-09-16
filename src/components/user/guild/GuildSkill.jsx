@@ -8,6 +8,9 @@ export const GuildSkill = ({ result }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [clicked, setClicked] = useState(false);
 
+  const isHoverDisabled = () =>
+    typeof window !== "undefined" && window.innerWidth <= 768;
+
   const handleClick = (item) => {
     if (selectedItem === item) {
       setClicked(!clicked);
@@ -18,6 +21,9 @@ export const GuildSkill = ({ result }) => {
   };
 
   const handleItemHover = (item) => {
+    if (isHoverDisabled()) {
+      return;
+    }
     if (!clicked) setSelectedItem(item);
   };
 

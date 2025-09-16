@@ -14,6 +14,9 @@ export const SkillGradeBox = ({
   if (!data || !data.character_skill || data.character_skill.length === 0)
     return null;
 
+  const isHoverDisabled = () =>
+    typeof window !== "undefined" && window.innerWidth <= 768;
+
   const SKILL_HEADER_MAP = {
     6: "HEXA 매트릭스",
     5: "V 매트릭스",
@@ -33,6 +36,9 @@ export const SkillGradeBox = ({
   };
 
   const handleItemHover = (item) => {
+    if (isHoverDisabled()) {
+      return;
+    }
     if (!clicked) {
       setSelectedItem(item);
     }
