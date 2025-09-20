@@ -30,8 +30,6 @@ export const Skill = ({ result }) => {
             key={gradeKey}
             grade={gradeKey}
             data={skills[gradeKey]}
-            clicked={clicked}
-            setClicked={setClicked}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
           />
@@ -43,8 +41,6 @@ export const Skill = ({ result }) => {
             key={gradeKey}
             grade={gradeKey}
             data={skills[gradeKey]}
-            clicked={clicked}
-            setClicked={setClicked}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
           />
@@ -54,8 +50,6 @@ export const Skill = ({ result }) => {
         {result?.getCombinedData?.getLinkSkill && (
           <SkillLinks
             Data={result.getCombinedData.getLinkSkill}
-            clicked={clicked}
-            setClicked={setClicked}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
           />
