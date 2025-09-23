@@ -1,38 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
 import { SkillDetail } from "./SkillDetail";
 
-export const SkillLinks = ({
-  Data,
-  clicked,
-  setClicked,
-  selectedItem,
-  setSelectedItem,
-}) => {
-  const [isCloseClick, setIsCloseClick] = useState(false);
+export const SkillLinks = ({ Data, selectedItem, setSelectedItem }) => {
+  // 모바일 환경인지 확인
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
+  // 디테일 클릭시 창 닫기
   const handleCloseClick = () => {
-    setClicked(false);
     setSelectedItem(null);
-    setIsCloseClick(true);
   };
 
+  // 모바일 환경에서는 클릭으로 선택
   const handleItemClick = (item) => {
-    setClicked(!clicked);
-  };
-
-  const handleItemHover = (item) => {
-    if (!clicked) {
+    if (isMobile) {
       setSelectedItem(item);
     }
   };
 
-  const handleMouseLeave = () => {
-    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
-    const isWideScreen = window.innerWidth <= 768;
+  // hover시 아이템 출력 모바일 환경에서는 hover 비활성화
+  const handleItemHover = (item) => {
+    if (isMobile) {
+      return;
+    } else {
+      setSelectedItem(item);
+    }
+  };
 
-    if (!isWideScreen) {
+  // pc환경에서 컨테이너 벗어나면 아이템 초기화
+  const handleMouseLeave = () => {
+    if (!isMobile) {
       setSelectedItem(null);
     }
   };
@@ -59,12 +57,7 @@ export const SkillLinks = ({
           </SkillGrid>
           {/* SkillDetail 컴포넌트는 조건부로 렌더링 */}
           {selectedItem && (
-            <SkillDetail
-              item={selectedItem}
-              clicked={clicked}
-              closeClick={isCloseClick}
-              onClose={handleCloseClick}
-            />
+            <SkillDetail item={selectedItem} onClose={handleCloseClick} />
           )}
         </>
       ) : (

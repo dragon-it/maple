@@ -61,17 +61,18 @@ const cashPositions = {
 };
 
 const ADPositions = {
-  모자: { top: "6px", left: "108px" },
-  얼굴장식: { top: "55px", left: "108px" },
-  눈장식: { top: "104px", left: "108px" },
+  모자: { top: "9px", left: "110px" },
+  얼굴장식: { top: "58px", left: "110px" },
+  눈장식: { top: "104px", left: "110px" },
   귀고리: { top: "104px", left: "157px" },
-  상의: { top: "154px", left: "108px" },
-  하의: { top: "203px", left: "108px" },
-  신발: { top: "252px", left: "108px" },
-  장갑: { top: "203px", left: "57px" },
-  망토: { top: "203px", left: "156px" },
-  보조무기: { top: "154px", left: "206px" },
+  상의: { top: "156px", left: "110px" },
+  하의: { top: "203px", left: "110px" },
+  신발: { top: "255px", left: "110px" },
+  장갑: { top: "205px", left: "61px" },
+  망토: { top: "205px", left: "160px" },
+  보조무기: { top: "154px", left: "205px" },
   무기: { top: "154px", left: "59px" },
+  반지4: { top: "203px", left: "59px" },
 };
 
 const PresetButton = styled.button`
@@ -109,28 +110,14 @@ const ItemIcon = styled.div`
 `;
 
 export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
-  const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
-  const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
-  const [selectedPreset, setSelectedPreset] = useState(
-    matchingPresetKey || "item_equipment_preset_1"
-  );
-  const [selectedCashPreset, setSelectedCashPreset] = useState(
-    matchingCashPresetKey || "cash_item_equipment_preset_1"
-  );
-
-  // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
-
-  // 클릭 설정
-  const [clicked, setClicked] = useState(false);
-
-  // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
-  const [isCloseClick, setIsCloseClick] = useState(false);
+
+  // 모바일 환경인지 확인
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
   const handleMouseLeave = () => {
-    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
-    const isWideScreen = window.innerWidth <= 1024;
+    const isWideScreen = window.innerWidth <= 768;
 
     if (!isWideScreen) {
       setSelectedItem(null);
@@ -141,27 +128,27 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
     setSelectedItem(null);
-    setClicked(false);
   };
 
   // 마우스 hover 함수
   const handleItemHover = (item) => {
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
+    if (isMobile) {
+      return;
+    } else {
       setSelectedItem(item);
     }
   };
 
   // 마우스 클릭 함수
   const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setClicked(!clicked); // 클릭 시 clicked 상태 반전
+    if (isMobile) {
+      setSelectedItem(item);
+    }
   };
 
+  // 디테일 클릭시 창 닫기
   const handleCloseClick = () => {
-    setClicked(false);
     setSelectedItem(null);
-    setIsCloseClick(true);
   };
 
   // 장비 아이템 프리셋 선택
@@ -178,6 +165,15 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const handleCashItemBase = () => {
     setSelectedCashPreset(`cash_item_equipment_base`);
   };
+
+  const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
+  const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
+  const [selectedPreset, setSelectedPreset] = useState(
+    matchingPresetKey || "item_equipment_preset_1"
+  );
+  const [selectedCashPreset, setSelectedCashPreset] = useState(
+    matchingCashPresetKey || "cash_item_equipment_preset_1"
+  );
 
   const petInformationData = (index) => {
     const petEquipment = EquipData.getPetEquipment;
@@ -198,56 +194,59 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   };
 
   // PetAppearanceIcon 컴포넌트에서 사용할 정보 처리 함수 (장착 펫 데이터)
-  const handlePetAppearanceInfo = (index) => {
-    const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        appearance: petInfo?.petAppearance,
-        icon: petInfo?.petIcon,
-        expire: petInfo?.petDateExpire,
-        description: petInfo?.petDescription,
-        name: petInfo?.petName,
-        nickname: petInfo?.petNickname,
-        type: petInfo?.petType,
-        skill: petInfo?.petSkill,
-      });
+  const handlePetAppearanceInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isMobile) {
+      return;
     }
+    const petInfo = petInformationData(index);
+
+    setSelectedItem({
+      appearance: petInfo?.petAppearance,
+      icon: petInfo?.petIcon,
+      expire: petInfo?.petDateExpire,
+      description: petInfo?.petDescription,
+      name: petInfo?.petName,
+      nickname: petInfo?.petNickname,
+      type: petInfo?.petType,
+      skill: petInfo?.petSkill,
+    });
   };
 
   // PetEquipShapeIcon 컴포넌트에서 사용할 정보 처리 함수 (펫 장비 데이터)
-  const handlePetEquipInfo = (index) => {
-    const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        equipment: petInfo?.petEquipment,
-      });
+  const handlePetEquipInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isMobile) {
+      return;
     }
+    const petInfo = petInformationData(index);
+    setSelectedItem({
+      equipment: petInfo?.petEquipment,
+    });
   };
 
   // 펫 첫 번째 스킬 정보 처리 함수
-  const handlePetFirstSkillInfo = (index) => {
-    const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        autoSkillName: petInfo?.petAutoSkill.skill_1,
-        autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
-      });
+  const handlePetFirstSkillInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isMobile) {
+      return;
     }
+    const petInfo = petInformationData(index);
+    setSelectedItem({
+      autoSkillName: petInfo?.petAutoSkill.skill_1,
+      autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
+    });
   };
 
   // 펫 두 번째 스킬 정보 처리 함수
-  const handlePetSecondSkillInfo = (index) => {
-    const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        autoSkillName: petInfo?.petAutoSkill.skill_2,
-        autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
-      });
+  const handlePetSecondSkillInfo = (index, trigger = "hover") => {
+    if (trigger === "hover" && isMobile) {
+      return;
     }
+    const petInfo = petInformationData(index);
+
+    // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
+    setSelectedItem({
+      autoSkillName: petInfo?.petAutoSkill.skill_2,
+      autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
+    });
   };
 
   // 탭 변경시 프리셋 초기화
@@ -488,8 +487,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .pet_1_appearance_icon
                                 }
                                 alt="Icon"
-                                onMouseOver={() => handlePetAppearanceInfo(1)}
-                                onClick={() => handlePetAppearanceInfo(1)}
+                                onMouseOver={() =>
+                                  handlePetAppearanceInfo(1, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetAppearanceInfo(1, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -505,8 +508,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .item_shape_icon
                                 }
                                 alt="petEqipIcon"
-                                onMouseOver={() => handlePetEquipInfo(1)}
-                                onClick={() => handlePetEquipInfo(1)}
+                                onMouseOver={() =>
+                                  handlePetEquipInfo(1, "hover")
+                                }
+                                onClick={() => handlePetEquipInfo(1, "click")}
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -523,8 +528,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                       .skill_1_icon
                                   }
                                   alt="petAutoSkill1"
-                                  onMouseOver={() => handlePetFirstSkillInfo(1)}
-                                  onClick={() => handlePetFirstSkillInfo(1)}
+                                  onMouseOver={() =>
+                                    handlePetFirstSkillInfo(1, "hover")
+                                  }
+                                  onClick={() =>
+                                    handlePetFirstSkillInfo(1, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -543,9 +552,11 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                   }
                                   alt="petAutoSkill2"
                                   onMouseOver={() =>
-                                    handlePetSecondSkillInfo(1)
+                                    handlePetSecondSkillInfo(1, "hover")
                                   }
-                                  onClick={() => handlePetSecondSkillInfo(1)}
+                                  onClick={() =>
+                                    handlePetSecondSkillInfo(1, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -567,8 +578,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .pet_2_appearance_icon
                                 }
                                 alt="Icon"
-                                onMouseOver={() => handlePetAppearanceInfo(2)}
-                                onClick={() => handlePetAppearanceInfo(2)}
+                                onMouseOver={() =>
+                                  handlePetAppearanceInfo(2, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetAppearanceInfo(2, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -584,8 +599,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .item_shape_icon
                                 }
                                 alt="petEqipIcon"
-                                onMouseOver={() => handlePetEquipInfo(2)}
-                                onClick={() => handlePetEquipInfo(2)}
+                                onMouseOver={() =>
+                                  handlePetEquipInfo(2, "hover")
+                                }
+                                onClick={() => handlePetEquipInfo(2, "click")}
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -602,8 +619,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                       .skill_1_icon
                                   }
                                   alt="petAutoSkill1"
-                                  onMouseOver={() => handlePetFirstSkillInfo(2)}
-                                  onClick={() => handlePetFirstSkillInfo(2)}
+                                  onMouseOver={() =>
+                                    handlePetFirstSkillInfo(2, "hover")
+                                  }
+                                  onClick={() =>
+                                    handlePetFirstSkillInfo(2, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -622,9 +643,11 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                   }
                                   alt="petAutoSkill2"
                                   onMouseOver={() =>
-                                    handlePetSecondSkillInfo(2)
+                                    handlePetSecondSkillInfo(2, "hover")
                                   }
-                                  onClick={() => handlePetSecondSkillInfo(2)}
+                                  onClick={() =>
+                                    handlePetSecondSkillInfo(2, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -646,8 +669,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .pet_3_appearance_icon
                                 }
                                 alt="Icon"
-                                onMouseOver={() => handlePetAppearanceInfo(3)}
-                                onClick={() => handlePetAppearanceInfo(3)}
+                                onMouseOver={() =>
+                                  handlePetAppearanceInfo(3, "hover")
+                                }
+                                onClick={() =>
+                                  handlePetAppearanceInfo(3, "click")
+                                }
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -663,8 +690,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                     .item_shape_icon
                                 }
                                 alt="petEqipIcon"
-                                onMouseOver={() => handlePetEquipInfo(3)}
-                                onClick={() => handlePetEquipInfo(3)}
+                                onMouseOver={() =>
+                                  handlePetEquipInfo(3, "hover")
+                                }
+                                onClick={() => handlePetEquipInfo(3, "click")}
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -681,8 +710,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                       .skill_1_icon
                                   }
                                   alt="petAutoSkill1"
-                                  onMouseOver={() => handlePetFirstSkillInfo(3)}
-                                  onClick={() => handlePetFirstSkillInfo(3)}
+                                  onMouseOver={() =>
+                                    handlePetFirstSkillInfo(3, "hover")
+                                  }
+                                  onClick={() =>
+                                    handlePetFirstSkillInfo(3, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -701,9 +734,11 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                   }
                                   alt="petAutoSkill2"
                                   onMouseOver={() =>
-                                    handlePetSecondSkillInfo(3)
+                                    handlePetSecondSkillInfo(3, "hover")
                                   }
-                                  onClick={() => handlePetSecondSkillInfo(3)}
+                                  onClick={() =>
+                                    handlePetSecondSkillInfo(3, "click")
+                                  }
                                   onMouseLeave={handleMouseLeave}
                                 />
                               ) : (
@@ -750,24 +785,20 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
           <DetailWrap>
             {currentTab === "캐시" ? (
-              <CashItemDetail item={selectedItem} clicked={clicked} />
+              <CashItemDetail item={selectedItem} onClose={handleCloseClick} />
             ) : currentTab === "장비" ? (
               <ItemDetail
                 item={selectedItem}
-                clicked={clicked}
                 $gradeColors={gradeColors}
-                closeClick={isCloseClick}
                 onClose={handleCloseClick}
               />
             ) : currentTab === "펫" ? (
-              <PetItemDetail
-                item={selectedItem}
-                clicked={clicked}
-                onClose={handleCloseClick}
-                closeClick={isCloseClick}
-              />
+              <PetItemDetail item={selectedItem} onClose={handleCloseClick} />
             ) : (
-              <AndroidItemDetail item={selectedItem} clicked={clicked} />
+              <AndroidItemDetail
+                item={selectedItem}
+                onClose={handleCloseClick}
+              />
             )}
           </DetailWrap>
         </ItemInfoDetailWrap>

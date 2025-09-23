@@ -46,7 +46,7 @@ export const CashItemDetail = ({ item, onClose }) => {
     }
   }, [mousePosition]);
 
-  const isWideScreen = window.innerWidth > 1024;
+  const isWideScreen = window.innerWidth > 768;
 
   if (!item) {
     // 아이템 정보가 없는 경우를 처리
@@ -77,8 +77,10 @@ export const CashItemDetail = ({ item, onClose }) => {
       onClick={onClose}
       style={
         isWideScreen
-          ? { top: detailPosition.top, left: detailPosition.left }
-          : {}
+          ? detailPosition
+            ? { top: detailPosition.top, left: detailPosition.left }
+            : { display: "none" }
+          : { top: "50%", left: "50%", transform: "translate(-50%, -40%)" }
       }
     >
       <ItemNameWrap>
@@ -137,31 +139,22 @@ const Container = styled.div`
   white-space: pre-line;
   z-index: 9999;
 
-  @media screen and (max-width: 1024px) {
-    position: relative;
-  }
-
-  @media screen and (max-width: 768px) {
-    position: absolute;
-    transform: translate(0%, -60%);
-  }
-
   &::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    width: 50px;
+    width: 55px;
     height: 50px;
     background: linear-gradient(
       139deg,
       rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 42%,
       rgba(255, 255, 255, 0) 100%
     );
     opacity: 1;
     pointer-events: none;
-    border-radius: 5px;
+    border-radius: 7px;
   }
 `;
 

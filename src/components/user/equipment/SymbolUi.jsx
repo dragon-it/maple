@@ -16,8 +16,30 @@ import { InfoPopup } from "./SymbolPopup";
 export const SymbolUi = ({ symbolData }) => {
   const [hoveredKey, setHoveredKey] = useState(null);
   const [clickedKey, setClickedKey] = useState(null);
-  const openByHover = useCallback((key) => setHoveredKey(key), []);
-  const closeHover = useCallback(() => setHoveredKey(null), []);
+
+  const isHoverEnabled = useCallback(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
+    return window.innerWidth > 768;
+  }, []);
+
+  const openByHover = useCallback(
+    (key) => {
+      if (!isHoverEnabled()) {
+        return;
+      }
+      setHoveredKey(key);
+    },
+    [isHoverEnabled]
+  );
+
+  const closeHover = useCallback(() => {
+    if (!isHoverEnabled()) {
+      return;
+    }
+    setHoveredKey(null);
+  }, [isHoverEnabled]);
   const toggleClick = useCallback((key) => {
     setClickedKey((prev) => (prev === key ? null : key));
   }, []);
