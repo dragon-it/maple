@@ -6,7 +6,6 @@ import { SkillGradeBox } from "../common/searchCharacter/SkillGradeBox";
 
 export const Skill = ({ result }) => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [clicked, setClicked] = useState(false);
 
   const skills = result?.getCombinedData?.getSkill ?? {};
   // 렌더 순서 고정

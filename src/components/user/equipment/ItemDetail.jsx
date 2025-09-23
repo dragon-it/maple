@@ -12,7 +12,7 @@ import unique_Border from "../../../assets/pages/user/equipment/optionIcon/Item.
 import legendary_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.4.png";
 import DesiredPart from "./itemDetailDesiredPart";
 
-export const ItemDetail = ({ item, clicked, onClose }) => {
+export const ItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [detailPosition, setDetailPosition] = useState(null);
   const detailRef = useRef(null);
@@ -53,7 +53,7 @@ export const ItemDetail = ({ item, clicked, onClose }) => {
     }
   }, [mousePosition]);
 
-  const isWideScreen = window.innerWidth > 1024;
+  const isWideScreen = window.innerWidth > 768;
 
   if (!item) {
     // 아이템 정보가 없는 경우
@@ -644,15 +644,12 @@ const OptionHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 2px;
   ${({ $potengrade }) => {
-    if ($potengrade === "레어")
-      return "color: rgb(102,225,225); margin-bottom: 2px;";
-    if ($potengrade === "에픽")
-      return "color: rgb(153,91,197); margin-bottom: 2px;";
-    if ($potengrade === "유니크")
-      return "color: rgb(255,204,0); margin-bottom: 2px;";
-    if ($potengrade === "레전드리")
-      return "color: rgb(204,241,20); margin-bottom: 2px;";
+    if ($potengrade === "레어") return "color: rgb(102,225,225); ";
+    if ($potengrade === "에픽") return "color: rgb(153,91,197); ";
+    if ($potengrade === "유니크") return "color: rgb(255,204,0); ";
+    if ($potengrade === "레전드리") return "color: rgb(204,241,20); ";
   }}
 `;
 

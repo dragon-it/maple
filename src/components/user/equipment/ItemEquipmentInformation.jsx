@@ -109,31 +109,14 @@ const ItemIcon = styled.div`
 `;
 
 export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
-  const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
-  const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
-  const [selectedPreset, setSelectedPreset] = useState(
-    matchingPresetKey || "item_equipment_preset_1"
-  );
-  const [selectedCashPreset, setSelectedCashPreset] = useState(
-    matchingCashPresetKey || "cash_item_equipment_preset_1"
-  );
-
-  // select item 설정
   const [selectedItem, setSelectedItem] = useState(null);
-
-  // 클릭 설정
-  const [clicked, setClicked] = useState(false);
-
-  // 초기 탭 설정
   const [currentTab, setCurrentTab] = useState("장비");
-  const [isCloseClick, setIsCloseClick] = useState(false);
 
-  const isHoverDisabled = () =>
-    typeof window !== "undefined" && window.innerWidth <= 768;
+  // 모바일 환경인지 확인
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
   const handleMouseLeave = () => {
-    // 마우스가 Container를 벗어나면 선택된 스킬 초기화
-    const isWideScreen = window.innerWidth <= 1024;
+    const isWideScreen = window.innerWidth <= 768;
 
     if (!isWideScreen) {
       setSelectedItem(null);
@@ -144,30 +127,27 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
     setSelectedItem(null);
-    setClicked(false);
   };
 
   // 마우스 hover 함수
   const handleItemHover = (item) => {
-    if (isHoverDisabled()) {
+    if (isMobile) {
       return;
-    }
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
+    } else {
       setSelectedItem(item);
     }
   };
 
   // 마우스 클릭 함수
   const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setClicked(!clicked); // 클릭 시 clicked 상태 반전
+    if (isMobile) {
+      setSelectedItem(item);
+    }
   };
 
+  // 디테일 클릭시 창 닫기
   const handleCloseClick = () => {
-    setClicked(false);
     setSelectedItem(null);
-    setIsCloseClick(true);
   };
 
   // 장비 아이템 프리셋 선택
@@ -184,6 +164,15 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const handleCashItemBase = () => {
     setSelectedCashPreset(`cash_item_equipment_base`);
   };
+
+  const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
+  const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
+  const [selectedPreset, setSelectedPreset] = useState(
+    matchingPresetKey || "item_equipment_preset_1"
+  );
+  const [selectedCashPreset, setSelectedCashPreset] = useState(
+    matchingCashPresetKey || "cash_item_equipment_preset_1"
+  );
 
   const petInformationData = (index) => {
     const petEquipment = EquipData.getPetEquipment;
@@ -205,67 +194,58 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
   // PetAppearanceIcon 컴포넌트에서 사용할 정보 처리 함수 (장착 펫 데이터)
   const handlePetAppearanceInfo = (index, trigger = "hover") => {
-    if (trigger === "hover" && isHoverDisabled()) {
+    if (trigger === "hover" && isMobile) {
       return;
     }
     const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        appearance: petInfo?.petAppearance,
-        icon: petInfo?.petIcon,
-        expire: petInfo?.petDateExpire,
-        description: petInfo?.petDescription,
-        name: petInfo?.petName,
-        nickname: petInfo?.petNickname,
-        type: petInfo?.petType,
-        skill: petInfo?.petSkill,
-      });
-    }
+
+    setSelectedItem({
+      appearance: petInfo?.petAppearance,
+      icon: petInfo?.petIcon,
+      expire: petInfo?.petDateExpire,
+      description: petInfo?.petDescription,
+      name: petInfo?.petName,
+      nickname: petInfo?.petNickname,
+      type: petInfo?.petType,
+      skill: petInfo?.petSkill,
+    });
   };
 
   // PetEquipShapeIcon 컴포넌트에서 사용할 정보 처리 함수 (펫 장비 데이터)
   const handlePetEquipInfo = (index, trigger = "hover") => {
-    if (trigger === "hover" && isHoverDisabled()) {
+    if (trigger === "hover" && isMobile) {
       return;
     }
     const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        equipment: petInfo?.petEquipment,
-      });
-    }
+    setSelectedItem({
+      equipment: petInfo?.petEquipment,
+    });
   };
 
   // 펫 첫 번째 스킬 정보 처리 함수
   const handlePetFirstSkillInfo = (index, trigger = "hover") => {
-    if (trigger === "hover" && isHoverDisabled()) {
+    if (trigger === "hover" && isMobile) {
       return;
     }
     const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        autoSkillName: petInfo?.petAutoSkill.skill_1,
-        autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
-      });
-    }
+    setSelectedItem({
+      autoSkillName: petInfo?.petAutoSkill.skill_1,
+      autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
+    });
   };
 
   // 펫 두 번째 스킬 정보 처리 함수
   const handlePetSecondSkillInfo = (index, trigger = "hover") => {
-    if (trigger === "hover" && isHoverDisabled()) {
+    if (trigger === "hover" && isMobile) {
       return;
     }
     const petInfo = petInformationData(index);
-    if (!clicked) {
-      // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
-      setSelectedItem({
-        autoSkillName: petInfo?.petAutoSkill.skill_2,
-        autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
-      });
-    }
+
+    // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
+    setSelectedItem({
+      autoSkillName: petInfo?.petAutoSkill.skill_2,
+      autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
+    });
   };
 
   // 탭 변경시 프리셋 초기화
@@ -530,9 +510,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                 onMouseOver={() =>
                                   handlePetEquipInfo(1, "hover")
                                 }
-                                onClick={() =>
-                                  handlePetEquipInfo(1, "click")
-                                }
+                                onClick={() => handlePetEquipInfo(1, "click")}
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -623,9 +601,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                 onMouseOver={() =>
                                   handlePetEquipInfo(2, "hover")
                                 }
-                                onClick={() =>
-                                  handlePetEquipInfo(2, "click")
-                                }
+                                onClick={() => handlePetEquipInfo(2, "click")}
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -716,9 +692,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                                 onMouseOver={() =>
                                   handlePetEquipInfo(3, "hover")
                                 }
-                                onClick={() =>
-                                  handlePetEquipInfo(3, "click")
-                                }
+                                onClick={() => handlePetEquipInfo(3, "click")}
                                 onMouseLeave={handleMouseLeave}
                               />
                             ) : (
@@ -810,24 +784,20 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
           <DetailWrap>
             {currentTab === "캐시" ? (
-              <CashItemDetail item={selectedItem} clicked={clicked} />
+              <CashItemDetail item={selectedItem} onClose={handleCloseClick} />
             ) : currentTab === "장비" ? (
               <ItemDetail
                 item={selectedItem}
-                clicked={clicked}
                 $gradeColors={gradeColors}
-                closeClick={isCloseClick}
                 onClose={handleCloseClick}
               />
             ) : currentTab === "펫" ? (
-              <PetItemDetail
-                item={selectedItem}
-                clicked={clicked}
-                onClose={handleCloseClick}
-                closeClick={isCloseClick}
-              />
+              <PetItemDetail item={selectedItem} onClose={handleCloseClick} />
             ) : (
-              <AndroidItemDetail item={selectedItem} clicked={clicked} />
+              <AndroidItemDetail
+                item={selectedItem}
+                onClose={handleCloseClick}
+              />
             )}
           </DetailWrap>
         </ItemInfoDetailWrap>
