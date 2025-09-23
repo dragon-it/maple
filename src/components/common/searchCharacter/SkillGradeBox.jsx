@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ContainerBox } from "./ContainerBox";
 import styled from "styled-components";
 import { SkillDetail } from "../../user/skill/SkillDetail";
