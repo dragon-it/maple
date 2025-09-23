@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { ContainerBox } from "./ContainerBox";
 import styled from "styled-components";
-import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
-import { SkillDetail } from "./SkillDetail";
+import { SkillDetail } from "../../user/skill/SkillDetail";
 
-export const SkillLinks = ({ Data, selectedItem, setSelectedItem }) => {
+export const SkillGradeBox = ({
+  grade,
+  data,
+  selectedItem,
+  setSelectedItem,
+}) => {
+  const SKILL_HEADER_MAP = {
+    6: "HEXA 매트릭스",
+    5: "V 매트릭스",
+    hyperpassive: "하이퍼 패시브",
+    hyperactive: "하이퍼 액티브",
+  };
+  const header = SKILL_HEADER_MAP[grade] ?? `${grade}차 스킬`;
+
   // 모바일 환경인지 확인
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
@@ -37,17 +50,21 @@ export const SkillLinks = ({ Data, selectedItem, setSelectedItem }) => {
 
   return (
     <ContainerBox>
-      {Data.character_link_skill && Data.character_link_skill.length > 0 ? (
+      {data && data.character_skill && data.character_skill.length > 0 ? (
         <>
-          <SkillHeader>링크 스킬</SkillHeader>
-          <SkillGrid onMouseLeave={handleMouseLeave}>
-            {Data.character_link_skill.map((item, index) => (
+          <SkillHeader>{header}</SkillHeader>
+          <SkillGrid role="list" onMouseLeave={handleMouseLeave}>
+            {data.character_skill.map((item) => (
               <SkillItem
+                role="listitem"
                 key={item.skill_name}
                 onClick={() => handleItemClick(item)}
                 onMouseOver={() => handleItemHover(item)}
               >
-                <SkillIcon src={item.skill_icon} alt={`icon-${index}`} />
+                <SkillIcon
+                  src={item.skill_icon}
+                  alt={`${item.skill_name} 아이콘`}
+                />
                 <SkillNameLevelWrap>
                   <SkillName>{item.skill_name}</SkillName>
                   <SkillLevel>Lv.{item.skill_level}</SkillLevel>
@@ -62,7 +79,7 @@ export const SkillLinks = ({ Data, selectedItem, setSelectedItem }) => {
         </>
       ) : (
         <>
-          <SkillHeader>링크 스킬</SkillHeader>
+          <SkillHeader>{header}</SkillHeader>
           <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
         </>
       )}
@@ -71,7 +88,7 @@ export const SkillLinks = ({ Data, selectedItem, setSelectedItem }) => {
 };
 
 const SkillHeader = styled.h2`
-  font-size: 15px;
+  font-size: 16px;
   color: rgb(220, 252, 2);
   margin-bottom: 3px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
@@ -84,17 +101,11 @@ const SkillGrid = styled.ul`
   width: 100%;
 `;
 
-const SkillIcon = styled.img`
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-`;
-
 const SkillItem = styled.li`
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   padding: 2px;
   border-radius: 8px;
@@ -108,6 +119,12 @@ const SkillItem = styled.li`
   }
 `;
 
+const SkillIcon = styled.img`
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+`;
+
 const SkillNameLevelWrap = styled.span`
   display: flex;
   flex-direction: column;
@@ -118,10 +135,7 @@ const SkillName = styled.span``;
 
 const SkillLevel = styled.span`
   opacity: 0.85;
-  font-size: 14px;
-  @media (max-width: 576px) {
-    font-size: 10px;
-  }
+  font-size: 13px;
 `;
 
 const SkillNoDataText = styled.p``;

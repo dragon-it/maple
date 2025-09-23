@@ -12,7 +12,7 @@ import { Error } from "./Error";
 import { Union } from "../components/user/Union";
 import { Guild } from "../components/user/Guild";
 import { useTheme } from "../context/ThemeProvider";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export const User = () => {
   const { theme } = useTheme();
@@ -144,6 +144,7 @@ const Container = styled.div`
   @media screen and (max-width: 1024px) {
     margin-top: 90px;
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
+    width: ${({ $activeTab }) => ($activeTab === 3 ? "95%" : "fit-content")};
   }
 
   @media screen and (max-width: 576px) {

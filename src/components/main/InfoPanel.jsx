@@ -4,8 +4,10 @@ import event_Header_Img from "../../assets/pages/main/infoPanel/Event_header_img
 import Notice_Header_Img from "../../assets/pages/main/infoPanel/Notice_header_img2.png";
 import { useNavigate } from "react-router-dom";
 import colors from "../common/color/colors";
+import { useNoticeEvent } from "../../context/NoticeEventContext";
 
-export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
+export const InfoPanel = () => {
+  const { eventData, noticeData, loading, error } = useNoticeEvent();
   const navigate = useNavigate();
   const calculateDday = (endDate) => {
     const today = new Date();
@@ -71,7 +73,7 @@ export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
   };
 
   return (
-    <Container error={error}>
+    <Container $error={error}>
       {error ? (
         <></>
       ) : (
@@ -96,7 +98,7 @@ export const InfoPanel = ({ noticeData, eventData, error, loading }) => {
                   const ddayText = calculateDday(event.date_event_end);
                   return (
                     <ListItem key={event.notice_id}>
-                      <DdayBadge type={getDdayType(ddayText)}>
+                      <DdayBadge $type={getDdayType(ddayText)}>
                         {ddayText}
                       </DdayBadge>
                       <Link
@@ -173,8 +175,8 @@ const Container = styled.div`
   height: 450px;
 
   @media screen and (max-width: 768px) {
-    flex-direction: ${({ error }) => (error ? "row" : "column;")};
-    height: ${({ error }) => (error ? "auto" : "550px;")};
+    flex-direction: ${({ $error }) => ($error ? "row" : "column;")};
+    height: ${({ $error }) => ($error ? "auto" : "550px;")};
     margin: 30px 0;
     width: 70%;
   }
@@ -254,8 +256,8 @@ const DdayBadge = styled.span`
   font-size: 13px;
   font-weight: bold;
   color: #fff;
-  background: ${({ type }) =>
-    type === "today" ? "#ff3300" : type === "end" ? "#7a7a7a" : "#1976d2"};
+  background: ${({ $type }) =>
+    $type === "today" ? "#ff3300" : $type === "end" ? "#7a7a7a" : "#1976d2"};
   border-radius: 12px;
   padding: 1px 5px;
   margin-right: 8px;

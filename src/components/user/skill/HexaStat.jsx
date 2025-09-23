@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import hexaStatData from "./HexaStatData";
 import { ContainerBox } from "../../common/searchCharacter/ContainerBox";
+import hexa_stat_icon1 from "../../../assets/icons/skillIcons/hexa_stat_icon1.png";
+import hexa_stat_icon2 from "../../../assets/icons/skillIcons/hexa_stat_icon2.png";
+import hexa_stat_icon3 from "../../../assets/icons/skillIcons/hexa_stat_icon3.png";
 
 const StatInfo = ({ level, name, value }) => {
   return (
     <StatInfoContainer>
       <StatLevel>Lv.{level}</StatLevel>
-      <StatName>{name}</StatName>
-      <StatValue>+{value}</StatValue>
+      <StatName>
+        {name} +{value}
+      </StatName>
     </StatInfoContainer>
   );
 };
@@ -29,10 +33,7 @@ const findStatData = (name, level, type = "main", characterClass) => {
   }
 
   if (characterClass === "제논" && statData?.xenon_value) {
-    return {
-      ...statData,
-      value: statData.xenon_value,
-    };
+    return { ...statData, value: statData.xenon_value };
   }
 
   if (characterClass === "데몬어벤져" && statData?.demon_avenger_value) {
@@ -51,6 +52,7 @@ const processHexaStatInfo = (hexaStatInfo, characterClass) => {
   if (!hexaStatInfo) return null;
 
   return {
+    grade: hexaStatInfo.stat_grade,
     main: findStatData(
       hexaStatInfo.main_stat_name,
       hexaStatInfo.main_stat_level,
@@ -72,27 +74,35 @@ const processHexaStatInfo = (hexaStatInfo, characterClass) => {
   };
 };
 
-const StatSlot = ({ title, statInfo }) =>
+const StatSlot = ({ statInfo, icon }) =>
   statInfo && (
     <StatWrap>
-      <SlotHeader>{title}</SlotHeader>
-      <MainStat>
-        <StatInfo
-          level={statInfo.main.main_stat_level}
-          name={statInfo.main.main_stat_name}
-          value={statInfo.main.value}
-        />
-      </MainStat>
-      <StatInfo
-        level={statInfo.sub1.sub_stat_level}
-        name={statInfo.sub1.sub_stat_name}
-        value={statInfo.sub1.value}
-      />
-      <StatInfo
-        level={statInfo.sub2.sub_stat_level}
-        name={statInfo.sub2.sub_stat_name}
-        value={statInfo.sub2.value}
-      />
+      <SlotBody>
+        <LeftCol>
+          <SlotIcon src={icon} alt="slot icon" />
+          <GradeChip>Lv.{statInfo.grade ?? "-"}</GradeChip>
+        </LeftCol>
+
+        <StatInfoWrap>
+          <MainStat>
+            <StatInfo
+              level={statInfo.main.main_stat_level}
+              name={statInfo.main.main_stat_name}
+              value={statInfo.main.value}
+            />
+          </MainStat>
+          <StatInfo
+            level={statInfo.sub1.sub_stat_level}
+            name={statInfo.sub1.sub_stat_name}
+            value={statInfo.sub1.value}
+          />
+          <StatInfo
+            level={statInfo.sub2.sub_stat_level}
+            name={statInfo.sub2.sub_stat_name}
+            value={statInfo.sub2.value}
+          />
+        </StatInfoWrap>
+      </SlotBody>
     </StatWrap>
   );
 
@@ -106,7 +116,7 @@ export const HexaStat = ({ Data }) => {
   if (!hasData) {
     return (
       <ContainerBox>
-        <Header>HEXA STAT</Header>
+        <Header>HEXA 스탯</Header>
         <SkillNoDataText>데이터가 없습니다.</SkillNoDataText>
       </ContainerBox>
     );
@@ -121,74 +131,102 @@ export const HexaStat = ({ Data }) => {
 
   return (
     <ContainerBox>
-      <Header>HEXA STAT</Header>
+      <Header>HEXA 스탯</Header>
       <StatContainer>
-        <StatSlot title="첫 번째 슬롯" statInfo={statInfos[0]} />
-        <StatSlot title="두 번째 슬롯" statInfo={statInfos[1]} />
-        <StatSlot title="세 번째 슬롯" statInfo={statInfos[2]} />
+        <StatSlot
+          title="첫 번째 슬롯"
+          statInfo={statInfos[0]}
+          icon={hexa_stat_icon1}
+        />
+        <StatSlot
+          title="두 번째 슬롯"
+          statInfo={statInfos[1]}
+          icon={hexa_stat_icon2}
+        />
+        <StatSlot
+          title="세 번째 슬롯"
+          statInfo={statInfos[2]}
+          icon={hexa_stat_icon3}
+        />
       </StatContainer>
     </ContainerBox>
   );
 };
 
 const Header = styled.div`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: rgb(220, 252, 2);
   margin-bottom: 5px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
 `;
 
-const StatWrap = styled.ul`
-  font-size: 13px;
-`;
+const StatWrap = styled.div``;
 
 const MainStat = styled.div`
   font-weight: bold;
   font-size: 15px;
-  @media screen and (max-width: 768px) {
-    justify-content: center;
-  }
 `;
 
 const StatInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 3px;
-  margin-bottom: 3px;
-  @media screen and (max-width: 768px) {
-    justify-content: center;
-  }
+  gap: 6px;
 `;
 
 const StatLevel = styled.span``;
-
 const StatName = styled.span``;
-
-const StatValue = styled.span``;
-
 const SkillNoDataText = styled.p``;
 
 const StatContainer = styled.div`
   display: flex;
-  gap: 50px;
-
+  gap: 10px;
   @media screen and (max-width: 1024px) {
     justify-content: center;
   }
-
   @media screen and (max-width: 768px) {
     flex-direction: column;
-    gap: 20px;
+    width: 100%;
   }
 `;
 
-const SlotHeader = styled.div`
-  font-family: maple-light;
-  color: #ffffff;
-  font-size: 15px;
-  border-radius: 10px;
-  background-color: rgb(182, 101, 243);
+const SlotBody = styled.div`
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(115, 121, 122, 0.7);
+`;
+
+const LeftCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+`;
+
+const SlotIcon = styled.img`
+  width: 36px;
+  height: 36px;
+`;
+
+const GradeChip = styled.div`
+  min-width: 36px;
+  padding: 2px;
+  border-radius: 5px;
+  font-size: 13px;
   text-align: center;
-  margin-bottom: 3px;
+  color: #fff;
+  background: linear-gradient(180deg, #7c5cff, #5a35e8);
+  box-shadow: 0 2px 6px rgba(90, 53, 232, 0.35);
+`;
+
+const StatInfoWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  gap: 2px;
 `;

@@ -434,6 +434,44 @@ app.get("/api/character/exp-history", async (req, res) => {
   }
 });
 
+const SKILL_GRADES = [
+  0,
+  1,
+  1.5,
+  2,
+  2.5,
+  3,
+  4,
+  "hyperpassive",
+  "hyperactive",
+  5,
+  6,
+];
+
+const fetchAllSkills = async (ocid) => {
+  // 각 그레이드 병렬 호출 → [ [키, 데이터], ... ] 형태로 수집
+  const entries = await Promise.all(
+    SKILL_GRADES.map(async (grade) => {
+      try {
+        const data = await callMapleStoryAPI("character/skill", {
+          ocid,
+          character_skill_grade: grade,
+        });
+        // 실패/null이면 빼고, 성공이면 [키, 값] 반환
+        return [String(grade), data || null];
+      } catch {
+        return [String(grade), null];
+      }
+    })
+  );
+
+  // null 제거하고 키:값 맵으로 축약
+  return entries.reduce((acc, [k, v]) => {
+    if (v) acc[k] = v;
+    return acc;
+  }, {});
+};
+
 // Combined 엔드포인트
 app.get("/api/character/information", async (req, res) => {
   const { ocid } = req.query;
@@ -458,8 +496,6 @@ app.get("/api/character/information", async (req, res) => {
       beautyEquipment,
       androidEquipment,
       petEquipment,
-      skillGrade5,
-      skillGrade6,
       linkSkill,
       hexaMatrix,
       hexaMatrixStat,
@@ -469,6 +505,7 @@ app.get("/api/character/information", async (req, res) => {
       unionChampion,
       dojang,
       unionLanking,
+      allSkills,
     ] = await Promise.all([
       callMapleStoryAPI("character/basic", { ocid }),
       callMapleStoryAPI("character/stat", { ocid }),
@@ -483,8 +520,6 @@ app.get("/api/character/information", async (req, res) => {
       callMapleStoryAPI("character/beauty-equipment", { ocid }),
       callMapleStoryAPI("character/android-equipment", { ocid }),
       callMapleStoryAPI("character/pet-equipment", { ocid }),
-      callMapleStoryAPI("character/skill", { ocid, character_skill_grade: 5 }),
-      callMapleStoryAPI("character/skill", { ocid, character_skill_grade: 6 }),
       callMapleStoryAPI("character/link-skill", { ocid }),
       callMapleStoryAPI("character/hexamatrix", { ocid }),
       callMapleStoryAPI("character/hexamatrix-stat", { ocid }),
@@ -498,6 +533,7 @@ app.get("/api/character/information", async (req, res) => {
         date,
         page: 1,
       }),
+      fetchAllSkills(ocid),
     ]);
 
     // unionChampion에서 챔피언 이름을 가져오는 함수
@@ -553,10 +589,7 @@ app.get("/api/character/information", async (req, res) => {
       beautyEquipment: beautyEquipment,
       getAndroidEquipment: androidEquipment,
       getPetEquipment: petEquipment,
-      getSkill: {
-        grade5: skillGrade5,
-        grade6: skillGrade6,
-      },
+      getSkill: allSkills,
       getLinkSkill: linkSkill,
       getHexaMatrix: hexaMatrix,
       getHexaMatrixStat: hexaMatrixStat,

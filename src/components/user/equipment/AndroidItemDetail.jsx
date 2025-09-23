@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
-import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 
 export const AndroidItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -46,7 +45,7 @@ export const AndroidItemDetail = ({ item, onClose }) => {
     }
   }, [mousePosition]);
 
-  const isWideScreen = window.innerWidth > 1024;
+  const isWideScreen = window.innerWidth > 768;
 
   if (!item) {
     // 아이템 정보가 없는 경우를 처리
@@ -77,8 +76,10 @@ export const AndroidItemDetail = ({ item, onClose }) => {
       onClick={onClose}
       style={
         isWideScreen
-          ? { top: detailPosition.top, left: detailPosition.left }
-          : {}
+          ? detailPosition
+            ? { top: detailPosition.top, left: detailPosition.left }
+            : { display: "none" }
+          : { top: "50%", left: "50%", transform: "translate(-50%, -40%)" }
       }
     >
       <ItemNameWrap>
@@ -128,7 +129,15 @@ export const AndroidItemDetail = ({ item, onClose }) => {
 const Container = styled.div`
   position: fixed;
   width: 270px;
-  ${ContainerCss};
+  background: linear-gradient(
+    180deg,
+    rgba(57, 70, 81, 0.97) 0%,
+    rgba(46, 55, 62, 0.97) 9%,
+    rgba(44, 51, 58, 0.97) 100%
+  );
+  border: 1px solid #4f606b;
+  border-radius: 7px;
+  outline: 1px solid #242b33;
   color: white;
   padding: 0px 10px 5px;
   padding-bottom: 3px;
@@ -137,31 +146,22 @@ const Container = styled.div`
   white-space: pre-line;
   z-index: 9999;
 
-  @media screen and (max-width: 1024px) {
-    position: relative;
-  }
-
-  @media screen and (max-width: 768px) {
-    position: absolute;
-    transform: translate(0%, -60%);
-  }
-
   &::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    width: 50px;
+    width: 55px;
     height: 50px;
     background: linear-gradient(
       139deg,
       rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0) 42%,
       rgba(255, 255, 255, 0) 100%
     );
     opacity: 1;
     pointer-events: none;
-    border-radius: 5px;
+    border-radius: 7px;
   }
 `;
 
