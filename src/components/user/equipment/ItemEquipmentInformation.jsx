@@ -61,17 +61,18 @@ const cashPositions = {
 };
 
 const ADPositions = {
-  모자: { top: "6px", left: "108px" },
-  얼굴장식: { top: "55px", left: "108px" },
-  눈장식: { top: "104px", left: "108px" },
+  모자: { top: "9px", left: "110px" },
+  얼굴장식: { top: "58px", left: "110px" },
+  눈장식: { top: "104px", left: "110px" },
   귀고리: { top: "104px", left: "157px" },
-  상의: { top: "154px", left: "108px" },
-  하의: { top: "203px", left: "108px" },
-  신발: { top: "252px", left: "108px" },
-  장갑: { top: "203px", left: "57px" },
-  망토: { top: "203px", left: "156px" },
-  보조무기: { top: "154px", left: "206px" },
+  상의: { top: "156px", left: "110px" },
+  하의: { top: "203px", left: "110px" },
+  신발: { top: "255px", left: "110px" },
+  장갑: { top: "205px", left: "61px" },
+  망토: { top: "205px", left: "160px" },
+  보조무기: { top: "154px", left: "205px" },
   무기: { top: "154px", left: "59px" },
+  반지4: { top: "203px", left: "59px" },
 };
 
 const PresetButton = styled.button`

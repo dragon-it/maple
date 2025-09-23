@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import iconBackground from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
-import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 
 export const AndroidItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
