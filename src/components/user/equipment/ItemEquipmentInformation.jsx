@@ -847,7 +847,7 @@ const InfoWrap = styled.div`
   flex-direction: column;
   ${ContainerCss};
 
-  height: ${(props) => {
+  /* height: ${(props) => {
     switch (props.$currentTab) {
       case "장비":
         return "auto";
@@ -860,7 +860,7 @@ const InfoWrap = styled.div`
       default:
         return "450px";
     }
-  }};
+  }}; */
 `;
 
 const ItemInfoDetailWrap = styled.div`
@@ -927,8 +927,8 @@ const UiBackgrnd = styled.div`
 `;
 
 const BackgroundImageWrap = styled.div`
-  width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
-  height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
+  width: ${({ $isSelected }) => ($isSelected === "펫" ? "342px" : "342px")};
+  height: ${({ $isSelected }) => ($isSelected === "펫" ? "203px" : "349px")};
 `;
 
 const CharacterImageWrap = styled.div`
@@ -978,8 +978,8 @@ const Bg = styled.img`
 `;
 
 const BackgroundImage = styled.img`
-  width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
-  height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
+  width: ${({ $isSelected }) => ($isSelected === "펫" ? "342px" : "342px")};
+  height: ${({ $isSelected }) => ($isSelected === "펫" ? "203px" : "349px")};
   opacity: 0.8;
 `;
 
@@ -1006,13 +1006,12 @@ const PetEquipWrap = styled.div`
 `;
 
 const PetBackgroundImage = styled.img`
-  width: 262px;
-  margin-top: 5px;
+  width: 342px;
 `;
 
 const PetBackgroundImageWrap = styled.div`
-  width: 272px;
-  height: 205px;
+  width: 342px;
+  height: 203px;
 `;
 
 const PetIconsWrap = styled.div`
