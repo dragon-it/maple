@@ -77,22 +77,22 @@ const ADPositions = {
 
 const petPositions = {
   1: {
-    appearance: { top: "53px", left: "19px" },
-    equip: { top: "53px", left: "65px" },
-    skill1: { top: "139px", left: "19px" },
-    skill2: { top: "139px", left: "65px" },
+    appearance: { top: "56px", left: "22px" },
+    equip: { top: "56px", left: "68px" },
+    skill1: { top: "142px", left: "22px" },
+    skill2: { top: "142px", left: "68px" },
   },
   2: {
-    appearance: { top: "53px", left: "127px" },
-    equip: { top: "53px", left: "173px" },
-    skill1: { top: "139px", left: "127px" },
-    skill2: { top: "139px", left: "173px" },
+    appearance: { top: "56px", left: "130px" },
+    equip: { top: "56px", left: "176px" },
+    skill1: { top: "142px", left: "130px" },
+    skill2: { top: "142px", left: "176px" },
   },
   3: {
-    appearance: { top: "53px", left: "235px" },
-    equip: { top: "53px", left: "281px" },
-    skill1: { top: "139px", left: "235px" },
-    skill2: { top: "139px", left: "281px" },
+    appearance: { top: "56px", left: "238px" },
+    equip: { top: "56px", left: "284px" },
+    skill1: { top: "142px", left: "238px" },
+    skill2: { top: "142px", left: "284px" },
   },
 };
 
@@ -874,8 +874,8 @@ const DetailWrap = styled.div`
 
 const PetIcon = styled.img`
   position: absolute;
-  width: 42px;
-  height: 42px;
-  image-rendering: pixelated;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
   cursor: pointer;
 `;
