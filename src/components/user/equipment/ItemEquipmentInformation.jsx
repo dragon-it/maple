@@ -222,14 +222,14 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     const petInfo = petInformationData(index);
 
     setSelectedItem({
-      appearance: petInfo?.petAppearance,
-      icon: petInfo?.petIcon,
-      expire: petInfo?.petDateExpire,
-      description: petInfo?.petDescription,
-      name: petInfo?.petName,
-      nickname: petInfo?.petNickname,
-      type: petInfo?.petType,
-      skill: petInfo?.petSkill,
+      appearance: petInfo?.petAppearance ?? null,
+      icon: petInfo?.petIcon ?? null,
+      expire: petInfo?.petDateExpire ?? null,
+      description: petInfo?.petDescription ?? null,
+      name: petInfo?.petName ?? null,
+      nickname: petInfo?.petNickname ?? null,
+      type: petInfo?.petType ?? null,
+      skill: petInfo?.petSkill ?? null,
     });
   };
 
@@ -240,7 +240,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     }
     const petInfo = petInformationData(index);
     setSelectedItem({
-      equipment: petInfo?.petEquipment,
+      equipment: petInfo?.petEquipment ?? null,
     });
   };
 
@@ -251,8 +251,8 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     }
     const petInfo = petInformationData(index);
     setSelectedItem({
-      autoSkillName: petInfo?.petAutoSkill.skill_1,
-      autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
+      autoSkillName: petInfo?.petAutoSkill?.skill_1 ?? null,
+      autoSkillIcon: petInfo?.petAutoSkill?.skill_1_icon ?? null,
     });
   };
 
@@ -265,8 +265,8 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
     // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
     setSelectedItem({
-      autoSkillName: petInfo?.petAutoSkill.skill_2,
-      autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
+      autoSkillName: petInfo?.petAutoSkill?.skill_2 ?? null,
+      autoSkillIcon: petInfo?.petAutoSkill?.skill_2_icon ?? null,
     });
   };
 
@@ -517,48 +517,58 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                       return (
                         <React.Fragment key={index}>
                           {/* Appearance */}
-                          <PetIcon
-                            style={petPositions[index].appearance}
-                            src={petData.petIcon}
-                            onMouseOver={() =>
-                              handlePetAppearanceInfo(index, "hover")
-                            }
-                            onClick={() =>
-                              handlePetAppearanceInfo(index, "click")
-                            }
-                            onMouseLeave={handleMouseLeave}
-                          />
-
-                          {/* Equipment */}
-                          <PetIcon
-                            style={petPositions[index].equip}
-                            src={petData.petEquipment?.item_shape_icon}
-                            onMouseOver={() =>
-                              handlePetEquipInfo(index, "hover")
-                            }
-                            onClick={() => handlePetEquipInfo(index, "click")}
-                            onMouseLeave={handleMouseLeave}
-                          />
-
-                          {/* Skills */}
-                          {[1, 2].map((num) => (
+                          {petData.petIcon && (
                             <PetIcon
-                              key={num}
-                              style={petPositions[index][`skill${num}`]}
-                              src={petData.petAutoSkill?.[`skill_${num}_icon`]}
+                              style={petPositions[index].appearance}
+                              src={petData.petIcon}
                               onMouseOver={() =>
-                                num === 1
-                                  ? handlePetFirstSkillInfo(index, "hover")
-                                  : handlePetSecondSkillInfo(index, "hover")
+                                handlePetAppearanceInfo(index, "hover")
                               }
                               onClick={() =>
-                                num === 1
-                                  ? handlePetFirstSkillInfo(index, "click")
-                                  : handlePetSecondSkillInfo(index, "click")
+                                handlePetAppearanceInfo(index, "click")
                               }
                               onMouseLeave={handleMouseLeave}
                             />
-                          ))}
+                          )}
+
+                          {/* Equipment */}
+                          {petData.petEquipment?.item_shape_icon && (
+                            <PetIcon
+                              style={petPositions[index].equip}
+                              src={petData.petEquipment.item_shape_icon}
+                              onMouseOver={() =>
+                                handlePetEquipInfo(index, "hover")
+                              }
+                              onClick={() => handlePetEquipInfo(index, "click")}
+                              onMouseLeave={handleMouseLeave}
+                            />
+                          )}
+
+                          {/* Skills */}
+                          {[1, 2].map((num) => {
+                            const skillIcon =
+                              petData.petAutoSkill?.[`skill_${num}_icon`];
+                            if (!skillIcon) return null;
+
+                            return (
+                              <PetIcon
+                                key={num}
+                                style={petPositions[index][`skill${num}`]}
+                                src={skillIcon}
+                                onMouseOver={() =>
+                                  num === 1
+                                    ? handlePetFirstSkillInfo(index, "hover")
+                                    : handlePetSecondSkillInfo(index, "hover")
+                                }
+                                onClick={() =>
+                                  num === 1
+                                    ? handlePetFirstSkillInfo(index, "click")
+                                    : handlePetSecondSkillInfo(index, "click")
+                                }
+                                onMouseLeave={handleMouseLeave}
+                              />
+                            );
+                          })}
                         </React.Fragment>
                       );
                     })}
@@ -794,41 +804,6 @@ const ADIcon = styled.div`
   }
 `;
 
-const PetIconsWrap = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 19px;
-  gap: 19px;
-  width: 100%;
-`;
-
-const PetIcons = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 23px;
-  img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    cursor: pointer;
-  }
-`;
-
-const PetAutoSkillWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 14px;
-  margin-left: 11px;
-`;
-
-const PetAppearanceIcon = styled.div``;
-
-const PetEquipShapeIcon = styled.div``;
-
-const PetAutoSkillIcon = styled.div``;
-
 const EquipItems = styled.div`
   position: absolute;
   top: 0;
@@ -878,4 +853,5 @@ const PetIcon = styled.img`
   height: 36px;
   object-fit: contain;
   cursor: pointer;
+  image-rendering: pixelated;
 `;
