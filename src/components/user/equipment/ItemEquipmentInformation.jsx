@@ -60,19 +60,23 @@ const cashPositions = {
   반지4: { top: "154px", left: "10px" },
 };
 
+// 안드로이드 아이콘 배치, 46px 간격
 const ADPositions = {
-  모자: { top: "9px", left: "110px" },
-  얼굴장식: { top: "58px", left: "110px" },
-  눈장식: { top: "104px", left: "110px" },
-  귀고리: { top: "104px", left: "157px" },
-  상의: { top: "156px", left: "110px" },
-  하의: { top: "203px", left: "110px" },
-  신발: { top: "255px", left: "110px" },
-  장갑: { top: "205px", left: "61px" },
-  망토: { top: "205px", left: "160px" },
-  보조무기: { top: "154px", left: "205px" },
-  무기: { top: "154px", left: "59px" },
-  반지4: { top: "203px", left: "59px" },
+  모자: { top: "85px", left: "107px" },
+  얼굴장식: { top: "85px", left: "61px" },
+  눈장식: { top: "131px", left: "61px" },
+  귀고리: { top: "177px", left: "61px" },
+  상의: { top: "131px", left: "107px" },
+  하의: { top: "177px", left: "107px" },
+  신발: { top: "177px", left: "153px" },
+  장갑: { top: "131px", left: "153px" },
+  망토: { top: "85px", left: "153px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "223px", left: "107px" },
+  반지1: { top: "85px", left: "15px" },
+  반지2: { top: "131px", left: "15px" },
+  반지3: { top: "177px", left: "15px" },
+  반지4: { top: "223px", left: "15px" },
 };
 
 const petPositions = {
@@ -729,12 +733,38 @@ const UiBackgrnd = styled.div`
   background-color: rgb(255, 255, 255);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
 `;
 
 const BackgroundImageWrap = styled.div`
-  width: ${({ $isSelected }) => ($isSelected === "펫" ? "342px" : "342px")};
-  height: ${({ $isSelected }) => ($isSelected === "펫" ? "203px" : "349px")};
+  width: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "342px";
+      case "캐시":
+        return "349px";
+      case "펫":
+        return "342px";
+      case "AD":
+        return "210px";
+      default:
+        return "auto";
+    }
+  }};
+
+  height: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "349px";
+      case "캐시":
+        return "349px";
+      case "펫":
+        return "203px";
+      case "AD":
+        return "286px";
+      default:
+        return "auto";
+    }
+  }};
 `;
 
 const CharacterImageWrap = styled.div`
@@ -756,7 +786,7 @@ const CharacterImg = styled.img`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -53%) scaleX(-1);
+  transform: translate(-53%, -53%) scaleX(-1);
   image-rendering: pixelated;
   object-fit: cover;
 `;
@@ -784,8 +814,36 @@ const Bg = styled.img`
 `;
 
 const BackgroundImage = styled.img`
-  width: ${({ $isSelected }) => ($isSelected === "펫" ? "342px" : "342px")};
-  height: ${({ $isSelected }) => ($isSelected === "펫" ? "203px" : "349px")};
+  width: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "342px";
+      case "캐시":
+        return "349px";
+      case "펫":
+        return "342px";
+      case "AD":
+        return "210px";
+      default:
+        return "auto";
+    }
+  }};
+
+  height: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "349px";
+      case "캐시":
+        return "349px";
+      case "펫":
+        return "203px";
+      case "AD":
+        return "349px";
+      default:
+        return "auto";
+    }
+  }};
+
   opacity: 0.8;
 `;
 
