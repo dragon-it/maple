@@ -432,6 +432,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
               {currentTab === "캐시" && (
                 <EquipWrap>
                   <BackgroundImageWrap $isSelected={currentTab} />
+
                   <EquipItems>
                     <BackgroundImage
                       src={cashEquipUi}
@@ -533,6 +534,24 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                               }
                               onMouseLeave={handleMouseLeave}
                             />
+                          )}
+
+                          {/* Name */}
+                          {(petData.petName || petData.petNickname) && (
+                            <Name
+                              style={{
+                                top: `100px`,
+                                left: `${petPositions[index].appearance.left}`,
+                                width: "80px",
+                                fontSize: "12px",
+                                background: "none",
+                                color: "rgb(0, 0, 0)",
+                              }}
+                            >
+                              {petData.petNickname && petData.petName
+                                ? petData.petNickname
+                                : petData.petName || petData.petNickname}
+                            </Name>
                           )}
 
                           {/* Equipment */}
