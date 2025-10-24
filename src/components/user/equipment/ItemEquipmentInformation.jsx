@@ -43,36 +43,61 @@ const positions = {
 };
 
 const cashPositions = {
-  모자: { top: "6px", left: "108px" },
-  얼굴장식: { top: "55px", left: "108px" },
-  눈장식: { top: "104px", left: "108px" },
-  귀고리: { top: "104px", left: "157px" },
-  상의: { top: "154px", left: "108px" },
-  하의: { top: "203px", left: "108px" },
-  신발: { top: "252px", left: "108px" },
-  장갑: { top: "203px", left: "157px" },
-  망토: { top: "203px", left: "206px" },
-  보조무기: { top: "154px", left: "206px" },
-  무기: { top: "154px", left: "59px" },
-  반지1: { top: "6px", left: "10px" },
-  반지2: { top: "55px", left: "10px" },
-  반지3: { top: "104px", left: "10px" },
-  반지4: { top: "154px", left: "10px" },
+  모자: { top: "39px", right: "60px" },
+  얼굴장식: { top: "39px", left: "60px" },
+  눈장식: { top: "84px", left: "60px" },
+  귀고리: { top: "129px", left: "60px" },
+  상의: { top: "84px", right: "60px" },
+  하의: { top: "129px", right: "60px" },
+  신발: { top: "129px", right: "15px" },
+  장갑: { top: "84px", right: "15px" },
+  망토: { top: "39px", right: "15px" },
+  보조무기: { top: "174px", right: "15px" },
+  무기: { top: "174px", right: "60px" },
+  반지1: { top: "174px", left: "15px" },
+  반지2: { top: "129px", left: "15px" },
+  반지3: { top: "84px", left: "15px" },
+  반지4: { top: "39px", left: "15px" },
 };
 
+// 안드로이드 아이콘 배치, 46px 간격
 const ADPositions = {
-  모자: { top: "9px", left: "110px" },
-  얼굴장식: { top: "58px", left: "110px" },
-  눈장식: { top: "104px", left: "110px" },
-  귀고리: { top: "104px", left: "157px" },
-  상의: { top: "156px", left: "110px" },
-  하의: { top: "203px", left: "110px" },
-  신발: { top: "255px", left: "110px" },
-  장갑: { top: "205px", left: "61px" },
-  망토: { top: "205px", left: "160px" },
-  보조무기: { top: "154px", left: "205px" },
-  무기: { top: "154px", left: "59px" },
-  반지4: { top: "203px", left: "59px" },
+  모자: { top: "85px", left: "107px" },
+  얼굴장식: { top: "85px", left: "61px" },
+  눈장식: { top: "131px", left: "61px" },
+  귀고리: { top: "177px", left: "61px" },
+  상의: { top: "131px", left: "107px" },
+  하의: { top: "177px", left: "107px" },
+  신발: { top: "177px", left: "153px" },
+  장갑: { top: "131px", left: "153px" },
+  망토: { top: "85px", left: "153px" },
+  보조무기: { top: "154px", left: "206px" },
+  무기: { top: "223px", left: "107px" },
+  반지1: { top: "85px", left: "15px" },
+  반지2: { top: "131px", left: "15px" },
+  반지3: { top: "177px", left: "15px" },
+  반지4: { top: "223px", left: "15px" },
+};
+
+const petPositions = {
+  1: {
+    appearance: { top: "56px", left: "22px" },
+    equip: { top: "56px", left: "68px" },
+    skill1: { top: "142px", left: "22px" },
+    skill2: { top: "142px", left: "68px" },
+  },
+  2: {
+    appearance: { top: "56px", left: "130px" },
+    equip: { top: "56px", left: "176px" },
+    skill1: { top: "142px", left: "130px" },
+    skill2: { top: "142px", left: "176px" },
+  },
+  3: {
+    appearance: { top: "56px", left: "238px" },
+    equip: { top: "56px", left: "284px" },
+    skill1: { top: "142px", left: "238px" },
+    skill2: { top: "142px", left: "284px" },
+  },
 };
 
 const PresetButton = styled.button`
@@ -201,14 +226,14 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     const petInfo = petInformationData(index);
 
     setSelectedItem({
-      appearance: petInfo?.petAppearance,
-      icon: petInfo?.petIcon,
-      expire: petInfo?.petDateExpire,
-      description: petInfo?.petDescription,
-      name: petInfo?.petName,
-      nickname: petInfo?.petNickname,
-      type: petInfo?.petType,
-      skill: petInfo?.petSkill,
+      appearance: petInfo?.petAppearance ?? null,
+      icon: petInfo?.petIcon ?? null,
+      expire: petInfo?.petDateExpire ?? null,
+      description: petInfo?.petDescription ?? null,
+      name: petInfo?.petName ?? null,
+      nickname: petInfo?.petNickname ?? null,
+      type: petInfo?.petType ?? null,
+      skill: petInfo?.petSkill ?? null,
     });
   };
 
@@ -219,7 +244,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     }
     const petInfo = petInformationData(index);
     setSelectedItem({
-      equipment: petInfo?.petEquipment,
+      equipment: petInfo?.petEquipment ?? null,
     });
   };
 
@@ -230,8 +255,8 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     }
     const petInfo = petInformationData(index);
     setSelectedItem({
-      autoSkillName: petInfo?.petAutoSkill.skill_1,
-      autoSkillIcon: petInfo?.petAutoSkill.skill_1_icon,
+      autoSkillName: petInfo?.petAutoSkill?.skill_1 ?? null,
+      autoSkillIcon: petInfo?.petAutoSkill?.skill_1_icon ?? null,
     });
   };
 
@@ -244,8 +269,8 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
     // 클릭하지 않았을 때만 onMouseOver 이벤트가 작동
     setSelectedItem({
-      autoSkillName: petInfo?.petAutoSkill.skill_2,
-      autoSkillIcon: petInfo?.petAutoSkill.skill_2_icon,
+      autoSkillName: petInfo?.petAutoSkill?.skill_2 ?? null,
+      autoSkillIcon: petInfo?.petAutoSkill?.skill_2_icon ?? null,
     });
   };
 
@@ -406,9 +431,27 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
               {/* 캐시탭 처리 */}
               {currentTab === "캐시" && (
                 <EquipWrap>
-                  <BackgroundImageWrap />
+                  <BackgroundImageWrap $isSelected={currentTab} />
+                  <CharacterImageWrap>
+                    <Bg src={characterBg} />
+                    <CharacterImg
+                      src={
+                        BasicData?.getBasicInformation?.character_image
+                          ? BasicData.getBasicInformation.character_image
+                          : undefined
+                      }
+                      alt="character_image"
+                    />
+                    <Name>
+                      {BasicData?.getBasicInformation?.character_name}
+                    </Name>
+                  </CharacterImageWrap>
                   <EquipItems>
-                    <BackgroundImage src={cashEquipUi} alt="ui" />
+                    <BackgroundImage
+                      src={cashEquipUi}
+                      alt="ui"
+                      $isSelected={currentTab}
+                    />
                     {EquipData.getCashItemEquipment[selectedCashPreset]?.map(
                       (item, index) => (
                         <ItemIcon
@@ -442,7 +485,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           selectedCashPreset === "cash_item_equipment_preset_1"
                         }
                       >
-                        <span>프리셋1</span>
+                        <span>1</span>
                       </PresetButton>
                       <PresetButton
                         onClick={() => handleCashPresetChange("preset_2")}
@@ -450,7 +493,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           selectedCashPreset === "cash_item_equipment_preset_2"
                         }
                       >
-                        <span>프리셋2</span>
+                        <span>2</span>
                       </PresetButton>
                       <PresetButton
                         onClick={() => handleCashPresetChange("preset_3")}
@@ -458,7 +501,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           selectedCashPreset === "cash_item_equipment_preset_3"
                         }
                       >
-                        <span>프리셋3</span>
+                        <span>3</span>
                       </PresetButton>
                     </PresetButtons>
                     {matchingCashPresetKey === selectedCashPreset && (
@@ -472,293 +515,107 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
 
               {/* 펫탭 처리 */}
               {currentTab === "펫" && (
-                <PetEquipWrap>
-                  <PetBackgroundImageWrap />
+                <EquipWrap>
+                  <BackgroundImageWrap $isSelected={currentTab} />
                   <EquipItems>
-                    <PetBackgroundImage src={petEquipUi} alt="ui" />
-                    <PetIconsWrap>
-                      {EquipData.getPetEquipment.pet_1_appearance_icon && (
-                        <PetIcons>
-                          <PetAppearanceIcon>
-                            {EquipData.getPetEquipment.pet_1_appearance_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment
-                                    .pet_1_appearance_icon
-                                }
-                                alt="Icon"
+                    <BackgroundImage
+                      src={petEquipUi}
+                      alt="ui"
+                      $isSelected={currentTab}
+                    />
+                    {[1, 2, 3].map((index) => {
+                      const pet =
+                        EquipData.getPetEquipment[
+                          `pet_${index}_appearance_icon`
+                        ];
+                      if (!pet) return null;
+
+                      const petData = petInformationData(index);
+
+                      return (
+                        <React.Fragment key={index}>
+                          {/* Appearance */}
+                          {petData.petIcon && (
+                            <PetIcon
+                              style={petPositions[index].appearance}
+                              src={petData.petIcon}
+                              onMouseOver={() =>
+                                handlePetAppearanceInfo(index, "hover")
+                              }
+                              onClick={() =>
+                                handlePetAppearanceInfo(index, "click")
+                              }
+                              onMouseLeave={handleMouseLeave}
+                            />
+                          )}
+
+                          {/* Name */}
+                          {(petData.petName || petData.petNickname) && (
+                            <Name
+                              style={{
+                                top: `100px`,
+                                left: `${petPositions[index].appearance.left}`,
+                                width: "80px",
+                                fontSize: "12px",
+                                background: "none",
+                                color: "rgb(0, 0, 0)",
+                              }}
+                            >
+                              {petData.petNickname && petData.petName
+                                ? petData.petNickname
+                                : petData.petName || petData.petNickname}
+                            </Name>
+                          )}
+
+                          {/* Equipment */}
+                          {petData.petEquipment?.item_shape_icon && (
+                            <PetIcon
+                              style={petPositions[index].equip}
+                              src={petData.petEquipment.item_shape_icon}
+                              onMouseOver={() =>
+                                handlePetEquipInfo(index, "hover")
+                              }
+                              onClick={() => handlePetEquipInfo(index, "click")}
+                              onMouseLeave={handleMouseLeave}
+                            />
+                          )}
+
+                          {/* Skills */}
+                          {[1, 2].map((num) => {
+                            const skillIcon =
+                              petData.petAutoSkill?.[`skill_${num}_icon`];
+                            if (!skillIcon) return null;
+
+                            return (
+                              <PetIcon
+                                key={num}
+                                style={petPositions[index][`skill${num}`]}
+                                src={skillIcon}
                                 onMouseOver={() =>
-                                  handlePetAppearanceInfo(1, "hover")
+                                  num === 1
+                                    ? handlePetFirstSkillInfo(index, "hover")
+                                    : handlePetSecondSkillInfo(index, "hover")
                                 }
                                 onClick={() =>
-                                  handlePetAppearanceInfo(1, "click")
+                                  num === 1
+                                    ? handlePetFirstSkillInfo(index, "click")
+                                    : handlePetSecondSkillInfo(index, "click")
                                 }
                                 onMouseLeave={handleMouseLeave}
                               />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAppearanceIcon>
-                          <PetEquipShapeIcon>
-                            {EquipData.getPetEquipment.pet_1_equipment
-                              .item_shape_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_1_equipment
-                                    .item_shape_icon
-                                }
-                                alt="petEqipIcon"
-                                onMouseOver={() =>
-                                  handlePetEquipInfo(1, "hover")
-                                }
-                                onClick={() => handlePetEquipInfo(1, "click")}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetEquipShapeIcon>
-                          <PetAutoSkillWrap>
-                            <PetAutoSkillIcon>
-                              {EquipData.getPetEquipment?.pet_1_auto_skill
-                                ?.skill_1_icon ? (
-                                <img
-                                  src={
-                                    EquipData.getPetEquipment.pet_1_auto_skill
-                                      .skill_1_icon
-                                  }
-                                  alt="petAutoSkill1"
-                                  onMouseOver={() =>
-                                    handlePetFirstSkillInfo(1, "hover")
-                                  }
-                                  onClick={() =>
-                                    handlePetFirstSkillInfo(1, "click")
-                                  }
-                                  onMouseLeave={handleMouseLeave}
-                                />
-                              ) : (
-                                <div
-                                  style={{ width: "42px", height: "42px" }}
-                                />
-                              )}
-                            </PetAutoSkillIcon>
-                            <PetAutoSkillIcon>
-                              {EquipData.getPetEquipment?.pet_1_auto_skill
-                                ?.skill_2_icon ? (
-                                <img
-                                  src={
-                                    EquipData.getPetEquipment.pet_1_auto_skill
-                                      .skill_2_icon
-                                  }
-                                  alt="petAutoSkill2"
-                                  onMouseOver={() =>
-                                    handlePetSecondSkillInfo(1, "hover")
-                                  }
-                                  onClick={() =>
-                                    handlePetSecondSkillInfo(1, "click")
-                                  }
-                                  onMouseLeave={handleMouseLeave}
-                                />
-                              ) : (
-                                <div
-                                  style={{ width: "42px", height: "42px" }}
-                                />
-                              )}
-                            </PetAutoSkillIcon>
-                          </PetAutoSkillWrap>
-                        </PetIcons>
-                      )}
-                      {EquipData.getPetEquipment.pet_2_appearance_icon && (
-                        <PetIcons>
-                          <PetAppearanceIcon>
-                            {EquipData.getPetEquipment.pet_2_appearance_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment
-                                    .pet_2_appearance_icon
-                                }
-                                alt="Icon"
-                                onMouseOver={() =>
-                                  handlePetAppearanceInfo(2, "hover")
-                                }
-                                onClick={() =>
-                                  handlePetAppearanceInfo(2, "click")
-                                }
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAppearanceIcon>
-                          <PetEquipShapeIcon>
-                            {EquipData.getPetEquipment.pet_2_equipment
-                              .item_shape_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_2_equipment
-                                    .item_shape_icon
-                                }
-                                alt="petEqipIcon"
-                                onMouseOver={() =>
-                                  handlePetEquipInfo(2, "hover")
-                                }
-                                onClick={() => handlePetEquipInfo(2, "click")}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetEquipShapeIcon>
-                          <PetAutoSkillWrap>
-                            <PetAutoSkillIcon>
-                              {EquipData.getPetEquipment?.pet_2_auto_skill
-                                ?.skill_1_icon ? (
-                                <img
-                                  src={
-                                    EquipData.getPetEquipment.pet_2_auto_skill
-                                      .skill_1_icon
-                                  }
-                                  alt="petAutoSkill1"
-                                  onMouseOver={() =>
-                                    handlePetFirstSkillInfo(2, "hover")
-                                  }
-                                  onClick={() =>
-                                    handlePetFirstSkillInfo(2, "click")
-                                  }
-                                  onMouseLeave={handleMouseLeave}
-                                />
-                              ) : (
-                                <div
-                                  style={{ width: "42px", height: "42px" }}
-                                />
-                              )}
-                            </PetAutoSkillIcon>
-                            <PetAutoSkillIcon>
-                              {EquipData.getPetEquipment?.pet_2_auto_skill
-                                ?.skill_2_icon ? (
-                                <img
-                                  src={
-                                    EquipData.getPetEquipment.pet_2_auto_skill
-                                      .skill_2_icon
-                                  }
-                                  alt="petAutoSkill2"
-                                  onMouseOver={() =>
-                                    handlePetSecondSkillInfo(2, "hover")
-                                  }
-                                  onClick={() =>
-                                    handlePetSecondSkillInfo(2, "click")
-                                  }
-                                  onMouseLeave={handleMouseLeave}
-                                />
-                              ) : (
-                                <div
-                                  style={{ width: "42px", height: "42px" }}
-                                />
-                              )}
-                            </PetAutoSkillIcon>
-                          </PetAutoSkillWrap>
-                        </PetIcons>
-                      )}
-                      {EquipData.getPetEquipment.pet_3_appearance_icon && (
-                        <PetIcons>
-                          <PetAppearanceIcon>
-                            {EquipData.getPetEquipment.pet_3_appearance_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment
-                                    .pet_3_appearance_icon
-                                }
-                                alt="Icon"
-                                onMouseOver={() =>
-                                  handlePetAppearanceInfo(3, "hover")
-                                }
-                                onClick={() =>
-                                  handlePetAppearanceInfo(3, "click")
-                                }
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetAppearanceIcon>
-                          <PetEquipShapeIcon>
-                            {EquipData.getPetEquipment.pet_3_equipment
-                              .item_shape_icon ? (
-                              <img
-                                src={
-                                  EquipData.getPetEquipment.pet_3_equipment
-                                    .item_shape_icon
-                                }
-                                alt="petEqipIcon"
-                                onMouseOver={() =>
-                                  handlePetEquipInfo(3, "hover")
-                                }
-                                onClick={() => handlePetEquipInfo(3, "click")}
-                                onMouseLeave={handleMouseLeave}
-                              />
-                            ) : (
-                              <div style={{ width: "42px", height: "42px" }} />
-                            )}
-                          </PetEquipShapeIcon>
-                          <PetAutoSkillWrap>
-                            <PetAutoSkillIcon>
-                              {EquipData.getPetEquipment?.pet_3_auto_skill
-                                ?.skill_1_icon ? (
-                                <img
-                                  src={
-                                    EquipData.getPetEquipment.pet_3_auto_skill
-                                      .skill_1_icon
-                                  }
-                                  alt="petAutoSkill1"
-                                  onMouseOver={() =>
-                                    handlePetFirstSkillInfo(3, "hover")
-                                  }
-                                  onClick={() =>
-                                    handlePetFirstSkillInfo(3, "click")
-                                  }
-                                  onMouseLeave={handleMouseLeave}
-                                />
-                              ) : (
-                                <div
-                                  style={{ width: "42px", height: "42px" }}
-                                />
-                              )}
-                            </PetAutoSkillIcon>
-                            <PetAutoSkillIcon>
-                              {EquipData.getPetEquipment?.pet_3_auto_skill
-                                ?.skill_2_icon ? (
-                                <img
-                                  src={
-                                    EquipData.getPetEquipment.pet_3_auto_skill
-                                      .skill_2_icon
-                                  }
-                                  alt="petAutoSkill2"
-                                  onMouseOver={() =>
-                                    handlePetSecondSkillInfo(3, "hover")
-                                  }
-                                  onClick={() =>
-                                    handlePetSecondSkillInfo(3, "click")
-                                  }
-                                  onMouseLeave={handleMouseLeave}
-                                />
-                              ) : (
-                                <div
-                                  style={{ width: "42px", height: "42px" }}
-                                />
-                              )}
-                            </PetAutoSkillIcon>
-                          </PetAutoSkillWrap>
-                        </PetIcons>
-                      )}
-                    </PetIconsWrap>
+                            );
+                          })}
+                        </React.Fragment>
+                      );
+                    })}
                   </EquipItems>
-                </PetEquipWrap>
+                </EquipWrap>
               )}
 
               {/* 안드로이드탭 처리 */}
               {currentTab === "AD" && (
                 <EquipWrap>
-                  <BackgroundImageWrap />
+                  <BackgroundImageWrap $isSelected={currentTab} />
                   <EquipItems>
                     <BackgroundImage src={androidEquipUi} alt="ui" />
                     {EquipData.getAndroidEquipment.android_cash_item_equipment?.map(
@@ -846,21 +703,6 @@ const InfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   ${ContainerCss};
-
-  height: ${(props) => {
-    switch (props.$currentTab) {
-      case "장비":
-        return "auto";
-      case "캐시":
-        return "470px";
-      case "펫":
-        return "285px";
-      case "AD":
-        return "400px";
-      default:
-        return "450px";
-    }
-  }};
 `;
 
 const ItemInfoDetailWrap = styled.div`
@@ -923,12 +765,38 @@ const UiBackgrnd = styled.div`
   background-color: rgb(255, 255, 255);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
 `;
 
 const BackgroundImageWrap = styled.div`
-  width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
-  height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
+  width: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "342px";
+      case "캐시":
+        return "342px";
+      case "펫":
+        return "342px";
+      case "AD":
+        return "210px";
+      default:
+        return "auto";
+    }
+  }};
+
+  height: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "349px";
+      case "캐시":
+        return "349px";
+      case "펫":
+        return "203px";
+      case "AD":
+        return "286px";
+      default:
+        return "auto";
+    }
+  }};
 `;
 
 const CharacterImageWrap = styled.div`
@@ -950,7 +818,7 @@ const CharacterImg = styled.img`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -53%) scaleX(-1);
+  transform: translate(-53%, -53%) scaleX(-1);
   image-rendering: pixelated;
   object-fit: cover;
 `;
@@ -978,8 +846,36 @@ const Bg = styled.img`
 `;
 
 const BackgroundImage = styled.img`
-  width: ${({ $isSelected }) => ($isSelected === "장비" ? "342px" : "262px")};
-  height: ${({ $isSelected }) => ($isSelected === "장비" ? "349px" : "312px")};
+  width: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "342px";
+      case "캐시":
+        return "342px";
+      case "펫":
+        return "342px";
+      case "AD":
+        return "210px";
+      default:
+        return "auto";
+    }
+  }};
+
+  height: ${(props) => {
+    switch (props.$isSelected) {
+      case "장비":
+        return "349px";
+      case "캐시":
+        return "349px";
+      case "펫":
+        return "203px";
+      case "AD":
+        return "349px";
+      default:
+        return "auto";
+    }
+  }};
+
   opacity: 0.8;
 `;
 
@@ -998,58 +894,6 @@ const ADIcon = styled.div`
   }
 `;
 
-const PetEquipWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const PetBackgroundImage = styled.img`
-  width: 262px;
-  margin-top: 5px;
-`;
-
-const PetBackgroundImageWrap = styled.div`
-  width: 272px;
-  height: 205px;
-`;
-
-const PetIconsWrap = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 19px;
-  gap: 19px;
-  width: 100%;
-`;
-
-const PetIcons = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 23px;
-  img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    cursor: pointer;
-  }
-`;
-
-const PetAutoSkillWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 14px;
-  margin-left: 11px;
-`;
-
-const PetAppearanceIcon = styled.div``;
-
-const PetEquipShapeIcon = styled.div``;
-
-const PetAutoSkillIcon = styled.div``;
-
 const EquipItems = styled.div`
   position: absolute;
   top: 0;
@@ -1057,18 +901,17 @@ const EquipItems = styled.div`
 
 const ApplyingPreset = styled.div`
   position: absolute;
-  top: ${({ $isSelected }) => ($isSelected === "장비" ? "-36px" : "67px")};
-  right: ${({ $isSelected }) => ($isSelected === "장비" ? "-5px" : "14px")};
-  color: ${({ $isSelected }) => ($isSelected === "장비" ? "#000" : "#fff")};
+  top: ${({ $isSelected }) => ($isSelected === "장비" ? "-36px" : "-24px")};
+  right: ${({ $isSelected }) => ($isSelected === "장비" ? "-5px" : "-11px")};
+  color: #000;
   font-family: maple-light;
   font-size: 15px;
 `;
 
 const PresetButtonWrap = styled.div`
-  position: ${({ $isSelected }) =>
-    $isSelected === "장비" ? "absolute" : "relative"};
-  bottom: ${({ $isSelected }) => ($isSelected === "장비" ? "12px" : "7px")};
-  right: ${({ $isSelected }) => ($isSelected === "장비" ? "94px" : "2px")};
+  position: absolute;
+  bottom: 12px;
+  right: 94px;
 `;
 
 const PresetButtons = styled.div`
@@ -1091,4 +934,13 @@ const DetailWrap = styled.div`
   img {
     image-rendering: pixelated;
   }
+`;
+
+const PetIcon = styled.img`
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  cursor: pointer;
+  image-rendering: pixelated;
 `;
