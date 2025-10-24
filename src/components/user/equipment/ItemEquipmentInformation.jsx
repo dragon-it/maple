@@ -43,21 +43,21 @@ const positions = {
 };
 
 const cashPositions = {
-  모자: { top: "6px", left: "108px" },
-  얼굴장식: { top: "55px", left: "108px" },
-  눈장식: { top: "104px", left: "108px" },
-  귀고리: { top: "104px", left: "157px" },
-  상의: { top: "154px", left: "108px" },
-  하의: { top: "203px", left: "108px" },
-  신발: { top: "252px", left: "108px" },
-  장갑: { top: "203px", left: "157px" },
-  망토: { top: "203px", left: "206px" },
-  보조무기: { top: "154px", left: "206px" },
-  무기: { top: "154px", left: "59px" },
-  반지1: { top: "6px", left: "10px" },
-  반지2: { top: "55px", left: "10px" },
-  반지3: { top: "104px", left: "10px" },
-  반지4: { top: "154px", left: "10px" },
+  모자: { top: "39px", right: "60px" },
+  얼굴장식: { top: "39px", left: "60px" },
+  눈장식: { top: "84px", left: "60px" },
+  귀고리: { top: "129px", left: "60px" },
+  상의: { top: "84px", right: "60px" },
+  하의: { top: "129px", right: "60px" },
+  신발: { top: "129px", right: "15px" },
+  장갑: { top: "84px", right: "15px" },
+  망토: { top: "39px", right: "15px" },
+  보조무기: { top: "174px", right: "15px" },
+  무기: { top: "174px", right: "60px" },
+  반지1: { top: "174px", left: "15px" },
+  반지2: { top: "129px", left: "15px" },
+  반지3: { top: "84px", left: "15px" },
+  반지4: { top: "39px", left: "15px" },
 };
 
 // 안드로이드 아이콘 배치, 46px 간격
@@ -432,7 +432,20 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
               {currentTab === "캐시" && (
                 <EquipWrap>
                   <BackgroundImageWrap $isSelected={currentTab} />
-
+                  <CharacterImageWrap>
+                    <Bg src={characterBg} />
+                    <CharacterImg
+                      src={
+                        BasicData?.getBasicInformation?.character_image
+                          ? BasicData.getBasicInformation.character_image
+                          : undefined
+                      }
+                      alt="character_image"
+                    />
+                    <Name>
+                      {BasicData?.getBasicInformation?.character_name}
+                    </Name>
+                  </CharacterImageWrap>
                   <EquipItems>
                     <BackgroundImage
                       src={cashEquipUi}
@@ -472,7 +485,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           selectedCashPreset === "cash_item_equipment_preset_1"
                         }
                       >
-                        <span>프리셋1</span>
+                        <span>1</span>
                       </PresetButton>
                       <PresetButton
                         onClick={() => handleCashPresetChange("preset_2")}
@@ -480,7 +493,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           selectedCashPreset === "cash_item_equipment_preset_2"
                         }
                       >
-                        <span>프리셋2</span>
+                        <span>2</span>
                       </PresetButton>
                       <PresetButton
                         onClick={() => handleCashPresetChange("preset_3")}
@@ -488,7 +501,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           selectedCashPreset === "cash_item_equipment_preset_3"
                         }
                       >
-                        <span>프리셋3</span>
+                        <span>3</span>
                       </PresetButton>
                     </PresetButtons>
                     {matchingCashPresetKey === selectedCashPreset && (
@@ -760,7 +773,7 @@ const BackgroundImageWrap = styled.div`
       case "장비":
         return "342px";
       case "캐시":
-        return "349px";
+        return "342px";
       case "펫":
         return "342px";
       case "AD":
@@ -838,7 +851,7 @@ const BackgroundImage = styled.img`
       case "장비":
         return "342px";
       case "캐시":
-        return "349px";
+        return "342px";
       case "펫":
         return "342px";
       case "AD":
@@ -888,18 +901,17 @@ const EquipItems = styled.div`
 
 const ApplyingPreset = styled.div`
   position: absolute;
-  top: ${({ $isSelected }) => ($isSelected === "장비" ? "-36px" : "67px")};
-  right: ${({ $isSelected }) => ($isSelected === "장비" ? "-5px" : "14px")};
-  color: ${({ $isSelected }) => ($isSelected === "장비" ? "#000" : "#fff")};
+  top: ${({ $isSelected }) => ($isSelected === "장비" ? "-36px" : "-24px")};
+  right: ${({ $isSelected }) => ($isSelected === "장비" ? "-5px" : "-11px")};
+  color: #000;
   font-family: maple-light;
   font-size: 15px;
 `;
 
 const PresetButtonWrap = styled.div`
-  position: ${({ $isSelected }) =>
-    $isSelected === "장비" ? "absolute" : "relative"};
-  bottom: ${({ $isSelected }) => ($isSelected === "장비" ? "12px" : "7px")};
-  right: ${({ $isSelected }) => ($isSelected === "장비" ? "94px" : "2px")};
+  position: absolute;
+  bottom: 12px;
+  right: 94px;
 `;
 
 const PresetButtons = styled.div`
