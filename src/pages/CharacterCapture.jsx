@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import npc from "../assets/npc/npc_fish.png";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import error_npc from "../assets/npc/npc_fish_error.png";
 import characterCaptureFetch from "../api/characterCaptureFetch";
 import { CaptureInput } from "../components/characterCapture/CaptureInput";

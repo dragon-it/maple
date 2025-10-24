@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { formatPowerStat } from "../common/powerStat/PowerStat";
 import npc_Chat_Box from "../../assets/npc/npc_Chat_Box.png";
 import html2canvas from "html2canvas";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import TanjiroImage from "../../assets/npc/tanjiro.png";
 
 const StyledLine = styled.div`

@@ -86,24 +86,28 @@ export const BasicInformation = ({ BasicInfo }) => {
         onClick={handleImageClick}
       >
         <JobGroup>
-          <Job>{BasicInfo.getBasicInformation.character_class}</Job>
+          <Job>{BasicInfo.getBasicInformation.character_class ?? "-"}</Job>
           <ItemWrap>
             <Contents>
               <Title>유니온</Title>
-              <Value>{BasicInfo.getUnion.union_level}</Value>
+              <Value>{BasicInfo.getUnion.union_level ?? "-"}</Value>
             </Contents>
             <Contents>
               <Title>무릉도장</Title>
-              <Value>{BasicInfo.getDojang.dojang_best_floor}층</Value>
+              <Value>{BasicInfo.getDojang.dojang_best_floor ?? "0"}층</Value>
             </Contents>
             <Contents>
               <Title>인기도</Title>
-              <Value>{BasicInfo.getCharacterPopularity.popularity}</Value>
+              <Value>
+                {BasicInfo.getCharacterPopularity.popularity ?? "0"}
+              </Value>
             </Contents>
           </ItemWrap>
         </JobGroup>
         <CharacterInfoGroup>
-          <Level>Lv. {BasicInfo.getBasicInformation.character_level}</Level>
+          <Level>
+            Lv. {BasicInfo.getBasicInformation.character_level ?? "-"}
+          </Level>
           <CharacterImg>
             <img
               src={
@@ -119,7 +123,7 @@ export const BasicInformation = ({ BasicInfo }) => {
             {BasicInfo.getBasicInformation.character_name}
           </CharacterName>
           <Experience>
-            경험치 {BasicInfo.getBasicInformation.character_exp_rate}%
+            {BasicInfo.getBasicInformation.character_exp_rate}%
           </Experience>
         </CharacterInfoGroup>
         <GuildWorldGroup>
@@ -136,9 +140,7 @@ export const BasicInformation = ({ BasicInfo }) => {
             <Contents>
               <Title>길드</Title>
               <Value>
-                {BasicInfo.getBasicInformation.character_guild_name
-                  ? BasicInfo.getBasicInformation.character_guild_name
-                  : "-"}
+                {BasicInfo.getBasicInformation.character_guild_name ?? "-"}
               </Value>
             </Contents>
           </ItemWrap>
@@ -193,7 +195,6 @@ const CharacterHeader = styled.h2`
 const UpdateTime = styled.div`
   display: flex;
   align-items: center;
-  font-family: maple-light;
 `;
 
 const CharacterBody = styled.div`
@@ -203,6 +204,7 @@ const CharacterBody = styled.div`
   flex-direction: row;
   border: 1px solid rgb(36, 36, 36);
   border-radius: 5px;
+  text-shadow: ${colors.commonInfo.textShadow};
   background-size: cover;
   cursor: pointer;
 `;
@@ -246,11 +248,10 @@ const GuildWorldGroup = styled.div`
 
 const Level = styled.div`
   text-align: center;
-  background-color: rgba(202, 204, 206, 0.9);
+  background-color: rgb(149, 157, 166);
   padding: 3px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px;
-  text-shadow: ${colors.commonInfo.textShadow};
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   border-right: 1px solid rgba(0, 0, 0, 0.3);
   border-left: 1px solid rgba(0, 0, 0, 0.3);
@@ -288,7 +289,6 @@ const CharacterName = styled.div`
   border-radius: 7px;
   background-color: rgb(60, 194, 216);
   border: 1px solid rgba(0, 0, 0, 0.3);
-  text-shadow: ${colors.commonInfo.textShadow};
   margin-bottom: 1px;
 `;
 
@@ -297,60 +297,74 @@ const Experience = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgb(170, 204, 0);
-  text-shadow: ${colors.commonInfo.textShadow};
-  font-size: 11px;
+  font-size: 12px;
   padding: 1px;
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
 `;
 
 const Job = styled.div`
-  background-color: rgba(202, 204, 206, 0.8);
-  border-radius: 7px;
+  background-color: rgb(149, 157, 166);
+  border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.3);
-  width: 110px;
+  width: 130px;
   padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+  @media screen and (max-width: 1024px) {
+    width: 120px;
+    padding: 5px 8px;
+  }
 
   @media screen and (max-width: 576px) {
     width: 90px;
+    padding: 3px 6px;
   }
 `;
 
 const Contents = styled.div`
-  background-color: rgba(202, 204, 206, 0.8);
-  width: 110px;
-  border-radius: 7px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  padding: 5px;
+  position: relative;
+  width: 130px;
+  border-radius: 20px;
+  padding: 6px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
+  image-rendering: pixelated;
+
+  background: rgba(107, 107, 107, 0.3);
+  border: 1px solid rgba(59, 59, 59, 0.3);
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: white;
+  font-weight: 500;
+
+  @media screen and (max-width: 1024px) {
+    width: 120px;
+    padding: 5px 8px;
+  }
 
   @media screen and (max-width: 576px) {
     width: 90px;
-  }
-
-  @media screen and (max-width: 200px) {
-    width: 70px;
-    padding: 3px;
-  }
-`;
-
-const Value = styled.div`
-  display: flex;
-  color: black;
-
-  img {
-    image-rendering: pixelated;
+    padding: 3px 6px;
   }
 `;
 
 const Title = styled.div`
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+`;
+
+const Value = styled.div`
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 `;
 
 const ItemWrap = styled.div`

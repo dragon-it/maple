@@ -46,7 +46,7 @@ export const PetItemDetail = ({ item, onClose }) => {
     }
   }, [mousePosition]);
 
-  const isWideScreen = window.innerWidth > 1024;
+  const isWideScreen = window.innerWidth > 768;
 
   if (!item) {
     // 아이템 정보가 없는 경우를 처리
@@ -77,8 +77,10 @@ export const PetItemDetail = ({ item, onClose }) => {
       onClick={onClose}
       style={
         isWideScreen
-          ? { top: detailPosition.top, left: detailPosition.left }
-          : {}
+          ? detailPosition
+            ? { top: detailPosition.top, left: detailPosition.left }
+            : { display: "none" }
+          : { top: "50%", left: "50%", transform: "translate(-50%, -40%)" }
       }
     >
       <ItemNameWrap>
@@ -163,15 +165,6 @@ const Container = styled.div`
   font-family: "돋움";
   white-space: pre-line;
   z-index: 9999;
-
-  @media screen and (max-width: 1024px) {
-    position: relative;
-  }
-
-  @media screen and (max-width: 768px) {
-    position: absolute;
-    transform: translate(0%, -60%);
-  }
 
   &::before {
     content: "";

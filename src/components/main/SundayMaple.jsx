@@ -1,210 +1,237 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { Footer } from "../common/footer/Footer";
 
 export const SundayMaple = ({ eventData, loading, error }) => {
-  const [sundayMapleNoticeDetail, setSundayMapleNoticeDetail] = useState(null);
+  const [booting, setBooting] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const [ready, setReady] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [imgSrc, setImgSrc] = useState("");
+  const [reserveH, setReserveH] = useState(0);
 
-  useEffect(() => {
-    const skipDay = localStorage.getItem("skipDay");
-    if (skipDay) {
-      const skipUntil = new Date(skipDay);
-      if (!isNaN(skipUntil.getTime()) && skipUntil > new Date()) {
-        setIsVisible(false);
-      }
-    }
+  const wrapRef = useRef(null);
+
+  const isSkipActive = useMemo(() => {
+    const raw = localStorage.getItem("skipDay");
+    if (!raw) return false;
+    const d = new Date(raw);
+    return !isNaN(d) && d > new Date();
   }, []);
 
   useEffect(() => {
-    const fetchNoticeDetail = async () => {
+    if (isSkipActive) {
+      setIsVisible(false);
+      setBooting(false);
+    }
+  }, [isSkipActive]);
+
+  useEffect(() => {
+    const run = async () => {
+      if (booting === false) return;
       if (loading || error || !eventData) return;
 
-      const notices = eventData.event_notice || eventData;
-      const sundayMapleNotices = notices.filter((item) =>
-        item.title.includes("썬데이")
-      );
-
-      if (sundayMapleNotices.length > 0) {
-        const sundayMapleNotice = sundayMapleNotices[0];
-        const sundayMapleNoticeId = Number(sundayMapleNotice.notice_id);
-        const eventEndTime = new Date(sundayMapleNotice.date_event_end);
-        const currentTime = new Date();
-
-        if (eventEndTime.getTime() > currentTime.getTime()) {
-          try {
-            const response = await axios.get("/notice-event/detail", {
-              params: { notice_id: sundayMapleNoticeId },
-            });
-
-            if (response.status === 200) {
-              setSundayMapleNoticeDetail(response.data);
-              localStorage.setItem("sundayMaple", response.data.url);
-            } else {
-              console.error("공지 상세 데이터를 가져오지 못했습니다.");
-            }
-          } catch (err) {
-            console.error("공지 상세 데이터 가져오기 오류:", err.message);
-          }
-        } else {
-          setIsVisible(false);
-        }
-      } else {
+      const notices = eventData.event_notice || eventData || [];
+      const sunday = (notices || []).find((n) => n.title?.includes("썬데이"));
+      if (!sunday) {
         setIsVisible(false);
+        setBooting(false);
+        return;
+      }
+
+      const end = new Date(sunday.date_event_end);
+      if (!(end > new Date())) {
+        setIsVisible(false);
+        setBooting(false);
+        return;
+      }
+
+      try {
+        const { status, data } = await axios.get("/notice-event/detail", {
+          params: { notice_id: Number(sunday.notice_id) },
+        });
+        if (status !== 200 || !data?.contents) {
+          setIsVisible(false);
+          setBooting(false);
+          return;
+        }
+
+        const doc = new DOMParser().parseFromString(data.contents, "text/html");
+        const img = doc.querySelector("img");
+        const src = img?.getAttribute("src");
+        if (!src) {
+          setIsVisible(false);
+          setBooting(false);
+          return;
+        }
+
+        const pre = new Image();
+        pre.onload = () => {
+          setImgSrc(src);
+          setReady(true);
+          setIsVisible(true);
+          setBooting(false);
+        };
+        pre.onerror = () => {
+          setIsVisible(false);
+          setBooting(false);
+        };
+        pre.src = src;
+      } catch {
+        setIsVisible(false);
+        setBooting(false);
       }
     };
+    run();
+  }, [booting, eventData, loading, error]);
 
-    fetchNoticeDetail();
-  }, [eventData, loading, error]);
-
-  const extractDesiredContent = (htmlString) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, "text/html");
-    const desiredContent = doc.querySelector("img");
-    return desiredContent ? desiredContent.outerHTML : "";
-  };
+  useLayoutEffect(() => {
+    if (!ready || !isVisible) {
+      setReserveH(0);
+      return;
+    }
+    const el = wrapRef.current;
+    if (!el) return;
+    const update = () => {
+      const h = el.getBoundingClientRect().height;
+      setReserveH(h - 300);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, [ready, isVisible]);
 
   const handleSkipDay = () => {
-    setIsChecked(!isChecked);
-    if (!isChecked) {
-      const skipUntil = new Date();
-      skipUntil.setDate(skipUntil.getDate() + 1);
-      localStorage.setItem("skipDay", skipUntil.toISOString());
+    const next = !isChecked;
+    setIsChecked(next);
+    if (next) {
+      const d = new Date();
+      d.setDate(d.getDate() + 1);
+      localStorage.setItem("skipDay", d.toISOString());
       setIsVisible(false);
     }
   };
 
-  if (loading) {
-    return <Container isContentsVisible={false}>로딩 중...</Container>;
-  }
-
-  if (error || !isVisible || !sundayMapleNoticeDetail) {
-    return (
-      <>
-        <Footer />
-      </>
-    );
-  }
-
-  const desiredHtmlContent = extractDesiredContent(
-    sundayMapleNoticeDetail.contents
-  );
-
-  // ContentsWrap이 보일 때만 Container의 position을 absolute로 설정
-  const isContentsVisible = desiredHtmlContent !== "";
+  if (booting) return null;
 
   return (
-    <Container isContentsVisible={isContentsVisible}>
-      {isContentsVisible && (
-        <ContentsWrap>
-          <ButtonWrap>
-            <SkipDayCheckboxWrapper>
-              <input
-                type="checkbox"
-                id="skip-day-checkbox"
-                checked={isChecked}
-                onChange={handleSkipDay}
-              />
-              <label htmlFor="skip-day-checkbox">오늘 하루 보지 않기</label>
-            </SkipDayCheckboxWrapper>
-            <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
-          </ButtonWrap>
-          <Contents dangerouslySetInnerHTML={{ __html: desiredHtmlContent }} />
-        </ContentsWrap>
+    <>
+      {isVisible && ready && imgSrc && (
+        <OverlayContainer $show>
+          <ContentsWrap ref={wrapRef}>
+            <ButtonWrap>
+              <SkipDayCheckboxWrapper>
+                <input
+                  type="checkbox"
+                  id="skip-day-checkbox"
+                  checked={isChecked}
+                  onChange={handleSkipDay}
+                />
+                <label htmlFor="skip-day-checkbox">오늘 하루 보지 않기</label>
+              </SkipDayCheckboxWrapper>
+              <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
+            </ButtonWrap>
+            <Contents>
+              <img src={imgSrc} alt="썬데이 메이플" />
+            </Contents>
+          </ContentsWrap>
+        </OverlayContainer>
       )}
-      <Footer />
-    </Container>
+      <Spacer style={{ height: reserveH }} />
+    </>
   );
 };
 
-const Container = styled.div`
-  position: ${({ isContentsVisible }) =>
-    isContentsVisible ? "absolute" : "relative"};
-  transform: translateY(180px);
+const OverlayContainer = styled.div`
+  position: absolute;
+  top: 180px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
   z-index: 95;
-  margin-bottom: 20px;
+  visibility: ${({ $show }) => ($show ? "visible" : "hidden")};
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transition: opacity 0.18s ease-out;
+`;
+
+const ContentsWrap = styled.div`
+  position: relative;
+  padding: 3px 10px 10px 10px;
+  margin: 10px;
+  width: 95%;
+  max-width: 876px;
+  border: 1px solid rgb(33, 40, 48);
+  outline: 2px solid rgb(54, 82, 100);
+  background: rgb(43, 53, 62);
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const Contents = styled.div`
   img {
+    display: block;
     width: 100%;
+    height: auto;
     object-fit: contain;
-    border-radius: 20px;
+    border-radius: 8px;
     border: 1px solid rgb(119, 119, 119);
-  }
-`;
-
-const ContentsWrap = styled.div`
-  padding: 3px 10px 10px 10px;
-  margin: 10px;
-  width: 95%;
-  position: relative;
-  max-width: 876px;
-  border: 1px solid rgb(33, 40, 48);
-  outline: 2px solid rgb(54, 82, 100);
-  background-color: rgb(43, 53, 62);
-  border-radius: 20px;
-  overflow: hidden;
-  object-fit: cover;
-
-  @media screen and (max-width: 768px) {
-    padding: 5px;
-  }
-
-  @media screen and (max-width: 576px) {
-    padding: 3px;
   }
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: end;
   gap: 15px;
   margin: 0 5px 5px 0;
 `;
-
 const CloseButton = styled.button`
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.35);
-  color: rgb(255, 255, 255);
-  padding: 3px;
+  background: rgba(255, 255, 255, 0.35);
+  color: #fff;
   width: 25px;
   height: 25px;
-  border-radius: 7px;
+  border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: rgb(136, 136, 136);
+    background: #888;
   }
 `;
-
 const SkipDayCheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
-  font-family: maple-light;
+  gap: 6px;
   color: rgb(216, 216, 216);
-
-  :hover {
-    background: rgba(184, 184, 184, 0.25);
-    border-radius: 5px;
-  }
-
-  input[type="checkbox"] {
+  font-family: maple-light;
+  input {
+    width: 16px;
+    height: 16px;
     cursor: pointer;
   }
-
   label {
     cursor: pointer;
     padding: 4px;
     &:hover {
-      color: rgb(255, 255, 255);
+      color: #fff;
     }
   }
+`;
+
+const Spacer = styled.div`
+  width: 100%;
+  pointer-events: none;
 `;

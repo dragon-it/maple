@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import styled, { css } from "styled-components";
 import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipBackgrnd.png";
 import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipBackgrnd.png";
@@ -16,8 +16,30 @@ import { InfoPopup } from "./SymbolPopup";
 export const SymbolUi = ({ symbolData }) => {
   const [hoveredKey, setHoveredKey] = useState(null);
   const [clickedKey, setClickedKey] = useState(null);
-  const openByHover = useCallback((key) => setHoveredKey(key), []);
-  const closeHover = useCallback(() => setHoveredKey(null), []);
+
+  const isHoverEnabled = useCallback(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
+    return window.innerWidth > 768;
+  }, []);
+
+  const openByHover = useCallback(
+    (key) => {
+      if (!isHoverEnabled()) {
+        return;
+      }
+      setHoveredKey(key);
+    },
+    [isHoverEnabled]
+  );
+
+  const closeHover = useCallback(() => {
+    if (!isHoverEnabled()) {
+      return;
+    }
+    setHoveredKey(null);
+  }, [isHoverEnabled]);
   const toggleClick = useCallback((key) => {
     setClickedKey((prev) => (prev === key ? null : key));
   }, []);
@@ -467,9 +489,10 @@ const StatText = styled.div`
   text-shadow: 1px 1px 2px ${colors.main.dark2};
 `;
 
-const MaxLevel = styled.p`
+const MaxLevel = styled.div`
   text-shadow: 0 0 3px ${colors.main.dark0};
-  font-size: 14px;
+  font-size: 15px;
+  padding: 0px 2px;
   font-weight: bold;
   backdrop-filter: blur(10px);
   line-height: 0.8;

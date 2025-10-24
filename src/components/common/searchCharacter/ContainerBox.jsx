@@ -19,16 +19,16 @@ export const ContainerCss = css`
 
 export const SkillDetailContainerCss = css`
   background: rgba(29, 29, 29, 0.97);
-  border: 1px solid #979797;
+  border: 1px solid rgb(151, 151, 151);
   border-radius: 7px;
-  outline: 1px solid #242b33;
+  outline: 1px solid rgb(36, 43, 51);
 `;
 
 export const SkillContainerCss = css`
   border: 1px solid rgb(93, 111, 119);
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
-  background-color: rgba(47, 52, 60, 0.9);
+  background-color: rgb(47, 52, 60);
 `;
 
 const Wrap = styled.div`
