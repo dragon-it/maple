@@ -45,7 +45,7 @@ export const Search = ({ error }) => {
       <InputWrap>
         <StyledInput
           type="text"
-          placeholder="캐릭터 닉네임을 입력해주세요."
+          placeholder="캐릭터 닉네임을 입력해주세요"
           value={searchValue}
           onChange={handleInputChange}
           maxLength={15}
@@ -71,21 +71,32 @@ const InputContainer = styled.form`
 `;
 
 const InputWrap = styled.div`
-  position: relative;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  margin: 0 auto;
+  max-width: 688px;
+  width: 90%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.384);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgb(0, 0, 0);
 `;
 
 const StyledInput = styled.input`
-  position: relative;
-  width: 220px;
-  height: 30px;
-  padding: 2px 10px;
-  border: 2px solid rgba(0, 0, 0, 0.9);
-  border-radius: 7px;
+  flex: 1;
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  background: transparent;
   outline: none;
-  background-color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+
+  &::placeholder {
+    color: rgb(0, 0, 0);
+  }
 
   &:focus {
     border-color: rgba(255, 51, 0, 0.9);
