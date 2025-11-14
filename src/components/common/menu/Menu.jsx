@@ -9,6 +9,15 @@ export const Menu = () => {
   const { theme } = useTheme();
   const [isClicked, setIsClicked] = useState(false);
   const menuRef = useRef(null);
+  const [sundayMapleUrl, setSundayMapleUrl] = useState(
+    localStorage.getItem("sundayMaple") ||
+      "https://maplestory.nexon.com/News/Event"
+  );
+
+  useEffect(() => {
+    const url = localStorage.getItem("sundayMaple");
+    if (url) setSundayMapleUrl(url);
+  }, []);
 
   const routes = {
     home: "/",
@@ -18,10 +27,6 @@ export const Menu = () => {
     expSimulator: "/exp-simulator",
     slidingPuzzle: "/sliding-puzzle",
   };
-
-  const sundayMapleUrl =
-    localStorage.getItem("sundayMaple") ||
-    "https://maplestory.nexon.com/News/Event";
 
   const handleClicked = (event) => {
     event.stopPropagation();
