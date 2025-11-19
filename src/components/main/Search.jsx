@@ -78,16 +78,24 @@ const InputWrap = styled.div`
   width: 90%;
   border-radius: 24px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.384);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
   border: 1px solid rgb(0, 0, 0);
+  position: relative;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus-within {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
 `;
 
 const StyledInput = styled.input`
   flex: 1;
   height: 38px;
   padding: 0 16px;
+  padding-right: 42px;
   border: none;
   background: transparent;
   outline: none;
@@ -97,21 +105,13 @@ const StyledInput = styled.input`
   &::placeholder {
     color: rgb(0, 0, 0);
   }
-
-  &:focus {
-    border-color: rgba(255, 51, 0, 0.9);
-    box-shadow: 0 0 10px rgba(255, 51, 0, 0.5);
-  }
-
-  &:focus + button {
-    color: rgba(255, 51, 0, 0.9);
-  }
 `;
 
 const StyledButton = styled.button`
   position: absolute;
   right: 10px;
   width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
