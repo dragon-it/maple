@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import hamburger_bar_light from "../../../assets/menu/hamburger_light.svg";
 import hamburger_bar_dark from "../../../assets/menu/hamburger_dark.svg";
 import { useTheme } from "../../../context/ThemeProvider";
+import { Search } from "../../main/Search";
 
 export const Menu = () => {
   const { theme } = useTheme();
@@ -47,13 +48,15 @@ export const Menu = () => {
 
   return (
     <>
-      <Container>
-        <HamburgerImg
-          onClick={handleClicked}
-          src={theme === "dark" ? hamburger_bar_light : hamburger_bar_dark}
-          alt="hamburger_bar"
-        />
-      </Container>
+      <HeaderUtility>
+        <Container>
+          <HamburgerImg
+            onClick={handleClicked}
+            src={theme === "dark" ? hamburger_bar_light : hamburger_bar_dark}
+            alt="hamburger_bar"
+          />
+        </Container>
+      </HeaderUtility>
       <MenuContainer ref={menuRef} $isClicked={isClicked}>
         <MenusHeader>MENU</MenusHeader>
         <Menus to={routes.home} onClick={() => setIsClicked(false)}>
@@ -188,4 +191,10 @@ const MenuLink = styled.a`
       transform: scale(0.9);
     }
   }
+`;
+
+const HeaderUtility = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;

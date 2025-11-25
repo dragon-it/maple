@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { Logo } from "./Logo";
+import styled, { css } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import serchIcon from "../../assets/icons/searchIcons/SearchIcon_small.svg";
 
-export const Search = ({ error }) => {
+export const Search = ({ variant = "page" }) => {
   // 검색어 상태 관리
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
@@ -40,9 +39,8 @@ export const Search = ({ error }) => {
   };
 
   return (
-    <InputContainer onSubmit={handleSubmit}>
-      <Logo error={error} />
-      <InputWrap>
+    <InputContainer onSubmit={handleSubmit} $variant={variant}>
+      <InputWrap $variant={variant}>
         <StyledInput
           type="text"
           placeholder="캐릭터 닉네임을 입력해주세요"
@@ -50,7 +48,7 @@ export const Search = ({ error }) => {
           onChange={handleInputChange}
           maxLength={15}
         />
-        <StyledButton>
+        <StyledButton type="submit" $variant={variant}>
           <img src={serchIcon} alt="검색" width={18} height={18} />
         </StyledButton>
       </InputWrap>
@@ -65,9 +63,14 @@ const InputContainer = styled.form`
   width: 100%;
   gap: 2px;
 
-  @media screen and (max-width: 1024px) {
-    flex-direction: column;
-  }
+  ${({ $variant }) =>
+    $variant === "header" &&
+    css`
+      width: auto;
+      min-width: 220px;
+      justify-content: flex-start;
+      gap: 6px;
+    `}
 `;
 
 const InputWrap = styled.div`
@@ -81,7 +84,7 @@ const InputWrap = styled.div`
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
-  border: 1px solid rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
   position: relative;
   box-shadow: 0 10px 12px rgba(0, 0, 0, 0.08);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -89,13 +92,27 @@ const InputWrap = styled.div`
   &:focus-within {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   }
+
+  ${({ $variant }) =>
+    $variant === "header" &&
+    css`
+      margin: 0;
+      width: 100%;
+      max-width: 320px;
+      min-width: 220px;
+      height: 36px;
+      border-radius: 18px;
+      border-width: 1px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: none;
+    `}
 `;
 
 const StyledInput = styled.input`
   flex: 1;
   height: 38px;
   padding: 0 16px;
-  padding-right: 42px;
+
   border: none;
   background: transparent;
   outline: none;
@@ -105,6 +122,14 @@ const StyledInput = styled.input`
   &::placeholder {
     color: rgb(0, 0, 0);
   }
+
+  ${({ $variant }) =>
+    $variant === "header" &&
+    css`
+      font-size: 13px;
+      height: 100%;
+      padding-right: 40px;
+    `}
 `;
 
 const StyledButton = styled.button`
@@ -118,4 +143,12 @@ const StyledButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+
+  ${({ $variant }) =>
+    $variant === "header" &&
+    css`
+      right: 6px;
+      width: 28px;
+      height: 28px;
+    `}
 `;

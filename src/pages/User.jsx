@@ -103,9 +103,6 @@ export const User = () => {
                 길드
               </Tab>
             </Tabs>
-            <SearchWrap>
-              <Search />
-            </SearchWrap>
           </HeaderWrap>
 
           {/* 캐릭터 정보 */}
@@ -142,7 +139,6 @@ const Container = styled.div`
   margin: 10px 0px;
 
   @media screen and (max-width: 1024px) {
-    margin-top: 90px;
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
     width: ${({ $activeTab }) => ($activeTab === 3 ? "95%" : "fit-content")};
   }

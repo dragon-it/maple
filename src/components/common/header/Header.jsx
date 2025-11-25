@@ -1,12 +1,15 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import logo from "../../../assets/logos/LogoIcon.svg";
 import logo_text from "../../../assets/logos/Logo_Text_Only.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
+import { Search } from "../../main/Search";
 
 export const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   const routes = {
     home: "/",
@@ -52,6 +55,11 @@ export const Header = () => {
       </ItemContainer>
 
       <ThemeToggleWrap>
+        {!isHomePage && (
+          <HeaderSearchWrap>
+            <Search variant="header" />
+          </HeaderSearchWrap>
+        )}
         <ThemeToggleButton />
       </ThemeToggleWrap>
     </PcHeaderContainer>
@@ -132,4 +140,14 @@ const ItemsToHome = styled.a`
   color: inherit;
 `;
 
-const ThemeToggleWrap = styled.div``;
+const ThemeToggleWrap = styled.div`
+  display: flex;
+`;
+
+const HeaderSearchWrap = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+`;
