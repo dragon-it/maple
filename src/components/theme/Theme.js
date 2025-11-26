@@ -17,10 +17,10 @@ export const light = {
   headerIconHoverColor: "rgb(230,230,230)",
   footerBgColor: "rgba(255,255,255, 0.35)",
   infoPanelColor: {
-    headerBackground: "rgb(239, 239, 239)",
-    contentsBackground: "rgb(255,255,255)",
+    headerBackground: "rgba(255, 255, 255, 0.3)",
+    contentsBackground: "rgba(255, 255, 255, 0.7)",
     dateColor: "rgb(43, 43, 43)",
-    toPuzzle:{
+    toPuzzle: {
       background: `linear-gradient(
         180deg,
         #6ec6ff 44%,
@@ -29,7 +29,7 @@ export const light = {
       borderTop: "1px solid #b3e5fc",
       outline: "1px solid #1976d2",
       boxShadow: "0px 2px 0px #1976d2",
-    }
+    },
   },
 };
 
@@ -51,10 +51,10 @@ export const dark = {
   headerIconHoverColor: "rgb(75, 75, 75)",
   footerBgColor: "rgba(38,38,38, 0.85)",
   infoPanelColor: {
-    headerBackground: "rgba(255, 255, 255, .05)",
-    contentsBackground: "rgb(37, 40, 43)",
-    dateColor: "rgb(170,170,170)",    
-    toPuzzle:{
+    headerBackground: "rgba(255, 255, 255, 0.05)",
+    contentsBackground: "rgba(37, 40, 43, 0.7)",
+    dateColor: "rgb(170,170,170)",
+    toPuzzle: {
       background: `linear-gradient(
         180deg,
         rgba(255, 196, 22, 1) 44%,

@@ -195,6 +195,7 @@ const NoticeWrap = styled.div`
   width: 100%;
   height: fit-content;
   border-radius: 5px;
+  backdrop-filter: blur(7px);
 
   @media screen and (max-width: 768px) {
     min-width: 0px;
@@ -237,16 +238,15 @@ const ErrorText = styled.span`
 
 const Link = styled.a`
   text-decoration: none;
-  white-space: normal;
   color: inherit;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  flex: 1 1 auto;
+
   &:hover {
     text-decoration: underline;
-  }
-
-  @media screen and (max-width: 768px) {
-    overflow: visible;
   }
 `;
 
