@@ -137,6 +137,7 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.bgColor};
   z-index: 99;
   margin: 10px 0px;
+  font-family: "맑은 고딕", var(--global-font-stack);
 
   @media screen and (max-width: 1024px) {
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
@@ -149,6 +150,10 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
   }
+  border: 1px solid rgba(158, 206, 230, 0.32);
+  outline: 1px solid rgba(54, 96, 124, 0.5);
+  background: rgba(38, 38, 38, 0.55);
+  backdrop-filter: blur(7px);
 `;
 
 const HeaderWrap = styled.div`
@@ -157,25 +162,9 @@ const HeaderWrap = styled.div`
   padding: 3px 5px;
 `;
 
-const SearchWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  @media screen and (max-width: 1024px) {
-    position: absolute;
-    top: -87px;
-    left: 0;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-`;
-
 const Tabs = styled.div`
   display: flex;
   padding: 5px 0;
-  font-family: maple-light;
   font-size: 12px;
   min-width: 390px;
 
