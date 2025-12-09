@@ -7,10 +7,10 @@ export const ExpSimulator = () => {
   return (
     <Container>
       <Helmet>
-        <title>Exp 시뮬레이터 - 메짱</title>
+        <title>EXP 시뮬레이터 - 메짱</title>
         <meta
           name="description"
-          content="Exp 쿠폰, 비약 시뮬레이터 기능입니다."
+          content="EXP 쿠폰, 비약 시뮬레이터 기능입니다."
         />
       </Helmet>
       <RenderingBox>
