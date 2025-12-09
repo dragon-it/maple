@@ -99,7 +99,6 @@ const FooterTextDiv = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: maple-light;
   background: ${({ theme }) => theme.footerBgColor};
   text-decoration: none;
 `;
