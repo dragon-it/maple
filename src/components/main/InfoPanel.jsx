@@ -209,6 +209,7 @@ const Header = styled.h2`
   font-size: 14px;
   padding: 3px;
   background-color: ${({ theme }) => theme.infoPanelColor.headerBackground};
+  border-bottom: 1px solid ${colors.greyScale.grey3Alpha50};
 `;
 
 const List = styled.ul`

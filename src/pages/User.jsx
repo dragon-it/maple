@@ -152,7 +152,7 @@ const Container = styled.div`
   }
   border: 1px solid rgba(158, 206, 230, 0.32);
   outline: 1px solid rgba(54, 96, 124, 0.5);
-  background: rgba(38, 38, 38, 0.55);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(7px);
 `;
 
