@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import hamburger_bar_light from "../../../assets/menu/hamburger_light.svg";
 import hamburger_bar_dark from "../../../assets/menu/hamburger_dark.svg";
 import { useTheme } from "../../../context/ThemeProvider";
-import { Search } from "../../main/Search";
 
 export const Menu = () => {
   const { theme } = useTheme();
@@ -72,7 +71,7 @@ export const Menu = () => {
           랜덤 직업 뽑기
         </Menus>
         <Menus to={routes.expSimulator} onClick={() => setIsClicked(false)}>
-          Exp 시뮬레이터
+          EXP 시뮬레이터
         </Menus>
         <Menus to={routes.slidingPuzzle} onClick={() => setIsClicked(false)}>
           슬라이딩 퍼즐
