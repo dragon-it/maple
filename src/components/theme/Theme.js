@@ -13,7 +13,7 @@ export const light = {
   tabHoverColor: "rgba(255,255,255, 0.65)",
   tabNotHoverColor: "rgb(0, 86, 179)",
   headerBgColor: "rgba(255,255,255, 0.55)",
-  headerHoverColor: "rgb(38,38,38)",
+  headerHoverColor: "rgb(205,205,205)",
   headerIconHoverColor: "rgb(230,230,230)",
   footerBgColor: "rgba(255,255,255, 0.35)",
   infoPanelColor: {
@@ -23,12 +23,12 @@ export const light = {
     toPuzzle: {
       background: `linear-gradient(
         180deg,
-        #6ec6ff 44%,
-        #2196f3 100%
+        rgb(110, 198, 255) 44%,
+        rgb(33, 150, 243) 100%
       )`,
-      borderTop: "1px solid #b3e5fc",
-      outline: "1px solid #1976d2",
-      boxShadow: "0px 2px 0px #1976d2",
+      borderTop: "1px solid rgb(179, 229, 252)",
+      outline: "1px solid rgb(25, 118, 210)",
+      boxShadow: "0px 2px 0px rgb(25, 118, 210)",
     },
   },
 };

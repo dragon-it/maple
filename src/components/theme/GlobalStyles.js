@@ -56,11 +56,10 @@ input[type="number"]::-webkit-inner-spin-button {
 
 
 :root {
-  --global-font-stack: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --global-font-stack: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, 
+                        "Segoe UI",'맑은 고딕','Malgun Gothic',Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 html, body {
   font-family: var(--global-font-stack);
 }
-
-
 `;

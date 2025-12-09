@@ -43,14 +43,14 @@ export const Header = () => {
         <Items to={routes.characterCapture}>캐릭터 캡처</Items>
         <Items to={routes.searchGuild}>길드 검색</Items>
         <Items to={routes.randomClass}>랜덤 직업 뽑기</Items>
-        <Items to={routes.expSimulator}>Exp 시뮬레이터</Items>
+        <Items to={routes.expSimulator}>EXP 시뮬레이터</Items>
         <Items to={routes.slidingPuzzle}>슬라이딩 퍼즐</Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <p>썬데이 메이플</p>
+          썬데이 메이플
         </ItemsToHome>
       </ItemContainer>
 
@@ -72,10 +72,12 @@ const itemStyles = css`
   transition: 0.15s ease;
   cursor: pointer;
   border-bottom: 3px solid transparent;
+  color: rgb(205, 205, 205);
+  text-decoration: none;
 
   &:hover {
     border-bottom-color: ${({ theme }) => theme.headerHoverColor};
-    transform: scale(1.05);
+    color: rgb(255, 255, 255);
   }
 `;
 
@@ -88,14 +90,8 @@ const PcHeaderContainer = styled.div`
   width: 100%;
   gap: 10px;
   max-height: 50px;
-  font-family: maple-light;
-  font-size: 0.8rem;
-  background: ${({ theme }) => theme.headerBgColor};
-
-  @media screen and (max-width: 768px) {
-    padding: 5px;
-    gap: 0px;
-  }
+  font-size: 1rem;
+  background: rgba(22, 22, 22, 0.85);
 `;
 
 const LogoWrap = styled.div`
@@ -130,14 +126,10 @@ const ItemContainer = styled.div`
 
 const Items = styled(Link)`
   ${itemStyles};
-  text-decoration: none;
-  color: inherit;
 `;
 
 const ItemsToHome = styled.a`
   ${itemStyles};
-  text-decoration: none;
-  color: inherit;
 `;
 
 const ThemeToggleWrap = styled.div`
