@@ -91,7 +91,7 @@ const PcHeaderContainer = styled.div`
   gap: 10px;
   max-height: 50px;
   font-size: 1rem;
-  background: rgba(22, 22, 22, 0.85);
+  background: rgba(38, 38, 38, 0.85);
 `;
 
 const LogoWrap = styled.div`

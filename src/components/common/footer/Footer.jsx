@@ -100,5 +100,6 @@ const FooterTextDiv = styled.div`
   align-items: center;
   text-align: center;
   background: ${({ theme }) => theme.footerBgColor};
+  color: ${({ theme }) => theme.footerTextColor};
   text-decoration: none;
 `;

@@ -15,7 +15,8 @@ export const light = {
   headerBgColor: "rgba(255,255,255, 0.55)",
   headerHoverColor: "rgb(205,205,205)",
   headerIconHoverColor: "rgb(230,230,230)",
-  footerBgColor: "rgba(255,255,255, 0.35)",
+  footerBgColor: "rgba(38,38,38, 0.85)",
+  footerTextColor: "rgb(220,220,220)",
   infoPanelColor: {
     headerBackground: "rgba(255, 255, 255, 0.3)",
     contentsBackground: "rgba(255, 255, 255, 0.7)",
@@ -50,6 +51,7 @@ export const dark = {
   headerHoverColor: "rgb(205,205,205)",
   headerIconHoverColor: "rgb(75, 75, 75)",
   footerBgColor: "rgba(38,38,38, 0.85)",
+  footerTextColor: "rgb(220,220,220)",
   infoPanelColor: {
     headerBackground: "rgba(255, 255, 255, 0.05)",
     contentsBackground: "rgba(37, 40, 43, 0.7)",
