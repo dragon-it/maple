@@ -97,7 +97,7 @@ const InputWrap = styled.div`
     $variant === "header" &&
     css`
       margin: 0;
-      width: 100%;
+      width: 80%;
       max-width: 320px;
       min-width: 220px;
       height: 36px;

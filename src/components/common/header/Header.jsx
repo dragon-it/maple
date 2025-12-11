@@ -85,7 +85,7 @@ const PcHeaderContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex: 1 1 0%;
   padding: 0 10px;
   width: 100%;
   gap: 10px;
@@ -113,7 +113,9 @@ const HeaderLogoText = styled.img`
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex: 1 1 0%;
   gap: 10px;
+  margin-left: 40px;
 
   @media screen and (max-width: 768px) {
     display: none;
