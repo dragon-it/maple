@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import FooterText from "./FooterText";
+import { FooterText } from "./FooterText";
+
 export const Footer = () => {
   useEffect(() => {
     let initialized = false;
