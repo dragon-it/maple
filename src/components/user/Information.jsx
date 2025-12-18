@@ -9,7 +9,7 @@ import spirit from "../../assets/logos/spirit.png";
 import { ExpHistory } from "./Information/ExpHistory";
 
 const Information = ({ result }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [rotation, setRotation] = useState(0);
   const [clickCount, setClickCount] = useState(0);
 
   const handleHeightChange = (height) => {
@@ -34,23 +34,10 @@ const Information = ({ result }) => {
   const toggleFlip = () => {
     setClickCount((prevCount) => {
       const newCount = prevCount + 1;
-      if (newCount === 23) {
-        return prevCount;
-      } else if (newCount > 6) {
-        setIsFlipped(!isFlipped);
-      } else if (newCount <= 6) {
-        setIsFlipped(!isFlipped);
-      }
+      if (newCount >= 23) return prevCount;
+      setRotation((prevRotation) => prevRotation + 360);
       return newCount;
     });
-  };
-
-  const getTransformStyle = () => {
-    if (clickCount < 5) {
-      return isFlipped ? "scaleX(-1)" : "scaleX(1)";
-    } else {
-      return isFlipped ? "scaleY(-1)" : "scaleY(1)";
-    }
   };
 
   return (
@@ -90,7 +77,7 @@ const Information = ({ result }) => {
                       alt="돌정령"
                       onClick={toggleFlip}
                       style={{
-                        transform: getTransformStyle(),
+                        transform: `rotate(${rotation}deg)`,
                         transition: "transform 0.5s",
                       }}
                     />
