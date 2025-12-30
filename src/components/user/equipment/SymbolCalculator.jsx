@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
@@ -13,6 +13,8 @@ import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 export const SymbolCalculator = ({ symbolData }) => {
   const [excludeGrandAuthentic, setExcludeGrandAuthentic] = useState(false);
+  const [selectedArcane, setSelectedArcane] = useState({});
+  const [selectedAuthentic, setSelectedAuthentic] = useState({});
   const symbols = symbolData.symbol || [];
   const group1 = symbols.slice(0, 6); // 아케인 심볼
   const group2 = symbols.slice(6); // 어센틱 심볼
@@ -20,7 +22,6 @@ export const SymbolCalculator = ({ symbolData }) => {
   const {
     arcaneSymbolsCost,
     authenticSymbolsCost,
-    totalSymbolCost,
     ARCANE_MAX,
     AUTHENTIC_MAX,
     CLEAN_RE,
@@ -29,22 +30,45 @@ export const SymbolCalculator = ({ symbolData }) => {
     GRAND_AUTHENTIC_FORCE,
   } = symbolCost;
 
-  // 아케인 심볼 포스 합계 계산
-  const arcaneForce = group1.reduce(
+  useEffect(() => {
+    const nextArcane = {};
+    const nextAuthentic = {};
+    group1.forEach((s) => {
+      nextArcane[s.symbol_name] = true;
+    });
+    group2.forEach((s) => {
+      nextAuthentic[s.symbol_name] = true;
+    });
+    setSelectedArcane(nextArcane);
+    setSelectedAuthentic(nextAuthentic);
+  }, [symbols]);
+
+  const isArcaneSelected = (name) =>
+    selectedArcane[name] === undefined ? true : selectedArcane[name];
+  const isAuthenticSelected = (name) =>
+    selectedAuthentic[name] === undefined ? true : selectedAuthentic[name];
+
+  const filteredArcane = group1.filter((s) => isArcaneSelected(s.symbol_name));
+  const filteredAuthentic = group2.filter((s) => {
+    const isGrand =
+      excludeGrandAuthentic &&
+      GRAND_AUTHENTIC_SYMBOLS.includes(
+        s.symbol_name.replace(CLEAN_RE2, "").trim()
+      );
+    return !isGrand && isAuthenticSelected(s.symbol_name);
+  });
+
+  // 아케인 심볼 포스 총계 계산
+  const arcaneForce = filteredArcane.reduce(
     (sum, s) => sum + Number(s.symbol_force),
     0
   );
 
-  // 어센틱 심볼 포스 합계 계산
-  const authenticForce = group2
-    .filter((s) =>
-      excludeGrandAuthentic
-        ? !GRAND_AUTHENTIC_SYMBOLS.includes(
-            s.symbol_name.replace(CLEAN_RE2, "").trim()
-          )
-        : true
-    )
-    .reduce((sum, s) => sum + Number(s.symbol_force), 0);
+  // 어센틱 심볼 포스 총계 계산
+  const authenticForce = filteredAuthentic.reduce(
+    (sum, s) => sum + Number(s.symbol_force),
+    0
+  );
 
   // 심볼 비용 계산 함수
   const getSymbolCost = (name, level, costTable) => {
@@ -54,33 +78,28 @@ export const SymbolCalculator = ({ symbolData }) => {
     return costList.slice(0, level).reduce((acc, v) => acc + v, 0);
   };
 
-  // 아케인 심볼 총 비용 계산
-  const totalArcaneCost = symbols
-    .slice(0, 6)
-    .reduce(
-      (sum, s) =>
-        sum + getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
-      0
-    );
+  const getSymbolTotalCost = (name, costTable) => {
+    const region = name.replace(CLEAN_RE2, "");
+    const costList = costTable[region];
+    if (!costList) return 0;
+    return costList.reduce((acc, v) => acc + v, 0);
+  };
 
-  // 어센틱 심볼 총 비용 계산
-  const totalAuthenticCost = symbols
-    .slice(6)
-    .filter((s) =>
-      excludeGrandAuthentic
-        ? !GRAND_AUTHENTIC_SYMBOLS.includes(
-            s.symbol_name.replace(CLEAN_RE2, "").trim()
-          )
-        : true
-    )
-    .reduce(
-      (sum, s) =>
-        sum +
-        getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
-      0
-    );
+  // 아케인 심볼 총비용 계산
+  const totalArcaneCost = filteredArcane.reduce(
+    (sum, s) =>
+      sum + getSymbolCost(s.symbol_name, s.symbol_level, arcaneSymbolsCost),
+    0
+  );
 
-  // 총 비용 계산
+  // 어센틱 심볼 총비용 계산
+  const totalAuthenticCost = filteredAuthentic.reduce(
+    (sum, s) =>
+      sum + getSymbolCost(s.symbol_name, s.symbol_level, authenticSymbolsCost),
+    0
+  );
+
+  // 총비용 계산
   const totalCost = totalArcaneCost + totalAuthenticCost;
 
   // 심볼 이름에서 불필요한 부분 제거
@@ -89,7 +108,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   // 문자열을 숫자로 변환하는 함수
   const toNum = (v, d = 0) => (Number.isFinite(Number(v)) ? Number(v) : d);
 
-  // 메소 단위로 변환
+  // 메소 표기를 억만으로 변환
   const toEokMan = (v) => {
     const n = toNum(v, 0);
     const eok = Math.floor(n / 1e8);
@@ -133,34 +152,36 @@ export const SymbolCalculator = ({ symbolData }) => {
 
   // 아케인 심볼 업그레이드 단계 정렬
   const sortedArcaneSteps = () =>
-    getStepsForGroup(group1, arcaneSymbolsCost)
+    getStepsForGroup(filteredArcane, arcaneSymbolsCost)
       .filter((s) => s.cost !== Infinity)
       .sort((a, b) => a.cost - b.cost);
 
   // 어센틱 심볼 업그레이드 단계 정렬
   const sortedAuthenticSteps = () =>
-    getStepsForGroup(
-      group2.filter((s) =>
-        excludeGrandAuthentic
-          ? !GRAND_AUTHENTIC_SYMBOLS.includes(
-              s.symbol_name.replace(CLEAN_RE2, "").trim()
-            )
-          : true
-      ),
-      authenticSymbolsCost
-    )
+    getStepsForGroup(filteredAuthentic, authenticSymbolsCost)
       .filter((s) => s.cost !== Infinity)
       .sort((a, b) => a.cost - b.cost);
 
-  // 어센틱 포스 최대값 (그랜드 제외 옵션 적용)
+  // 어센틱 포스 최대치(그랜드 어센틱 제외 옵션 적용)
   const authenticMax = excludeGrandAuthentic
     ? AUTHENTIC_MAX - GRAND_AUTHENTIC_FORCE
     : AUTHENTIC_MAX;
 
-  // 풀강까지 남은 메소 (그랜드 제외 옵션 적용)
-  const authenticRemainCost = excludeGrandAuthentic
-    ? totalSymbolCost.어센틱 - totalAuthenticCost - totalSymbolCost.그랜드어센틱
-    : totalSymbolCost.어센틱 - totalAuthenticCost;
+  // 풀강까지 남은 메소 (선택된 심볼 기준)
+  const authenticTotalMax = filteredAuthentic.reduce(
+    (sum, s) => sum + getSymbolTotalCost(s.symbol_name, authenticSymbolsCost),
+    0
+  );
+  const authenticRemainCost = Math.max(
+    0,
+    authenticTotalMax - totalAuthenticCost
+  );
+
+  const arcaneTotalMax = filteredArcane.reduce(
+    (sum, s) => sum + getSymbolTotalCost(s.symbol_name, arcaneSymbolsCost),
+    0
+  );
+  const arcaneRemainCost = Math.max(0, arcaneTotalMax - totalArcaneCost);
 
   const renderUpgradeSteps = (steps, type) =>
     steps.length > 0 ? (
@@ -200,7 +221,7 @@ export const SymbolCalculator = ({ symbolData }) => {
   const renderPieChart = (title, value, max) => {
     const data = [
       { name: "현재 포스", value },
-      { name: "남은 포스", value: Math.max(0, max - value) },
+      { name: "필요 포스", value: Math.max(0, max - value) },
     ];
     return (
       <ReachWrap style={{ textAlign: "center", position: "relative" }}>
@@ -244,7 +265,7 @@ export const SymbolCalculator = ({ symbolData }) => {
                   key={`cell-${index}`}
                   fill={
                     index === 0
-                      ? title === "아케인 포스"
+                      ? title === "아케인포스"
                         ? "url(#arcaneGradient)"
                         : "url(#authenticGradient)"
                       : "url(#redGradient)"
@@ -265,6 +286,41 @@ export const SymbolCalculator = ({ symbolData }) => {
     );
   };
 
+  const handleArcaneToggle = (name) => {
+    setSelectedArcane((prev) => ({
+      ...prev,
+      [name]: !isArcaneSelected(name),
+    }));
+  };
+
+  const handleAuthenticToggle = (name) => {
+    setSelectedAuthentic((prev) => ({
+      ...prev,
+      [name]: !isAuthenticSelected(name),
+    }));
+  };
+
+  const arcaneAllChecked = group1.every((s) => isArcaneSelected(s.symbol_name));
+  const authenticAllChecked = group2.every((s) =>
+    isAuthenticSelected(s.symbol_name)
+  );
+
+  const handleArcaneAllToggle = (checked) => {
+    const next = {};
+    group1.forEach((s) => {
+      next[s.symbol_name] = checked;
+    });
+    setSelectedArcane(next);
+  };
+
+  const handleAuthenticAllToggle = (checked) => {
+    const next = {};
+    group2.forEach((s) => {
+      next[s.symbol_name] = checked;
+    });
+    setSelectedAuthentic(next);
+  };
+
   if (!symbols.length) return null;
 
   return (
@@ -280,11 +336,11 @@ export const SymbolCalculator = ({ symbolData }) => {
               alignItems: "center",
             }}
           >
-            <SectionTitle>소비 메소</SectionTitle>
+            <SectionTitle>총 소비 메소</SectionTitle>
           </span>
 
           <div>
-            <MesoTitle> 아케인 심볼 소비 메소</MesoTitle>
+            <MesoTitle> 아케인심볼 소비 메소</MesoTitle>
             <MesoUsed>
               <MesoIcon src={meso_icon} alt="meso_icon" />
               <span>{toEokMan(totalArcaneCost)}</span>
@@ -292,7 +348,7 @@ export const SymbolCalculator = ({ symbolData }) => {
           </div>
 
           <div>
-            <MesoTitle> 어센틱 심볼 소비 메소</MesoTitle>
+            <MesoTitle> 어센틱심볼 소비 메소</MesoTitle>
             <MesoUsed>
               <MesoIcon src={meso_icon} alt="meso_icon" />
               <span>{toEokMan(totalAuthenticCost)}</span>
@@ -300,7 +356,7 @@ export const SymbolCalculator = ({ symbolData }) => {
           </div>
 
           <div>
-            <MesoTitle> 총 소비 메소</MesoTitle>
+            <MesoTitle> 총합 소비 메소</MesoTitle>
             <MesoUsed>
               <MesoIcon src={meso_icon} alt="meso_icon" />
               <span>{toEokMan(totalCost)}</span>
@@ -317,11 +373,11 @@ export const SymbolCalculator = ({ symbolData }) => {
               flexDirection: "column",
             }}
           >
-            <SectionTitle>포스 도달률</SectionTitle>
+            <SectionTitle>포스 현황</SectionTitle>
             <ChartWrap>
-              {renderPieChart("아케인 포스", arcaneForce, ARCANE_MAX)}
+              {renderPieChart("아케인포스", arcaneForce, ARCANE_MAX)}
               {renderPieChart(
-                "어센틱 포스",
+                "어센틱포스",
                 authenticForce,
                 excludeGrandAuthentic
                   ? AUTHENTIC_MAX - GRAND_AUTHENTIC_FORCE
@@ -335,13 +391,13 @@ export const SymbolCalculator = ({ symbolData }) => {
       {group1.length > 0 && (
         <ArcaneGroupWrap>
           <ResultWrap>
-            <SectionTitle $type="arcane">아케인 심볼 강화 계산</SectionTitle>
+            <SectionTitle $type="arcane">아케인심볼 강화 계산</SectionTitle>
             <span>
               <ArcaneForceIcon src={arcane_icon} alt="arcane_icon" />{" "}
               <ForceValue>
                 {arcaneForce} / {ARCANE_MAX}
               </ForceValue>
-              <MaxLevel>(MAX)</MaxLevel> →{" "}
+              <MaxLevel>(MAX)</MaxLevel>{" "}
               <span
                 style={{
                   fontSize: "16px",
@@ -356,10 +412,35 @@ export const SymbolCalculator = ({ symbolData }) => {
               </span>{" "}
               강화 필요
             </span>
-            <p>
-              풀강까지 남은 메소 :{" "}
-              {toEokMan(totalSymbolCost.아케인 - totalArcaneCost)}
-            </p>
+            <p>풀강까지 남은 메소 : {toEokMan(arcaneRemainCost)}</p>
+            <CheckboxWrap>
+              <CheckboxRow>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={arcaneAllChecked}
+                    onChange={(e) => handleArcaneAllToggle(e.target.checked)}
+                  />
+                  전체 선택
+                </label>
+              </CheckboxRow>
+              <CheckboxGrid>
+                {group1.map((symbol) => (
+                  <CheckboxItem key={symbol.symbol_name}>
+                    <input
+                      type="checkbox"
+                      checked={isArcaneSelected(symbol.symbol_name)}
+                      onChange={() => handleArcaneToggle(symbol.symbol_name)}
+                    />
+                    <SymbolThumb
+                      src={symbol.symbol_icon}
+                      alt={getSymbolShortName(symbol.symbol_name)}
+                    />
+                    <span>{getSymbolShortName(symbol.symbol_name)}</span>
+                  </CheckboxItem>
+                ))}
+              </CheckboxGrid>
+            </CheckboxWrap>
             {renderUpgradeSteps(sortedArcaneSteps(), "arcane")}
           </ResultWrap>
         </ArcaneGroupWrap>
@@ -370,7 +451,7 @@ export const SymbolCalculator = ({ symbolData }) => {
           <ResultWrap>
             <HeaderWrap>
               <SectionTitle $type="authentic">
-                어센틱 심볼 강화 계산
+                어센틱심볼 강화 계산
               </SectionTitle>
               <label
                 style={{
@@ -402,7 +483,7 @@ export const SymbolCalculator = ({ symbolData }) => {
               <ForceValue>
                 {authenticForce} / {authenticMax}
               </ForceValue>
-              <MaxLevel>(MAX)</MaxLevel> →{" "}
+              <MaxLevel>(MAX)</MaxLevel>{" "}
               <span
                 style={{
                   fontSize: "17px",
@@ -418,6 +499,34 @@ export const SymbolCalculator = ({ symbolData }) => {
               강화 필요
             </span>
             <p>풀강까지 남은 메소 : {toEokMan(authenticRemainCost)}</p>
+            <CheckboxWrap>
+              <CheckboxRow>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={authenticAllChecked}
+                    onChange={(e) => handleAuthenticAllToggle(e.target.checked)}
+                  />
+                  전체 선택
+                </label>
+              </CheckboxRow>
+              <CheckboxGrid>
+                {group2.map((symbol) => (
+                  <CheckboxItem key={symbol.symbol_name}>
+                    <input
+                      type="checkbox"
+                      checked={isAuthenticSelected(symbol.symbol_name)}
+                      onChange={() => handleAuthenticToggle(symbol.symbol_name)}
+                    />
+                    <SymbolThumb
+                      src={symbol.symbol_icon}
+                      alt={getSymbolShortName(symbol.symbol_name)}
+                    />
+                    <span>{getSymbolShortName(symbol.symbol_name)}</span>
+                  </CheckboxItem>
+                ))}
+              </CheckboxGrid>
+            </CheckboxWrap>
             {renderUpgradeSteps(sortedAuthenticSteps(), "authentic")}
           </ResultWrap>
         </AuthenticGroupWrap>
@@ -684,3 +793,50 @@ const PieChartWrap = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const CheckboxWrap = styled.div`
+  margin: 10px 0;
+  background-color: rgba(59, 66, 75, 0.6);
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid rgb(38, 43, 49);
+`;
+
+const CheckboxRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+`;
+
+const CheckboxGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px 12px;
+`;
+
+const CheckboxItem = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+
+  input {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const SymbolThumb = styled.img`
+  width: 26px;
+  height: 26px;
+`;
+
+export default SymbolCalculator;

@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import logo from "../../../assets/logos/LogoIcon.svg";
 import logo_text from "../../../assets/logos/Logo_Text_Only.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
 import { Search } from "../../main/Search";
+import {
+  MenuContainer as DropdownContainer,
+  Menus as DropdownLink,
+} from "../menu/Menu";
 
 export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const [isMiniOpen, setIsMiniOpen] = useState(false);
+  const miniRef = useRef(null);
 
   const routes = {
     home: "/",
@@ -23,6 +29,18 @@ export const Header = () => {
   const sundayMapleUrl =
     localStorage.getItem("sundayMaple") ||
     "https://maplestory.nexon.com/News/Event";
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (miniRef.current && !miniRef.current.contains(event.target)) {
+        setIsMiniOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <PcHeaderContainer>
@@ -42,15 +60,40 @@ export const Header = () => {
         <Items to={routes.home}>캐릭터 검색</Items>
         <Items to={routes.characterCapture}>캐릭터 캡처</Items>
         <Items to={routes.searchGuild}>길드 검색</Items>
-        <Items to={routes.randomClass}>랜덤 직업 뽑기</Items>
+
+        <MiniGameWrapper ref={miniRef}>
+          <MiniGameTrigger onClick={() => setIsMiniOpen((prev) => !prev)}>
+            <span>미니게임</span>
+          </MiniGameTrigger>
+          <MiniDropdown $isClicked={isMiniOpen}>
+            <DropdownMenuItem
+              to={routes.randomClass}
+              onClick={(event) => {
+                event.stopPropagation();
+                setIsMiniOpen(false);
+              }}
+            >
+              랜덤 직업 뽑기
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              to={routes.slidingPuzzle}
+              onClick={(event) => {
+                event.stopPropagation();
+                setIsMiniOpen(false);
+              }}
+            >
+              슬라이딩 퍼즐
+            </DropdownMenuItem>
+          </MiniDropdown>
+        </MiniGameWrapper>
+
         <Items to={routes.expSimulator}>EXP 시뮬레이터</Items>
-        <Items to={routes.slidingPuzzle}>슬라이딩 퍼즐</Items>
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          썬데이 메이플
+          썬데이메이플
         </ItemsToHome>
       </ItemContainer>
 
@@ -85,6 +128,7 @@ const PcHeaderContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex: 1 1 0%;
   padding: 0 10px;
   width: 100%;
@@ -144,4 +188,34 @@ const HeaderSearchWrap = styled.div`
   flex: 1;
   min-width: 220px;
   max-width: 360px;
+`;
+
+const MiniGameWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+const MiniGameTrigger = styled.div`
+  ${itemStyles};
+  display: flex;
+  align-items: center;
+`;
+
+const MiniDropdown = styled(DropdownContainer)`
+  top: 45px;
+  left: 0;
+  right: auto;
+  width: 140px;
+  opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
+  visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
+  pointer-events: ${({ $isClicked }) => ($isClicked ? "auto" : "none")};
+  max-height: ${({ $isClicked }) => ($isClicked ? "300px" : "0px")};
+  overflow: hidden;
+  transition: opacity 0.2s ease, max-height 0.25s ease;
+`;
+
+const DropdownMenuItem = styled(DropdownLink)`
+  padding: 4px 0px;
+  font-size: 14px;
 `;

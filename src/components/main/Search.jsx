@@ -69,7 +69,7 @@ const InputContainer = styled.form`
       width: auto;
       min-width: 220px;
       justify-content: flex-start;
-      gap: 6px;
+      margin-right: 10px;
     `}
 `;
 
@@ -97,11 +97,11 @@ const InputWrap = styled.div`
     $variant === "header" &&
     css`
       margin: 0;
-      width: 80%;
+      width: 90%;
       max-width: 320px;
-      min-width: 220px;
+      min-width: 290px;
       height: 36px;
-      border-radius: 18px;
+      border-radius: 10px;
       border-width: 1px;
       background: rgba(255, 255, 255, 0.9);
       box-shadow: none;
