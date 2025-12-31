@@ -14,7 +14,9 @@ export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+
   const [isMiniOpen, setIsMiniOpen] = useState(false);
+  const [canHover, setCanHover] = useState(false);
   const miniRef = useRef(null);
 
   const routes = {
@@ -30,17 +32,58 @@ export const Header = () => {
     localStorage.getItem("sundayMaple") ||
     "https://maplestory.nexon.com/News/Event";
 
+  /** Hover 가능 환경 감지 — 단 1회만 등록 */
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (miniRef.current && !miniRef.current.contains(event.target)) {
+    const hoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+    const updateHover = () => setCanHover(hoverMedia.matches);
+    updateHover();
+
+    hoverMedia.addEventListener("change", updateHover);
+    return () => hoverMedia.removeEventListener("change", updateHover);
+  }, []);
+
+  /** 모바일일 때만 outside click detector */
+  useEffect(() => {
+    if (canHover) return;
+
+    const handleClickOutside = (e) => {
+      if (miniRef.current && !miniRef.current.contains(e.target)) {
         setIsMiniOpen(false);
       }
     };
+
     document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [canHover]);
+
+  /** ESC 키로 닫기 */
+  useEffect(() => {
+    const closeOnEsc = (e) => {
+      if (e.key === "Escape") setIsMiniOpen(false);
     };
+    document.addEventListener("keydown", closeOnEsc);
+    return () => document.removeEventListener("keydown", closeOnEsc);
   }, []);
+
+  /** 디바이스 hover 능력 바뀔 때 메뉴 닫기 */
+  useEffect(() => {
+    setIsMiniOpen(false);
+  }, [canHover]);
+
+  const handleMiniEnter = () => {
+    if (canHover) setIsMiniOpen(true);
+  };
+
+  const handleMiniLeave = () => {
+    if (canHover) setIsMiniOpen(false);
+  };
+
+  const handleMiniClick = (event) => {
+    if (canHover) return;
+    event.stopPropagation();
+    setIsMiniOpen((prev) => !prev);
+  };
 
   return (
     <PcHeaderContainer>
@@ -56,38 +99,33 @@ export const Header = () => {
           onClick={() => navigate(routes.home)}
         />
       </LogoWrap>
+
       <ItemContainer>
         <Items to={routes.home}>캐릭터 검색</Items>
         <Items to={routes.characterCapture}>캐릭터 캡처</Items>
         <Items to={routes.searchGuild}>길드 검색</Items>
 
-        <MiniGameWrapper ref={miniRef}>
-          <MiniGameTrigger onClick={() => setIsMiniOpen((prev) => !prev)}>
+        <MiniGameWrapper
+          ref={miniRef}
+          onMouseEnter={handleMiniEnter}
+          onMouseLeave={handleMiniLeave}
+        >
+          <MiniGameTrigger onClick={handleMiniClick}>
             <span>미니게임</span>
           </MiniGameTrigger>
+
           <MiniDropdown $isClicked={isMiniOpen}>
-            <DropdownMenuItem
-              to={routes.randomClass}
-              onClick={(event) => {
-                event.stopPropagation();
-                setIsMiniOpen(false);
-              }}
-            >
+            <DropdownMenuItem to={routes.randomClass}>
               랜덤 직업 뽑기
             </DropdownMenuItem>
-            <DropdownMenuItem
-              to={routes.slidingPuzzle}
-              onClick={(event) => {
-                event.stopPropagation();
-                setIsMiniOpen(false);
-              }}
-            >
+            <DropdownMenuItem to={routes.slidingPuzzle}>
               슬라이딩 퍼즐
             </DropdownMenuItem>
           </MiniDropdown>
         </MiniGameWrapper>
 
         <Items to={routes.expSimulator}>EXP 시뮬레이터</Items>
+
         <ItemsToHome
           href={sundayMapleUrl}
           target="_blank"
@@ -129,18 +167,15 @@ const PcHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex: 1 1 0%;
   padding: 0 10px;
   width: 100%;
   gap: 10px;
   max-height: 50px;
-  font-size: 1rem;
   background: rgba(38, 38, 38, 0.85);
 `;
 
 const LogoWrap = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
 `;
 
@@ -156,26 +191,26 @@ const HeaderLogoText = styled.img`
 
 const ItemContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  flex: 1 1 0%;
+  flex: 1;
   gap: 10px;
   margin-left: 40px;
+  font-size: 16px;
 
   @media screen and (max-width: 768px) {
     display: none;
   }
 
   @media screen and (max-width: 1024px) {
-    gap: 0px;
+    gap: 0;
   }
 `;
 
 const Items = styled(Link)`
-  ${itemStyles};
+  ${itemStyles}
 `;
 
 const ItemsToHome = styled.a`
-  ${itemStyles};
+  ${itemStyles}
 `;
 
 const ThemeToggleWrap = styled.div`
@@ -197,25 +232,22 @@ const MiniGameWrapper = styled.div`
 `;
 
 const MiniGameTrigger = styled.div`
-  ${itemStyles};
+  ${itemStyles}
   display: flex;
   align-items: center;
 `;
 
 const MiniDropdown = styled(DropdownContainer)`
-  top: 45px;
+  top: 40px;
   left: 0;
-  right: auto;
   width: 140px;
   opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
   visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
   pointer-events: ${({ $isClicked }) => ($isClicked ? "auto" : "none")};
-  max-height: ${({ $isClicked }) => ($isClicked ? "300px" : "0px")};
-  overflow: hidden;
-  transition: opacity 0.2s ease, max-height 0.25s ease;
+  transform: translateY(${({ $isClicked }) => ($isClicked ? "0" : "-5px")});
+  transition: opacity 0.2s ease, transform 0.2s ease;
 `;
 
 const DropdownMenuItem = styled(DropdownLink)`
-  padding: 4px 0px;
   font-size: 14px;
 `;
