@@ -28,6 +28,8 @@ export const User = () => {
       setLoading(true);
       setError(null);
       setActiveTab(1);
+      setResult(null);
+      setGuildLoading(true);
       await UserApi(
         characterName,
         setResult,
@@ -54,14 +56,7 @@ export const User = () => {
           content="캐릭터를 이미지로 저장하는 기능입니다."
         />
       </Helmet>
-      {loading ? (
-        <LoadingWrap>
-          <img
-            src={theme === "dark" ? loadingImg_dark : loadingImg_light}
-            alt="로딩 중..."
-          />
-        </LoadingWrap>
-      ) : error ? (
+      {error ? (
         <ErrorWrap>
           <Error
             error={error}
@@ -106,7 +101,7 @@ export const User = () => {
           </HeaderWrap>
 
           {/* 캐릭터 정보 */}
-          {activeTab === 1 && <Information result={result} />}
+          {activeTab === 1 && <Information result={result} loading={loading} />}
           {activeTab === 2 && <Equipment result={result} />}
           {activeTab === 3 && <Skill result={result} />}
           {activeTab === 4 && <Union result={result} />}
@@ -191,31 +186,6 @@ const Tab = styled.div`
 
   @media screen and (max-width: 576px) {
     font-size: 13px;
-  }
-`;
-
-const LoadingWrap = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  z-index: 999;
-
-  img {
-    width: 100px;
-  }
-
-  @media screen and (max-width: 1024px) {
-    img {
-      width: 160px;
-    }
-  }
-
-  @media screen and (max-width: 576px) {
-    img {
-      width: 130px;
-    }
   }
 `;
 
