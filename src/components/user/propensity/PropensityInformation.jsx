@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 
-export const PropensityInformation = ({ propensityData }) => {
+export const PropensityInformation = ({ propensityData, blur = false }) => {
   const [tooltipVisible, setTooltipVisible] = useState(true);
   const MAX_PROPENSITY = 100;
 
@@ -50,7 +50,9 @@ export const PropensityInformation = ({ propensityData }) => {
     <PropensityName style={{ flexDirection: "row" }}>
       <PropensityItemWrapper>
         <PropenLabel>{label}</PropenLabel>
-        <PropenLevel>Lv.{level}</PropenLevel>
+        <PropenLevel>
+          Lv.<RevealValue $blurred={blur}>{level}</RevealValue>
+        </PropenLevel>
       </PropensityItemWrapper>
     </PropensityName>
   );
@@ -86,7 +88,7 @@ export const PropensityInformation = ({ propensityData }) => {
           <PropensityItem label="매력" level={propensityData.charm_level} />
         </TextWrap>
       </PropensityTextWrap>
-      <ChartWrap>
+      <ChartWrap $blurred={blur}>
         <RadarChart
           cx={152}
           cy={115}
@@ -236,6 +238,8 @@ const ChartWrap = styled.div`
   margin-bottom: 20px;
   width: 320px;
   z-index: 99;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;
 const PropensityName = styled.div`
   font-size: 13px;
@@ -264,4 +268,9 @@ const PropenLabel = styled.span`
 const PropenLevel = styled.span`
   flex: 1;
   text-align: right;
+`;
+
+const RevealValue = styled.span`
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;

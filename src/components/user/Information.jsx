@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import styled from "styled-components";
 import { BasicInformation } from "./Information/BasicInformation";
 import { AbilityInformation } from "./Information/AbilityInformation";
@@ -7,13 +7,57 @@ import { StatInformation } from "./Information/StatInformation";
 import { PropensityInformation } from "./propensity/PropensityInformation";
 import spirit from "../../assets/logos/spirit.png";
 import { ExpHistory } from "./Information/ExpHistory";
+import dummyUserData from "./Information/dummyUserData";
 
-const Information = ({ result }) => {
+const Information = ({ result, loading }) => {
   const [rotation, setRotation] = useState(0);
   const [clickCount, setClickCount] = useState(0);
+  const basicReady = !!result?.getCombinedData?.getBasicInformation;
+  const statReady = !!result?.getCombinedData?.getCharacterStat;
+  const abilityReady = !!result?.getCombinedData?.getAbility;
+  const hyperReady = !!result?.getCombinedData?.getHyperStat;
+  const propensityReady = !!result?.getCombinedData?.getPropensity;
+  const expReady = !!result?.getExpHistory;
+  const basicInfo = {
+    getBasicInformation: basicReady
+      ? result.getCombinedData.getBasicInformation
+      : dummyUserData.getCombinedData.getBasicInformation,
+    getCharacterPopularity: basicReady
+      ? result.getCombinedData.getCharacterPopularity
+      : dummyUserData.getCombinedData.getCharacterPopularity,
+    getDojang: basicReady
+      ? result.getCombinedData.getDojang
+      : dummyUserData.getCombinedData.getDojang,
+    getUnion: basicReady
+      ? result.getCombinedData.getUnion
+      : dummyUserData.getCombinedData.getUnion,
+  };
+  const statInfo = statReady
+    ? result.getCombinedData.getCharacterStat
+    : dummyUserData.getCombinedData.getCharacterStat;
+  const abilityInfo = abilityReady
+    ? result.getCombinedData.getAbility
+    : dummyUserData.getCombinedData.getAbility;
+  const hyperStatInfo = hyperReady
+    ? result.getCombinedData.getHyperStat
+    : dummyUserData.getCombinedData.getHyperStat;
+  const propensityInfo = propensityReady
+    ? result.getCombinedData.getPropensity
+    : dummyUserData.getCombinedData.getPropensity;
+  const expHistory = expReady
+    ? result.getExpHistory
+    : dummyUserData.getExpHistory;
+
+  const showInfo =
+    loading ||
+    basicReady ||
+    statReady ||
+    abilityReady ||
+    hyperReady ||
+    propensityReady ||
+    expReady;
 
   const handleHeightChange = (height) => {
-    // height가 300 이하일 경우 이미지를 표시
     if (height <= 350) {
       document.getElementById("spiritImage").style.display = "block";
       document.getElementById("imgWrap").style.border =
@@ -42,58 +86,64 @@ const Information = ({ result }) => {
 
   return (
     <Container>
-      {result && result.getCombinedData.getBasicInformation && (
+      {showInfo && (
         <InfoWrap>
           <SynthesisWrap>
             <StatWrap>
               <BasicWrap>
-                <BasicInformation
-                  BasicInfo={{
-                    getBasicInformation:
-                      result.getCombinedData.getBasicInformation,
-                    getCharacterPopularity:
-                      result.getCombinedData.getCharacterPopularity,
-                    getDojang: result.getCombinedData.getDojang,
-                    getUnion: result.getCombinedData.getUnion,
-                  }}
-                ></BasicInformation>
-                <StatInformation
-                  statInfo={result.getCombinedData.getCharacterStat}
-                ></StatInformation>
+                <SectionSlot>
+                  <BasicInformation BasicInfo={basicInfo} blur={!basicReady} />
+                </SectionSlot>
+                <SectionSlot>
+                  <StatInformation statInfo={statInfo} blur={!statReady} />
+                </SectionSlot>
               </BasicWrap>
               <AbilWrap>
                 <AbilContainer>
-                  <AbilityInformation
-                    AbilityInfo={result.getCombinedData.getAbility}
-                  ></AbilityInformation>
-                  <HyperStatInformation
-                    HyperStatInfo={result.getCombinedData.getHyperStat}
-                    onHeightChange={handleHeightChange}
-                  ></HyperStatInformation>
-                  <ImgWrap id="imgWrap">
-                    <img
-                      id="spiritImage"
-                      src={spirit}
-                      alt="돌정령"
-                      onClick={toggleFlip}
-                      style={{
-                        transform: `rotate(${rotation}deg)`,
-                        transition: "transform 0.5s",
-                      }}
-                    />
-                    {clickCount === 22 && (
-                      <SpiritText id="spiritText">어지럽담...</SpiritText>
-                    )}
-                  </ImgWrap>
+                  <SectionSlot>
+                    <AbilityInformation
+                      AbilityInfo={abilityInfo}
+                      blur={!abilityReady}
+                    ></AbilityInformation>
+                  </SectionSlot>
+                  <SectionSlot>
+                    <HyperStatInformation
+                      HyperStatInfo={hyperStatInfo}
+                      onHeightChange={handleHeightChange}
+                      blur={!hyperReady}
+                    ></HyperStatInformation>
+                  </SectionSlot>
+                  <SectionSlot>
+                    <ImgWrap id="imgWrap">
+                      <img
+                        id="spiritImage"
+                        src={spirit}
+                        alt="돌정령"
+                        onClick={toggleFlip}
+                        style={{
+                          transform: `rotate(${rotation}deg)`,
+                          transition: "transform 0.5s",
+                        }}
+                      />
+                      {clickCount === 22 && (
+                        <SpiritText id="spiritText">어지럽담...</SpiritText>
+                      )}
+                    </ImgWrap>
+                  </SectionSlot>
                 </AbilContainer>
               </AbilWrap>
             </StatWrap>
           </SynthesisWrap>
           <ProWrap>
-            <PropensityInformation
-              propensityData={result.getCombinedData.getPropensity}
-            ></PropensityInformation>
-            <ExpHistory historyData={result.getExpHistory} />
+            <SectionSlot>
+              <PropensityInformation
+                propensityData={propensityInfo}
+                blur={!propensityReady}
+              ></PropensityInformation>
+            </SectionSlot>
+            <SectionSlot>
+              <ExpHistory historyData={expHistory} blur={!expReady} />
+            </SectionSlot>
           </ProWrap>
         </InfoWrap>
       )}
@@ -190,6 +240,12 @@ const SpiritText = styled.div`
   color: white;
   font-family: maple-light;
   border-radius: 5px;
+`;
+
+const SectionSlot = styled.div`
+  width: ${({ $width }) => $width || "100%"};
+  min-height: ${({ $height }) => $height || "0"};
+  height: ${({ $height }) => $height || "auto"};
 `;
 
 export default Information;
