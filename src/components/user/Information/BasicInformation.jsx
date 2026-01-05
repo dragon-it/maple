@@ -52,7 +52,7 @@ export const BasicInformation = ({ BasicInfo, blur = false }) => {
   const imageSrc = isTanjiro ? TanjiroImage : characterImage;
 
   const jobReady = hasValue(characterClass);
-  const unionReady = hasValue(unionLevel);
+  const unionReady = hasValue(unionLevel) || unionLevel === null;
   const dojangReady = hasValue(dojangFloor);
   const popularityReady = hasValue(popularity);
   const levelReady = hasValue(characterLevel);
