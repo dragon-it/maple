@@ -86,7 +86,6 @@ export const Guild = ({ result, isGuildDetail }) => {
 const Container = styled.div`
   width: 100%;
   position: relative;
-  padding: ${(props) => (props.isGuildDetail ? "0px" : "0px 10px 10px 10px")};
   color: rgb(220, 220, 220);
 
   img {
