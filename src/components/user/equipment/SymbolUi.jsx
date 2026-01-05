@@ -213,8 +213,8 @@ export const SymbolUi = ({ symbolData }) => {
       {arcane.length <= 0 && (
         <ConditionText>
           <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
-          <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.200] </span>
-          이후 아케인포스 오픈
+          <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.200] </span>또 하나의
+          힘, 아케인포스
         </ConditionText>
       )}
       <StatBox>
@@ -286,8 +286,8 @@ export const SymbolUi = ({ symbolData }) => {
       {authentic.length <= 0 && (
         <ConditionText>
           <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
-          <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.260] </span>
-          이후 어센틱포스 오픈
+          <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.260] </span>또 하나의
+          힘, 어센틱포스
         </ConditionText>
       )}
 
@@ -362,7 +362,7 @@ export const SymbolUi = ({ symbolData }) => {
         <ConditionText>
           <p style={{ fontSize: "13px" }}>{`<개방 조건>`}</p>
           <span style={{ color: "rgb(197, 236, 0)" }}>[Lv.290] </span>
-          [그란디스] 퀘스트 진행
+          [탈라하트] 새로운 움직임
         </ConditionText>
       )}
 
