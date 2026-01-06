@@ -138,13 +138,18 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [currentTab, setCurrentTab] = useState("장비");
 
-  // 모바일 환경인지 확인
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => setIsMobile(window.innerWidth <= 768);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const handleMouseLeave = () => {
-    const isWideScreen = window.innerWidth <= 768;
-
-    if (!isWideScreen) {
+    if (!isMobile) {
       setSelectedItem(null);
     }
   };
