@@ -14,6 +14,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const isUserPage = location.pathname.startsWith("/user");
 
   const [isMiniOpen, setIsMiniOpen] = useState(false);
   const [canHover, setCanHover] = useState(false);
@@ -137,8 +138,8 @@ export const Header = () => {
 
       <ThemeToggleWrap>
         {!isHomePage && (
-          <HeaderSearchWrap>
-            <Search variant="header" />
+          <HeaderSearchWrap $compact={isUserPage}>
+            <Search variant="header" compact={isUserPage} />
           </HeaderSearchWrap>
         )}
         <ThemeToggleButton />
@@ -194,7 +195,7 @@ const ItemContainer = styled.div`
   flex: 1;
   gap: 10px;
   margin-left: 40px;
-  font-size: 16px;
+  font-size: 0.9rem;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -215,6 +216,7 @@ const ItemsToHome = styled.a`
 
 const ThemeToggleWrap = styled.div`
   display: flex;
+  gap: 5px;
 `;
 
 const HeaderSearchWrap = styled.div`
@@ -223,6 +225,15 @@ const HeaderSearchWrap = styled.div`
   flex: 1;
   min-width: 220px;
   max-width: 360px;
+
+  ${({ $compact }) =>
+    $compact &&
+    css`
+      flex: 0 1 auto;
+      width: clamp(120px, 20vw, 230px);
+      min-width: 120px;
+      max-width: 230px;
+    `}
 `;
 
 const MiniGameWrapper = styled.div`

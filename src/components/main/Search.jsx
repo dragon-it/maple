@@ -1,13 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import serchIcon from "../../assets/icons/searchIcons/SearchIcon_small.svg";
 
-export const Search = ({ variant = "page" }) => {
+export const Search = ({ variant = "page", compact = false }) => {
   // 검색어 상태 관리
   const [searchValue, setSearchValue] = useState("");
+  const [hidePlaceholder, setHidePlaceholder] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const inputRef = useRef(null);
+  const shouldAutoFocus = variant === "page" && location.pathname === "/";
+  const basePlaceholder = "캐릭터 닉네임을 입력해주세요";
+  const placeholderText = hidePlaceholder ? "" : basePlaceholder;
+
+  useEffect(() => {
+    if (shouldAutoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [shouldAutoFocus]);
+
+  useEffect(() => {
+    if (!compact) {
+      setHidePlaceholder(false);
+      return;
+    }
+
+    const inputEl = inputRef.current;
+    if (!inputEl) return;
+
+    const update = () => {
+      const width = inputEl.offsetWidth;
+      setHidePlaceholder(width > 0 && width < 220);
+    };
+
+    update();
+    window.addEventListener("resize", update);
+
+    let observer;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(update);
+      observer.observe(inputEl);
+    }
+
+    return () => {
+      window.removeEventListener("resize", update);
+      observer?.disconnect();
+    };
+  }, [compact]);
 
   // 검색 함수
   const handleSearch = () => {
@@ -23,6 +63,9 @@ export const Search = ({ variant = "page" }) => {
       );
     } else {
       navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
+      if (location.pathname.startsWith("/user")) {
+        setSearchValue("");
+      }
     }
   };
 
@@ -39,14 +82,20 @@ export const Search = ({ variant = "page" }) => {
   };
 
   return (
-    <InputContainer onSubmit={handleSubmit} $variant={variant}>
-      <InputWrap $variant={variant}>
+    <InputContainer
+      onSubmit={handleSubmit}
+      $variant={variant}
+      $compact={compact}
+    >
+      <InputWrap $variant={variant} $compact={compact}>
         <StyledInput
+          ref={inputRef}
           type="text"
-          placeholder="캐릭터 닉네임을 입력해주세요"
+          placeholder={placeholderText}
           value={searchValue}
           onChange={handleInputChange}
           maxLength={15}
+          autoFocus={shouldAutoFocus}
         />
         <StyledButton type="submit" $variant={variant}>
           <img src={serchIcon} alt="검색" width={18} height={18} />
@@ -63,13 +112,19 @@ const InputContainer = styled.form`
   width: 100%;
   gap: 2px;
 
-  ${({ $variant }) =>
+  ${({ $variant, $compact }) =>
     $variant === "header" &&
     css`
-      width: auto;
+      width: 100%;
       min-width: 220px;
       justify-content: flex-start;
       margin-right: 10px;
+
+      ${$compact &&
+      css`
+        min-width: 0;
+        margin-right: 0;
+      `}
     `}
 `;
 
@@ -78,7 +133,7 @@ const InputWrap = styled.div`
   align-items: center;
   margin: 0 auto;
   max-width: 688px;
-  width: 90%;
+  width: 87%;
   border-radius: 24px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.1);
@@ -93,11 +148,11 @@ const InputWrap = styled.div`
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   }
 
-  ${({ $variant }) =>
+  ${({ $variant, $compact }) =>
     $variant === "header" &&
     css`
       margin: 0;
-      width: 90%;
+      width: 100%;
       max-width: 320px;
       min-width: 290px;
       height: 36px;
@@ -105,6 +160,12 @@ const InputWrap = styled.div`
       border-width: 1px;
       background: rgba(255, 255, 255, 0.9);
       box-shadow: none;
+
+      ${$compact &&
+      css`
+        min-width: 0;
+        max-width: 240px;
+      `}
     `}
 `;
 
@@ -123,7 +184,7 @@ const StyledInput = styled.input`
     color: rgb(0, 0, 0);
   }
 
-  ${({ $variant }) =>
+  ${({ $variant, $compact }) =>
     $variant === "header" &&
     css`
       font-size: 13px;
@@ -144,7 +205,7 @@ const StyledButton = styled.button`
   background: none;
   cursor: pointer;
 
-  ${({ $variant }) =>
+  ${({ $variant, $compact }) =>
     $variant === "header" &&
     css`
       right: 6px;
