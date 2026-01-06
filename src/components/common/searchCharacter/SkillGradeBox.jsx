@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ContainerBox } from "./ContainerBox";
 import styled from "styled-components";
 import { SkillDetail } from "../../user/skill/SkillDetail";
@@ -17,8 +17,15 @@ export const SkillGradeBox = ({
   };
   const header = SKILL_HEADER_MAP[grade] ?? `${grade}차 스킬`;
 
-  // 모바일 환경인지 확인
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => setIsMobile(window.innerWidth <= 768);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   // 디테일 클릭시 창 닫기
   const handleCloseClick = () => {
