@@ -37,13 +37,13 @@ export const InfoPanel = () => {
     return "d";
   };
 
-  // 1주일 이내인지 체크
+  // 2주일 이내인지 체크
   const isWithinAWeek = (dateStr) => {
     if (!dateStr) return false;
     const now = new Date();
     const date = new Date(dateStr);
     const diff = now - date;
-    return diff <= 7 * 24 * 60 * 60 * 1000 && diff >= 0;
+    return diff <= 14 * 24 * 60 * 60 * 1000 && diff >= 0;
   };
 
   // noticeData 구조 분해
