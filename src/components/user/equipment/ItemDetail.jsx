@@ -34,7 +34,7 @@ export const ItemDetail = ({ item, onClose }) => {
       const detailRect = detailRef.current.getBoundingClientRect();
       const detailHeight = detailRect.height;
       const detailWidth = detailRect.width;
-      const offset = 10;
+      const offset = 3;
 
       let top = mousePosition.y + offset;
       let left = mousePosition.x + offset;
