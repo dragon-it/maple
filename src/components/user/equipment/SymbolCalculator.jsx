@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import symbolCost from "./SymbolData.js";
 import styled from "styled-components";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox.jsx";
@@ -15,9 +15,11 @@ export const SymbolCalculator = ({ symbolData }) => {
   const [excludeGrandAuthentic, setExcludeGrandAuthentic] = useState(false);
   const [selectedArcane, setSelectedArcane] = useState({});
   const [selectedAuthentic, setSelectedAuthentic] = useState({});
-  const symbols = symbolData.symbol || [];
-  const group1 = symbols.slice(0, 6); // 아케인 심볼
-  const group2 = symbols.slice(6); // 어센틱 심볼
+  const symbols = useMemo(() => {
+    return symbolData?.symbol || [];
+  }, [symbolData?.symbol]);
+  const group1 = useMemo(() => symbols.slice(0, 6), [symbols]); // 아케인 심볼
+  const group2 = useMemo(() => symbols.slice(6), [symbols]); // 어센틱 심볼
 
   const {
     arcaneSymbolsCost,
@@ -41,7 +43,7 @@ export const SymbolCalculator = ({ symbolData }) => {
     });
     setSelectedArcane(nextArcane);
     setSelectedAuthentic(nextAuthentic);
-  }, [symbols]);
+  }, [group1, group2]);
 
   const isArcaneSelected = (name) =>
     selectedArcane[name] === undefined ? true : selectedArcane[name];
