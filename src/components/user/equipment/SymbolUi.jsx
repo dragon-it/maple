@@ -71,9 +71,9 @@ export const SymbolUi = ({ symbolData }) => {
   const list = symbolData?.symbol || [];
   const arcane = list.filter((s) => s.symbol_name.includes("아케인"));
   const authentic = list.filter(
-    (s) => s.symbol_name.includes("어센틱") && !s.symbol_name.includes("그란")
+    (s) => s.symbol_name.includes("어센틱") && !s.symbol_name.includes("그랜드")
   );
-  const grand = list.filter((s) => s.symbol_name.includes("그란"));
+  const grand = list.filter((s) => s.symbol_name.includes("그랜드"));
 
   const getTotalForce = (symbols) =>
     symbols.reduce((acc, item) => acc + parseInt(item.symbol_force, 10), 0);
@@ -564,6 +564,10 @@ const Wrap = styled.div`
   align-items: center;
   justify-content: center;
   color: ${colors.main.white0};
+
+  @media screen and (max-width: 768px) {
+    overflow: hidden;
+  }
 `;
 
 const SliderContainer = styled.div`
