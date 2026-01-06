@@ -31,7 +31,7 @@ export const Search = ({ variant = "page", compact = false }) => {
 
     const update = () => {
       const width = inputEl.offsetWidth;
-      setHidePlaceholder(width > 0 && width < 220);
+      setHidePlaceholder(width > 0 && width < 240);
     };
 
     update();

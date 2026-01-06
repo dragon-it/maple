@@ -33,7 +33,6 @@ export const User = () => {
   const characterNameText = basicInfo.character_name || characterName || "-";
   const characterLevel = basicInfo.character_level;
   const characterImage = basicInfo.character_image;
-  const combatLabel = combatStat?.stat_name || "전투력";
   const powerText =
     combatValue === null || combatValue === undefined
       ? "-"
@@ -140,7 +139,6 @@ export const User = () => {
               </SummaryText>
               <SummaryMetrics>
                 <SummaryPower>
-                  <PowerLabel>{combatLabel}</PowerLabel>
                   <PowerValue>{powerText}</PowerValue>
                 </SummaryPower>
                 <SummaryWorld>
@@ -309,7 +307,7 @@ const SubHeader = styled.div`
 const SummaryRow = styled.div`
   display: ${({ $collapsed }) => ($collapsed ? "none" : "flex")};
   align-items: center;
-  gap: 10px;
+  gap: 7px;
 
   @media screen and (max-width: 576px) {
     justify-content: center;
@@ -370,7 +368,7 @@ const AvatarFallback = styled.span`
 const SummaryText = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 3px;
   color: #eef6ff;
 `;
 
@@ -394,11 +392,6 @@ const SummaryMetrics = styled.div`
     align-items: flex-end;
     gap: 4px;
   }
-
-  @media screen and (max-width: 576px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `;
 
 const SummaryPower = styled.div`
@@ -409,11 +402,6 @@ const SummaryPower = styled.div`
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
-`;
-
-const PowerLabel = styled.span`
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.65);
 `;
 
 const PowerValue = styled.span`
