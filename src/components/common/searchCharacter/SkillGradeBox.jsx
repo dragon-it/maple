@@ -103,7 +103,7 @@ const SkillHeader = styled.h2`
 
 const SkillGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
   gap: 2px;
   width: 100%;
 `;

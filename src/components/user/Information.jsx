@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BasicInformation } from "./Information/BasicInformation";
 import { AbilityInformation } from "./Information/AbilityInformation";

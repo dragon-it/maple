@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Information from "../components/user/Information";
 import { Equipment } from "../components/user/Equipment";

@@ -1,4 +1,4 @@
-﻿import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import arcBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/arc_EquipBackgrnd.png";
 import autBack from "../../../assets/pages/user/equipment/equipmentUi/symbolUi/aut_EquipBackgrnd.png";
