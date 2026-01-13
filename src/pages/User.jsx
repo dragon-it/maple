@@ -291,7 +291,7 @@ const UserLayout = styled.div`
 const SubHeader = styled.div`
   position: sticky;
   top: 0;
-  z-index: 120;
+  z-index: 900;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -556,7 +556,6 @@ const Container = styled.div`
   height: fit-content;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
-  z-index: 99;
   margin: 10px 0px;
   font-family: "맑은 고딕", var(--global-font-stack);
 
@@ -589,7 +588,6 @@ const Container = styled.div`
 
   > * {
     position: relative;
-    z-index: 1;
   }
 `;
 
@@ -598,7 +596,7 @@ const GuildLoading = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 200;
   margin-bottom: 10px;
 
   img {
