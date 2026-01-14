@@ -28,6 +28,7 @@ const ClassMapping = {
     "카이저",
     "아델",
     "제로",
+    "렌",
   ],
   mageClass: [
     "아크메이지(불,독)",

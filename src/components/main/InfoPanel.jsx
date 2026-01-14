@@ -33,16 +33,17 @@ export const InfoPanel = () => {
   const getDdayType = (dDayText) => {
     if (dDayText === "오늘까지") return "today";
     if (dDayText === "종료") return "end";
+    if (/^D-[1-7]$/.test(dDayText)) return "week";
     return "d";
   };
 
-  // 1주일 이내인지 체크
+  // 2주일 이내인지 체크
   const isWithinAWeek = (dateStr) => {
     if (!dateStr) return false;
     const now = new Date();
     const date = new Date(dateStr);
     const diff = now - date;
-    return diff <= 7 * 24 * 60 * 60 * 1000 && diff >= 0;
+    return diff <= 14 * 24 * 60 * 60 * 1000 && diff >= 0;
   };
 
   // noticeData 구조 분해
@@ -60,7 +61,7 @@ export const InfoPanel = () => {
   // 날짜 내림차순 정렬(최신순)
   mergedNotice.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  // 최대 5개만
+  // 최대 10개만
   const displayNotice = mergedNotice.slice(0, 10);
 
   // 날짜 포맷팅 함수
@@ -195,6 +196,7 @@ const NoticeWrap = styled.div`
   width: 100%;
   height: fit-content;
   border-radius: 5px;
+  backdrop-filter: blur(7px);
 
   @media screen and (max-width: 768px) {
     min-width: 0px;
@@ -208,6 +210,7 @@ const Header = styled.h2`
   font-size: 14px;
   padding: 3px;
   background-color: ${({ theme }) => theme.infoPanelColor.headerBackground};
+  border-bottom: 1px solid ${colors.greyScale.grey3Alpha50};
 `;
 
 const List = styled.ul`
@@ -237,16 +240,15 @@ const ErrorText = styled.span`
 
 const Link = styled.a`
   text-decoration: none;
-  white-space: normal;
   color: inherit;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  flex: 1 1 auto;
+
   &:hover {
     text-decoration: underline;
-  }
-
-  @media screen and (max-width: 768px) {
-    overflow: visible;
   }
 `;
 
@@ -257,7 +259,13 @@ const DdayBadge = styled.span`
   font-weight: bold;
   color: #fff;
   background: ${({ $type }) =>
-    $type === "today" ? "#ff3300" : $type === "end" ? "#7a7a7a" : "#1976d2"};
+    $type === "today"
+      ? "#ff3300"
+      : $type === "end"
+      ? "#7a7a7a"
+      : $type === "week"
+      ? "#d28019"
+      : "#1976d2"};
   border-radius: 12px;
   padding: 1px 5px;
   margin-right: 8px;

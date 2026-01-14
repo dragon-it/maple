@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-export const AbilityInformation = ({ AbilityInfo }) => {
+export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
 
   const handlePresetChange = (presetNumber) => {
@@ -46,7 +46,10 @@ export const AbilityInformation = ({ AbilityInfo }) => {
       <PresetWrap>
         <AbilityHeader>ABILITY</AbilityHeader>
         <AbilityGradeHeader>
-          어빌리티 등급 : {currentPreset.ability_preset_grade}
+          어빌리티 등급 :{" "}
+          <RevealValue $blurred={blur}>
+            {currentPreset.ability_preset_grade}
+          </RevealValue>
         </AbilityGradeHeader>
         <AbilityDetail>
           {backgroundColors.map((color, index) => (
@@ -57,7 +60,9 @@ export const AbilityInformation = ({ AbilityInfo }) => {
                 border: "1px solid rgba(0, 0, 0, 0.1)",
               }}
             >
-              {currentPreset.ability_info[index].ability_value}
+              <RevealValue $blurred={blur}>
+                {currentPreset.ability_info[index].ability_value}
+              </RevealValue>
             </p>
           ))}
         </AbilityDetail>
@@ -75,7 +80,9 @@ export const AbilityInformation = ({ AbilityInfo }) => {
             ))}
           </ButtonWrap>
           <RemainFame>
-            <span>명성치 {formattedRemainFame}</span>
+            <span>
+              명성치 <RevealValue $blurred={blur}>{formattedRemainFame}</RevealValue>
+            </span>
           </RemainFame>
         </ButtonContainer>
       </PresetWrap>
@@ -173,6 +180,11 @@ const RemainFame = styled.span`
   border-right: 1px solid rgb(62, 73, 81);
   box-shadow: 0px 1px 0px rgb(133, 145, 145);
   color: white;
+`;
+
+const RevealValue = styled.span`
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;
 
 const ButtonWrap = styled.div`

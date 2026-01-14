@@ -8,11 +8,70 @@ import TanjiroImage from "../../../assets/npc/tanjiro.png";
 import WorldIcons from "../../common/worldIcon/WorldIcons";
 import colors from "../../common/color/colors";
 
-export const BasicInformation = ({ BasicInfo }) => {
+const hasValue = (value) =>
+  value !== undefined && value !== null && value !== "";
+
+const useReveal = (ready) => {
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    if (ready) {
+      const frame = requestAnimationFrame(() => setRevealed(true));
+      return () => cancelAnimationFrame(frame);
+    }
+    setRevealed(false);
+  }, [ready]);
+
+  return revealed;
+};
+
+export const BasicInformation = ({ BasicInfo, blur = false }) => {
   const { theme } = useTheme();
 
   const [backgroundImage, setBackgroundImage] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
+  const isBlurred = blur;
+  const basicInformation = BasicInfo?.getBasicInformation || {};
+  const unionInfo = BasicInfo?.getUnion || {};
+  const dojangInfo = BasicInfo?.getDojang || {};
+  const popularityInfo = BasicInfo?.getCharacterPopularity || {};
+
+  const characterName = basicInformation.character_name;
+  const characterClass = basicInformation.character_class;
+  const characterLevel = basicInformation.character_level;
+  const characterImage = basicInformation.character_image;
+  const expRate = basicInformation.character_exp_rate;
+  const worldName = basicInformation.world_name;
+  const guildName = basicInformation.character_guild_name;
+
+  const unionLevel = unionInfo.union_level;
+  const dojangFloor = dojangInfo.dojang_best_floor;
+  const popularity = popularityInfo.popularity;
+
+  const isTanjiro = characterClass === "카마도 탄지로";
+  const imageSrc = isTanjiro ? TanjiroImage : characterImage;
+
+  const jobReady = hasValue(characterClass);
+  const unionReady = hasValue(unionLevel) || unionLevel === null;
+  const dojangReady = hasValue(dojangFloor);
+  const popularityReady = hasValue(popularity);
+  const levelReady = hasValue(characterLevel);
+  const imageReady = hasValue(characterImage) || isTanjiro;
+  const nameReady = hasValue(characterName);
+  const expReady = hasValue(expRate);
+  const worldReady = hasValue(worldName);
+  const guildReady = hasValue(guildName);
+
+  const jobRevealed = useReveal(jobReady && !isBlurred);
+  const unionRevealed = useReveal(unionReady && !isBlurred);
+  const dojangRevealed = useReveal(dojangReady && !isBlurred);
+  const popularityRevealed = useReveal(popularityReady && !isBlurred);
+  const levelRevealed = useReveal(levelReady && !isBlurred);
+  const imageRevealed = useReveal(imageReady && !isBlurred);
+  const nameRevealed = useReveal(nameReady && !isBlurred);
+  const expRevealed = useReveal(expReady && !isBlurred);
+  const worldRevealed = useReveal(worldReady && !isBlurred);
+  const guildRevealed = useReveal(guildReady && !isBlurred);
 
   useEffect(() => {
     if (BasicInfoBackground[theme]) {
@@ -23,21 +82,26 @@ export const BasicInformation = ({ BasicInfo }) => {
   }, [theme]);
 
   useEffect(() => {
+    if (isBlurred || !characterName) {
+      setIsFavorite(false);
+      return;
+    }
     const favoriteCharacters = JSON.parse(
       localStorage.getItem("favoriteCharacters") || "[]"
     );
 
-    const characterName = BasicInfo.getBasicInformation.character_name;
     if (favoriteCharacters.includes(characterName)) {
       setIsFavorite(true);
     } else {
       setIsFavorite(false);
     }
-  }, [BasicInfo.getBasicInformation.character_name]);
+  }, [characterName, isBlurred]);
 
   const handleFavoriteClick = (event) => {
     event.stopPropagation();
-    const characterName = BasicInfo.getBasicInformation.character_name;
+    if (isBlurred || !characterName) {
+      return;
+    }
     const favoriteCharacters = JSON.parse(
       localStorage.getItem("favoriteCharacters") || "[]"
     );
@@ -70,8 +134,7 @@ export const BasicInformation = ({ BasicInfo }) => {
     }
   };
 
-  const worldName = BasicInfo.getBasicInformation.world_name;
-  const worldIcon = WorldIcons[worldName];
+  const worldIcon = worldReady ? WorldIcons[worldName] : null;
 
   return (
     <Container>
@@ -86,40 +149,54 @@ export const BasicInformation = ({ BasicInfo }) => {
         onClick={handleImageClick}
       >
         <JobGroup>
-          <Job>{BasicInfo.getBasicInformation.character_class}</Job>
+          <Job>
+            <RevealText $revealed={jobRevealed}>
+              {characterClass ?? "-"}
+            </RevealText>
+          </Job>
           <ItemWrap>
             <Contents>
               <Title>유니온</Title>
-              <Value>{BasicInfo.getUnion.union_level}</Value>
+              <Value>
+                <RevealText $revealed={unionRevealed}>
+                  {unionLevel ?? "-"}
+                </RevealText>
+              </Value>
             </Contents>
             <Contents>
               <Title>무릉도장</Title>
-              <Value>{BasicInfo.getDojang.dojang_best_floor}층</Value>
+              <Value>
+                <RevealText $revealed={dojangRevealed}>
+                  {dojangFloor ?? "0"}층
+                </RevealText>
+              </Value>
             </Contents>
             <Contents>
               <Title>인기도</Title>
-              <Value>{BasicInfo.getCharacterPopularity.popularity}</Value>
+              <Value>
+                <RevealText $revealed={popularityRevealed}>
+                  {popularity ?? "0"}
+                </RevealText>
+              </Value>
             </Contents>
           </ItemWrap>
         </JobGroup>
         <CharacterInfoGroup>
-          <Level>Lv. {BasicInfo.getBasicInformation.character_level}</Level>
-          <CharacterImg>
-            <img
-              src={
-                BasicInfo.getBasicInformation.character_class ===
-                "카마도 탄지로"
-                  ? TanjiroImage
-                  : BasicInfo.getBasicInformation.character_image
-              }
-              alt="character_image"
-            />
+          <Level>
+            <RevealText $revealed={levelRevealed}>
+              Lv. {characterLevel ?? "-"}
+            </RevealText>
+          </Level>
+          <CharacterImg $revealed={imageRevealed}>
+            <img src={imageSrc} alt="character_image" />
           </CharacterImg>
           <CharacterName>
-            {BasicInfo.getBasicInformation.character_name}
+            <RevealText $revealed={nameRevealed}>
+              {characterName ?? "-"}
+            </RevealText>
           </CharacterName>
           <Experience>
-            경험치 {BasicInfo.getBasicInformation.character_exp_rate}%
+            <RevealText $revealed={expRevealed}>{expRate ?? "0"}%</RevealText>
           </Experience>
         </CharacterInfoGroup>
         <GuildWorldGroup>
@@ -127,28 +204,32 @@ export const BasicInformation = ({ BasicInfo }) => {
             <Contents>
               <Title>월드</Title>
               <Value>
-                {BasicInfo.getBasicInformation.world_name}
-                {worldIcon && (
-                  <WorldIconImg src={worldIcon} alt={`${worldName} 아이콘`} />
-                )}
+                <RevealText $revealed={worldRevealed}>
+                  {worldName ?? "-"}
+                  {worldIcon && (
+                    <WorldIconImg src={worldIcon} alt={`${worldName} 아이콘`} />
+                  )}
+                </RevealText>
               </Value>
             </Contents>
             <Contents>
               <Title>길드</Title>
               <Value>
-                {BasicInfo.getBasicInformation.character_guild_name
-                  ? BasicInfo.getBasicInformation.character_guild_name
-                  : "-"}
+                <RevealText $revealed={guildRevealed}>
+                  {guildName ?? "-"}
+                </RevealText>
               </Value>
             </Contents>
           </ItemWrap>
         </GuildWorldGroup>
-        <FavoriteIcon onClick={handleFavoriteClick}>
-          <img
-            src={isFavorite ? favorite_true : favorite_false}
-            alt="Favorite Icon"
-          />
-        </FavoriteIcon>
+        {nameReady && !isBlurred && (
+          <FavoriteIcon onClick={handleFavoriteClick}>
+            <img
+              src={isFavorite ? favorite_true : favorite_false}
+              alt="Favorite Icon"
+            />
+          </FavoriteIcon>
+        )}
       </CharacterBody>
     </Container>
   );
@@ -193,7 +274,6 @@ const CharacterHeader = styled.h2`
 const UpdateTime = styled.div`
   display: flex;
   align-items: center;
-  font-family: maple-light;
 `;
 
 const CharacterBody = styled.div`
@@ -203,6 +283,7 @@ const CharacterBody = styled.div`
   flex-direction: row;
   border: 1px solid rgb(36, 36, 36);
   border-radius: 5px;
+  text-shadow: ${colors.commonInfo.textShadow};
   background-size: cover;
   cursor: pointer;
 `;
@@ -245,12 +326,14 @@ const GuildWorldGroup = styled.div`
 `;
 
 const Level = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  background-color: rgba(202, 204, 206, 0.9);
+  background-color: rgb(149, 157, 166);
   padding: 3px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px;
-  text-shadow: ${colors.commonInfo.textShadow};
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   border-right: 1px solid rgba(0, 0, 0, 0.3);
   border-left: 1px solid rgba(0, 0, 0, 0.3);
@@ -267,6 +350,9 @@ const CharacterImg = styled.div`
   height: 96px;
   margin: 2px auto;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   img {
     width: 300px;
@@ -277,6 +363,8 @@ const CharacterImg = styled.div`
     transform: translate(-50%, -53%) scaleX(-1);
     image-rendering: pixelated;
     object-fit: cover;
+    filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(10px)")};
+    transition: filter 0.45s ease;
   }
 `;
 
@@ -288,7 +376,6 @@ const CharacterName = styled.div`
   border-radius: 7px;
   background-color: rgb(60, 194, 216);
   border: 1px solid rgba(0, 0, 0, 0.3);
-  text-shadow: ${colors.commonInfo.textShadow};
   margin-bottom: 1px;
 `;
 
@@ -297,60 +384,82 @@ const Experience = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgb(170, 204, 0);
-  text-shadow: ${colors.commonInfo.textShadow};
-  font-size: 11px;
+  font-size: 12px;
   padding: 1px;
   border-radius: 7px;
   border: 1px solid rgba(0, 0, 0, 0.3);
 `;
 
 const Job = styled.div`
-  background-color: rgba(202, 204, 206, 0.8);
-  border-radius: 7px;
+  background-color: rgb(149, 157, 166);
+  border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.3);
-  width: 110px;
+  width: 130px;
   padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+  @media screen and (max-width: 1024px) {
+    width: 120px;
+    padding: 5px 8px;
+  }
 
   @media screen and (max-width: 576px) {
     width: 90px;
+    padding: 3px 6px;
   }
 `;
 
 const Contents = styled.div`
-  background-color: rgba(202, 204, 206, 0.8);
-  width: 110px;
-  border-radius: 7px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  padding: 5px;
+  position: relative;
+  width: 130px;
+  border-radius: 20px;
+  padding: 6px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
+  image-rendering: pixelated;
+
+  background: rgba(107, 107, 107, 0.3);
+  border: 1px solid rgba(59, 59, 59, 0.3);
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: white;
+  font-weight: 500;
+
+  @media screen and (max-width: 1024px) {
+    width: 120px;
+    padding: 5px 8px;
+  }
 
   @media screen and (max-width: 576px) {
     width: 90px;
-  }
-
-  @media screen and (max-width: 200px) {
-    width: 70px;
-    padding: 3px;
-  }
-`;
-
-const Value = styled.div`
-  display: flex;
-  color: black;
-
-  img {
-    image-rendering: pixelated;
+    padding: 3px 6px;
   }
 `;
 
 const Title = styled.div`
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+`;
+
+const Value = styled.div`
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+`;
+
+const RevealText = styled.span`
+  display: inline-flex;
+  align-items: center;
+  filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(12px)")};
+  opacity: ${({ $revealed }) => ($revealed ? 1 : 0.6)};
+  transition: filter 0.45s ease, opacity 0.45s ease;
 `;
 
 const ItemWrap = styled.div`

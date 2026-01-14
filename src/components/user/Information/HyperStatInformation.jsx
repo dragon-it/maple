@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
+export const HyperStatInformation = ({
+  HyperStatInfo,
+  onHeightChange,
+  blur = false,
+}) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
   const [showAllStat, setShowAllStat] = useState(true);
   const containerRef = useRef(null); // 컨테이너의 참조를 저장하기 위한 ref
@@ -38,10 +42,14 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
               {filteredStats.map((stat, index) => (
                 <StatInfo key={index}>
                   <StatContainer>
-                    <span>{stat.stat_type}</span>
+                    <RevealValue $blurred={blur}>
+                      {stat.stat_type}
+                    </RevealValue>
                     <Level>
                       <span>Lv.</span>
-                      <span>{stat.stat_level}</span>
+                      <RevealValue $blurred={blur}>
+                        {stat.stat_level}
+                      </RevealValue>
                     </Level>
                   </StatContainer>
                 </StatInfo>
@@ -52,10 +60,14 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
               {filteredStats.map((stat, index) => (
                 <StatInfo key={index}>
                   <StatContainer>
-                    <span>{stat.stat_increase}</span>
+                    <RevealValue $blurred={blur}>
+                      {stat.stat_increase}
+                    </RevealValue>
                     <Level>
                       <span>Lv.</span>
-                      <span>{stat.stat_level}</span>
+                      <RevealValue $blurred={blur}>
+                        {stat.stat_level}
+                      </RevealValue>
                     </Level>
                   </StatContainer>
                 </StatInfo>
@@ -78,7 +90,10 @@ export const HyperStatInformation = ({ HyperStatInfo, onHeightChange }) => {
           </PresetWrap>
           <RemainPoint>
             <span>
-              POINT {HyperStatInfo[`${currentPresetKey}_remain_point`]}
+              POINT{" "}
+              <RevealValue $blurred={blur}>
+                {HyperStatInfo[`${currentPresetKey}_remain_point`]}
+              </RevealValue>
             </span>
           </RemainPoint>
         </ButtonContainer>
@@ -225,6 +240,11 @@ const RemainPoint = styled.span`
   border-right: 1px solid rgb(62, 73, 81);
   box-shadow: 0px 1px 0px rgb(133, 145, 145);
   color: white;
+`;
+
+const RevealValue = styled.span`
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;
 
 export default HyperStatInformation;

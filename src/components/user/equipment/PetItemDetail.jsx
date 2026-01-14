@@ -53,6 +53,21 @@ export const PetItemDetail = ({ item, onClose }) => {
     return null;
   }
 
+  const displayName = (() => {
+    if (item?.nickname && item?.name) {
+      return item.nickname === item.name
+        ? item.name
+        : `${item.nickname}(${item.name})`;
+    }
+    return (
+      item?.name ??
+      item?.nickname ??
+      item?.autoSkillName ??
+      item?.equipment?.item_name ??
+      "-"
+    );
+  })();
+
   // 날짜 함수
   const formatExpire = (expireString) => {
     const options = {
@@ -85,11 +100,7 @@ export const PetItemDetail = ({ item, onClose }) => {
     >
       <ItemNameWrap>
         <ItemName>
-          {item?.nickname && item?.name
-            ? `${item?.nickname}(${item?.name})`
-            : item?.name
-            ? item?.name
-            : item?.autoSkillName || item?.equipment?.item_name}
+          {displayName}
           {item?.equipment?.scroll_upgrade &&
             ` (+${item?.equipment?.scroll_upgrade})`}
         </ItemName>

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import FooterText from "./FooterText";
+import { FooterText } from "./FooterText";
+
 export const Footer = () => {
   useEffect(() => {
     let initialized = false;
@@ -47,8 +48,6 @@ export const Footer = () => {
     } else {
       window.addEventListener("load", loadAds);
     }
-
-    // 해상도 변경 시 광고 다시 로드
     window.addEventListener("resize", reloadAds);
 
     return () => {
@@ -95,11 +94,12 @@ const Adsense = styled.div`
 const FooterTextDiv = styled.div`
   width: 100%;
   padding: 3px 0;
+  margin-bottom: var(--footer-safe-area, 0px);
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: maple-light;
   background: ${({ theme }) => theme.footerBgColor};
+  color: ${({ theme }) => theme.footerTextColor};
   text-decoration: none;
 `;

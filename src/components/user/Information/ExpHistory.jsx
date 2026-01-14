@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import styled from "styled-components";
 
-export const ExpHistory = ({ historyData }) => {
+export const ExpHistory = ({ historyData, blur = false }) => {
   const [isFullData, setIsFullData] = useState(window.innerWidth >= 1024);
 
   // 화면 크기 변경 이벤트 핸들러
@@ -39,7 +39,7 @@ export const ExpHistory = ({ historyData }) => {
   return (
     <Container>
       <ExpHistoryHeader>EXP HISTORY</ExpHistoryHeader>
-      <ChartWrap>
+      <ChartWrap $blurred={blur}>
         <BarChart
           width={350}
           height={200}
@@ -103,4 +103,6 @@ const ChartWrap = styled.div`
   width: 100%;
   background-color: rgb(103, 113, 125);
   border-radius: 5px;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;

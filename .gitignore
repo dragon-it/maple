@@ -43,3 +43,6 @@ deploy.sh
 
 # 구글 애드센스
 ads.txt
+
+# 서버 설정 파일
+proxyServer.js

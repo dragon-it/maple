@@ -74,11 +74,8 @@ const FavoriteWrap = styled.div`
 const FavoriteHeader = styled.span`
   display: flex;
   justify-content: center;
-  font-size: 18px;
-
-  @media screen and (max-width: 1024px) {
-    font-size: 14px;
-  }
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 `;
 
 const CharacterNameListItem = styled.div`

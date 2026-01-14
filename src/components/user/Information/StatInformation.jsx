@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-export const StatInformation = ({ statInfo }) => {
+export const StatInformation = ({ statInfo, blur = false }) => {
   const formatNumber = (value) => {
     if (value === null || value === undefined) {
       return <span>데이터 없음</span>;
@@ -60,35 +60,51 @@ export const StatInformation = ({ statInfo }) => {
               ? statInfo.final_stat[42].stat_name
               : "데이터 없음"}
           </CombatpowerHeader>
-          <p>{formatNumber(getStatValue(42))}</p>
+          <p>
+            <RevealValue $blurred={blur}>
+              {formatNumber(getStatValue(42))}
+            </RevealValue>
+          </p>
         </CombatpowerWrap>
         <StatWrap>
           <StatLeftWrap>
             <div>
               <StatHeader>{getStatName(20)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(20))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(20))}
+              </StatValue>
             </div>
             <div>
               <StatHeader>{getStatName(16)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(16))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(16))}
+              </StatValue>
             </div>
             <div>
               <StatHeader>{getStatName(18)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(18))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(18))}
+              </StatValue>
             </div>
           </StatLeftWrap>
           <StatRightWrap>
             <div>
               <StatHeader>{getStatName(21)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(21))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(21))}
+              </StatValue>
             </div>
             <div>
               <StatHeader>{getStatName(17)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(17))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(17))}
+              </StatValue>
             </div>
             <div>
               <StatHeader>{getStatName(19)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(19))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(19))}
+              </StatValue>
             </div>
           </StatRightWrap>
         </StatWrap>
@@ -96,86 +112,92 @@ export const StatInformation = ({ statInfo }) => {
           <TextLeft>
             <p>
               <StatHeader>스탯 공격력</StatHeader>
-              <StatValue>{formatNumber(getStatValue(1))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumber(getStatValue(1))}
+              </StatValue>
             </p>
             <p>
               <StatHeader>{getStatName(4)}</StatHeader>
-              <StatValue>{getStatValue(4)}%</StatValue>
+              <StatValue $blurred={blur}>{getStatValue(4)}%</StatValue>
             </p>
             <p>
               <StatHeader>{getStatName(5)}</StatHeader>
-              <StatValue>{getStatValue(5)}%</StatValue>
+              <StatValue $blurred={blur}>{getStatValue(5)}%</StatValue>
             </p>
             <p>
               <StatHeader>{getStatName(40)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(40))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(40))}
+              </StatValue>
             </p>
             <p>
               <StatHeader>{getStatName(41)}</StatHeader>
-              <StatValue>{formatNumberWithCommas(getStatValue(41))}</StatValue>
+              <StatValue $blurred={blur}>
+                {formatNumberWithCommas(getStatValue(41))}
+              </StatValue>
             </p>
             <p>
               <StatHeader>재사용 대기시간 감소</StatHeader>
-              <StatValue>
+              <StatValue $blurred={blur}>
                 {getStatValue(33)}초 / {getStatValue(34)}%
               </StatValue>
             </p>
             <p>
               <StatHeader>{getStatName(35)}</StatHeader>
-              <StatValue>{getStatValue(35)}%</StatValue>
+              <StatValue $blurred={blur}>{getStatValue(35)}%</StatValue>
             </p>
             <p>
               <StatHeader>{getStatName(37)}</StatHeader>
-              <StatValue>{getStatValue(37)}%</StatValue>
+              <StatValue $blurred={blur}>{getStatValue(37)}%</StatValue>
             </p>
           </TextLeft>
           <TextRight>
             {statInfo.final_stat[2] && (
               <p>
                 <StatHeader>{getStatName(2)}</StatHeader>
-                <StatValue>{getStatValue(2)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(2)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[3] && (
               <p>
                 <StatHeader>{getStatName(3)}</StatHeader>
-                <StatValue>{getStatValue(3)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(3)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[32] && (
               <p>
                 <StatHeader>{getStatName(32)}</StatHeader>
-                <StatValue>{getStatValue(32)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(32)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[6] && (
               <p>
                 <StatHeader>{getStatName(6)}</StatHeader>
-                <StatValue>{getStatValue(6)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(6)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[7] && (
               <p>
                 <StatHeader>{getStatName(7)}</StatHeader>
-                <StatValue>{getStatValue(7)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(7)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[30] && (
               <p>
                 <StatHeader>{getStatName(30)}</StatHeader>
-                <StatValue>{getStatValue(30)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(30)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[36] && (
               <p>
                 <StatHeader>{getStatName(36)}</StatHeader>
-                <StatValue>{getStatValue(36)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(36)}%</StatValue>
               </p>
             )}
             {statInfo.final_stat[43] && (
               <p>
                 <StatHeader>{getStatName(43)}</StatHeader>
-                <StatValue>{getStatValue(43)}%</StatValue>
+                <StatValue $blurred={blur}>{getStatValue(43)}%</StatValue>
               </p>
             )}
           </TextRight>
@@ -189,7 +211,9 @@ export const StatInformation = ({ statInfo }) => {
                   statInfo.final_stat[index] && (
                     <div key={index}>
                       <StatHeader>{getStatName(index)}</StatHeader>
-                      <StatValue>{getStatValue(index)}%</StatValue>
+                      <StatValue $blurred={blur}>
+                        {getStatValue(index)}%
+                      </StatValue>
                     </div>
                   )
               )}
@@ -201,7 +225,7 @@ export const StatInformation = ({ statInfo }) => {
                     stat && (
                       <div key={index}>
                         <StatHeader>{stat.stat_name}</StatHeader>
-                        <StatValue>{stat.stat_value}</StatValue>
+                        <StatValue $blurred={blur}>{stat.stat_value}</StatValue>
                       </div>
                     )
                 )}
@@ -307,6 +331,13 @@ const StatValue = styled.span`
   align-items: flex-end;
   font-size: 14px;
   color: white;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
+`;
+
+const RevealValue = styled.span`
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;
 
 const AttackFontWrap = styled.div`

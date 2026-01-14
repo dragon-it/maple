@@ -1,29 +1,58 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
-  Radar,
   RadarChart,
+  Radar,
   PolarGrid,
   PolarAngleAxis,
+  PolarRadiusAxis,
   Tooltip,
 } from "recharts";
 
-export const PropensityInformation = ({ propensityData }) => {
+export const PropensityInformation = ({ propensityData, blur = false }) => {
   const [tooltipVisible, setTooltipVisible] = useState(true);
+  const MAX_PROPENSITY = 100;
+
   const data = [
-    { subject: "카리스마", A: propensityData.charisma_level },
-    { subject: "매력", A: propensityData.charm_level },
-    { subject: "손재주", A: propensityData.handicraft_level },
-    { subject: "통찰력", A: propensityData.insight_level },
-    { subject: "감성", A: propensityData.sensibility_level },
-    { subject: "의지", A: propensityData.willingness_level },
+    {
+      subject: "카리스마",
+      real: propensityData.charisma_level,
+      visual: Math.max(propensityData.charisma_level / MAX_PROPENSITY, 0.1),
+    },
+    {
+      subject: "매력",
+      real: propensityData.charm_level,
+      visual: Math.max(propensityData.charm_level / MAX_PROPENSITY, 0.1),
+    },
+    {
+      subject: "손재주",
+      real: propensityData.handicraft_level,
+      visual: Math.max(propensityData.handicraft_level / MAX_PROPENSITY, 0.1),
+    },
+    {
+      subject: "통찰력",
+      real: propensityData.insight_level,
+      visual: Math.max(propensityData.insight_level / MAX_PROPENSITY, 0.1),
+    },
+    {
+      subject: "감성",
+      real: propensityData.sensibility_level,
+      visual: Math.max(propensityData.sensibility_level / MAX_PROPENSITY, 0.1),
+    },
+    {
+      subject: "의지",
+      real: propensityData.willingness_level,
+      visual: Math.max(propensityData.willingness_level / MAX_PROPENSITY, 0.1),
+    },
   ];
 
   const PropensityItem = ({ label, level }) => (
     <PropensityName style={{ flexDirection: "row" }}>
       <PropensityItemWrapper>
         <PropenLabel>{label}</PropenLabel>
-        <PropenLevel>Lv.{level}</PropenLevel>
+        <PropenLevel>
+          Lv.<RevealValue $blurred={blur}>{level}</RevealValue>
+        </PropenLevel>
       </PropensityItemWrapper>
     </PropensityName>
   );
@@ -59,7 +88,7 @@ export const PropensityInformation = ({ propensityData }) => {
           <PropensityItem label="매력" level={propensityData.charm_level} />
         </TextWrap>
       </PropensityTextWrap>
-      <ChartWrap>
+      <ChartWrap $blurred={blur}>
         <RadarChart
           cx={152}
           cy={115}
@@ -70,17 +99,29 @@ export const PropensityInformation = ({ propensityData }) => {
           onClick={handleChartClick}
         >
           <PolarGrid />
-          <Tooltip formatter={(value) => `${value}`} active={tooltipVisible} />
-          <PolarAngleAxis dataKey="subject" display="none" />
+          <PolarAngleAxis dataKey="subject" tick={false} axisLine={false} />
+          <PolarRadiusAxis domain={[0, 1]} tick={false} axisLine={false} />
+          <Tooltip
+            formatter={(_, name, props) => {
+              const realValue = props.payload.real;
+              return [`${realValue}`, name];
+            }}
+            active={tooltipVisible}
+          />
           <Radar
             name="레벨"
-            dataKey="A"
+            dataKey="visual"
             stroke="#3498db"
             fill="#3498db"
             fillOpacity={0.6}
-            animationDuration={500}
+            dot={{
+              r: 4,
+              fill: "#161616",
+              stroke: "#ffffff",
+            }}
           />
         </RadarChart>
+
         <ItemsWrap>
           <SubjectItems>
             <p>의지</p>
@@ -197,6 +238,8 @@ const ChartWrap = styled.div`
   margin-bottom: 20px;
   width: 320px;
   z-index: 99;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;
 const PropensityName = styled.div`
   font-size: 13px;
@@ -219,14 +262,15 @@ const PropensityName = styled.div`
 `;
 
 const PropenLabel = styled.span`
-  padding-right: 5px;
+  flex: 1;
 `;
-const PropenLevel = styled.span`
-  width: 40px;
-  display: flex;
-  justify-content: flex-start;
 
-  @media screen and (max-width: 576px) {
-    width: auto;
-  }
+const PropenLevel = styled.span`
+  flex: 1;
+  text-align: right;
+`;
+
+const RevealValue = styled.span`
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  transition: filter 0.45s ease;
 `;

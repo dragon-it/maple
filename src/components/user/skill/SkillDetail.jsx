@@ -24,7 +24,7 @@ export const SkillDetail = ({ item, onClose }) => {
       const detailRect = detailRef.current.getBoundingClientRect();
       const detailHeight = detailRect.height; // 실제 높이
       const detailWidth = detailRect.width; // 실제 너비
-      const offset = 10; // 마우스와 디테일 사이 간격
+      const offset = 3; // 마우스와 디테일 사이 간격
 
       let top = mousePosition.y + offset;
       let left = mousePosition.x + offset;
