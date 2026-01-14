@@ -7,10 +7,12 @@ export const Search = ({ variant = "page", compact = false }) => {
   // 검색어 상태 관리
   const [searchValue, setSearchValue] = useState("");
   const [hidePlaceholder, setHidePlaceholder] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef(null);
-  const shouldAutoFocus = variant === "page" && location.pathname === "/";
+  const shouldAutoFocus =
+    variant === "page" && location.pathname === "/" && !isMobile;
   const basePlaceholder = "캐릭터 닉네임을 입력해주세요";
   const placeholderText = hidePlaceholder ? "" : basePlaceholder;
 
@@ -19,6 +21,20 @@ export const Search = ({ variant = "page", compact = false }) => {
       inputRef.current?.focus();
     }
   }, [shouldAutoFocus]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => {
+      if (typeof window.matchMedia === "function") {
+        setIsMobile(window.matchMedia("(max-width: 1024px)").matches);
+        return;
+      }
+      setIsMobile(window.innerWidth <= 1024);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useEffect(() => {
     if (!compact) {
