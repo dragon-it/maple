@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+
+    # patch/minor만 자동 생성(major는 수동 검토 필요)
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+    # 묶어서 PR 줄이기
+    groups:
+      tooling:
+        patterns:
+          - "eslint*"
+          - "@testing-library/*"
+          - "typescript"
+          - "rollup*"
+      misc:
+        patterns:
+          - "*"
