@@ -19,18 +19,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 자동 머지 허용 조건:
-      # - patch or minor
-      # - direct dependency가 "axios/express/react/react-scripts" 핵심이면 제외
       - name: Enable auto-merge (safe updates only)
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           UPDATE_TYPE: ${{ steps.meta.outputs.update-type }}
           DEP_NAME: ${{ steps.meta.outputs.dependency-names }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           echo "update-type=$UPDATE_TYPE"
           echo "deps=$DEP_NAME"
+          echo "title=$PR_TITLE"
 
           # patch/minor만
           if [ "$UPDATE_TYPE" != "version-update:semver-patch" ] && [ "$UPDATE_TYPE" != "version-update:semver-minor" ]; then
@@ -38,11 +37,16 @@ jobs:
             exit 0
           fi
 
-          # 핵심 런타임은 자동머지 금지
-          if echo "$DEP_NAME" | grep -Eiq "(axios|express|react-scripts|react-dom|react-router-dom|react)"; then
+          # core-runtime 그룹 PR은 무조건 수동
+          if echo "$PR_TITLE" | grep -Eiq "core-runtime"; then
+            echo "skip: core-runtime group"
+            exit 0
+          fi
+
+          # (백업 안전망) 핵심 런타임 포함시 스킵
+          if echo "$DEP_NAME" | grep -Eiq "(axios|express|react-scripts|react-dom|react-router-dom|react|http-proxy-middleware|styled-components)"; then
             echo "skip: core runtime dependency"
             exit 0
           fi
 
-          # Auto-merge 켜기 (CI 통과하면 자동 머지)
           gh pr merge --auto --merge "$PR_URL"
