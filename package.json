@@ -15,9 +15,9 @@
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^6.24.1",
     "react-scripts": "^5.0.1",
-    "recharts": "^2.12.7",
+    "recharts": "^2.15.4",
     "styled-components": "^6.1.11",
-    "web-vitals": "^4.2.1"
+    "web-vitals": "^4.2.4"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node proxyServer.js",
