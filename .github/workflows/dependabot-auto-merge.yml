@@ -1,0 +1,48 @@
+name: Auto-merge Dependabot PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 자동 머지 허용 조건:
+      # - patch or minor
+      # - direct dependency가 "axios/express/react/react-scripts" 핵심이면 제외
+      - name: Enable auto-merge (safe updates only)
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          UPDATE_TYPE: ${{ steps.meta.outputs.update-type }}
+          DEP_NAME: ${{ steps.meta.outputs.dependency-names }}
+        run: |
+          echo "update-type=$UPDATE_TYPE"
+          echo "deps=$DEP_NAME"
+
+          # patch/minor만
+          if [ "$UPDATE_TYPE" != "version-update:semver-patch" ] && [ "$UPDATE_TYPE" != "version-update:semver-minor" ]; then
+            echo "skip: not patch/minor"
+            exit 0
+          fi
+
+          # 핵심 런타임은 자동머지 금지
+          if echo "$DEP_NAME" | grep -Eiq "(axios|express|react-scripts|react-dom|react-router-dom|react)"; then
+            echo "skip: core runtime dependency"
+            exit 0
+          fi
+
+          # Auto-merge 켜기 (CI 통과하면 자동 머지)
+          gh pr merge --auto --merge "$PR_URL"
