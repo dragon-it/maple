@@ -34,7 +34,7 @@ export const ItemDetail = ({ item, onClose }) => {
       const detailRect = detailRef.current.getBoundingClientRect();
       const detailHeight = detailRect.height;
       const detailWidth = detailRect.width;
-      const offset = 10;
+      const offset = 3;
 
       let top = mousePosition.y + offset;
       let left = mousePosition.x + offset;
@@ -233,9 +233,14 @@ export const ItemDetail = ({ item, onClose }) => {
                 <div> &nbsp;{`Lv.${item.special_ring_level}`}</div>
               )}
             </div>
-          ) : item.android_name ? (
-            <div>{item.android_name}</div>
-          ) : null}
+          ) : (
+            <div>
+              {item?.android_nickname === "안드로이드"
+                ? item.android_name
+                : `${item.android_nickname} 
+                ${item.android_name}`}
+            </div>
+          )}
         </h2>
         {/* 잠재 옵션 등급 표시 */}
         {item.potential_option_grade && (

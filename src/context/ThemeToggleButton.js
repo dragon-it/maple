@@ -22,7 +22,7 @@ function ThemeToggleButton() {
 
 const ToggleWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 5px;
 `;
 
 const Icon = styled.img`

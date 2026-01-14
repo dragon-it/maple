@@ -8,13 +8,13 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.25;
     margin: 0 auto;
     font-family:
+      "Noto Sans KR",
       '맑은 고딕', 
       'Malgun Gothic',
       sans-serif,
       '돋움',
       Dotum,
       "Noto Sans",
-      "Noto Sans CJK KR",
       "Montserrat",
       "Helvetica Neue",
       "NanumSquare";
@@ -55,4 +55,11 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 
+:root {
+  --global-font-stack: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, 
+                        "Segoe UI",'맑은 고딕','Malgun Gothic',Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html, body {
+  font-family: var(--global-font-stack);
+}
 `;

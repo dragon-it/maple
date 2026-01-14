@@ -30,7 +30,6 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 5px;
-  padding: 0px 5px 5px 5px;
 
   @media screen and (max-width: 576px) {
     width: 100%;

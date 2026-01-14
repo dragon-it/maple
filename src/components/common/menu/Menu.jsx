@@ -8,7 +8,21 @@ import { useTheme } from "../../../context/ThemeProvider";
 export const Menu = () => {
   const { theme } = useTheme();
   const [isClicked, setIsClicked] = useState(false);
+  const [isMiniOpen, setIsMiniOpen] = useState(false);
   const menuRef = useRef(null);
+  const [sundayMapleUrl, setSundayMapleUrl] = useState(
+    localStorage.getItem("sundayMaple") ||
+      "https://maplestory.nexon.com/News/Event"
+  );
+
+  useEffect(() => {
+    const url = localStorage.getItem("sundayMaple");
+    if (url) setSundayMapleUrl(url);
+  }, []);
+
+  useEffect(() => {
+    setIsMiniOpen(false);
+  }, []);
 
   const routes = {
     home: "/",
@@ -19,10 +33,6 @@ export const Menu = () => {
     slidingPuzzle: "/sliding-puzzle",
   };
 
-  const sundayMapleUrl =
-    localStorage.getItem("sundayMaple") ||
-    "https://maplestory.nexon.com/News/Event";
-
   const handleClicked = (event) => {
     event.stopPropagation();
     setIsClicked(!isClicked);
@@ -32,6 +42,7 @@ export const Menu = () => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsClicked(false);
+        setIsMiniOpen(false);
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -42,15 +53,16 @@ export const Menu = () => {
 
   return (
     <>
-      <Container>
-        <HamburgerImg
-          onClick={handleClicked}
-          src={theme === "dark" ? hamburger_bar_light : hamburger_bar_dark}
-          alt="hamburger_bar"
-        />
-      </Container>
+      <HeaderUtility>
+        <Container>
+          <HamburgerImg
+            onClick={handleClicked}
+            src={theme === "dark" ? hamburger_bar_light : hamburger_bar_dark}
+            alt="hamburger_bar"
+          />
+        </Container>
+      </HeaderUtility>
       <MenuContainer ref={menuRef} $isClicked={isClicked}>
-        <MenusHeader>MENU</MenusHeader>
         <Menus to={routes.home} onClick={() => setIsClicked(false)}>
           캐릭터 검색
         </Menus>
@@ -60,14 +72,33 @@ export const Menu = () => {
         <Menus to={routes.searchGuild} onClick={() => setIsClicked(false)}>
           길드 검색
         </Menus>
-        <Menus to={routes.randomClass} onClick={() => setIsClicked(false)}>
-          랜덤 직업 뽑기
-        </Menus>
+        <MiniGameGroup>
+          <MiniGameTitle onClick={() => setIsMiniOpen((prev) => !prev)}>
+            미니게임
+          </MiniGameTitle>
+          <MiniGameMenu $isOpen={isMiniOpen}>
+            <MiniGameItem
+              to={routes.randomClass}
+              onClick={() => {
+                setIsClicked(false);
+                setIsMiniOpen(false);
+              }}
+            >
+              랜덤 직업 뽑기
+            </MiniGameItem>
+            <MiniGameItem
+              to={routes.slidingPuzzle}
+              onClick={() => {
+                setIsClicked(false);
+                setIsMiniOpen(false);
+              }}
+            >
+              슬라이딩 퍼즐
+            </MiniGameItem>
+          </MiniGameMenu>
+        </MiniGameGroup>
         <Menus to={routes.expSimulator} onClick={() => setIsClicked(false)}>
-          Exp 시뮬레이터
-        </Menus>
-        <Menus to={routes.slidingPuzzle} onClick={() => setIsClicked(false)}>
-          슬라이딩 퍼즐
+          EXP 시뮬레이터
         </Menus>
         <MenuLink
           href={sundayMapleUrl}
@@ -75,7 +106,7 @@ export const Menu = () => {
           rel="noopener noreferrer"
           onClick={() => setIsClicked(false)}
         >
-          썬데이 메이플
+          썬데이메이플
         </MenuLink>
       </MenuContainer>
     </>
@@ -115,17 +146,16 @@ const HamburgerImg = styled.img`
   }
 `;
 
-const MenuContainer = styled.div`
+export const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 120px;
+  width: 140px;
   height: auto;
   visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
   opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
   top: 50px;
   right: 10px;
-  padding: 5px 10px;
   font-size: 14px;
   background-color: rgb(36, 39, 43);
   outline: 1px solid rgb(46, 48, 53);
@@ -138,30 +168,17 @@ const MenuContainer = styled.div`
   text-align: center;
 `;
 
-const MenusHeader = styled.div`
-  font-size: 12px;
-  color: rgb(169, 186, 193);
-  border-bottom: 1px solid rgba(91, 91, 91, 0.5);
-  padding-bottom: 5px;
-`;
-
-const Menus = styled(Link)`
+export const Menus = styled(Link)`
   color: rgb(255, 255, 255);
   font-size: 12px;
   padding: 7px 0px;
   text-decoration: none;
   cursor: pointer;
+  border-bottom: 1px solid rgba(91, 91, 91, 0.5);
 
   &:hover {
     color: rgb(199, 222, 90);
-    transform: scale(1.1);
-  }
-
-  @media (hover: none) {
-    &:active {
-      color: rgb(199, 222, 90);
-      transform: scale(0.9);
-    }
+    background: rgba(82, 82, 82, 0.7);
   }
 `;
 
@@ -174,13 +191,48 @@ const MenuLink = styled.a`
 
   &:hover {
     color: rgb(199, 222, 90);
-    transform: scale(1.1);
   }
+`;
 
-  @media (hover: none) {
-    &:active {
-      color: rgb(199, 222, 90);
-      transform: scale(0.9);
-    }
+const HeaderUtility = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const MiniGameGroup = styled.div`
+  position: relative;
+  padding: 7px 0px;
+  border-bottom: 1px solid rgba(91, 91, 91, 0.5);
+
+  &:hover {
+    background: rgba(82, 82, 82, 0.7);
+  }
+`;
+
+const MiniGameTitle = styled.div`
+  color: rgb(255, 255, 255);
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(199, 222, 90);
+  }
+`;
+
+const MiniGameMenu = styled.div`
+  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px 0px 10px;
+`;
+
+const MiniGameItem = styled(Link)`
+  color: rgb(182, 182, 182);
+  font-size: 11px;
+  text-decoration: none;
+
+  &:hover {
+    color: rgb(199, 222, 90);
   }
 `;
