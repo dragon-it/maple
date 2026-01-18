@@ -18,6 +18,10 @@ export const Header = () => {
 
   const [isMiniOpen, setIsMiniOpen] = useState(false);
   const [canHover, setCanHover] = useState(false);
+  const [sundayMapleUrl, setSundayMapleUrl] = useState(
+    localStorage.getItem("sundayMaple") ||
+      "https://maplestory.nexon.com/News/Event"
+  );
   const miniRef = useRef(null);
 
   const routes = {
@@ -29,9 +33,23 @@ export const Header = () => {
     slidingPuzzle: "/sliding-puzzle",
   };
 
-  const sundayMapleUrl =
-    localStorage.getItem("sundayMaple") ||
-    "https://maplestory.nexon.com/News/Event";
+  useEffect(() => {
+    const readUrl = () => {
+      const url = localStorage.getItem("sundayMaple");
+      setSundayMapleUrl(url || "https://maplestory.nexon.com/News/Event");
+    };
+    const handleStorage = (event) => {
+      if (event.key === "sundayMaple") readUrl();
+    };
+
+    readUrl();
+    window.addEventListener("sundayMapleUpdated", readUrl);
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("sundayMapleUpdated", readUrl);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
 
   /** Hover 가능 환경 감지 — 단 1회만 등록 */
   useEffect(() => {
