@@ -1,29 +1,46 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import serchIcon from "../../assets/icons/searchIcons/SearchIcon_small.svg";
+import light_search_icon from "../../assets/icons/searchIcons/light_mode_icon_search.svg";
+import dark_search_icon from "../../assets/icons/searchIcons/dark_mode_icon_search.svg";
+import { useTheme } from "../../context/ThemeProvider";
 
 export const Search = ({ variant = "page", compact = false }) => {
-  // 검색어 상태 관리
   const [searchValue, setSearchValue] = useState("");
   const [hidePlaceholder, setHidePlaceholder] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
+  const { theme } = useTheme();
+
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef(null);
+
+  const isHeaderVariant = variant === "header";
+  const isHomePage = location.pathname === "/";
+  const useMobileHeaderBehavior = isHeaderVariant && isMobile && !isHomePage;
+
   const shouldAutoFocus =
     variant === "page" && location.pathname === "/" && !isMobile;
-  const basePlaceholder = "캐릭터 닉네임을 입력해주세요";
-  const placeholderText = hidePlaceholder ? "" : basePlaceholder;
+  const shouldFocusInput =
+    shouldAutoFocus || (useMobileHeaderBehavior && isMobileExpanded);
+
+  const basePlaceholder = "캐릭터명을 입력해주세요";
+  const placeholderText = useMobileHeaderBehavior
+    ? ""
+    : hidePlaceholder
+      ? ""
+      : basePlaceholder;
 
   useEffect(() => {
-    if (shouldAutoFocus) {
+    if (shouldFocusInput) {
       inputRef.current?.focus();
     }
-  }, [shouldAutoFocus]);
+  }, [shouldFocusInput]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const update = () => {
       if (typeof window.matchMedia === "function") {
         setIsMobile(window.matchMedia("(max-width: 1024px)").matches);
@@ -31,13 +48,20 @@ export const Search = ({ variant = "page", compact = false }) => {
       }
       setIsMobile(window.innerWidth <= 1024);
     };
+
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
   useEffect(() => {
-    if (!compact) {
+    if (!useMobileHeaderBehavior) {
+      setIsMobileExpanded(false);
+    }
+  }, [useMobileHeaderBehavior]);
+
+  useEffect(() => {
+    if (!compact || useMobileHeaderBehavior) {
       setHidePlaceholder(false);
       return;
     }
@@ -63,19 +87,18 @@ export const Search = ({ variant = "page", compact = false }) => {
       window.removeEventListener("resize", update);
       observer?.disconnect();
     };
-  }, [compact]);
+  }, [compact, useMobileHeaderBehavior]);
 
-  // 검색 함수
   const handleSearch = () => {
     if (!searchValue.trim()) {
-      return; // 검색어가 비어있을 경우 아무것도 하지 않음
+      return;
     }
 
-    const processedSearchValue = searchValue.replace(/\s+/g, ""); // 공백 제거
+    const processedSearchValue = searchValue.replace(/\s+/g, "");
 
     if (location.pathname.startsWith("/character-capture")) {
       navigate(
-        `/character-capture/${encodeURIComponent(processedSearchValue)}`
+        `/character-capture/${encodeURIComponent(processedSearchValue)}`,
       );
     } else {
       navigate(`/user/${encodeURIComponent(processedSearchValue)}`);
@@ -85,16 +108,35 @@ export const Search = ({ variant = "page", compact = false }) => {
     }
   };
 
-  // 폼 제출을 처리하는 함수
   const handleSubmit = (e) => {
-    e.preventDefault(); // 기본 폼 제출 동작을 막음
-    handleSearch(); // 검색 처리 함수 호출
+    e.preventDefault();
+    handleSearch();
   };
 
-  // 상태 업데이트 함수
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchValue(value);
+  };
+
+  const handleMobileButtonClick = (e) => {
+    if (!useMobileHeaderBehavior) return;
+    if (isMobileExpanded) return;
+
+    e.preventDefault();
+    setIsMobileExpanded(true);
+
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+  };
+
+  const handleMobileInputBlur = () => {
+    if (!useMobileHeaderBehavior) return;
+    if (searchValue.trim()) return;
+
+    window.setTimeout(() => {
+      setIsMobileExpanded(false);
+    }, 120);
   };
 
   return (
@@ -102,19 +144,51 @@ export const Search = ({ variant = "page", compact = false }) => {
       onSubmit={handleSubmit}
       $variant={variant}
       $compact={compact}
+      $mobileHeader={useMobileHeaderBehavior}
+      $mobileExpanded={isMobileExpanded}
     >
-      <InputWrap $variant={variant} $compact={compact}>
+      <InputWrap
+        $variant={variant}
+        $compact={compact}
+        $mobileHeader={useMobileHeaderBehavior}
+        $mobileExpanded={isMobileExpanded}
+      >
         <StyledInput
           ref={inputRef}
           type="text"
           placeholder={placeholderText}
           value={searchValue}
           onChange={handleInputChange}
+          onBlur={handleMobileInputBlur}
           maxLength={15}
-          autoFocus={shouldAutoFocus}
+          autoFocus={shouldFocusInput}
+          $variant={variant}
+          $compact={compact}
+          $mobileHeader={useMobileHeaderBehavior}
+          $mobileExpanded={isMobileExpanded}
         />
-        <StyledButton type="submit" $variant={variant}>
-          <img src={serchIcon} alt="검색" width={18} height={18} />
+        <StyledButton
+          type="submit"
+          $variant={variant}
+          $mobileHeader={useMobileHeaderBehavior}
+          $mobileExpanded={isMobileExpanded}
+          onClick={handleMobileButtonClick}
+        >
+          <img
+            src={
+              isHomePage
+                ? light_search_icon
+                : !isMobile || isMobileExpanded
+                  ? light_search_icon
+                  : theme === "dark"
+                    ? dark_search_icon
+                    : light_search_icon
+            }
+            alt="검색"
+            width={18}
+            height={18}
+            $mobileExpanded={isMobileExpanded}
+          />
         </StyledButton>
       </InputWrap>
     </InputContainer>
@@ -126,20 +200,29 @@ const InputContainer = styled.form`
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 688px;
   gap: 2px;
 
-  ${({ $variant, $compact }) =>
+  ${({ $variant, $compact, $mobileHeader, $mobileExpanded }) =>
     $variant === "header" &&
     css`
       width: 100%;
       min-width: 220px;
-      justify-content: flex-start;
+      justify-content: flex-end;
       margin-right: 10px;
 
       ${$compact &&
       css`
         min-width: 0;
         margin-right: 0;
+      `}
+
+      ${$mobileHeader &&
+      css`
+        min-width: 0;
+        margin-right: 0;
+        justify-content: flex-end;
+        width: ${$mobileExpanded ? "100%" : "auto"};
       `}
     `}
 `;
@@ -158,29 +241,35 @@ const InputWrap = styled.div`
   border: 2px solid rgb(0, 0, 0);
   position: relative;
   box-shadow: 0 10px 12px rgba(0, 0, 0, 0.08);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus-within {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   }
 
-  ${({ $variant, $compact }) =>
+  ${({ $variant, $compact, $mobileHeader, $mobileExpanded }) =>
     $variant === "header" &&
     css`
       margin: 0;
       width: 100%;
-      max-width: 320px;
-      min-width: 290px;
       height: 36px;
-      border-radius: 10px;
-      border-width: 1px;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: none;
+      transition:
+        width 0.28s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 
       ${$compact &&
       css`
         min-width: 0;
         max-width: 240px;
+        border: none;
+        border-radius: 10px;
+      `}
+
+      ${$mobileHeader &&
+      css`
+        width: ${$mobileExpanded ? "100%" : "36px"};
+        max-width: none;
+        transform-origin: right center;
       `}
     `}
 `;
@@ -189,10 +278,10 @@ const StyledInput = styled.input`
   flex: 1;
   height: 38px;
   padding: 0 16px;
-
   border: none;
   background: transparent;
   outline: none;
+  border-radius: 10px;
   font-size: 14px;
   color: rgb(0, 0, 0);
 
@@ -200,32 +289,63 @@ const StyledInput = styled.input`
     color: rgb(0, 0, 0);
   }
 
-  ${({ $variant, $compact }) =>
+  ${({ $variant, $mobileHeader, $mobileExpanded }) =>
     $variant === "header" &&
     css`
       font-size: 13px;
       height: 100%;
       padding-right: 40px;
+      background-color: #ffffff;
+
+      ${$mobileHeader &&
+      css`
+        width: ${$mobileExpanded ? "100%" : "0"};
+        min-width: 0;
+        transition:
+          opacity 0.18s ease,
+          width 0.28s ease,
+          padding 0.28s ease;
+        display: ${$mobileExpanded ? "block" : "none"};
+      `}
     `}
 `;
 
 const StyledButton = styled.button`
   position: absolute;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
+  border-radius: 10px;
   background: none;
   cursor: pointer;
 
-  ${({ $variant, $compact }) =>
+  ${({ $variant, $mobileHeader, $mobileExpanded }) =>
     $variant === "header" &&
     css`
-      right: 6px;
-      width: 28px;
-      height: 28px;
+      z-index: 2;
+
+      ${$mobileHeader &&
+      css`
+        flex-shrink: 0;
+        transform: translateZ(0);
+        background-color: ${({ theme }) => theme.headerBgColor};
+        border: ${({ theme }) => theme.toggleBorderColor};
+        &:hover {
+          background-color: ${({ theme }) => theme.headerIconHoverColor};
+        }
+      `}
+
+      ${$mobileExpanded &&
+      css`
+        background-color: transparent;
+        border: none;
+        &:hover {
+          background-color: transparent;
+        }
+      `}
     `}
 `;
