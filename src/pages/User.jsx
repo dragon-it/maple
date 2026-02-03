@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Information from "../components/user/Information";
 import { Equipment } from "../components/user/Equipment";
 import { Skill } from "../components/user/Skill";
@@ -15,6 +15,16 @@ import { Helmet } from "react-helmet-async";
 import { formatPowerStat } from "../components/common/powerStat/PowerStat";
 import WorldIcons from "../components/common/worldIcon/WorldIcons";
 import arrowIcon from "../assets/icons/etc/arrow_icon.svg";
+import menuInfoEnableIcon from "../assets/pages/user/menu/character_info_icon_enable.svg";
+import menuInfoDisableIcon from "../assets/pages/user/menu/character_info_icon_disable.svg";
+import menuEquipEnableIcon from "../assets/pages/user/menu/character_equip_icon_enable.svg";
+import menuEquipDisableIcon from "../assets/pages/user/menu/character_equip_icon_disable.svg";
+import menuSkillEnableIcon from "../assets/pages/user/menu/character_skill_icon_enable.svg";
+import menuSkillDisableIcon from "../assets/pages/user/menu/character_skill_icon_disable.svg";
+import menuUnionEnableIcon from "../assets/pages/user/menu/character_union_icon_enable.svg";
+import menuUnionDisableIcon from "../assets/pages/user/menu/character_union_icon_disable.svg";
+import menuGuildEnableIcon from "../assets/pages/user/menu/character_guild_icon_enable.svg";
+import menuGuildDisableIcon from "../assets/pages/user/menu/character_guild_icon_disable.svg";
 
 export const User = () => {
   const { theme } = useTheme();
@@ -64,7 +74,7 @@ export const User = () => {
         setResult,
         setLoading,
         setError,
-        setGuildLoading
+        setGuildLoading,
       );
       setLoading(false);
     };
@@ -168,8 +178,22 @@ export const User = () => {
                 type="button"
                 onClick={() => handleTabClick(1)}
                 $activeTab={activeTab === 1}
+                $infoTab
               >
-                <TabIcon $activeTab={activeTab === 1}>I</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuInfoDisableIcon}
+                    alt="캐릭터 정보 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 1}
+                  />
+                  <TabIconEnable
+                    src={menuInfoEnableIcon}
+                    alt="캐릭터 정보 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 1}
+                  />
+                </TabIconStack>
                 캐릭터 정보
               </TabButton>
               <TabButton
@@ -177,7 +201,20 @@ export const User = () => {
                 onClick={() => handleTabClick(2)}
                 $activeTab={activeTab === 2}
               >
-                <TabIcon $activeTab={activeTab === 2}>EQ</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuEquipDisableIcon}
+                    alt="장비 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 2}
+                  />
+                  <TabIconEnable
+                    src={menuEquipEnableIcon}
+                    alt="장비 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 2}
+                  />
+                </TabIconStack>
                 장비
               </TabButton>
               <TabButton
@@ -185,7 +222,20 @@ export const User = () => {
                 onClick={() => handleTabClick(3)}
                 $activeTab={activeTab === 3}
               >
-                <TabIcon $activeTab={activeTab === 3}>SK</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuSkillDisableIcon}
+                    alt="스킬 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 3}
+                  />
+                  <TabIconEnable
+                    src={menuSkillEnableIcon}
+                    alt="스킬 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 3}
+                  />
+                </TabIconStack>
                 스킬
               </TabButton>
               <TabButton
@@ -193,7 +243,20 @@ export const User = () => {
                 onClick={() => handleTabClick(4)}
                 $activeTab={activeTab === 4}
               >
-                <TabIcon $activeTab={activeTab === 4}>UN</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuUnionDisableIcon}
+                    alt="유니온 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 4}
+                  />
+                  <TabIconEnable
+                    src={menuUnionEnableIcon}
+                    alt="유니온 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 4}
+                  />
+                </TabIconStack>
                 유니온
               </TabButton>
               <TabButton
@@ -201,7 +264,20 @@ export const User = () => {
                 onClick={() => handleTabClick(5)}
                 $activeTab={activeTab === 5}
               >
-                <TabIcon $activeTab={activeTab === 5}>GD</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuGuildDisableIcon}
+                    alt="길드 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 5}
+                  />
+                  <TabIconEnable
+                    src={menuGuildEnableIcon}
+                    alt="길드 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 5}
+                  />
+                </TabIconStack>
                 길드
               </TabButton>
             </TabRow>
@@ -236,8 +312,22 @@ export const User = () => {
                 type="button"
                 onClick={() => handleTabClick(1)}
                 $activeTab={activeTab === 1}
+                $infoTab
               >
-                <TabIcon $activeTab={activeTab === 1}>I</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuInfoDisableIcon}
+                    alt="캐릭터 정보 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 1}
+                  />
+                  <TabIconEnable
+                    src={menuInfoEnableIcon}
+                    alt="캐릭터 정보 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 1}
+                  />
+                </TabIconStack>
                 캐릭터 정보
               </MobileTabButton>
               <MobileTabButton
@@ -245,7 +335,20 @@ export const User = () => {
                 onClick={() => handleTabClick(2)}
                 $activeTab={activeTab === 2}
               >
-                <TabIcon $activeTab={activeTab === 2}>EQ</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuEquipDisableIcon}
+                    alt="장비 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 2}
+                  />
+                  <TabIconEnable
+                    src={menuEquipEnableIcon}
+                    alt="장비 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 2}
+                  />
+                </TabIconStack>
                 장비
               </MobileTabButton>
               <MobileTabButton
@@ -253,7 +356,20 @@ export const User = () => {
                 onClick={() => handleTabClick(3)}
                 $activeTab={activeTab === 3}
               >
-                <TabIcon $activeTab={activeTab === 3}>SK</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuSkillDisableIcon}
+                    alt="스킬 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 3}
+                  />
+                  <TabIconEnable
+                    src={menuSkillEnableIcon}
+                    alt="스킬 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 3}
+                  />
+                </TabIconStack>
                 스킬
               </MobileTabButton>
               <MobileTabButton
@@ -261,7 +377,20 @@ export const User = () => {
                 onClick={() => handleTabClick(4)}
                 $activeTab={activeTab === 4}
               >
-                <TabIcon $activeTab={activeTab === 4}>UN</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuUnionDisableIcon}
+                    alt="유니온 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 4}
+                  />
+                  <TabIconEnable
+                    src={menuUnionEnableIcon}
+                    alt="유니온 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 4}
+                  />
+                </TabIconStack>
                 유니온
               </MobileTabButton>
               <MobileTabButton
@@ -269,7 +398,20 @@ export const User = () => {
                 onClick={() => handleTabClick(5)}
                 $activeTab={activeTab === 5}
               >
-                <TabIcon $activeTab={activeTab === 5}>GD</TabIcon>
+                <TabIconStack>
+                  <TabIconDisable
+                    src={menuGuildDisableIcon}
+                    alt="길드 탭 비활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 5}
+                  />
+                  <TabIconEnable
+                    src={menuGuildEnableIcon}
+                    alt="길드 탭 활성화 아이콘"
+                    aria-hidden="true"
+                    $activeTab={activeTab === 5}
+                  />
+                </TabIconStack>
                 길드
               </MobileTabButton>
             </MobileTabs>
@@ -459,7 +601,7 @@ const TabButton = styled.button`
   font-size: 12px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   border: 1px solid
     ${({ $activeTab }) =>
       $activeTab ? "rgba(255, 255, 255, 0.35)" : "transparent"};
@@ -467,29 +609,51 @@ const TabButton = styled.button`
     $activeTab ? theme.tabActiveColor : "rgba(255, 255, 255, 0.08)"};
   color: ${({ theme, $activeTab }) =>
     $activeTab ? theme.tabActiveTextColor : "rgba(255, 255, 255, 0.8)"};
-  transition: background-color 0.2s ease, color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
     border-color 0.2s ease;
 
   &:hover {
     background-color: ${({ theme, $activeTab }) =>
       $activeTab ? theme.tabActiveColor : theme.tabHoverColor};
   }
+
+  ${({ $infoTab }) =>
+    $infoTab &&
+    css`
+      &:hover ${TabIconEnable}, &:focus-visible ${TabIconEnable} {
+        opacity: 1;
+      }
+
+      &:hover ${TabIconDisable}, &:focus-visible ${TabIconDisable} {
+        opacity: 0;
+      }
+    `}
 `;
 
-const TabIcon = styled.span`
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
+const TabIconStack = styled.span`
+  position: relative;
+  width: 16px;
+  height: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
-  font-weight: 700;
-  color: ${({ $activeTab }) =>
-    $activeTab ? "rgba(20, 24, 30, 0.9)" : "rgba(255, 255, 255, 0.85)"};
-  background: ${({ $activeTab }) =>
-    $activeTab ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.18)"};
-  border: 1px solid rgba(255, 255, 255, 0.35);
+`;
+
+const TabIconBase = styled.img`
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.2s ease;
+`;
+
+const TabIconEnable = styled(TabIconBase)`
+  opacity: ${({ $activeTab }) => ($activeTab ? 1 : 0)};
+`;
+
+const TabIconDisable = styled(TabIconBase)`
+  opacity: ${({ $activeTab }) => ($activeTab ? 0 : 1)};
 `;
 
 const ContentWrap = styled.div`
@@ -513,7 +677,7 @@ const MobileTabBar = styled.div`
     z-index: 130;
     display: flex;
     justify-content: center;
-    padding: 1px 10px 12px;
+    padding: 1px 10px 3px;
     background: rgba(15, 20, 26, 0.7);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.18);
@@ -545,8 +709,22 @@ const MobileTabButton = styled.button`
     $activeTab ? theme.tabActiveColor : "rgba(255, 255, 255, 0.08)"};
   color: ${({ theme, $activeTab }) =>
     $activeTab ? theme.tabActiveTextColor : "rgba(255, 255, 255, 0.8)"};
-  transition: background-color 0.2s ease, color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
     border-color 0.2s ease;
+
+  ${({ $infoTab }) =>
+    $infoTab &&
+    css`
+      &:hover ${TabIconEnable}, &:focus-visible ${TabIconEnable} {
+        opacity: 1;
+      }
+
+      &:hover ${TabIconDisable}, &:focus-visible ${TabIconDisable} {
+        opacity: 0;
+      }
+    `}
 `;
 
 const Container = styled.div`
