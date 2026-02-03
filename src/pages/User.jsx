@@ -632,22 +632,6 @@ const TabButton = styled.button`
     `}
 `;
 
-const TabIcon = styled.span`
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9px;
-  font-weight: 700;
-  color: ${({ $activeTab }) =>
-    $activeTab ? "rgba(20, 24, 30, 0.9)" : "rgba(255, 255, 255, 0.85)"};
-  background: ${({ $activeTab }) =>
-    $activeTab ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.18)"};
-  border: 1px solid rgba(255, 255, 255, 0.35);
-`;
-
 const TabIconStack = styled.span`
   position: relative;
   width: 16px;
