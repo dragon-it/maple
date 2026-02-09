@@ -99,7 +99,7 @@ export const User = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const update = () => {
-      const value = window.innerWidth <= 576 ? "65px" : "0px";
+      const value = window.innerWidth <= 576 ? "54px" : "0px";
       document.documentElement.style.setProperty("--footer-safe-area", value);
     };
     update();
