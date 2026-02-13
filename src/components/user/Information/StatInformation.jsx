@@ -225,9 +225,7 @@ export const StatInformation = ({ statInfo, blur = false }) => {
                     stat && (
                       <div key={index}>
                         <StatHeader>{stat.stat_name}</StatHeader>
-                        <StatValue $blurred={blur}>
-                          {stat.stat_value}
-                        </StatValue>
+                        <StatValue $blurred={blur}>{stat.stat_value}</StatValue>
                       </div>
                     )
                 )}
