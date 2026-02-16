@@ -44,7 +44,7 @@ export const GuildSkill = ({ result }) => {
   const sortedGuildSkills = result.guildBasicInformation.guild_skill.sort(
     (a, b) =>
       nobleSkills.skillOrder.findIndex((skill) => skill.name === a.skill_name) -
-      nobleSkills.skillOrder.findIndex((skill) => skill.name === b.skill_name)
+      nobleSkills.skillOrder.findIndex((skill) => skill.name === b.skill_name),
   );
 
   const skillNameToItemMap = sortedGuildSkills.reduce((acc, item) => {
@@ -67,7 +67,7 @@ export const GuildSkill = ({ result }) => {
                   const skillInfo =
                     item &&
                     nobleSkills.skillOrder.find(
-                      (skill) => skill.name === skillName
+                      (skill) => skill.name === skillName,
                     );
                   return (
                     <TableCell key={rowIndex}>
@@ -84,13 +84,6 @@ export const GuildSkill = ({ result }) => {
                             <img src={item.skill_icon} alt={skillName} />
                           </SkillIcon>
                           <SkillName>{skillInfo.name}</SkillName>
-                          <SkillLevel
-                            $isMaxLevel={
-                              item.skill_level === skillInfo.maxLevel
-                            }
-                          >
-                            {item.skill_level}/{skillInfo.maxLevel}
-                          </SkillLevel>
                         </BasicSkillWrap>
                       ) : null}
                     </TableCell>
@@ -121,7 +114,7 @@ export const GuildSkill = ({ result }) => {
                         {item.skill_level}/15
                       </SkillLevel>
                     </SkillWrap>
-                  )
+                  ),
                 )}
             </SkillContainer>
           </NoblesseSkillWrap>
@@ -156,7 +149,7 @@ const BasicSkillWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: end;
+  justify-content: center;
   text-align: center;
   width: 100%;
   height: 100%;
@@ -180,7 +173,6 @@ const Table = styled.div`
   width: 100%;
   justify-content: space-between;
   margin-bottom: 10px;
-  padding-bottom: 10px;
   background-color: rgb(57, 57, 57);
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
@@ -219,6 +211,7 @@ const TableCell = styled.div`
     }
   }
 `;
+
 const Level = styled.div``;
 
 const RightArrow = styled.img`
