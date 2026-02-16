@@ -730,7 +730,7 @@ const MobileTabButton = styled.button`
 const Container = styled.div`
   position: relative;
   width: ${({ $activeTab }) =>
-    $activeTab === 3 ? "940px" : $activeTab === 5 ? "940px" : "fit-content"};
+    $activeTab === 3 ? "940px" : $activeTab === 5 ? "980px" : "fit-content"};
   height: fit-content;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
