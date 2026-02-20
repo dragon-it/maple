@@ -16,8 +16,21 @@ export const Menu = () => {
   );
 
   useEffect(() => {
-    const url = localStorage.getItem("sundayMaple");
-    if (url) setSundayMapleUrl(url);
+    const readUrl = () => {
+      const url = localStorage.getItem("sundayMaple");
+      setSundayMapleUrl(url || "https://maplestory.nexon.com/News/Event");
+    };
+    const handleStorage = (event) => {
+      if (event.key === "sundayMaple") readUrl();
+    };
+
+    readUrl();
+    window.addEventListener("sundayMapleUpdated", readUrl);
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("sundayMapleUpdated", readUrl);
+      window.removeEventListener("storage", handleStorage);
+    };
   }, []);
 
   useEffect(() => {

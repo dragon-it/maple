@@ -131,6 +131,7 @@ const ItemIcon = styled.div`
     }`};
   img {
     image-rendering: pixelated;
+    max-width: 42px;
   }
 `;
 
@@ -896,6 +897,7 @@ const ADIcon = styled.div`
   right: 60px;
   img {
     image-rendering: pixelated;
+    max-width: 42px;
   }
 `;
 

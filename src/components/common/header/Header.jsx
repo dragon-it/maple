@@ -14,10 +14,13 @@ export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const isUserPage = location.pathname.startsWith("/user");
 
   const [isMiniOpen, setIsMiniOpen] = useState(false);
   const [canHover, setCanHover] = useState(false);
+  const [sundayMapleUrl, setSundayMapleUrl] = useState(
+    localStorage.getItem("sundayMaple") ||
+      "https://maplestory.nexon.com/News/Event",
+  );
   const miniRef = useRef(null);
 
   const routes = {
@@ -29,9 +32,23 @@ export const Header = () => {
     slidingPuzzle: "/sliding-puzzle",
   };
 
-  const sundayMapleUrl =
-    localStorage.getItem("sundayMaple") ||
-    "https://maplestory.nexon.com/News/Event";
+  useEffect(() => {
+    const readUrl = () => {
+      const url = localStorage.getItem("sundayMaple");
+      setSundayMapleUrl(url || "https://maplestory.nexon.com/News/Event");
+    };
+    const handleStorage = (event) => {
+      if (event.key === "sundayMaple") readUrl();
+    };
+
+    readUrl();
+    window.addEventListener("sundayMapleUpdated", readUrl);
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("sundayMapleUpdated", readUrl);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
 
   /** Hover 가능 환경 감지 — 단 1회만 등록 */
   useEffect(() => {
@@ -82,6 +99,7 @@ export const Header = () => {
 
   const handleMiniClick = (event) => {
     if (canHover) return;
+    event.preventDefault();
     event.stopPropagation();
     setIsMiniOpen((prev) => !prev);
   };
@@ -101,17 +119,23 @@ export const Header = () => {
         />
       </LogoWrap>
 
-      <ItemContainer>
-        <Items to={routes.home}>캐릭터 검색</Items>
-        <Items to={routes.characterCapture}>캐릭터 캡처</Items>
-        <Items to={routes.searchGuild}>길드 검색</Items>
+      <ItemList>
+        <Item>
+          <ItemLink to={routes.home}>캐릭터 검색</ItemLink>
+        </Item>
+        <Item>
+          <ItemLink to={routes.characterCapture}>캐릭터 캡처</ItemLink>
+        </Item>
+        <Item>
+          <ItemLink to={routes.searchGuild}>길드 검색</ItemLink>
+        </Item>
 
         <MiniGameWrapper
           ref={miniRef}
           onMouseEnter={handleMiniEnter}
           onMouseLeave={handleMiniLeave}
         >
-          <MiniGameTrigger onClick={handleMiniClick}>
+          <MiniGameTrigger href="#" onClick={handleMiniClick}>
             <span>미니게임</span>
           </MiniGameTrigger>
 
@@ -125,21 +149,25 @@ export const Header = () => {
           </MiniDropdown>
         </MiniGameWrapper>
 
-        <Items to={routes.expSimulator}>EXP 시뮬레이터</Items>
+        <Item>
+          <ItemLink to={routes.expSimulator}>EXP 시뮬레이터</ItemLink>
+        </Item>
 
-        <ItemsToHome
-          href={sundayMapleUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          썬데이메이플
-        </ItemsToHome>
-      </ItemContainer>
+        <Item>
+          <ItemExternal
+            href={sundayMapleUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            썬데이메이플
+          </ItemExternal>
+        </Item>
+      </ItemList>
 
       <ThemeToggleWrap>
         {!isHomePage && (
-          <HeaderSearchWrap $compact={isUserPage}>
-            <Search variant="header" compact={isUserPage} />
+          <HeaderSearchWrap $compact={!isHomePage}>
+            <Search variant="header" compact={!isHomePage} />
           </HeaderSearchWrap>
         )}
         <ThemeToggleButton />
@@ -149,9 +177,11 @@ export const Header = () => {
 };
 
 const itemStyles = css`
+  display: flex;
+  align-items: center;
   height: 100%;
-  padding: 8px;
   transition: 0.15s ease;
+  padding: 0 8px;
   cursor: pointer;
   border-bottom: 3px solid transparent;
   color: rgb(205, 205, 205);
@@ -190,12 +220,18 @@ const HeaderLogoText = styled.img`
   cursor: pointer;
 `;
 
-const ItemContainer = styled.div`
+const ItemList = styled.ul`
   display: flex;
   flex: 1;
+  align-items: stretch;
   gap: 10px;
   margin-left: 40px;
   font-size: 0.9rem;
+  height: 50px;
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -206,22 +242,40 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Items = styled(Link)`
+const Item = styled.li`
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+`;
+
+const ItemLink = styled(Link)`
   ${itemStyles}
 `;
 
-const ItemsToHome = styled.a`
+const ItemExternal = styled.a`
   ${itemStyles}
 `;
 
 const ThemeToggleWrap = styled.div`
   display: flex;
   gap: 5px;
+  align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    flex: 0.5;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  @media screen and (max-width: 768px) {
+    flex: 1;
+  }
 `;
 
 const HeaderSearchWrap = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   flex: 1;
   min-width: 220px;
   max-width: 360px;
@@ -234,29 +288,38 @@ const HeaderSearchWrap = styled.div`
       min-width: 120px;
       max-width: 230px;
     `}
+
+  @media screen and (max-width: 1024px) {
+    min-width: 0;
+    max-width: 230px;
+    width: 100%;
+  }
 `;
 
-const MiniGameWrapper = styled.div`
+const MiniGameWrapper = styled.li`
   position: relative;
   display: flex;
   align-items: center;
+  height: 100%;
 `;
 
-const MiniGameTrigger = styled.div`
+const MiniGameTrigger = styled.a`
   ${itemStyles}
   display: flex;
   align-items: center;
 `;
 
 const MiniDropdown = styled(DropdownContainer)`
-  top: 40px;
+  top: 50px;
   left: 0;
   width: 140px;
   opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
   visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
   pointer-events: ${({ $isClicked }) => ($isClicked ? "auto" : "none")};
   transform: translateY(${({ $isClicked }) => ($isClicked ? "0" : "-5px")});
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 `;
 
 const DropdownMenuItem = styled(DropdownLink)`

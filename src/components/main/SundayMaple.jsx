@@ -78,6 +78,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
           setIsVisible(true);
           setBooting(false);
           localStorage.setItem("sundayMaple", data?.url);
+          window.dispatchEvent(new Event("sundayMapleUpdated"));
         };
         pre.onerror = () => {
           setIsVisible(false);

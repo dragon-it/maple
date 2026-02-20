@@ -128,6 +128,7 @@ const SkillItem = styled.li`
 
 const SkillIcon = styled.img`
   width: 32px;
+  max-width: 32px;
   height: 32px;
   flex: 0 0 32px;
 `;

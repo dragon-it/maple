@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
-import serchIcon from "../../assets/icons/searchIcons/SearchIcon_small.svg";
+import serchIcon from "../../assets/icons/searchIcons/light_mode_icon_search.svg";
 import colors from "../common/color/colors";
 
 export const CaptureInput = ({ setResult, setError }) => {
@@ -18,7 +18,7 @@ export const CaptureInput = ({ setResult, setError }) => {
     try {
       const result = await characterCaptureFetch(
         processedSearchValue,
-        setResult
+        setResult,
       );
       const mainCharacterName =
         result?.getCombinedData?.getUnionRanking?.ranking[0]?.character_name;
@@ -31,7 +31,7 @@ export const CaptureInput = ({ setResult, setError }) => {
       if (isMainCharacterSearch && !mainCharacterName) {
         setError("유니온 정보가 없어서 본캐를 찾지 못했습니다.");
         navigate(
-          `/character-capture/${encodeURIComponent(processedSearchValue)}`
+          `/character-capture/${encodeURIComponent(processedSearchValue)}`,
         );
       } else {
         navigate(`/character-capture/${encodeURIComponent(redirectName)}`);

@@ -19,7 +19,7 @@ export const BackgroundImage = () => {
   const { theme } = useTheme();
   const location = useLocation();
   const [imageSrc, setImageSrc] = useState(
-    getBackgroundImage(theme, location.pathname)
+    getBackgroundImage(theme, location.pathname),
   );
 
   // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
@@ -56,10 +56,17 @@ const Container = styled.div`
   z-index: -1;
 
   img {
-    display: block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
     object-fit: cover;
+    padding: 0;
+    position: absolute;
     width: 100%;
+    display: block;
     min-height: 100vh;
+    height: 100%;
     outline: 1px solid rgba(0, 0, 0, 0);
   }
 `;
