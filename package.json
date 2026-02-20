@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^6.4.6",
-    "axios": "^1.7.2",
+    "axios": "^1.13.5",
     "cors": "^2.8.6",
     "cross-env": "^7.0.3",
     "express": "^4.19.2",
