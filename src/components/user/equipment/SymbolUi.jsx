@@ -44,7 +44,7 @@ export const SymbolUi = ({ symbolData }) => {
       }
       setHoveredKey(key);
     },
-    [isHoverEnabled]
+    [isHoverEnabled],
   );
 
   const closeHover = useCallback(() => {
@@ -63,7 +63,7 @@ export const SymbolUi = ({ symbolData }) => {
       // PC hover 우선, 모바일 클릭 토글
       return hoveredKey === key || clickedKey === key;
     },
-    [hoveredKey, clickedKey]
+    [hoveredKey, clickedKey],
   );
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -71,7 +71,8 @@ export const SymbolUi = ({ symbolData }) => {
   const list = symbolData?.symbol || [];
   const arcane = list.filter((s) => s.symbol_name.includes("아케인"));
   const authentic = list.filter(
-    (s) => s.symbol_name.includes("어센틱") && !s.symbol_name.includes("그랜드")
+    (s) =>
+      s.symbol_name.includes("어센틱") && !s.symbol_name.includes("그랜드"),
   );
   const grand = list.filter((s) => s.symbol_name.includes("그랜드"));
 
@@ -450,8 +451,8 @@ export const SymbolUi = ({ symbolData }) => {
       rel === 0
         ? { offset: 0, scale: 1, z: 3, opacity: 1 }
         : rel === 1
-        ? { offset: 60, scale: 0.82, z: 2, opacity: 0.85 }
-        : { offset: -60, scale: 0.82, z: 2, opacity: 0.85 };
+          ? { offset: 60, scale: 0.82, z: 2, opacity: 0.85 }
+          : { offset: -60, scale: 0.82, z: 2, opacity: 0.85 };
 
     let { offset, scale, z, opacity } = base;
 
