@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+
+    # major는 전부 수동 (PR은 만들되 자동머지 절대 금지)
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+    groups:
+      # 크리티컬 런타임 (항상 수동 머지)
+      core-runtime:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "react-router-dom"
+          - "react-scripts"
+          - "express"
+          - "axios"
+          - "http-proxy-middleware"
+          - "styled-components"
+
+      # 툴링/개발도구 (대부분 자동머지)
+      tooling:
+        patterns:
+          - "@eslint/*"
+          - "@eslint/js"
+          - "eslint"
+          - "eslint-*"
+          - "@testing-library/*"
+          - "typescript"
+          - "browserslist"
+          - "caniuse-lite"
+
+      # 그 외 나머지 (자동머지)
+      misc:
+        patterns:
+          - "*"
