@@ -276,7 +276,7 @@ const ExpValueInput = styled.input`
   border-radius: 5px;
   height: 25px;
   width: 30%;
-
+  text-align: right;
   background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
 `;
