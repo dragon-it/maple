@@ -206,7 +206,7 @@ export const ExpInput = () => {
             {item === "EXP 교환권 (200~260)" ||
             item === "상급 EXP 교환권 (260~)" ? (
               <ExpValueInput
-                maxLength="4"
+                maxLength="5"
                 value={itemCounts[item]}
                 onChange={(e) => {
                   let value = e.target.value;
