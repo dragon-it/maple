@@ -29,13 +29,6 @@ export const ExpInput = () => {
     "상급 EXP 교환권 (260~)": 0,
   });
 
-  const handleElixirChange = (item, delta) => {
-    setItemCounts((prev) => ({
-      ...prev,
-      [item]: Math.max(prev[item] + delta, 0),
-    }));
-  };
-
   // 리셋 함수
   const handleReset = () => {
     setLevel(200);
@@ -203,33 +196,21 @@ export const ExpInput = () => {
                 {item} × <Quantity>{itemCounts[item]}</Quantity>
               </span>
             </Item>
-            {item === "EXP 교환권 (200~260)" ||
-            item === "상급 EXP 교환권 (260~)" ? (
-              <ExpValueInput
-                maxLength="5"
-                value={itemCounts[item]}
-                onChange={(e) => {
-                  let value = e.target.value;
-                  if (!/^\d*$/.test(value)) return; // 숫자만 허용
-                  value = Number(value);
-                  if (value < 0) value = 0; // 음수 방지
+            <ExpValueInput
+              maxLength="5"
+              value={itemCounts[item]}
+              onChange={(e) => {
+                let value = e.target.value;
+                if (!/^\d*$/.test(value)) return; // 숫자만 허용
+                value = Number(value);
+                if (value < 0) value = 0; // 음수 방지
 
-                  setItemCounts((prev) => ({
-                    ...prev,
-                    [item]: value,
-                  }));
-                }}
-              />
-            ) : (
-              <ButtonWrap>
-                <QuantityButton onClick={() => handleElixirChange(item, -1)}>
-                  -
-                </QuantityButton>
-                <QuantityButton onClick={() => handleElixirChange(item, 1)}>
-                  +
-                </QuantityButton>
-              </ButtonWrap>
-            )}
+                setItemCounts((prev) => ({
+                  ...prev,
+                  [item]: value,
+                }));
+              }}
+            />
           </ItemControl>
         ))}
       </ItemWrap>
@@ -306,27 +287,6 @@ const Quantity = styled.span`
   font-size: 16px;
   font-weight: 700;
   color: rgb(255, 255, 255);
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  gap: 3px;
-`;
-
-const QuantityButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 28px;
-  height: 28px;
-  font-size: 20px;
-  background: rgb(141, 199, 209);
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    filter: brightness(1.3);
-  }
 `;
 
 const Result = styled.div`
