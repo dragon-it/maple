@@ -12,7 +12,7 @@ export const Menu = () => {
   const menuRef = useRef(null);
   const [sundayMapleUrl, setSundayMapleUrl] = useState(
     localStorage.getItem("sundayMaple") ||
-      "https://maplestory.nexon.com/News/Event"
+      "https://maplestory.nexon.com/News/Event",
   );
 
   useEffect(() => {
@@ -174,7 +174,9 @@ export const MenuContainer = styled.div`
   outline: 1px solid rgb(46, 48, 53);
   border: 1px solid rgb(61, 69, 78);
   border-radius: 7px;
-  transition: opacity 0.7s ease, max-height 0.8s ease;
+  transition:
+    opacity 0.7s ease,
+    max-height 0.8s ease;
   z-index: 9999999;
   box-shadow: ${({ $isClicked }) =>
     $isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
@@ -183,8 +185,8 @@ export const MenuContainer = styled.div`
 
 export const Menus = styled(Link)`
   color: rgb(255, 255, 255);
-  font-size: 12px;
-  padding: 7px 0px;
+  font-size: 15px;
+  padding: 10px 0px;
   text-decoration: none;
   cursor: pointer;
   border-bottom: 1px solid rgba(91, 91, 91, 0.5);
@@ -197,8 +199,8 @@ export const Menus = styled(Link)`
 
 const MenuLink = styled.a`
   color: rgb(255, 255, 255);
-  font-size: 12px;
-  padding: 7px 0px;
+  font-size: 15px;
+  padding: 10px 0px;
   text-decoration: none;
   cursor: pointer;
 
@@ -225,7 +227,7 @@ const MiniGameGroup = styled.div`
 
 const MiniGameTitle = styled.div`
   color: rgb(255, 255, 255);
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
 
   &:hover {
@@ -242,7 +244,7 @@ const MiniGameMenu = styled.div`
 
 const MiniGameItem = styled(Link)`
   color: rgb(182, 182, 182);
-  font-size: 11px;
+  font-size: 14px;
   text-decoration: none;
 
   &:hover {

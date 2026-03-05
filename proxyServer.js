@@ -304,7 +304,7 @@ app.post("/api/guild/members", async (req, res) => {
             }
           } catch (error) {
             console.error(
-              `Error fetching data for member ${member}: ${error.message}`
+              `Error fetching data for member ${member}: ${error.message}`,
             );
             return {
               character_name: member,
@@ -313,7 +313,7 @@ app.post("/api/guild/members", async (req, res) => {
               character_class: null,
             };
           }
-        })
+        }),
       );
 
       membersData.push(...batchData);
@@ -462,7 +462,7 @@ const fetchAllSkills = async (ocid) => {
       } catch {
         return [String(grade), null];
       }
-    })
+    }),
   );
 
   // null 제거하고 키:값 맵으로 축약
@@ -538,7 +538,7 @@ app.get("/api/character/information", async (req, res) => {
 
     // unionChampion에서 챔피언 이름을 가져오는 함수
     const championNames = Object.values(unionChampion.union_champion).map(
-      (champ) => champ.champion_name
+      (champ) => champ.champion_name,
     );
 
     const championDetails = await Promise.all(
@@ -572,7 +572,7 @@ app.get("/api/character/information", async (req, res) => {
             error: "Failed to fetch character data",
           };
         }
-      })
+      }),
     );
 
     res.json({
@@ -691,16 +691,16 @@ app.use("/ads.txt", express.static(path.join(__dirname, "ads.txt")));
 
 if (process.env.NODE_ENV === "development") {
   console.log(
-    "🔄 Development mode: Proxying to React dev server (localhost:3000)"
+    "🔄 Development mode: Proxying to React dev server (localhost:3000)",
   );
 
   app.use(
     createProxyMiddleware({
-      target: "http://localhost:3000",
+      target: "http://localhost:3001",
       changeOrigin: true,
       ws: true, // WebSocket 지원
       logLevel: "debug",
-    })
+    }),
   );
 } else {
   console.log(`📦 Production mode: Serving from ${BUILD_DIR}`);
