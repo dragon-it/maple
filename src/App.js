@@ -13,6 +13,7 @@ import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
 import { SlidingPuzzle } from "./pages/SlidingPuzzle";
+import { Checklist } from "./pages/Checklist";
 import Layout from "./Layout";
 import { UserPage } from "./pages/UserPage";
 
@@ -97,6 +98,14 @@ function App() {
                 }
               />
               <Route
+                path="/checklist"
+                element={
+                  <Layout>
+                    <Checklist />
+                  </Layout>
+                }
+              />
+              <Route
                 path="/sliding-puzzle"
                 element={
                   <Layout>
@@ -108,7 +117,7 @@ function App() {
                 path="*"
                 element={
                   <Layout>
-                    <Error errorMessage="페이지를 찾을 수 없습니다." />
+                    <Error errorMessage="?섏씠吏瑜?李얠쓣 ???놁뒿?덈떎." />
                   </Layout>
                 }
               />
@@ -132,3 +141,4 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
