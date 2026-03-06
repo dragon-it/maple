@@ -29,6 +29,7 @@ export const Header = () => {
     searchGuild: "/guild-search",
     randomClass: "/random-class",
     expSimulator: "/exp-simulator",
+    checklist: "/checklist",
     slidingPuzzle: "/sliding-puzzle",
   };
 
@@ -151,6 +152,9 @@ export const Header = () => {
 
         <Item>
           <ItemLink to={routes.expSimulator}>EXP 시뮬레이터</ItemLink>
+        </Item>
+        <Item>
+          <ItemLink to={routes.checklist}>체크리스트</ItemLink>
         </Item>
 
         <Item>
