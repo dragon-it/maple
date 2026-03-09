@@ -8,6 +8,9 @@ import Growth_Elixir3 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir
 import Transcendent_Elixir from "../../assets/pages/expSimulator/Elixir/Transcendent_Elixir.png";
 import Typhoon_Elixir from "../../assets/pages/expSimulator/Elixir/Typhoon_Elixir.png";
 import limit_Elixir from "../../assets/pages/expSimulator/Elixir/limit_Elixir.png";
+import leap_Elixir from "../../assets/pages/expSimulator/Elixir/leap_Elixir.png";
+import legendary_Elixir from "../../assets/pages/expSimulator/Elixir/legendary_Elixir.png";
+
 import Advanced_EXP_Coupon from "../../assets/pages/expSimulator/EXP/Advanced_EXP_icon.png";
 import EXP_Coupon from "../../assets/pages/expSimulator/EXP/EXP_icon.png";
 import ExpData from "./ExpData";
@@ -24,17 +27,12 @@ export const ExpInput = () => {
     "성장의 비약 (200~229)": 0,
     "태풍 성장의 비약 (200~239)": 0,
     "극한 성장의 비약 (200~249)": 0,
+    "도약 성장의 비약 (200~259)": 0,
     "초월 성장의 비약 (200~269)": 0,
+    "전설 성장의 비약 (200~279)": 0,
     "EXP 교환권 (200~260)": 0,
     "상급 EXP 교환권 (260~)": 0,
   });
-
-  const handleElixirChange = (item, delta) => {
-    setItemCounts((prev) => ({
-      ...prev,
-      [item]: Math.max(prev[item] + delta, 0),
-    }));
-  };
 
   // 리셋 함수
   const handleReset = () => {
@@ -48,7 +46,9 @@ export const ExpInput = () => {
       "성장의 비약 (200~229)": 0,
       "태풍 성장의 비약 (200~239)": 0,
       "극한 성장의 비약 (200~249)": 0,
+      "도약 성장의 비약 (200~259)": 0,
       "초월 성장의 비약 (200~269)": 0,
+      "전설 성장의 비약 (200~279)": 0,
       "EXP 교환권 (200~260)": 0,
       "상급 EXP 교환권 (260~)": 0,
     });
@@ -149,7 +149,9 @@ export const ExpInput = () => {
     "성장의 비약 (200~229)": Growth_Elixir3,
     "태풍 성장의 비약 (200~239)": Typhoon_Elixir,
     "극한 성장의 비약 (200~249)": limit_Elixir,
+    "도약 성장의 비약 (200~259)": leap_Elixir,
     "초월 성장의 비약 (200~269)": Transcendent_Elixir,
+    "전설 성장의 비약 (200~279)": legendary_Elixir,
     "EXP 교환권 (200~260)": EXP_Coupon,
     "상급 EXP 교환권 (260~)": Advanced_EXP_Coupon,
   };
@@ -203,33 +205,21 @@ export const ExpInput = () => {
                 {item} × <Quantity>{itemCounts[item]}</Quantity>
               </span>
             </Item>
-            {item === "EXP 교환권 (200~260)" ||
-            item === "상급 EXP 교환권 (260~)" ? (
-              <ExpValueInput
-                maxLength="4"
-                value={itemCounts[item]}
-                onChange={(e) => {
-                  let value = e.target.value;
-                  if (!/^\d*$/.test(value)) return; // 숫자만 허용
-                  value = Number(value);
-                  if (value < 0) value = 0; // 음수 방지
+            <ExpValueInput
+              maxLength="5"
+              value={itemCounts[item]}
+              onChange={(e) => {
+                let value = e.target.value;
+                if (!/^\d*$/.test(value)) return; // 숫자만 허용
+                value = Number(value);
+                if (value < 0) value = 0; // 음수 방지
 
-                  setItemCounts((prev) => ({
-                    ...prev,
-                    [item]: value,
-                  }));
-                }}
-              />
-            ) : (
-              <ButtonWrap>
-                <QuantityButton onClick={() => handleElixirChange(item, -1)}>
-                  -
-                </QuantityButton>
-                <QuantityButton onClick={() => handleElixirChange(item, 1)}>
-                  +
-                </QuantityButton>
-              </ButtonWrap>
-            )}
+                setItemCounts((prev) => ({
+                  ...prev,
+                  [item]: value,
+                }));
+              }}
+            />
           </ItemControl>
         ))}
       </ItemWrap>
@@ -276,7 +266,7 @@ const ExpValueInput = styled.input`
   border-radius: 5px;
   height: 25px;
   width: 30%;
-
+  text-align: right;
   background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
 `;
@@ -306,27 +296,6 @@ const Quantity = styled.span`
   font-size: 16px;
   font-weight: 700;
   color: rgb(255, 255, 255);
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  gap: 3px;
-`;
-
-const QuantityButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 28px;
-  height: 28px;
-  font-size: 20px;
-  background: rgb(141, 199, 209);
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    filter: brightness(1.3);
-  }
 `;
 
 const Result = styled.div`
