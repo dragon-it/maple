@@ -8,6 +8,9 @@ import Growth_Elixir3 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir
 import Transcendent_Elixir from "../../assets/pages/expSimulator/Elixir/Transcendent_Elixir.png";
 import Typhoon_Elixir from "../../assets/pages/expSimulator/Elixir/Typhoon_Elixir.png";
 import limit_Elixir from "../../assets/pages/expSimulator/Elixir/limit_Elixir.png";
+import leap_Elixir from "../../assets/pages/expSimulator/Elixir/leap_Elixir.png";
+import legendary_Elixir from "../../assets/pages/expSimulator/Elixir/legendary_Elixir.png";
+
 import Advanced_EXP_Coupon from "../../assets/pages/expSimulator/EXP/Advanced_EXP_icon.png";
 import EXP_Coupon from "../../assets/pages/expSimulator/EXP/EXP_icon.png";
 import ExpData from "./ExpData";
@@ -24,7 +27,9 @@ export const ExpInput = () => {
     "성장의 비약 (200~229)": 0,
     "태풍 성장의 비약 (200~239)": 0,
     "극한 성장의 비약 (200~249)": 0,
+    "도약 성장의 비약 (200~259)": 0,
     "초월 성장의 비약 (200~269)": 0,
+    "전설 성장의 비약 (200~279)": 0,
     "EXP 교환권 (200~260)": 0,
     "상급 EXP 교환권 (260~)": 0,
   });
@@ -41,7 +46,9 @@ export const ExpInput = () => {
       "성장의 비약 (200~229)": 0,
       "태풍 성장의 비약 (200~239)": 0,
       "극한 성장의 비약 (200~249)": 0,
+      "도약 성장의 비약 (200~259)": 0,
       "초월 성장의 비약 (200~269)": 0,
+      "전설 성장의 비약 (200~279)": 0,
       "EXP 교환권 (200~260)": 0,
       "상급 EXP 교환권 (260~)": 0,
     });
@@ -142,7 +149,9 @@ export const ExpInput = () => {
     "성장의 비약 (200~229)": Growth_Elixir3,
     "태풍 성장의 비약 (200~239)": Typhoon_Elixir,
     "극한 성장의 비약 (200~249)": limit_Elixir,
+    "도약 성장의 비약 (200~259)": leap_Elixir,
     "초월 성장의 비약 (200~269)": Transcendent_Elixir,
+    "전설 성장의 비약 (200~279)": legendary_Elixir,
     "EXP 교환권 (200~260)": EXP_Coupon,
     "상급 EXP 교환권 (260~)": Advanced_EXP_Coupon,
   };
