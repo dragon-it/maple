@@ -117,7 +117,7 @@ function App() {
                 path="*"
                 element={
                   <Layout>
-                    <Error errorMessage="?섏씠吏瑜?李얠쓣 ???놁뒿?덈떎." />
+                    <Error errorMessage="페이지를 찾을 수 없습니다." />
                   </Layout>
                 }
               />
@@ -141,4 +141,3 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-
