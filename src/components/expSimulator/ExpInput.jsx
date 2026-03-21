@@ -227,8 +227,7 @@ export const ExpInput = () => {
       </ResultActions>
 
       <Result>
-        {finalLevel}레벨 {expPercent}% ({Number(finalExpValue).toLocaleString()}
-        )
+        {finalLevel}레벨 {expPercent}%
       </Result>
 
       <ItemWrap>
