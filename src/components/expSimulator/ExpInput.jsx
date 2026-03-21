@@ -161,11 +161,10 @@ export const ExpInput = () => {
     return {
       finalLevel,
       expPercent: finalLevel === 300 ? 0 : finalExpPercent,
-      finalExpValue: accumulatedExp,
     };
   };
 
-  const { finalLevel, expPercent, finalExpValue } = calculateFinalExp();
+  const { finalLevel, expPercent } = calculateFinalExp();
 
   const itemImages = {
     "익스트림 성장의 비약": Extreme_Elixir,
