@@ -13,7 +13,7 @@ import legendary_Elixir from "../../assets/pages/expSimulator/Elixir/legendary_E
 
 import Advanced_EXP_Coupon from "../../assets/pages/expSimulator/EXP/Advanced_EXP_icon.png";
 import EXP_Coupon from "../../assets/pages/expSimulator/EXP/EXP_icon.png";
-import ExpData from "./ExpData";
+import ExpData, { ELIXIR_FIXED_EXP } from "./ExpData";
 import iconBackground from "../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
 
 export const ExpInput = () => {
@@ -53,6 +53,7 @@ export const ExpInput = () => {
       "상급 EXP 교환권 (260~)": 0,
     });
   };
+
   const calculateFinalExp = () => {
     let finalLevel = level;
     let currentExpValue = Number(currentExp);
@@ -83,15 +84,11 @@ export const ExpInput = () => {
 
         let expIncreaseAmount = 0;
 
-        if (item === "EXP 교환권 (200~260)") {
-          if (finalLevel < 200) return; // 200레벨 이상만 사용 가능
-        } else if (item === "상급 EXP 교환권 (260~)") {
-          if (finalLevel < 260) return; // 260레벨 이상만 사용 가능
-        }
+        if (item === "EXP 교환권 (200~260)" && finalLevel < 200) continue;
+        if (item === "상급 EXP 교환권 (260~)" && finalLevel < 260) continue;
 
-        // 경험치 증가량 계산
         if (item === "궁극의 유니온 성장의 비약") {
-          expIncreaseAmount = 11462335230; // 고정 경험치
+          expIncreaseAmount = 11462335230;
         } else if (
           item === "EXP 교환권 (200~260)" ||
           item === "상급 EXP 교환권 (260~)"
@@ -100,9 +97,34 @@ export const ExpInput = () => {
             ? Number(expIncreaseData[finalLevel][item].replace(/,/g, ""))
             : 0;
           expIncreaseAmount = fixedExp;
+        } else if (ELIXIR_FIXED_EXP[item]) {
+          const config = ELIXIR_FIXED_EXP[item];
+
+          if (item === "익스트림 성장의 비약") {
+            expIncreaseAmount = config;
+          } else {
+            if (finalLevel <= config.maxLevel) {
+              // 현재 레벨에서 남은 경험치 계산
+              const remainExp = totalExp - accumulatedExp;
+
+              // 1레벨업 강제
+              finalLevel++;
+
+              // 다음 레벨 totalExp 갱신
+              if (!expIncreaseData[finalLevel]) break;
+              totalExp = expIncreaseData[finalLevel].requiredExp;
+
+              // 남은 경험치를 다음 레벨에 이월
+              accumulatedExp = remainExp;
+
+              continue;
+            } else {
+              expIncreaseAmount = config.exp;
+            }
+          }
         } else {
-          const expPercentIncrease = Number(expIncreaseData[finalLevel][item]);
-          expIncreaseAmount = (totalExp * expPercentIncrease) / 100;
+          // 혹시 모를 fallback (안 써도 됨)
+          expIncreaseAmount = 0;
         }
 
         // 261레벨이 되어도 경험치 계속 반영
@@ -136,7 +158,10 @@ export const ExpInput = () => {
       finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3);
     }
 
-    return { finalLevel, expPercent: finalLevel === 300 ? 0 : finalExpPercent };
+    return {
+      finalLevel,
+      expPercent: finalLevel === 300 ? 0 : finalExpPercent,
+    };
   };
 
   const { finalLevel, expPercent } = calculateFinalExp();
@@ -158,7 +183,7 @@ export const ExpInput = () => {
 
   return (
     <Container>
-      <ItemTitle>현재 레벨: {level}</ItemTitle>
+      <ItemTitle>레벨</ItemTitle>
       <ValueInput
         maxLength="3"
         value={level}
@@ -173,7 +198,8 @@ export const ExpInput = () => {
           }
         }}
       />
-      <ItemTitle>현재 경험치: {currentExp}%</ItemTitle>
+      <ItemTitle>경험치 (%)</ItemTitle>
+
       <ValueInput
         maxLength="6"
         value={currentExp}
@@ -193,6 +219,15 @@ export const ExpInput = () => {
           }
         }}
       />
+
+      <Reset onClick={handleReset}>초기화</Reset>
+      <ResultActions>
+        <ResultText>결과</ResultText>
+      </ResultActions>
+
+      <Result>
+        {finalLevel}레벨 {expPercent}%
+      </Result>
 
       <ItemWrap>
         {Object.keys(itemCounts).map((item) => (
@@ -223,14 +258,6 @@ export const ExpInput = () => {
           </ItemControl>
         ))}
       </ItemWrap>
-      <Reset onClick={handleReset}>초기화</Reset>
-      <ResultActions>
-        <ResultText>결과</ResultText>
-      </ResultActions>
-
-      <Result>
-        {finalLevel}레벨 {expPercent}%
-      </Result>
     </Container>
   );
 };
@@ -254,7 +281,8 @@ const Item = styled.div`
 
 const ValueInput = styled.input`
   border-radius: 5px;
-  height: 25px;
+  height: 35px;
+  font-size: 18px;
   width: 100%;
   box-sizing: border-box;
   background: rgb(70, 77, 83);
@@ -264,7 +292,7 @@ const ValueInput = styled.input`
 
 const ExpValueInput = styled.input`
   border-radius: 5px;
-  height: 25px;
+  height: 35px;
   width: 30%;
   text-align: right;
   background: rgb(70, 77, 83);
@@ -392,7 +420,7 @@ const Reset = styled.button`
   width: 100%;
   background: rgb(255, 255, 255);
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin: 15px 0px;
   cursor: pointer;
 
   &:hover {
