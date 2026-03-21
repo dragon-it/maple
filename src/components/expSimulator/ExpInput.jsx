@@ -104,18 +104,17 @@ export const ExpInput = () => {
             expIncreaseAmount = config;
           } else {
             if (finalLevel <= config.maxLevel) {
-              // 현재 레벨에서 남은 경험치 계산
-              const remainExp = totalExp - accumulatedExp;
+              // 현재 가지고 있던 경험치 저장
+              const carryExp = accumulatedExp;
 
-              // 1레벨업 강제
+              // 레벨업
               finalLevel++;
 
-              // 다음 레벨 totalExp 갱신
               if (!expIncreaseData[finalLevel]) break;
               totalExp = expIncreaseData[finalLevel].requiredExp;
 
-              // 남은 경험치를 다음 레벨에 이월
-              accumulatedExp = remainExp;
+              // 그대로 이월
+              accumulatedExp = carryExp;
 
               continue;
             } else {
@@ -294,6 +293,7 @@ const ExpValueInput = styled.input`
   border-radius: 5px;
   height: 35px;
   width: 30%;
+  font-size: 18px;
   text-align: right;
   background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
