@@ -543,6 +543,14 @@ export const ELIXIR_FIXED_EXP = {
     maxLevel: 279,
     exp: 16657228589191,
   },
+  "진 익스트림 성장의 비약 (200~259)": {
+    maxLevel: 259,
+    exp: 243444353353,
+  },
+  "진 하이퍼 성장의 비약 (260~284)": {
+    maxLevel: 284,
+    exp: 49263453722414,
+  },
 };
 
 const ExpData = baseExpData.map((entry) => {
