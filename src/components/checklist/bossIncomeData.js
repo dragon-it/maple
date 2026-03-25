@@ -1,4 +1,3 @@
-import AkayrumIcon from "../../assets/pages/checklist/Akayrum_icon.png";
 import BaldrixIcon from "../../assets/pages/checklist/Baldrix_icon.png";
 import BlackMageIcon from "../../assets/pages/checklist/Black_Mage_icon.png";
 import BloodyQueenIcon from "../../assets/pages/checklist/Bloody_Queen_icon.png";
@@ -10,12 +9,10 @@ import DuskIcon from "../../assets/pages/checklist/Dusk_icon.png";
 import FirstAdversaryIcon from "../../assets/pages/checklist/First_Adversary_icon.png";
 import GuardianAngelSlimeIcon from "../../assets/pages/checklist/Guardian_Angel_Slime_icon.png";
 import HillaIcon from "../../assets/pages/checklist/Hilla_icon.png";
-import HorntailIcon from "../../assets/pages/checklist/Horntail_icon.png";
 import JupiterIcon from "../../assets/pages/checklist/Jupiter_icon.png";
 import KaiIcon from "../../assets/pages/checklist/kai_icon.png";
 import KalingIcon from "../../assets/pages/checklist/Kaling_icon.png";
 import KalosGuardianIcon from "../../assets/pages/checklist/Kalos_the_Guardian_icon.png";
-import KaungIcon from "../../assets/pages/checklist/Kaung_icon.png";
 import LimboIcon from "../../assets/pages/checklist/Limbo_icon.png";
 import LotusIcon from "../../assets/pages/checklist/Lotus_icon.png";
 import MagnusIcon from "../../assets/pages/checklist/Magnus_icon.png";
@@ -26,7 +23,6 @@ import RadiantMaleficIcon from "../../assets/pages/checklist/Radiant_Malefic_ico
 import VellumIcon from "../../assets/pages/checklist/Vellum_icon.png";
 import VerusHillaIcon from "../../assets/pages/checklist/Verus_Hilla_icon.png";
 import VonBonIcon from "../../assets/pages/checklist/Von_Bon_icon.png";
-import VonLeonIcon from "../../assets/pages/checklist/Von_Leon_icon.png";
 import WillIcon from "../../assets/pages/checklist/Will_icon.png";
 import ZakumIcon from "../../assets/pages/checklist/Zakum_icon.png";
 
@@ -59,113 +55,12 @@ const chaos = (reward = null) => createDifficulty("chaos", "카오스", reward);
 const extreme = (reward = null) =>
   createDifficulty("extreme", "익스트림", reward);
 
-export const periodGroups = [
-  {
-    key: "daily",
-    label: "일간",
-    weeklyMultiplier: 7,
-    monthlyMultiplier: 30,
-    description: "일간 보스는 주간 7회, 월간 30회 기준으로 계산합니다.",
-    bosses: [
-      boss({
-        id: "zakum",
-        bossName: "자쿰",
-        icon: ZakumIcon,
-        levelRequirement: "Lv. 50 / -",
-        difficulties: [easy(114000), normal(349000)],
-      }),
-      boss({
-        id: "magnus",
-        bossName: "매그너스",
-        icon: MagnusIcon,
-        levelRequirement: "Lv. 115 / -",
-        difficulties: [easy(411000), normal(1480000)],
-      }),
-      boss({
-        id: "hilla",
-        bossName: "힐라",
-        icon: HillaIcon,
-        levelRequirement: "Lv. 85 / -",
-        difficulties: [normal(455000)],
-      }),
-      boss({
-        id: "kaung",
-        bossName: "카웅",
-        icon: KaungIcon,
-        levelRequirement: "Lv. 180 / -",
-        difficulties: [normal(712000)],
-      }),
-      boss({
-        id: "papulatus",
-        bossName: "파풀라투스",
-        icon: PapulatusIcon,
-        levelRequirement: "Lv. 115 / -",
-        difficulties: [easy(390000), normal(1520000)],
-      }),
-      boss({
-        id: "pierre",
-        bossName: "피에르",
-        icon: PierreIcon,
-        levelRequirement: "Lv. 125 / -",
-        difficulties: [normal(551000)],
-      }),
-      boss({
-        id: "von_bon",
-        bossName: "반반",
-        icon: VonBonIcon,
-        levelRequirement: "Lv. 125 / -",
-        difficulties: [normal(551000)],
-      }),
-      boss({
-        id: "bloody_queen",
-        bossName: "블러디퀸",
-        icon: BloodyQueenIcon,
-        levelRequirement: "Lv. 125 / -",
-        difficulties: [normal(551000)],
-      }),
-      boss({
-        id: "vellum",
-        bossName: "벨룸",
-        icon: VellumIcon,
-        levelRequirement: "Lv. 125 / -",
-        difficulties: [normal(551000)],
-      }),
-      boss({
-        id: "von_leon",
-        bossName: "반 레온",
-        icon: VonLeonIcon,
-        levelRequirement: "Lv. 125 / -",
-        difficulties: [easy(602000), normal(830000), hard(1390000)],
-      }),
-      boss({
-        id: "horntail",
-        bossName: "혼테일",
-        icon: HorntailIcon,
-        levelRequirement: "Lv. 130 / -",
-        difficulties: [easy(502000), normal(576000), chaos(770000)],
-      }),
-      boss({
-        id: "akayrum",
-        bossName: "아카이럼",
-        icon: AkayrumIcon,
-        levelRequirement: "Lv. 140 / -",
-        difficulties: [easy(656000), normal(1430000)],
-      }),
-      boss({
-        id: "pink_bean",
-        bossName: "핑크빈",
-        icon: PinkBeanIcon,
-        levelRequirement: "Lv. 140 / -",
-        difficulties: [normal(799000)],
-      }),
-    ],
-  },
+const allPeriodGroups = [
   {
     key: "weekly",
     label: "주간",
     weeklyMultiplier: 1,
     monthlyMultiplier: 4,
-    description: "주간 보스는 월간 합산 시 4주 기준으로 계산합니다.",
     bosses: [
       boss({
         id: "zakum_chaos",
@@ -351,7 +246,6 @@ export const periodGroups = [
     label: "월간",
     weeklyMultiplier: 0.25,
     monthlyMultiplier: 1,
-    description: "월간 보스는 주간 합산 시 4주 기준으로 환산합니다.",
     bosses: [
       boss({
         id: "black_mage",
@@ -362,3 +256,7 @@ export const periodGroups = [
     ],
   },
 ];
+
+export const periodGroups = allPeriodGroups.filter(
+  ({ key }) => key === "weekly",
+);
