@@ -137,7 +137,7 @@ export const CaptureRenderingBox = ({ result }) => {
   const fetchImageFromProxy = async (imageUrl) => {
     try {
       const response = await fetch(
-        `/api/image-proxy?imageUrl=${encodeURIComponent(imageUrl)}`
+        `/api/image-proxy?imageUrl=${encodeURIComponent(imageUrl)}`,
       );
       if (!response.ok) {
         throw new Error("요청 실패");
@@ -231,6 +231,7 @@ const Container = styled.div`
 
 const MainCharacterWrap = styled.div`
   position: relative;
+  overflow: hidden;
 `;
 
 const Image = styled.img`
@@ -302,7 +303,7 @@ const NpcWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 23%;
+  max-width: 22%;
 `;
 
 const NpcText = styled.div`
