@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Extreme_Elixir from "../../assets/pages/expSimulator/Elixir/Extreme_Elixir.png";
 import Union_Elixir from "../../assets/pages/expSimulator/Elixir/Union_Elixir.png";
@@ -10,7 +10,8 @@ import Typhoon_Elixir from "../../assets/pages/expSimulator/Elixir/Typhoon_Elixi
 import limit_Elixir from "../../assets/pages/expSimulator/Elixir/limit_Elixir.png";
 import leap_Elixir from "../../assets/pages/expSimulator/Elixir/leap_Elixir.png";
 import legendary_Elixir from "../../assets/pages/expSimulator/Elixir/legendary_Elixir.png";
-
+import Jin_Extreme_Elixir from "../../assets/pages/expSimulator/Elixir/Jin_Extreme_Elixir.png";
+import Jin_Hyper_Elixir from "../../assets/pages/expSimulator/Elixir/Jin_Hyper_Elixir.png";
 import Advanced_EXP_Coupon from "../../assets/pages/expSimulator/EXP/Advanced_EXP_icon.png";
 import EXP_Coupon from "../../assets/pages/expSimulator/EXP/EXP_icon.png";
 import ExpData, { ELIXIR_FIXED_EXP } from "./ExpData";
@@ -42,20 +43,7 @@ export const ExpInput = () => {
   const handleReset = () => {
     setLevel(200);
     setCurrentExp(0);
-    setItemCounts({
-      "익스트림 성장의 비약": 0,
-      "궁극의 유니온 성장의 비약": 0,
-      "성장의 비약 (200~209)": 0,
-      "성장의 비약 (200~219)": 0,
-      "성장의 비약 (200~229)": 0,
-      "태풍 성장의 비약 (200~239)": 0,
-      "극한 성장의 비약 (200~249)": 0,
-      "도약 성장의 비약 (200~259)": 0,
-      "초월 성장의 비약 (200~269)": 0,
-      "전설 성장의 비약 (200~279)": 0,
-      "EXP 교환권 (200~260)": 0,
-      "상급 EXP 교환권 (260~)": 0,
-    });
+    setItemCounts({ ...INITIAL_ITEM_COUNTS });
   };
 
   const calculateFinalExp = () => {
@@ -63,6 +51,8 @@ export const ExpInput = () => {
     let currentExpValue = Number(currentExp);
     let totalExp = 0;
     let accumulatedExp = 0;
+    let shouldShowJinExtremeAlert = false;
+    let shouldShowJinHyperLevelAlert = false;
 
     // 경험치 데이터 정리 (쉼표 제거 후 숫자로 변환)
     const expIncreaseData = ExpData.reduce((acc, data) => {
@@ -90,6 +80,33 @@ export const ExpInput = () => {
 
         if (item === "EXP 교환권 (200~260)" && finalLevel < 200) continue;
         if (item === "상급 EXP 교환권 (260~)" && finalLevel < 260) continue;
+        if (
+          item === "진 익스트림 성장의 비약 (200~259)" &&
+          finalLevel >= 200 &&
+          finalLevel < 260
+        ) {
+          shouldShowJinExtremeAlert = true;
+          continue;
+        }
+        if (item === "진 하이퍼 성장의 비약 (260~284)" && finalLevel < 260) {
+          shouldShowJinHyperLevelAlert = true;
+          continue;
+        }
+        if (
+          item === "진 하이퍼 성장의 비약 (260~284)" &&
+          finalLevel >= 260 &&
+          finalLevel <= 284
+        ) {
+          const carryExp = accumulatedExp;
+
+          finalLevel++;
+
+          if (!expIncreaseData[finalLevel]) break;
+          totalExp = expIncreaseData[finalLevel].requiredExp;
+          accumulatedExp = carryExp;
+
+          continue;
+        }
 
         if (item === "궁극의 유니온 성장의 비약") {
           expIncreaseAmount = 11462335230;
@@ -164,10 +181,41 @@ export const ExpInput = () => {
     return {
       finalLevel,
       expPercent: finalLevel === 300 ? 0 : finalExpPercent,
+      shouldShowJinExtremeAlert,
+      shouldShowJinHyperLevelAlert,
     };
   };
 
-  const { finalLevel, expPercent } = calculateFinalExp();
+  const {
+    finalLevel,
+    expPercent,
+    shouldShowJinExtremeAlert,
+    shouldShowJinHyperLevelAlert,
+  } = calculateFinalExp();
+
+  useEffect(() => {
+    if (shouldShowJinExtremeAlert) {
+      alert(
+        "진 익스트림 성장의 비약은 260레벨 미만에서 레벨 상승 폭이 랜덤이라 계산할 수 없습니다",
+      );
+      setItemCounts((prev) =>
+        prev["진 익스트림 성장의 비약 (200~259)"] === 0
+          ? prev
+          : { ...prev, "진 익스트림 성장의 비약 (200~259)": 0 },
+      );
+    }
+  }, [shouldShowJinExtremeAlert]);
+
+  useEffect(() => {
+    if (shouldShowJinHyperLevelAlert) {
+      alert("진 하이퍼 성장의 비약은 260레벨 이상에서만 사용할 수 있습니다.");
+      setItemCounts((prev) =>
+        prev["진 하이퍼 성장의 비약 (260~284)"] === 0
+          ? prev
+          : { ...prev, "진 하이퍼 성장의 비약 (260~284)": 0 },
+      );
+    }
+  }, [shouldShowJinHyperLevelAlert]);
 
   const itemImages = {
     "익스트림 성장의 비약": Extreme_Elixir,
@@ -180,6 +228,8 @@ export const ExpInput = () => {
     "도약 성장의 비약 (200~259)": leap_Elixir,
     "초월 성장의 비약 (200~269)": Transcendent_Elixir,
     "전설 성장의 비약 (200~279)": legendary_Elixir,
+    "진 익스트림 성장의 비약 (200~259)": Jin_Extreme_Elixir,
+    "진 하이퍼 성장의 비약 (260~284)": Jin_Hyper_Elixir,
     "EXP 교환권 (200~260)": EXP_Coupon,
     "상급 EXP 교환권 (260~)": Advanced_EXP_Coupon,
   };
@@ -303,9 +353,7 @@ const ExpValueInput = styled.input`
   color: rgb(255, 255, 255);
 `;
 
-const ItemWrap = styled.div`
-  margin: 10px 0;
-`;
+const ItemWrap = styled.div``;
 
 const ItemControl = styled.div`
   display: flex;
@@ -315,7 +363,7 @@ const ItemControl = styled.div`
   outline: 1px solid rgb(67, 121, 128);
   border-radius: 5px;
   padding: 3px;
-  margin: 7px 0px;
+  margin: 5px 0px;
   align-items: center;
   color: rgb(216, 216, 216);
 
@@ -344,6 +392,7 @@ const Result = styled.div`
   background: rgb(90, 96, 102);
   border: 1px solid rgb(197, 220, 242);
   padding: 5px;
+  margin-bottom: 10px;
 
   &::after {
     content: "";
