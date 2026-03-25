@@ -303,7 +303,7 @@ const NpcWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 23%;
+  max-width: 22%;
 `;
 
 const NpcText = styled.div`
