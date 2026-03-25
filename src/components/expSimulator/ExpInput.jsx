@@ -8,26 +8,35 @@ import Growth_Elixir3 from "../../assets/pages/expSimulator/Elixir/Growth_Elixir
 import Transcendent_Elixir from "../../assets/pages/expSimulator/Elixir/Transcendent_Elixir.png";
 import Typhoon_Elixir from "../../assets/pages/expSimulator/Elixir/Typhoon_Elixir.png";
 import limit_Elixir from "../../assets/pages/expSimulator/Elixir/limit_Elixir.png";
+import leap_Elixir from "../../assets/pages/expSimulator/Elixir/leap_Elixir.png";
+import legendary_Elixir from "../../assets/pages/expSimulator/Elixir/legendary_Elixir.png";
+
 import Advanced_EXP_Coupon from "../../assets/pages/expSimulator/EXP/Advanced_EXP_icon.png";
 import EXP_Coupon from "../../assets/pages/expSimulator/EXP/EXP_icon.png";
-import ExpData from "./ExpData";
+import ExpData, { ELIXIR_FIXED_EXP } from "./ExpData";
 import iconBackground from "../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.base.png";
+
+const INITIAL_ITEM_COUNTS = {
+  "익스트림 성장의 비약": 0,
+  "궁극의 유니온 성장의 비약": 0,
+  "성장의 비약 (200~209)": 0,
+  "성장의 비약 (200~219)": 0,
+  "성장의 비약 (200~229)": 0,
+  "태풍 성장의 비약 (200~239)": 0,
+  "극한 성장의 비약 (200~249)": 0,
+  "도약 성장의 비약 (200~259)": 0,
+  "초월 성장의 비약 (200~269)": 0,
+  "전설 성장의 비약 (200~279)": 0,
+  "진 익스트림 성장의 비약 (200~259)": 0,
+  "진 하이퍼 성장의 비약 (260~284)": 0,
+  "EXP 교환권 (200~260)": 0,
+  "상급 EXP 교환권 (260~)": 0,
+};
 
 export const ExpInput = () => {
   const [level, setLevel] = useState(200);
   const [currentExp, setCurrentExp] = useState(0);
-  const [itemCounts, setItemCounts] = useState({
-    "익스트림 성장의 비약": 0,
-    "궁극의 유니온 성장의 비약": 0,
-    "성장의 비약 (200~209)": 0,
-    "성장의 비약 (200~219)": 0,
-    "성장의 비약 (200~229)": 0,
-    "태풍 성장의 비약 (200~239)": 0,
-    "극한 성장의 비약 (200~249)": 0,
-    "초월 성장의 비약 (200~269)": 0,
-    "EXP 교환권 (200~260)": 0,
-    "상급 EXP 교환권 (260~)": 0,
-  });
+  const [itemCounts, setItemCounts] = useState({ ...INITIAL_ITEM_COUNTS });
 
   // 리셋 함수
   const handleReset = () => {
@@ -41,11 +50,14 @@ export const ExpInput = () => {
       "성장의 비약 (200~229)": 0,
       "태풍 성장의 비약 (200~239)": 0,
       "극한 성장의 비약 (200~249)": 0,
+      "도약 성장의 비약 (200~259)": 0,
       "초월 성장의 비약 (200~269)": 0,
+      "전설 성장의 비약 (200~279)": 0,
       "EXP 교환권 (200~260)": 0,
       "상급 EXP 교환권 (260~)": 0,
     });
   };
+
   const calculateFinalExp = () => {
     let finalLevel = level;
     let currentExpValue = Number(currentExp);
@@ -76,15 +88,11 @@ export const ExpInput = () => {
 
         let expIncreaseAmount = 0;
 
-        if (item === "EXP 교환권 (200~260)") {
-          if (finalLevel < 200) return; // 200레벨 이상만 사용 가능
-        } else if (item === "상급 EXP 교환권 (260~)") {
-          if (finalLevel < 260) return; // 260레벨 이상만 사용 가능
-        }
+        if (item === "EXP 교환권 (200~260)" && finalLevel < 200) continue;
+        if (item === "상급 EXP 교환권 (260~)" && finalLevel < 260) continue;
 
-        // 경험치 증가량 계산
         if (item === "궁극의 유니온 성장의 비약") {
-          expIncreaseAmount = 11462335230; // 고정 경험치
+          expIncreaseAmount = 11462335230;
         } else if (
           item === "EXP 교환권 (200~260)" ||
           item === "상급 EXP 교환권 (260~)"
@@ -93,9 +101,33 @@ export const ExpInput = () => {
             ? Number(expIncreaseData[finalLevel][item].replace(/,/g, ""))
             : 0;
           expIncreaseAmount = fixedExp;
+        } else if (ELIXIR_FIXED_EXP[item]) {
+          const config = ELIXIR_FIXED_EXP[item];
+
+          if (item === "익스트림 성장의 비약") {
+            expIncreaseAmount = config;
+          } else {
+            if (finalLevel <= config.maxLevel) {
+              // 현재 가지고 있던 경험치 저장
+              const carryExp = accumulatedExp;
+
+              // 레벨업
+              finalLevel++;
+
+              if (!expIncreaseData[finalLevel]) break;
+              totalExp = expIncreaseData[finalLevel].requiredExp;
+
+              // 그대로 이월
+              accumulatedExp = carryExp;
+
+              continue;
+            } else {
+              expIncreaseAmount = config.exp;
+            }
+          }
         } else {
-          const expPercentIncrease = Number(expIncreaseData[finalLevel][item]);
-          expIncreaseAmount = (totalExp * expPercentIncrease) / 100;
+          // 혹시 모를 fallback (안 써도 됨)
+          expIncreaseAmount = 0;
         }
 
         // 261레벨이 되어도 경험치 계속 반영
@@ -129,7 +161,10 @@ export const ExpInput = () => {
       finalExpPercent = ((accumulatedExp / totalExp) * 100).toFixed(3);
     }
 
-    return { finalLevel, expPercent: finalLevel === 300 ? 0 : finalExpPercent };
+    return {
+      finalLevel,
+      expPercent: finalLevel === 300 ? 0 : finalExpPercent,
+    };
   };
 
   const { finalLevel, expPercent } = calculateFinalExp();
@@ -142,14 +177,16 @@ export const ExpInput = () => {
     "성장의 비약 (200~229)": Growth_Elixir3,
     "태풍 성장의 비약 (200~239)": Typhoon_Elixir,
     "극한 성장의 비약 (200~249)": limit_Elixir,
+    "도약 성장의 비약 (200~259)": leap_Elixir,
     "초월 성장의 비약 (200~269)": Transcendent_Elixir,
+    "전설 성장의 비약 (200~279)": legendary_Elixir,
     "EXP 교환권 (200~260)": EXP_Coupon,
     "상급 EXP 교환권 (260~)": Advanced_EXP_Coupon,
   };
 
   return (
     <Container>
-      <ItemTitle>현재 레벨: {level}</ItemTitle>
+      <ItemTitle>레벨</ItemTitle>
       <ValueInput
         maxLength="3"
         value={level}
@@ -164,7 +201,8 @@ export const ExpInput = () => {
           }
         }}
       />
-      <ItemTitle>현재 경험치: {currentExp}%</ItemTitle>
+      <ItemTitle>경험치 (%)</ItemTitle>
+
       <ValueInput
         maxLength="6"
         value={currentExp}
@@ -184,6 +222,15 @@ export const ExpInput = () => {
           }
         }}
       />
+
+      <Reset onClick={handleReset}>초기화</Reset>
+      <ResultActions>
+        <ResultText>결과</ResultText>
+      </ResultActions>
+
+      <Result>
+        {finalLevel}레벨 {expPercent}%
+      </Result>
 
       <ItemWrap>
         {Object.keys(itemCounts).map((item) => (
@@ -214,14 +261,6 @@ export const ExpInput = () => {
           </ItemControl>
         ))}
       </ItemWrap>
-      <Reset onClick={handleReset}>초기화</Reset>
-      <ResultActions>
-        <ResultText>결과</ResultText>
-      </ResultActions>
-
-      <Result>
-        {finalLevel}레벨 {expPercent}%
-      </Result>
     </Container>
   );
 };
@@ -245,7 +284,8 @@ const Item = styled.div`
 
 const ValueInput = styled.input`
   border-radius: 5px;
-  height: 25px;
+  height: 35px;
+  font-size: 18px;
   width: 100%;
   box-sizing: border-box;
   background: rgb(70, 77, 83);
@@ -255,8 +295,9 @@ const ValueInput = styled.input`
 
 const ExpValueInput = styled.input`
   border-radius: 5px;
-  height: 25px;
+  height: 35px;
   width: 30%;
+  font-size: 18px;
   text-align: right;
   background: rgb(70, 77, 83);
   color: rgb(255, 255, 255);
@@ -383,7 +424,7 @@ const Reset = styled.button`
   width: 100%;
   background: rgb(255, 255, 255);
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin: 15px 0px;
   cursor: pointer;
 
   &:hover {

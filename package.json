@@ -1,11 +1,11 @@
 {
   "name": "maple",
-  "version": "1.5.0",
+  "version": "1.6.4",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^6.4.6",
     "axios": "^1.7.2",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "cross-env": "^7.0.3",
     "express": "^4.19.2",
     "html2canvas": "^1.4.1",
@@ -15,9 +15,9 @@
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^6.24.1",
     "react-scripts": "^5.0.1",
-    "recharts": "^2.12.7",
+    "recharts": "^2.15.4",
     "styled-components": "^6.1.11",
-    "web-vitals": "^4.2.1"
+    "web-vitals": "^4.2.4"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node proxyServer.js",
