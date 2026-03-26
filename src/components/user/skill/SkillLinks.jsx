@@ -79,7 +79,7 @@ const SkillHeader = styled.h2`
 
 const SkillGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
   gap: 2px;
   width: 100%;
 `;
@@ -94,11 +94,13 @@ const SkillItem = styled.li`
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   padding: 2px;
   border-radius: 8px;
-  transition: transform 0.1s ease, background-color 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    background-color 0.1s ease;
 
   &:hover {
     background-color: rgb(91, 91, 91);
@@ -118,10 +120,7 @@ const SkillName = styled.span``;
 
 const SkillLevel = styled.span`
   opacity: 0.85;
-  font-size: 14px;
-  @media (max-width: 576px) {
-    font-size: 10px;
-  }
+  font-size: 13px;
 `;
 
 const SkillNoDataText = styled.p``;
