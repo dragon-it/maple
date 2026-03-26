@@ -111,6 +111,7 @@ export const User = () => {
   }, []);
 
   const handleTabClick = (tabNumber) => {
+    if (loading) return;
     setActiveTab(tabNumber);
   };
 
@@ -177,6 +178,8 @@ export const User = () => {
               <TabButton
                 type="button"
                 onClick={() => handleTabClick(1)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 1}
                 $infoTab
               >
@@ -199,6 +202,8 @@ export const User = () => {
               <TabButton
                 type="button"
                 onClick={() => handleTabClick(2)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 2}
               >
                 <TabIconStack>
@@ -220,6 +225,8 @@ export const User = () => {
               <TabButton
                 type="button"
                 onClick={() => handleTabClick(3)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 3}
               >
                 <TabIconStack>
@@ -241,6 +248,8 @@ export const User = () => {
               <TabButton
                 type="button"
                 onClick={() => handleTabClick(4)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 4}
               >
                 <TabIconStack>
@@ -262,6 +271,8 @@ export const User = () => {
               <TabButton
                 type="button"
                 onClick={() => handleTabClick(5)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 5}
               >
                 <TabIconStack>
@@ -311,6 +322,8 @@ export const User = () => {
               <MobileTabButton
                 type="button"
                 onClick={() => handleTabClick(1)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 1}
                 $infoTab
               >
@@ -333,6 +346,8 @@ export const User = () => {
               <MobileTabButton
                 type="button"
                 onClick={() => handleTabClick(2)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 2}
               >
                 <TabIconStack>
@@ -354,6 +369,8 @@ export const User = () => {
               <MobileTabButton
                 type="button"
                 onClick={() => handleTabClick(3)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 3}
               >
                 <TabIconStack>
@@ -375,6 +392,8 @@ export const User = () => {
               <MobileTabButton
                 type="button"
                 onClick={() => handleTabClick(4)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 4}
               >
                 <TabIconStack>
@@ -396,6 +415,8 @@ export const User = () => {
               <MobileTabButton
                 type="button"
                 onClick={() => handleTabClick(5)}
+                disabled={loading}
+                aria-disabled={loading}
                 $activeTab={activeTab === 5}
               >
                 <TabIconStack>
@@ -619,6 +640,11 @@ const TabButton = styled.button`
       $activeTab ? theme.tabActiveColor : theme.tabHoverColor};
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
   ${({ $infoTab }) =>
     $infoTab &&
     css`
@@ -713,6 +739,11 @@ const MobileTabButton = styled.button`
     background-color 0.2s ease,
     color 0.2s ease,
     border-color 0.2s ease;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
 
   ${({ $infoTab }) =>
     $infoTab &&
