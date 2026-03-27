@@ -16,7 +16,6 @@ export const ChecklistShell = () => {
     <Wrap>
       <TitleRow>
         <Title>{"체크리스트"}</Title>
-        <Description>{"보스 수익 계산을 도와주는 페이지입니다."}</Description>
       </TitleRow>
 
       <TabBar>
@@ -62,13 +61,6 @@ const Title = styled.h1`
   font-size: clamp(26px, 3vw, 34px);
   color: rgb(220, 252, 2);
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
-`;
-
-const Description = styled.p`
-  margin: 0;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.74);
-  line-height: 1.5;
 `;
 
 const TabBar = styled.div`

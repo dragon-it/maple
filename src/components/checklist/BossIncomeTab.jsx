@@ -171,6 +171,24 @@ export const BossIncomeTab = () => {
     }));
   };
 
+  const handleSummaryRemove = useCallback((bossId) => {
+    setSelections((prev) => {
+      const current = prev[bossId];
+
+      if (!current?.enabled) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [bossId]: {
+          ...current,
+          enabled: false,
+        },
+      };
+    });
+  }, []);
+
   const summary = useMemo(() => {
     const details = [];
 
@@ -270,6 +288,7 @@ export const BossIncomeTab = () => {
                 <th>1인당</th>
                 <th>주간</th>
                 <th>월간</th>
+                <th aria-label="선택 해제" />
               </tr>
             </thead>
             <tbody>
@@ -286,6 +305,15 @@ export const BossIncomeTab = () => {
                   <td>{formatReward(item.splitReward)}</td>
                   <td>{formatReward(item.weeklyIncome)}</td>
                   <td>{formatReward(item.monthlyIncome)}</td>
+                  <ResultActionCell>
+                    <SummaryRemoveButton
+                      aria-label={`${item.bossName} 선택 해제`}
+                      onClick={() => handleSummaryRemove(item.bossId)}
+                      type="button"
+                    >
+                      ×
+                    </SummaryRemoveButton>
+                  </ResultActionCell>
                 </tr>
               ))}
             </tbody>
@@ -834,6 +862,14 @@ const ResultTable = styled.table`
     border-bottom-right-radius: 6px;
   }
 
+  thead th:last-child,
+  tbody td:last-child {
+    width: 52px;
+    padding-left: 4px;
+    padding-right: 4px;
+    text-align: center;
+  }
+
   @media screen and (max-width: 768px) {
     display: block;
     overflow-x: auto;
@@ -843,6 +879,28 @@ const ResultTable = styled.table`
 
 const ResultDifficultyIcon = styled(DifficultyIcon)`
   margin: 0 auto 0 0;
+`;
+
+const ResultActionCell = styled.td`
+  vertical-align: middle;
+`;
+
+const SummaryRemoveButton = styled.button`
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(160, 0, 18, 0.92);
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 700;
+
+  &:hover {
+    background: rgba(160, 0, 18, 0.12);
+  }
 `;
 
 const EmptyState = styled.div`
