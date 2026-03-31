@@ -43,6 +43,7 @@ export const Menu = () => {
     searchGuild: "/guild-search",
     randomClass: "/random-class",
     expSimulator: "/exp-simulator",
+    checklist: "/checklist",
     slidingPuzzle: "/sliding-puzzle",
   };
 
@@ -112,6 +113,9 @@ export const Menu = () => {
         </MiniGameGroup>
         <Menus to={routes.expSimulator} onClick={() => setIsClicked(false)}>
           EXP 시뮬레이터
+        </Menus>
+        <Menus to={routes.checklist} onClick={() => setIsClicked(false)}>
+          체크리스트
         </Menus>
         <MenuLink
           href={sundayMapleUrl}
