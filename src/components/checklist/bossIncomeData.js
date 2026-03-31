@@ -14,6 +14,7 @@ import KalingIcon from "../../assets/pages/checklist/Kaling_icon.png";
 import KalosGuardianIcon from "../../assets/pages/checklist/Kalos_the_Guardian_icon.png";
 import LimboIcon from "../../assets/pages/checklist/Limbo_icon.png";
 import LotusIcon from "../../assets/pages/checklist/Lotus_icon.png";
+import LucidIcon from "../../assets/pages/checklist/Lucid_icon.png";
 import MagnusIcon from "../../assets/pages/checklist/Magnus_icon.png";
 import PapulatusIcon from "../../assets/pages/checklist/Papulatus_icon.png";
 import PierreIcon from "../../assets/pages/checklist/Pierre_icon.png";
@@ -160,7 +161,7 @@ const allPeriodGroups = [
       boss({
         id: "lucid",
         bossName: "루시드",
-        icon: null,
+        icon: LucidIcon,
         difficulties: [easy(31400000), normal(37500000), hard(66200000)],
       }),
       boss({
