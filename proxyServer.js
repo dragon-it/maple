@@ -696,7 +696,7 @@ if (process.env.NODE_ENV === "development") {
 
   app.use(
     createProxyMiddleware({
-      target: "http://localhost:3000",
+      target: "http://localhost:3001",
       changeOrigin: true,
       ws: true, // WebSocket 지원
       logLevel: "debug",

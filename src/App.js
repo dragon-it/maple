@@ -13,6 +13,7 @@ import { CharacterCapture } from "./pages/CharacterCapture";
 import { RandomClass } from "./pages/RandomClass";
 import { ExpSimulator } from "./pages/ExpSimulator";
 import { SlidingPuzzle } from "./pages/SlidingPuzzle";
+import { Checklist } from "./pages/Checklist";
 import Layout from "./Layout";
 import { UserPage } from "./pages/UserPage";
 
@@ -93,6 +94,14 @@ function App() {
                 element={
                   <Layout>
                     <ExpSimulator />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/checklist"
+                element={
+                  <Layout>
+                    <Checklist />
                   </Layout>
                 }
               />
