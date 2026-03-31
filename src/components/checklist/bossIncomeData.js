@@ -171,12 +171,6 @@ const allPeriodGroups = [
         difficulties: [normal(50000000), hard(99400000)],
       }),
       boss({
-        id: "kai",
-        bossName: "카이",
-        icon: KaiIcon,
-        difficulties: [normal(300000000), hard(600000000)],
-      }),
-      boss({
         id: "chosen_seren",
         bossName: "선택받은 세렌",
         icon: ChosenSerenIcon,
