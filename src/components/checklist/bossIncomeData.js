@@ -10,7 +10,6 @@ import FirstAdversaryIcon from "../../assets/pages/checklist/First_Adversary_ico
 import GuardianAngelSlimeIcon from "../../assets/pages/checklist/Guardian_Angel_Slime_icon.png";
 import HillaIcon from "../../assets/pages/checklist/Hilla_icon.png";
 import JupiterIcon from "../../assets/pages/checklist/Jupiter_icon.png";
-import KaiIcon from "../../assets/pages/checklist/kai_icon.png";
 import KalingIcon from "../../assets/pages/checklist/Kaling_icon.png";
 import KalosGuardianIcon from "../../assets/pages/checklist/Kalos_the_Guardian_icon.png";
 import LimboIcon from "../../assets/pages/checklist/Limbo_icon.png";
@@ -26,10 +25,24 @@ import VonBonIcon from "../../assets/pages/checklist/Von_Bon_icon.png";
 import WillIcon from "../../assets/pages/checklist/Will_icon.png";
 import ZakumIcon from "../../assets/pages/checklist/Zakum_icon.png";
 
-const createDifficulty = (id, label, reward = null) => ({
+const difficultyLabelMap = {
+  easy: "이지",
+  normal: "노말",
+  hard: "하드",
+  chaos: "카오스",
+  extreme: "익스트림",
+};
+
+const customDifficulty = ({
+  id,
+  reward = null,
+  maxPartySize,
+  label = difficultyLabelMap[id] ?? id,
+}) => ({
   id,
   label,
   reward,
+  ...(maxPartySize ? { maxPartySize } : {}),
 });
 
 const boss = ({
@@ -48,12 +61,16 @@ const boss = ({
   maxPartySize,
 });
 
-const easy = (reward = null) => createDifficulty("easy", "이지", reward);
-const normal = (reward = null) => createDifficulty("normal", "노말", reward);
-const hard = (reward = null) => createDifficulty("hard", "하드", reward);
-const chaos = (reward = null) => createDifficulty("chaos", "카오스", reward);
-const extreme = (reward = null) =>
-  createDifficulty("extreme", "익스트림", reward);
+const easy = (reward = null, maxPartySize) =>
+  customDifficulty({ id: "easy", reward, maxPartySize });
+const normal = (reward = null, maxPartySize) =>
+  customDifficulty({ id: "normal", reward, maxPartySize });
+const hard = (reward = null, maxPartySize) =>
+  customDifficulty({ id: "hard", reward, maxPartySize });
+const chaos = (reward = null, maxPartySize) =>
+  customDifficulty({ id: "chaos", reward, maxPartySize });
+const extreme = (reward = null, maxPartySize) =>
+  customDifficulty({ id: "extreme", reward, maxPartySize });
 
 const allPeriodGroups = [
   {
@@ -126,7 +143,7 @@ const allPeriodGroups = [
         id: "lotus",
         bossName: "스우",
         icon: LotusIcon,
-        difficulties: [normal(17600000), hard(54200000), extreme(604000000)],
+        difficulties: [normal(17600000), hard(54200000), extreme(604000000, 2)],
       }),
       boss({
         id: "damien",
@@ -197,6 +214,7 @@ const allPeriodGroups = [
           hard(1510000000),
           extreme(4960000000),
         ],
+        maxPartySize: 3,
       }),
       boss({
         id: "kaling",
@@ -214,24 +232,28 @@ const allPeriodGroups = [
         bossName: "찬란한 흉성",
         icon: RadiantMaleficIcon,
         difficulties: [normal(658000000), hard(2819000000)],
+        maxPartySize: 3,
       }),
       boss({
         id: "limbo",
         bossName: "림보",
         icon: LimboIcon,
         difficulties: [normal(1080000000), hard(2510000000)],
+        maxPartySize: 3,
       }),
       boss({
         id: "baldrix",
         bossName: "발드릭스",
         icon: BaldrixIcon,
         difficulties: [normal(1440000000), hard(3240000000)],
+        maxPartySize: 3,
       }),
       boss({
         id: "jupiter",
         bossName: "유피테르",
         icon: JupiterIcon,
         difficulties: [normal(1700000000), hard(5100000000)],
+        maxPartySize: 3,
       }),
     ],
   },

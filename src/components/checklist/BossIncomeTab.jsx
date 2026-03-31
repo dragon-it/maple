@@ -50,8 +50,19 @@ const createInitialSelections = () =>
     return acc;
   }, {});
 
-const clampPartySize = (boss, partySize) =>
-  Math.min(Math.max(Number(partySize) || 1, 1), boss.maxPartySize || 1);
+const getDifficultyMaxPartySize = (boss, difficultyId) => {
+  const selectedDifficulty = boss.difficulties.find(
+    (difficulty) => difficulty.id === difficultyId,
+  );
+
+  return selectedDifficulty?.maxPartySize ?? boss.maxPartySize ?? 1;
+};
+
+const clampPartySize = (boss, partySize, difficultyId) =>
+  Math.min(
+    Math.max(Number(partySize) || 1, 1),
+    getDifficultyMaxPartySize(boss, difficultyId),
+  );
 
 const getDifficultyIcon = (difficultyId) =>
   difficultyIconMap[difficultyId] ?? NormalDifficultyIcon;
@@ -135,7 +146,7 @@ export const BossIncomeTab = () => {
             ...current,
             enabled: false,
             difficultyId,
-            partySize: clampPartySize(boss, current.partySize),
+            partySize: clampPartySize(boss, current.partySize, difficultyId),
           },
         };
       }
@@ -155,7 +166,7 @@ export const BossIncomeTab = () => {
           ...current,
           enabled: true,
           difficultyId,
-          partySize: clampPartySize(boss, current.partySize),
+          partySize: clampPartySize(boss, current.partySize, difficultyId),
         },
       };
     });
@@ -166,7 +177,11 @@ export const BossIncomeTab = () => {
       ...prev,
       [boss.id]: {
         ...prev[boss.id],
-        partySize: clampPartySize(boss, partySize),
+        partySize: clampPartySize(
+          boss,
+          partySize,
+          prev[boss.id]?.difficultyId ?? boss.difficulties[0]?.id,
+        ),
       },
     }));
   };
@@ -207,7 +222,11 @@ export const BossIncomeTab = () => {
           return;
         }
 
-        const partySize = clampPartySize(boss, selection.partySize);
+        const partySize = clampPartySize(
+          boss,
+          selection.partySize,
+          difficulty.id,
+        );
         const splitReward = hasRewardValue(difficulty.reward)
           ? difficulty.reward / partySize
           : null;
@@ -364,6 +383,12 @@ export const BossIncomeTab = () => {
                 difficulties.some(
                   (difficulty) => difficulty.id === selection.difficultyId,
                 );
+              const activeDifficultyId =
+                selection?.difficultyId ?? boss.difficulties[0]?.id;
+              const maxPartySize = getDifficultyMaxPartySize(
+                boss,
+                activeDifficultyId,
+              );
 
               return (
                 <BossRow key={rowKey} $enabled={isRowEnabled}>
@@ -391,8 +416,13 @@ export const BossIncomeTab = () => {
                         selection?.enabled &&
                         selection?.difficultyId === difficulty.id;
                       const partySize = selection?.partySize ?? 1;
+                      const displayPartySize = clampPartySize(
+                        boss,
+                        partySize,
+                        difficulty.id,
+                      );
                       const displayReward = hasRewardValue(difficulty.reward)
-                        ? difficulty.reward / partySize
+                        ? difficulty.reward / displayPartySize
                         : null;
 
                       return (
@@ -428,7 +458,7 @@ export const BossIncomeTab = () => {
                       }
                     >
                       {Array.from(
-                        { length: boss.maxPartySize },
+                        { length: maxPartySize },
                         (_, index) => index + 1,
                       ).map((count) => (
                         <option key={count} value={count}>
