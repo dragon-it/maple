@@ -13,6 +13,8 @@ import expSimulatorDarkBGI from "../../assets/backgruondImg/expSimulator/exp_sim
 import expSimulatorLightBGI from "../../assets/backgruondImg/expSimulator/exp_simulator_BGI_light.webp";
 import slidingPuzzleLightBGI from "../../assets/backgruondImg/slidingPuzzle/sliding_puzzle_BGI_light.webp";
 import slidingPuzzleDarkBGI from "../../assets/backgruondImg/slidingPuzzle/sliding_puzzle_BGI_dark.webp";
+import checkListLightBGI from "../../assets/backgruondImg/checkList/checkList_capture_light.png";
+import checkListDarkBGI from "../../assets/backgruondImg/checkList/checkList_dark.png";
 import { useTheme } from "../../context/ThemeProvider";
 
 export const BackgroundImage = () => {
@@ -34,6 +36,8 @@ export const BackgroundImage = () => {
       return theme === "dark" ? expSimulatorDarkBGI : expSimulatorLightBGI;
     } else if (pathname.startsWith("/sliding-puzzle")) {
       return theme === "dark" ? slidingPuzzleDarkBGI : slidingPuzzleLightBGI;
+    } else if (pathname.startsWith("/checklist")) {
+      return theme === "dark" ? checkListDarkBGI : checkListLightBGI;
     } else {
       return theme === "dark" ? mainDarkBGI : mainLightBGI;
     }
