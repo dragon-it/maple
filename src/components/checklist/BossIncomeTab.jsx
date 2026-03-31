@@ -1,14 +1,37 @@
-import React, { useMemo, useState, useCallback, useEffect } from "react";
+import React, {
+  useMemo,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import styled, { css, keyframes } from "styled-components";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
 import { periodGroups } from "./bossIncomeData";
+import { getCombinedData, getOcidApi } from "../../api/api";
 import EasyDifficultyIcon from "../../assets/pages/checklist/icons/Easy_icon.png";
 import NormalDifficultyIcon from "../../assets/pages/checklist/icons/Normal__icon.png";
 import HardDifficultyIcon from "../../assets/pages/checklist/icons/Hard__icon.png";
 import ChaosDifficultyIcon from "../../assets/pages/checklist/icons/Chaos_icon.png";
 import ExtremeDifficultyIcon from "../../assets/pages/checklist/icons/Extreme_icon.png";
 
+const STORAGE_KEY = "checklist-boss-income-characters-v2";
 const MAX_WEEKLY_BOSSES = 12;
+
+const difficultyIconMap = {
+  easy: EasyDifficultyIcon,
+  normal: NormalDifficultyIcon,
+  hard: HardDifficultyIcon,
+  chaos: ChaosDifficultyIcon,
+  extreme: ExtremeDifficultyIcon,
+};
+
+const bossLookup = periodGroups.reduce((acc, group) => {
+  group.bosses.forEach((boss) => {
+    acc[boss.id] = boss;
+  });
+  return acc;
+}, {});
 
 const formatMeso = (value) => {
   const roundedValue = Math.round(value);
@@ -18,25 +41,15 @@ const formatMeso = (value) => {
   const man = Math.floor((roundedValue % 100000000) / 10000);
   const manPart = man === 0 ? "" : ` ${man}만`;
 
-  const unitValue = useEokUnit
-    ? `${eok}억` + manPart
-    : Math.floor(roundedValue / 10000) + `만`;
-
-  return unitValue;
+  return useEokUnit
+    ? `${eok}억${manPart}`
+    : `${Math.floor(roundedValue / 10000)}만`;
 };
 
 const hasRewardValue = (value) => typeof value === "number";
 
 const formatReward = (value) =>
   hasRewardValue(value) ? formatMeso(value) : "-";
-
-const difficultyIconMap = {
-  easy: EasyDifficultyIcon,
-  normal: NormalDifficultyIcon,
-  hard: HardDifficultyIcon,
-  chaos: ChaosDifficultyIcon,
-  extreme: ExtremeDifficultyIcon,
-};
 
 const createInitialSelections = () =>
   periodGroups.reduce((acc, group) => {
@@ -67,17 +80,57 @@ const clampPartySize = (boss, partySize, difficultyId) =>
 const getDifficultyIcon = (difficultyId) =>
   difficultyIconMap[difficultyId] ?? NormalDifficultyIcon;
 
-// 주간 보스 개수 계산 (weekly 그룹만)
-const countWeeklySelected = (selections) => {
-  let count = 0;
-  periodGroups.forEach((group) => {
-    if (group.key !== "weekly") return;
-    group.bosses.forEach((boss) => {
-      if (selections[boss.id]?.enabled) count++;
-    });
-  });
-  return count;
+const difficultyBadgeStyleMap = {
+  chaos: {
+    background: "#494949",
+    border: "#DCBE97",
+    color: "#E8CCAE",
+    shadow: "#A5AFB5",
+  },
+  easy: {
+    background: "#909BA4",
+    border: "#9CA5AD",
+    color: "#ffffff",
+    shadow: "#A5AFB5",
+  },
+  extreme: {
+    background: "#494949",
+    border: "#ff043b",
+    color: "#CC5E50",
+    shadow: "#A5AFB5",
+  },
+  hard: {
+    background: "#D15A84",
+    border: "#E26C96",
+    color: "#F2F2F2",
+    shadow: "#A5AFB5",
+  },
+  normal: {
+    background: "#41A8C4",
+    border: "#52B3CD",
+    color: "#ffffff",
+    shadow: "#A5AFB5",
+  },
 };
+
+const getDifficultyInitial = (difficultyId) =>
+  typeof difficultyId === "string" && difficultyId.length > 0
+    ? difficultyId.slice(0, 1).toUpperCase()
+    : "?";
+
+const countSelectedBosses = (selections) =>
+  periodGroups.reduce((count, group) => {
+    if (group.key !== "weekly") {
+      return count;
+    }
+
+    return (
+      count +
+      group.bosses.filter((boss) => {
+        return selections?.[boss.id]?.enabled;
+      }).length
+    );
+  }, 0);
 
 const getDisplayRows = (group, sortMode) => {
   if (sortMode !== "price") {
@@ -95,7 +148,7 @@ const getDisplayRows = (group, sortMode) => {
         rowKey: `${boss.id}-${difficulty.id}`,
         boss,
         difficulties: [difficulty],
-        displayName: `${boss.bossName}`,
+        displayName: boss.bossName,
       })),
     )
     .sort(
@@ -104,12 +157,300 @@ const getDisplayRows = (group, sortMode) => {
     );
 };
 
+const getAllCaseCombinations = (text) => {
+  if (!text) {
+    return [""];
+  }
+
+  const [firstChar, ...restChars] = text;
+  const rest = getAllCaseCombinations(restChars.join(""));
+  const combinations = [];
+
+  rest.forEach((suffix) => {
+    combinations.push(firstChar.toLowerCase() + suffix);
+    combinations.push(firstChar.toUpperCase() + suffix);
+  });
+
+  return combinations;
+};
+
+const findCharacterOcid = async (nickname) => {
+  const isKorean = /^[가-힣]+$/.test(nickname);
+  const candidates = isKorean
+    ? [nickname]
+    : Array.from(
+        new Set([nickname, ...getAllCaseCombinations(nickname)]),
+      ).slice(0, 20);
+
+  for (const candidate of candidates) {
+    const ocidData = await getOcidApi(candidate);
+    if (ocidData?.ocid) {
+      return ocidData.ocid;
+    }
+  }
+
+  return null;
+};
+
+const fetchCharacterProfile = async (nickname) => {
+  const ocid = await findCharacterOcid(nickname);
+  if (!ocid) {
+    return null;
+  }
+
+  const combinedData = await getCombinedData(ocid);
+  const basicInfo = combinedData?.getBasicInformation;
+
+  if (!basicInfo) {
+    return null;
+  }
+
+  return {
+    nickname: basicInfo.character_name || nickname,
+    characterImage: basicInfo.character_image || null,
+  };
+};
+
+const normalizeSelections = (rawSelections) => {
+  const initialSelections = createInitialSelections();
+
+  return Object.entries(initialSelections).reduce(
+    (acc, [bossId, defaultValue]) => {
+      const boss = bossLookup[bossId];
+      const currentValue = rawSelections?.[bossId];
+      const difficultyId = boss.difficulties.some(
+        (difficulty) => difficulty.id === currentValue?.difficultyId,
+      )
+        ? currentValue.difficultyId
+        : defaultValue.difficultyId;
+
+      acc[bossId] = {
+        enabled: Boolean(currentValue?.enabled),
+        difficultyId,
+        partySize: clampPartySize(
+          boss,
+          currentValue?.partySize ?? defaultValue.partySize,
+          difficultyId,
+        ),
+      };
+
+      return acc;
+    },
+    {},
+  );
+};
+
+const normalizeCharacter = (character, index) => {
+  const nickname =
+    typeof character?.nickname === "string"
+      ? character.nickname.trim()
+      : typeof character?.name === "string"
+        ? character.name.trim()
+        : "";
+
+  if (!nickname) {
+    return null;
+  }
+
+  return {
+    id:
+      typeof character?.id === "string" && character.id
+        ? character.id
+        : `character-${index}-${nickname}`,
+    nickname,
+    characterImage:
+      typeof character?.characterImage === "string" && character.characterImage
+        ? character.characterImage
+        : null,
+    selections: normalizeSelections(character?.selections),
+  };
+};
+
+const loadStoredState = () => {
+  if (typeof window === "undefined") {
+    return {
+      characters: [],
+      activeCharacterId: null,
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}");
+    const characters = Array.isArray(parsed?.characters)
+      ? parsed.characters.map(normalizeCharacter).filter(Boolean)
+      : [];
+    const activeCharacterId = characters.some(
+      (character) => character.id === parsed?.activeCharacterId,
+    )
+      ? parsed.activeCharacterId
+      : (characters[0]?.id ?? null);
+
+    return {
+      characters,
+      activeCharacterId,
+    };
+  } catch (error) {
+    return {
+      characters: [],
+      activeCharacterId: null,
+    };
+  }
+};
+
+const buildCharacterSummary = (character) => {
+  const details = [];
+
+  periodGroups.forEach((group) => {
+    group.bosses.forEach((boss) => {
+      const selection = character.selections?.[boss.id];
+      if (!selection?.enabled) {
+        return;
+      }
+
+      const difficulty = boss.difficulties.find(
+        ({ id }) => id === selection.difficultyId,
+      );
+
+      if (!difficulty) {
+        return;
+      }
+
+      const partySize = clampPartySize(
+        boss,
+        selection.partySize,
+        difficulty.id,
+      );
+      const splitReward = hasRewardValue(difficulty.reward)
+        ? difficulty.reward / partySize
+        : null;
+
+      details.push({
+        bossId: boss.id,
+        bossName: boss.bossName,
+        bossIcon: boss.icon,
+        difficultyId: difficulty.id,
+        difficultyLabel: difficulty.label,
+        difficultyInitial: getDifficultyInitial(difficulty.id),
+        weeklyIncome:
+          splitReward === null ? null : splitReward * group.weeklyMultiplier,
+        monthlyIncome:
+          splitReward === null ? null : splitReward * group.monthlyMultiplier,
+      });
+    });
+  });
+
+  return {
+    characterId: character.id,
+    nickname: character.nickname,
+    characterImage: character.characterImage,
+    selectedCount: details.length,
+    weeklyTotal: details.reduce(
+      (sum, item) => sum + (item.weeklyIncome ?? 0),
+      0,
+    ),
+    monthlyTotal: details.reduce(
+      (sum, item) => sum + (item.monthlyIncome ?? 0),
+      0,
+    ),
+    details,
+  };
+};
+
+const createCharacterId = () =>
+  `character-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
 export const BossIncomeTab = () => {
-  const [selections, setSelections] = useState(createInitialSelections);
+  const storedState = useMemo(() => loadStoredState(), []);
+  const [characters, setCharacters] = useState(storedState.characters);
+  const [activeCharacterId, setActiveCharacterId] = useState(
+    storedState.activeCharacterId,
+  );
   const [toastVisible, setToastVisible] = useState(false);
-  // groupKey → "default" | "price"
+  const [toastMessage, setToastMessage] = useState("");
   const [sortModes, setSortModes] = useState({});
-  const toastTimerRef = React.useRef(null);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [newCharacterName, setNewCharacterName] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
+  const toastTimerRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        characters,
+        activeCharacterId,
+      }),
+    );
+  }, [characters, activeCharacterId]);
+
+  useEffect(() => {
+    if (characters.length === 0) {
+      if (activeCharacterId !== null) {
+        setActiveCharacterId(null);
+      }
+      return;
+    }
+
+    if (!characters.some((character) => character.id === activeCharacterId)) {
+      setActiveCharacterId(characters[0].id);
+    }
+  }, [characters, activeCharacterId]);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        clearTimeout(toastTimerRef.current);
+      }
+    };
+  }, []);
+
+  const activeCharacter = useMemo(
+    () =>
+      characters.find((character) => character.id === activeCharacterId) ??
+      null,
+    [characters, activeCharacterId],
+  );
+
+  const characterSummaries = useMemo(
+    () => characters.map((character) => buildCharacterSummary(character)),
+    [characters],
+  );
+
+  const totalSummary = useMemo(
+    () => ({
+      weeklyTotal: characterSummaries.reduce(
+        (sum, character) => sum + character.weeklyTotal,
+        0,
+      ),
+      monthlyTotal: characterSummaries.reduce(
+        (sum, character) => sum + character.monthlyTotal,
+        0,
+      ),
+    }),
+    [characterSummaries],
+  );
+
+  const activeCharacterSelections = activeCharacter?.selections ?? null;
+  const activeWeeklySelectedCount = activeCharacterSelections
+    ? countSelectedBosses(activeCharacterSelections)
+    : 0;
+
+  const showToast = useCallback((message) => {
+    setToastMessage(message);
+    setToastVisible(true);
+
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current);
+    }
+
+    toastTimerRef.current = setTimeout(() => {
+      setToastVisible(false);
+    }, 2500);
+  }, []);
 
   const toggleSort = useCallback((groupKey) => {
     setSortModes((prev) => ({
@@ -118,228 +459,330 @@ export const BossIncomeTab = () => {
     }));
   }, []);
 
-  const showToast = useCallback(() => {
-    setToastVisible(true);
-    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    toastTimerRef.current = setTimeout(() => {
-      setToastVisible(false);
-    }, 2500);
+  const handleCharacterSelect = useCallback((characterId) => {
+    setActiveCharacterId(characterId);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    };
+  const handleCharacterDelete = useCallback((characterId) => {
+    setCharacters((prev) => {
+      const nextCharacters = prev.filter(
+        (character) => character.id !== characterId,
+      );
+
+      setActiveCharacterId((current) => {
+        if (current !== characterId) {
+          return current;
+        }
+
+        return nextCharacters[0]?.id ?? null;
+      });
+
+      return nextCharacters;
+    });
   }, []);
 
   const handleDifficultyChange = (boss, difficultyId, groupKey) => {
-    setSelections((prev) => {
-      const current = prev[boss.id] ?? {};
-      const isSameSelection =
-        current.enabled && current.difficultyId === difficultyId;
+    if (!activeCharacterId) {
+      showToast("먼저 캐릭터를 등록하고 선택해주세요.");
+      return;
+    }
 
-      // 선택 해제는 항상 허용
-      if (isSameSelection) {
+    setCharacters((prev) =>
+      prev.map((character) => {
+        if (character.id !== activeCharacterId) {
+          return character;
+        }
+
+        const current = character.selections?.[boss.id] ?? {
+          enabled: false,
+          difficultyId: boss.difficulties[0]?.id ?? null,
+          partySize: 1,
+        };
+        const isSameSelection =
+          current.enabled && current.difficultyId === difficultyId;
+
+        if (isSameSelection) {
+          return {
+            ...character,
+            selections: {
+              ...character.selections,
+              [boss.id]: {
+                ...current,
+                enabled: false,
+                difficultyId,
+                partySize: clampPartySize(
+                  boss,
+                  current.partySize,
+                  difficultyId,
+                ),
+              },
+            },
+          };
+        }
+
+        if (groupKey === "weekly" && !current.enabled) {
+          const weeklyCount = countSelectedBosses(character.selections);
+          if (weeklyCount >= MAX_WEEKLY_BOSSES) {
+            showToast(
+              `캐릭터별로 주간 보스는 최대 ${MAX_WEEKLY_BOSSES}개까지 선택할 수 있습니다.`,
+            );
+            return character;
+          }
+        }
+
         return {
-          ...prev,
-          [boss.id]: {
-            ...current,
-            enabled: false,
-            difficultyId,
-            partySize: clampPartySize(boss, current.partySize, difficultyId),
+          ...character,
+          selections: {
+            ...character.selections,
+            [boss.id]: {
+              ...current,
+              enabled: true,
+              difficultyId,
+              partySize: clampPartySize(boss, current.partySize, difficultyId),
+            },
           },
         };
-      }
-
-      // 주간 그룹이고 이미 활성화되어 있지 않은 보스를 새로 활성화하려는 경우
-      if (groupKey === "weekly" && !current.enabled) {
-        const weeklyCount = countWeeklySelected(prev);
-        if (weeklyCount >= MAX_WEEKLY_BOSSES) {
-          showToast();
-          return prev;
-        }
-      }
-
-      return {
-        ...prev,
-        [boss.id]: {
-          ...current,
-          enabled: true,
-          difficultyId,
-          partySize: clampPartySize(boss, current.partySize, difficultyId),
-        },
-      };
-    });
+      }),
+    );
   };
 
   const handlePartySizeChange = (boss, partySize) => {
-    setSelections((prev) => ({
-      ...prev,
-      [boss.id]: {
-        ...prev[boss.id],
-        partySize: clampPartySize(
-          boss,
-          partySize,
-          prev[boss.id]?.difficultyId ?? boss.difficulties[0]?.id,
-        ),
-      },
-    }));
+    if (!activeCharacterId) {
+      showToast("먼저 캐릭터를 등록하고 선택해주세요.");
+      return;
+    }
+
+    setCharacters((prev) =>
+      prev.map((character) => {
+        if (character.id !== activeCharacterId) {
+          return character;
+        }
+
+        const current = character.selections?.[boss.id];
+        const difficultyId = current?.difficultyId ?? boss.difficulties[0]?.id;
+
+        return {
+          ...character,
+          selections: {
+            ...character.selections,
+            [boss.id]: {
+              ...current,
+              enabled: Boolean(current?.enabled),
+              difficultyId,
+              partySize: clampPartySize(boss, partySize, difficultyId),
+            },
+          },
+        };
+      }),
+    );
   };
 
-  const handleSummaryRemove = useCallback((bossId) => {
-    setSelections((prev) => {
-      const current = prev[bossId];
+  const handleResetSelections = useCallback(() => {
+    if (!activeCharacterId) {
+      showToast("초기화할 캐릭터를 먼저 선택해주세요.");
+      return;
+    }
 
-      if (!current?.enabled) {
-        return prev;
-      }
-
-      return {
-        ...prev,
-        [bossId]: {
-          ...current,
-          enabled: false,
-        },
-      };
-    });
-  }, []);
-
-  const summary = useMemo(() => {
-    const details = [];
-
-    periodGroups.forEach((group) => {
-      group.bosses.forEach((boss) => {
-        const selection = selections[boss.id];
-        if (!selection?.enabled) {
-          return;
-        }
-
-        const difficulty = boss.difficulties.find(
-          ({ id }) => id === selection.difficultyId,
-        );
-
-        if (!difficulty) {
-          return;
-        }
-
-        const partySize = clampPartySize(
-          boss,
-          selection.partySize,
-          difficulty.id,
-        );
-        const splitReward = hasRewardValue(difficulty.reward)
-          ? difficulty.reward / partySize
-          : null;
-
-        details.push({
-          bossId: boss.id,
-          bossName: boss.bossName,
-          difficultyId: difficulty.id,
-          difficultyLabel: difficulty.label,
-          partySize,
-          splitReward,
-          weeklyIncome:
-            splitReward === null ? null : splitReward * group.weeklyMultiplier,
-          monthlyIncome:
-            splitReward === null ? null : splitReward * group.monthlyMultiplier,
-        });
-      });
-    });
-
-    return {
-      selectedCount: details.length,
-      weeklyTotal: details.reduce(
-        (sum, item) => sum + (item.weeklyIncome ?? 0),
-        0,
+    setCharacters((prev) =>
+      prev.map((character) =>
+        character.id === activeCharacterId
+          ? {
+              ...character,
+              selections: createInitialSelections(),
+            }
+          : character,
       ),
-      monthlyTotal: details.reduce(
-        (sum, item) => sum + (item.monthlyIncome ?? 0),
-        0,
-      ),
-      details,
+    );
+  }, [activeCharacterId, showToast]);
+
+  const handleAddCharacter = async (event) => {
+    event.preventDefault();
+
+    const nickname = newCharacterName.trim();
+    if (!nickname) {
+      showToast("등록할 캐릭터 닉네임을 입력해주세요.");
+      return;
+    }
+
+    setIsRegistering(true);
+
+    let profile = null;
+
+    try {
+      profile = await fetchCharacterProfile(nickname);
+    } catch (error) {
+      profile = null;
+    }
+
+    const nextCharacter = {
+      id: createCharacterId(),
+      nickname: profile?.nickname ?? nickname,
+      characterImage: profile?.characterImage ?? null,
+      selections: createInitialSelections(),
     };
-  }, [selections]);
 
-  const weeklySelectedCount = useMemo(
-    () => countWeeklySelected(selections),
-    [selections],
-  );
+    setCharacters((prev) => [...prev, nextCharacter]);
+    setActiveCharacterId(nextCharacter.id);
+    setNewCharacterName("");
+    setIsAddFormOpen(false);
+    setIsRegistering(false);
+
+    if (!profile) {
+      showToast("검색된 캐릭터 정보가 없어 닉네임만 등록했습니다.");
+    }
+  };
 
   return (
     <ContentWrap>
-      {/* 토스트 팝업 */}
-      <Toast $visible={toastVisible}>
-        주간 최대 처치 가능 보스는 {MAX_WEEKLY_BOSSES}마리 입니다
-      </Toast>
+      <Toast $visible={toastVisible}>{toastMessage}</Toast>
 
       <SummaryStrip>
         <SummaryCard>
-          <SummaryLabel>선택한 주간 보스</SummaryLabel>
-          <SummaryValue>{summary.selectedCount}개</SummaryValue>
-        </SummaryCard>
-        <SummaryCard>
           <SummaryLabel>주간 총 수익</SummaryLabel>
-          <SummaryValue>{formatMeso(summary.weeklyTotal)}</SummaryValue>
+          <SummaryValue>{formatMeso(totalSummary.weeklyTotal)}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryLabel>월간 총 수익</SummaryLabel>
-          <SummaryValue>{formatMeso(summary.monthlyTotal)}</SummaryValue>
+          <SummaryValue>{formatMeso(totalSummary.monthlyTotal)}</SummaryValue>
         </SummaryCard>
       </SummaryStrip>
 
       <Section>
         <SectionHeader>
           <SectionTitleWrap>
-            <SectionTitle>주간 보스 환산</SectionTitle>
-            <SectionDescription>
-              선택한 주간 보스만 집계하며, 파티 인원 분배 기준으로 계산합니다.
-            </SectionDescription>
+            <SectionTitle>캐릭터 등록</SectionTitle>
           </SectionTitleWrap>
+          <HeaderActions $fullWidthOnMobile>
+            <HeaderButton
+              type="button"
+              $fullOnMobile
+              onClick={() => setIsAddFormOpen((prev) => !prev)}
+            >
+              {isAddFormOpen ? "닫기" : "캐릭터 추가"}
+            </HeaderButton>
+          </HeaderActions>
         </SectionHeader>
 
-        {summary.details.length > 0 ? (
-          <ResultTable>
-            <thead>
-              <tr>
-                <th>보스</th>
-                <th>난이도</th>
-                <th>파티</th>
-                <th>1인당</th>
-                <th>주간</th>
-                <th>월간</th>
-                <th aria-label="선택 해제" />
-              </tr>
-            </thead>
-            <tbody>
-              {summary.details.map((item) => (
-                <tr key={item.bossId}>
-                  <td>{item.bossName}</td>
-                  <td>
-                    <ResultDifficultyIcon
-                      src={getDifficultyIcon(item.difficultyId)}
-                      alt={`${item.difficultyLabel} 난이도`}
-                    />
-                  </td>
-                  <td>{item.partySize}인</td>
-                  <td>{formatReward(item.splitReward)}</td>
-                  <td>{formatReward(item.weeklyIncome)}</td>
-                  <td>{formatReward(item.monthlyIncome)}</td>
-                  <ResultActionCell>
-                    <SummaryRemoveButton
-                      aria-label={`${item.bossName} 선택 해제`}
-                      onClick={() => handleSummaryRemove(item.bossId)}
-                      type="button"
-                    >
-                      ×
-                    </SummaryRemoveButton>
-                  </ResultActionCell>
-                </tr>
-              ))}
-            </tbody>
-          </ResultTable>
+        {isAddFormOpen && (
+          <CharacterAddForm onSubmit={handleAddCharacter}>
+            <CharacterNameInput
+              value={newCharacterName}
+              onChange={(event) => setNewCharacterName(event.target.value)}
+              placeholder="닉네임을 입력하세요"
+              maxLength={12}
+            />
+            <FormButton type="submit" disabled={isRegistering}>
+              {isRegistering ? "등록 중..." : "등록"}
+            </FormButton>
+          </CharacterAddForm>
+        )}
+
+        {characterSummaries.length > 0 ? (
+          <CharacterRows>
+            {characterSummaries.map((summary) => {
+              const isActive = summary.characterId === activeCharacterId;
+              const nameInitial =
+                typeof summary.nickname === "string" &&
+                summary.nickname.length > 0
+                  ? summary.nickname.slice(0, 1)
+                  : "?";
+
+              return (
+                <CharacterCard
+                  key={summary.characterId}
+                  $active={isActive}
+                  onClick={() => handleCharacterSelect(summary.characterId)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handleCharacterSelect(summary.characterId);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <CharacterIdentity>
+                    <Avatar>
+                      {summary.characterImage ? (
+                        <img
+                          src={summary.characterImage}
+                          alt={`${summary.nickname} 이미지`}
+                        />
+                      ) : (
+                        <AvatarFallback>{nameInitial}</AvatarFallback>
+                      )}
+                    </Avatar>
+                    <CharacterNameBlock>
+                      <CharacterNameRow>
+                        <CharacterName>{summary.nickname}</CharacterName>
+                        <CharacterCountBadge
+                          $isFull={summary.selectedCount >= MAX_WEEKLY_BOSSES}
+                        >
+                          {summary.selectedCount} / {MAX_WEEKLY_BOSSES}
+                        </CharacterCountBadge>
+                      </CharacterNameRow>
+                    </CharacterNameBlock>
+                  </CharacterIdentity>
+
+                  <CharacterBossList>
+                    {summary.details.length > 0 ? (
+                      summary.details.map((item) => (
+                        <SelectedBossItem
+                          key={`${summary.characterId}-${item.bossId}`}
+                        >
+                          <SelectedBossIconWrap>
+                            {item.bossIcon ? (
+                              <SelectedBossIcon
+                                src={item.bossIcon}
+                                alt={`${item.bossName} 아이콘`}
+                              />
+                            ) : (
+                              <SelectedBossFallback>
+                                {item.bossName.slice(0, 1)}
+                              </SelectedBossFallback>
+                            )}
+                          </SelectedBossIconWrap>
+                          <SelectedBossBadge $difficultyId={item.difficultyId}>
+                            {item.difficultyInitial}
+                          </SelectedBossBadge>
+                        </SelectedBossItem>
+                      ))
+                    ) : (
+                      <CharacterBossEmpty>
+                        선택한 보스가 없습니다.
+                      </CharacterBossEmpty>
+                    )}
+                  </CharacterBossList>
+
+                  <CharacterIncome $area="weekly">
+                    <IncomeLabel>주간</IncomeLabel>
+                    <IncomeValue>{formatMeso(summary.weeklyTotal)}</IncomeValue>
+                  </CharacterIncome>
+
+                  <CharacterIncome $area="monthly">
+                    <IncomeLabel>월간</IncomeLabel>
+                    <IncomeValue>
+                      {formatMeso(summary.monthlyTotal)}
+                    </IncomeValue>
+                  </CharacterIncome>
+
+                  <DeleteButton
+                    type="button"
+                    aria-label={`${summary.nickname} 삭제`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleCharacterDelete(summary.characterId);
+                    }}
+                  >
+                    ×
+                  </DeleteButton>
+                </CharacterCard>
+              );
+            })}
+          </CharacterRows>
         ) : (
           <EmptyState>
-            주간 보스를 선택하면 주간 / 월간 수익을 계산해서 표시합니다.
+            캐릭터를 등록하면 캐릭터별 주간 보스 선택과 수익 합산이 시작됩니다.
           </EmptyState>
         )}
       </Section>
@@ -349,35 +792,41 @@ export const BossIncomeTab = () => {
           <SectionHeader>
             <SectionTitleWrap>
               <SectionTitle>
-                {group.label}
-                {group.key === "weekly" && (
+                {activeCharacter
+                  ? `${activeCharacter.nickname} 주간 보스`
+                  : "주간 보스"}
+                {activeCharacter && (
                   <WeeklyCounter
-                    $isFull={weeklySelectedCount >= MAX_WEEKLY_BOSSES}
+                    $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
                   >
-                    {weeklySelectedCount} / {MAX_WEEKLY_BOSSES}
+                    {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
                   </WeeklyCounter>
                 )}
               </SectionTitle>
             </SectionTitleWrap>
-            <HeaderLegend>
-              <span>난이도</span>
-              <SortButtonWrap>
-                <span>파티</span>
-                <SortButton
-                  $active={sortModes[group.key] === "price"}
-                  onClick={() => toggleSort(group.key)}
-                  type="button"
-                >
-                  {sortModes[group.key] === "price" ? "가격순 ▼" : "가격순"}
-                </SortButton>
-              </SortButtonWrap>
-            </HeaderLegend>
+            <HeaderActions>
+              <HeaderButton
+                type="button"
+                $secondary
+                onClick={() => toggleSort(group.key)}
+              >
+                {sortModes[group.key] === "price" ? "기본순" : "가격순"}
+              </HeaderButton>
+              <HeaderButton
+                type="button"
+                $secondary
+                onClick={handleResetSelections}
+                disabled={!activeCharacter || activeWeeklySelectedCount === 0}
+              >
+                초기화
+              </HeaderButton>
+            </HeaderActions>
           </SectionHeader>
 
           <Rows>
             {getDisplayRows(group, sortModes[group.key]).map((row) => {
               const { boss, difficulties, displayName, rowKey } = row;
-              const selection = selections[boss.id];
+              const selection = activeCharacterSelections?.[boss.id];
               const isRowEnabled =
                 selection?.enabled &&
                 difficulties.some(
@@ -405,9 +854,7 @@ export const BossIncomeTab = () => {
                         </BossIconFallback>
                       )}
                     </BossIconWrap>
-                    <BossNameBlock>
-                      <BossName>{displayName}</BossName>
-                    </BossNameBlock>
+                    <BossName>{displayName}</BossName>
                   </BossIdentity>
 
                   <DifficultyCell>
@@ -440,7 +887,7 @@ export const BossIncomeTab = () => {
                           />
                           <DifficultyIcon
                             src={getDifficultyIcon(difficulty.id)}
-                            alt={`${difficulty.label} 난이도`}
+                            alt={`${difficulty.label} 아이콘`}
                           />
                           <DifficultyReward>
                             {formatReward(displayReward)}
@@ -477,8 +924,6 @@ export const BossIncomeTab = () => {
   );
 };
 
-// ── Animations ──────────────────────────────────────────────────────────────
-
 const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -501,8 +946,6 @@ const fadeOut = keyframes`
   }
 `;
 
-// ── Styled Components ────────────────────────────────────────────────────────
-
 const ContentWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -516,7 +959,6 @@ const panelCss = css`
   color: white;
 `;
 
-// 토스트 팝업
 const Toast = styled.div`
   position: fixed;
   bottom: 32px;
@@ -526,21 +968,19 @@ const Toast = styled.div`
   padding: 12px 24px;
   border-radius: 8px;
   background: rgba(30, 36, 42, 0.96);
-  border: 1px solid rgba(255, 200, 80, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 200, 80, 0.12);
-  color: #ffe28b;
+    0 0 0 1px rgba(255, 243, 216, 0.12);
+  color: #ffffff;
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
   pointer-events: none;
-
   animation: ${({ $visible }) => ($visible ? fadeInUp : fadeOut)} 0.28s ease
     forwards;
   display: ${({ $visible }) => ($visible ? "block" : "none")};
 
-  /* 사라질 때도 애니메이션 보이도록 */
   ${({ $visible }) =>
     !$visible &&
     css`
@@ -551,7 +991,7 @@ const Toast = styled.div`
 
 const SummaryStrip = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 
   @media screen and (max-width: 960px) {
@@ -573,13 +1013,13 @@ const SummaryCard = styled.div`
 `;
 
 const SummaryLabel = styled.div`
-  font-size: 12px;
+  font-size: 15px;
   color: rgba(229, 238, 246, 0.78);
 `;
 
 const SummaryValue = styled.div`
   margin-top: 4px;
-  color: #ffe28b;
+  color: #ffffff;
   font-size: clamp(18px, 2vw, 24px);
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -598,16 +1038,16 @@ const Section = styled.section`
 
 const SectionHeader = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 10px 12px;
+  padding: 6px 12px;
   border-radius: 3px;
   border: 1px solid rgba(178, 189, 197, 0.65);
-  background: #a5afb5;
+  background: #8f979c;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -628,6 +1068,46 @@ const SectionTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+`;
+
+const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 1200px) {
+    width: ${({ $fullWidthOnMobile }) =>
+      $fullWidthOnMobile ? "100%" : "auto"};
+  }
+`;
+
+const HeaderButton = styled.button`
+  cursor: pointer;
+  min-width: 92px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid
+    ${({ $secondary }) =>
+      $secondary ? "rgba(57, 68, 77, 0.36)" : "rgba(57, 68, 77, 0.42)"};
+  background: ${({ $secondary }) =>
+    $secondary
+      ? "linear-gradient(180deg, #eef3f6 0%, #d7e0e6 100%)"
+      : "linear-gradient(180deg, #fdfefe 0%, #e8eef2 100%)"};
+  color: #324250;
+  font-size: 12px;
+  font-weight: 700;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: ${({ $fullOnMobile }) => ($fullOnMobile ? "100%" : "auto")};
+  }
 `;
 
 const WeeklyCounter = styled.span`
@@ -641,30 +1121,6 @@ const WeeklyCounter = styled.span`
   border: 1px solid
     ${({ $isFull }) =>
       $isFull ? "rgba(255, 120, 80, 0.6)" : "rgba(255,255,255,0.18)"};
-  transition:
-    background 0.2s,
-    color 0.2s;
-`;
-
-const SectionDescription = styled.p`
-  margin: 0;
-  color: rgba(28, 38, 48, 0.82);
-  font-size: 12px;
-  font-weight: 600;
-`;
-
-const HeaderLegend = styled.div`
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) 100px;
-  gap: 12px;
-  min-width: min(100%, 332px);
-  color: rgba(24, 34, 43, 0.76);
-  font-size: 12px;
-  font-weight: 700;
-
-  @media screen and (max-width: 960px) {
-    display: none;
-  }
 `;
 
 const Rows = styled.div`
@@ -679,27 +1135,19 @@ const BossRow = styled.article`
   grid-template-columns: minmax(180px, 220px) minmax(220px, 1fr) 100px;
   gap: 12px;
   align-items: center;
-  padding: 4px 12px;
+  padding: 6px 12px;
   border-radius: 3px;
-  border: 2px solid #eaebec;
-  outline: 1px solid #9aa3a7;
-  background: #d1d4d6;
-  box-shadow: 0px 2px #9aa3a7;
+  border: 2px solid ${({ $enabled }) => ($enabled ? "#fff7a9" : "#eaebec")};
+  outline: 1px solid ${({ $enabled }) => ($enabled ? "#b38728" : "#9aa3a7")};
+  background: ${({ $enabled }) => ($enabled ? "#ddd3a9" : "#d1d4d6")};
+  box-shadow: 0 2px ${({ $enabled }) => ($enabled ? "#9f7f32" : "#9aa3a7")};
 
   @media screen and (max-width: 1200px) {
-    grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
-    grid-template-areas:
-      "identity party"
-      "difficulty difficulty";
-  }
-
-  @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
     grid-template-areas:
       "identity"
       "difficulty"
       "party";
-    gap: 10px;
   }
 `;
 
@@ -741,13 +1189,6 @@ const BossIconFallback = styled.div`
   font-weight: 700;
 `;
 
-const BossNameBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-`;
-
 const BossName = styled.div`
   color: #24476a;
   font-size: 16px;
@@ -783,7 +1224,6 @@ const DifficultyCheck = styled.input`
 `;
 
 const DifficultyIcon = styled.img`
-  width: 56px;
   height: 18px;
   display: block;
   object-fit: contain;
@@ -797,20 +1237,11 @@ const DifficultyReward = styled.span`
 
 const PartyCell = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
+  align-items: center;
   min-width: 100px;
 
   @media screen and (max-width: 1200px) {
     grid-area: party;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
   }
 `;
 
@@ -826,96 +1257,221 @@ const PartySelect = styled.select`
   font-weight: 700;
 `;
 
-const SortButtonWrap = styled.div`
+const CharacterAddForm = styled.form`
+  ${ContainerCss};
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  border: 2px solid #eaebec;
+  outline: 1px solid #9aa3a7;
+  background: #d1d4d6;
+  box-shadow: 0 2px #9aa3a7;
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const CharacterNameInput = styled.input`
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(93, 103, 112, 0.72);
+  background: linear-gradient(180deg, #f8fbfd 0%, #e3ebf0 100%);
+  color: #2d4254;
+  font-size: 14px;
+  font-weight: 700;
+`;
+
+const FormButton = styled(HeaderButton)`
+  width: 100%;
+  height: 38px;
+`;
+
+const CharacterRows = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+`;
+
+const CharacterCard = styled(BossRow)`
+  position: relative;
+  grid-template-columns:
+    minmax(220px, 260px) minmax(180px, 1fr)
+    130px 130px 44px;
+  cursor: pointer;
+  border-color: ${({ $active }) => ($active ? "#fff1a1" : "#eaebec")};
+  outline-color: ${({ $active }) => ($active ? "#d88a1e" : "#9aa3a7")};
+  background: ${({ $active }) => ($active ? "#dfd2a2" : "#d1d4d6")};
+  box-shadow: 0 2px ${({ $active }) => ($active ? "#b97718" : "#9aa3a7")};
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "identity identity"
+      "bosses bosses"
+      "weekly monthly";
+  }
+`;
+
+const CharacterIdentity = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+
+  @media screen and (max-width: 1200px) {
+    grid-area: identity;
+    padding-right: 36px;
+  }
+`;
+
+const Avatar = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  img {
+    width: 45px;
+    height: 45px;
+    object-fit: none;
+    image-rendering: pixelated;
+    transform: translate(-6%, -10%) scaleX(-1);
+  }
+`;
+
+const AvatarFallback = styled.span`
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+`;
+
+const CharacterNameBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+`;
+
+const CharacterNameRow = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 `;
 
-const SortButton = styled.button`
-  cursor: pointer;
-  padding: 2px 8px;
+const CharacterName = styled.div`
+  color: #24476a;
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const CharacterCountBadge = styled(WeeklyCounter)``;
+
+const CharacterBossList = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+
+  @media screen and (max-width: 1200px) {
+    grid-area: bosses;
+  }
+`;
+
+const SelectedBossItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+`;
+
+const SelectedBossIconWrap = styled.div`
   border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(79, 86, 93, 0.8);
+  background: linear-gradient(180deg, #6c747a 0%, #4a4f54 100%);
+`;
+
+const SelectedBossIcon = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+`;
+
+const SelectedBossFallback = styled.div`
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #f4fbff;
+  font-size: 12px;
+  font-weight: 700;
+`;
+
+const SelectedBossBadge = styled.div`
+  padding: 2px 8px 3px;
   border: 1px solid
-    ${({ $active }) =>
-      $active ? "rgba(255, 210, 80, 0.7)" : "rgba(24, 34, 43, 0.35)"};
-  background: ${({ $active }) =>
-    $active ? "rgba(255, 200, 60, 0.22)" : "rgba(24, 34, 43, 0.12)"};
-  color: ${({ $active }) => ($active ? "#b87a00" : "rgba(24, 34, 43, 0.76)")};
+    ${({ $difficultyId }) =>
+      difficultyBadgeStyleMap[$difficultyId]?.border ?? "#947055"};
+  background: ${({ $difficultyId }) =>
+    difficultyBadgeStyleMap[$difficultyId]?.background ?? "#77553B"};
+
+  color: ${({ $difficultyId }) =>
+    difficultyBadgeStyleMap[$difficultyId]?.color ?? "#F3E7D4"};
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
+  white-space: nowrap;
+`;
+
+const CharacterBossEmpty = styled.div`
+  color: rgba(50, 66, 80, 0.72);
+  font-size: 12px;
+  font-weight: 700;
+`;
+
+const CharacterIncome = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  @media screen and (max-width: 1200px) {
+    grid-area: ${({ $area }) => $area};
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+`;
+
+const IncomeLabel = styled.div`
+  color: rgba(50, 66, 80, 0.72);
   font-size: 11px;
   font-weight: 700;
-  transition:
-    background 0.15s,
-    color 0.15s,
-    border-color 0.15s;
-
-  &:hover {
-    background: rgba(255, 200, 60, 0.18);
-    border-color: rgba(255, 200, 60, 0.55);
-    color: #9a6600;
-  }
 `;
 
-const ResultTable = styled.table`
-  width: 100%;
-  margin-top: 10px;
-  border-collapse: separate;
-  border-spacing: 0 4px;
-
-  thead th {
-    padding: 6px 8px;
-    color: rgba(227, 236, 243, 0.78);
-    font-size: 12px;
-    font-weight: 700;
-    text-align: left;
-  }
-
-  tbody td {
-    padding: 10px 8px;
-    color: #eff6fb;
-    font-size: 13px;
-    vertical-align: middle;
-    background: rgba(167, 176, 183, 0.18);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
-  }
-
-  tbody td:first-child {
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-  }
-
-  tbody td:last-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-  }
-
-  thead th:last-child,
-  tbody td:last-child {
-    width: 52px;
-    padding-left: 4px;
-    padding-right: 4px;
-    text-align: center;
-  }
-
-  @media screen and (max-width: 768px) {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+const IncomeValue = styled.div`
+  color: #24476a;
+  font-size: 14px;
+  font-weight: 800;
 `;
 
-const ResultDifficultyIcon = styled(DifficultyIcon)`
-  margin: 0 auto 0 0;
-`;
-
-const ResultActionCell = styled.td`
-  vertical-align: middle;
-`;
-
-const SummaryRemoveButton = styled.button`
+const DeleteButton = styled.button`
   cursor: pointer;
   width: 28px;
   height: 28px;
@@ -923,22 +1479,27 @@ const SummaryRemoveButton = styled.button`
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: rgba(160, 0, 18, 0.92);
+  color: rgb(255, 55, 78);
   font-size: 26px;
   line-height: 1;
   font-weight: 700;
 
-  &:hover {
-    background: rgba(160, 0, 18, 0.12);
+  @media screen and (max-width: 1200px) {
+    grid-area: delete;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    justify-self: auto;
   }
 `;
 
 const EmptyState = styled.div`
   margin-top: 10px;
-  padding: 18px;
+  padding: 16px 14px;
   border-radius: 8px;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  color: rgba(231, 238, 243, 0.72);
-  text-align: center;
-  background: rgba(167, 176, 183, 0.08);
+  border: 1px dashed rgba(210, 223, 232, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(227, 236, 243, 0.78);
+  font-size: 13px;
+  font-weight: 600;
 `;

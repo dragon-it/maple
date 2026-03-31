@@ -20,7 +20,6 @@ export const Checklist = () => {
 
 const PageWrap = styled.div`
   width: 100%;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 20px;
