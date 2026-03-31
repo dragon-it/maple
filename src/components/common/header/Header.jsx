@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import logo from "../../../assets/logos/LogoIcon.svg";
 import logo_text from "../../../assets/logos/Logo_Text_Only.svg";
+import logoApril from "../../../assets/logos/Logo_April.svg";
+import logoTextApril from "../../../assets/logos/Logo_Text_April.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
 import { Search } from "../../main/Search";
 import {
@@ -14,6 +16,12 @@ export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const isAprilFoolsDay = (() => {
+    const today = new Date();
+    return today.getMonth() === 3 && today.getDate() === 1;
+  })();
+  const currentLogo = isAprilFoolsDay ? logoApril : logo;
+  const currentLogoText = isAprilFoolsDay ? logoTextApril : logo_text;
 
   const [isMiniOpen, setIsMiniOpen] = useState(false);
   const [canHover, setCanHover] = useState(false);
@@ -109,12 +117,12 @@ export const Header = () => {
     <PcHeaderContainer>
       <LogoWrap>
         <HeaderLogo
-          src={logo}
+          src={currentLogo}
           alt="로고"
           onClick={() => navigate(routes.home)}
         />
         <HeaderLogoText
-          src={logo_text}
+          src={currentLogoText}
           alt="로고 텍스트"
           onClick={() => navigate(routes.home)}
         />
