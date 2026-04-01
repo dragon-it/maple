@@ -1301,7 +1301,7 @@ const CharacterRows = styled.div`
 const CharacterCard = styled(BossRow)`
   position: relative;
   grid-template-columns:
-    minmax(220px, 260px) minmax(180px, 1fr)
+    minmax(220px, 235px) minmax(180px, 1fr)
     130px 130px 44px;
   cursor: pointer;
   border-color: ${({ $active }) => ($active ? "#fff1a1" : "#eaebec")};
