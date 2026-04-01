@@ -5,6 +5,7 @@ import cashEquipUi from "../../../assets/pages/user/equipment/equipmentUi/cashEq
 import petEquipUi from "../../../assets/pages/user/equipment/equipmentUi/petEquipUi.png";
 import androidEquipUi from "../../../assets/pages/user/equipment/equipmentUi/androidEquipUi.png";
 import characterBg from "../../../assets/pages/user/equipment/equipmentUi/characterBg.png";
+import skillRingUi from "../../../assets/pages/user/equipment/equipmentUi/equip_skill_ring.png";
 import { ContainerCss } from "../../common/searchCharacter/ContainerBox";
 import { ItemDetail } from "./ItemDetail";
 import gradeColors from "./ItemGradeColors";
@@ -32,6 +33,7 @@ const positions = {
   반지2: { top: "129px", left: "15px" },
   반지3: { top: "84px", left: "15px" },
   반지4: { top: "39px", left: "15px" },
+  "예비 특수 반지": { top: "250px", left: "15px" },
   펜던트: { top: "219px", left: "60px" },
   펜던트2: { top: "174px", left: "60px" },
   훈장: { top: "174px", right: "15px" },
@@ -200,10 +202,10 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
   const matchingPresetKey = `item_equipment_preset_${EquipData.preset_no}`;
   const matchingCashPresetKey = `cash_item_equipment_preset_${EquipData.getCashItemEquipment.preset_no}`;
   const [selectedPreset, setSelectedPreset] = useState(
-    matchingPresetKey || "item_equipment_preset_1"
+    matchingPresetKey || "item_equipment_preset_1",
   );
   const [selectedCashPreset, setSelectedCashPreset] = useState(
-    matchingCashPresetKey || "cash_item_equipment_preset_1"
+    matchingCashPresetKey || "cash_item_equipment_preset_1",
   );
 
   const petInformationData = (index) => {
@@ -297,6 +299,17 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
     setSelectedCashPreset(newPresetKey);
   }, [currentTab, matchingCashPresetKey, matchingPresetKey]);
 
+  const currentEquipmentItems =
+    (EquipData[selectedPreset] && EquipData[selectedPreset].length > 0
+      ? EquipData[selectedPreset]
+      : EquipData.item_equipment) ?? [];
+  const spareSpecialRingItem = currentEquipmentItems.find(
+    (item) => item.item_equipment_slot === "예비 특수 반지",
+  );
+  const visibleEquipmentItems = currentEquipmentItems.filter(
+    (item) => item.item_equipment_slot !== "예비 특수 반지",
+  );
+
   return (
     <>
       <Container>
@@ -355,11 +368,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                       alt="ui"
                     />
                     {/* 프리셋 데이터가 없으면 item_equipment 출력 */}
-                    {(EquipData[selectedPreset] &&
-                    EquipData[selectedPreset].length > 0
-                      ? EquipData[selectedPreset]
-                      : EquipData.item_equipment
-                    )?.map((item, index) => (
+                    {visibleEquipmentItems.map((item, index) => (
                       <ItemIcon
                         key={item.item_equipment_slot}
                         style={positions[item.item_equipment_slot]}
@@ -383,12 +392,12 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                           alt="ADicon"
                           onMouseOver={() =>
                             handleItemHover(
-                              EquipData.getAndroidEquipment.android_preset_1
+                              EquipData.getAndroidEquipment.android_preset_1,
                             )
                           }
                           onClick={() =>
                             handleItemClick(
-                              EquipData.getAndroidEquipment.android_preset_1
+                              EquipData.getAndroidEquipment.android_preset_1,
                             )
                           }
                           onMouseLeave={handleMouseLeave}
@@ -472,7 +481,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                             alt={`icon-${index}`}
                           />
                         </ItemIcon>
-                      )
+                      ),
                     )}
                   </EquipItems>
                   <PresetButtonWrap>
@@ -638,7 +647,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                             alt={`icon-${index}`}
                           />
                         </ItemIcon>
-                      )
+                      ),
                     )}
                   </EquipItems>
                 </EquipWrap>
@@ -665,7 +674,31 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
             )}
           </DetailWrap>
         </ItemInfoDetailWrap>
-        <ItemSetEffect setinfo={EquipData.getSetEffect} />
+        <RightPanelWrap>
+          {currentTab === "장비" && (
+            <SkillRingWrap>
+              <SkillRingImageWrap>
+                <SkillRingImage src={skillRingUi} alt="skill ring ui" />
+                {spareSpecialRingItem && (
+                  <ItemIcon
+                    style={{ top: "47px", left: "33px" }}
+                    $grade={spareSpecialRingItem.potential_option_grade}
+                    $gradeColors={gradeColors}
+                    onClick={() => handleItemClick(spareSpecialRingItem)}
+                    onMouseOver={() => handleItemHover(spareSpecialRingItem)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <img
+                      src={spareSpecialRingItem.item_icon}
+                      alt="예비 특수 반지"
+                    />
+                  </ItemIcon>
+                )}
+              </SkillRingImageWrap>
+            </SkillRingWrap>
+          )}
+          <ItemSetEffect setinfo={EquipData.getSetEffect} />
+        </RightPanelWrap>
       </Container>
       <SymbolUi symbolData={EquipData.getSymbol} />
       <SymbolCalculator symbolData={EquipData.getSymbol} />
@@ -722,6 +755,37 @@ const ItemInfoDetailWrap = styled.div`
     align-items: center;
     justify-content: center;
   }
+`;
+
+const RightPanelWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  max-width: 300px;
+
+  @media screen and (max-width: 1024px) {
+    max-width: 400px;
+    align-items: center;
+  }
+`;
+
+const SkillRingWrap = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const SkillRingImageWrap = styled.div`
+  position: relative;
+  width: 108px;
+  height: 122px;
+`;
+
+const SkillRingImage = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
 `;
 
 const TabMenu = styled.div`

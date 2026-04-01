@@ -15,7 +15,7 @@ export const ChecklistShell = () => {
   return (
     <Wrap>
       <TitleRow>
-        <Title>{"체크리스트"}</Title>
+        <Title>{"CHECKLIST"}</Title>
       </TitleRow>
 
       <TabBar>
@@ -45,7 +45,7 @@ export const ChecklistShell = () => {
 const Wrap = styled.div`
   width: min(1100px, 100%);
   ${ContainerCss};
-  padding: 16px;
+  padding: 8px;
   color: white;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 `;
@@ -58,7 +58,7 @@ const TitleRow = styled.div`
 
 const Title = styled.h1`
   margin: 0;
-  font-size: clamp(26px, 3vw, 34px);
+  font-size: clamp(26px, 3vw);
   color: rgb(220, 252, 2);
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
 `;
