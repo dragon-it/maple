@@ -955,7 +955,7 @@ const ContentWrap = styled.div`
 
 const panelCss = css`
   ${ContainerCss};
-  padding: 12px;
+  padding: 8px;
   color: white;
 `;
 
