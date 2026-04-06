@@ -274,6 +274,4 @@ const allPeriodGroups = [
   },
 ];
 
-export const periodGroups = allPeriodGroups.filter(
-  ({ key }) => key === "weekly",
-);
+export const periodGroups = allPeriodGroups;
