@@ -787,139 +787,143 @@ export const BossIncomeTab = () => {
         )}
       </Section>
 
-      {periodGroups.map((group) => (
-        <Section key={group.key}>
-          <SectionHeader>
-            <SectionTitleWrap>
-              <SectionTitle>
-                {activeCharacter
-                  ? `${activeCharacter.nickname} 주간 보스`
-                  : "주간 보스"}
-                {activeCharacter && (
-                  <WeeklyCounter
-                    $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
-                  >
-                    {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
-                  </WeeklyCounter>
-                )}
-              </SectionTitle>
-            </SectionTitleWrap>
-            <HeaderActions>
-              <HeaderButton
-                type="button"
-                $secondary
-                onClick={() => toggleSort(group.key)}
-              >
-                {sortModes[group.key] === "price" ? "기본순" : "가격순"}
-              </HeaderButton>
-              <HeaderButton
-                type="button"
-                $secondary
-                onClick={handleResetSelections}
-                disabled={!activeCharacter || activeWeeklySelectedCount === 0}
-              >
-                초기화
-              </HeaderButton>
-            </HeaderActions>
-          </SectionHeader>
+      {periodGroups.map((group) => {
+        const isWeekly = group.key === "weekly";
 
-          <Rows>
-            {getDisplayRows(group, sortModes[group.key]).map((row) => {
-              const { boss, difficulties, displayName, rowKey } = row;
-              const selection = activeCharacterSelections?.[boss.id];
-              const isRowEnabled =
-                selection?.enabled &&
-                difficulties.some(
-                  (difficulty) => difficulty.id === selection.difficultyId,
-                );
-              const activeDifficultyId =
-                selection?.difficultyId ?? boss.difficulties[0]?.id;
-              const maxPartySize = getDifficultyMaxPartySize(
-                boss,
-                activeDifficultyId,
-              );
-
-              return (
-                <BossRow key={rowKey} $enabled={isRowEnabled}>
-                  <BossIdentity>
-                    <BossIconWrap>
-                      {boss.icon ? (
-                        <BossIcon
-                          src={boss.icon}
-                          alt={`${boss.bossName} 아이콘`}
-                        />
-                      ) : (
-                        <BossIconFallback>
-                          {boss.bossName.slice(0, 1)}
-                        </BossIconFallback>
-                      )}
-                    </BossIconWrap>
-                    <BossName>{displayName}</BossName>
-                  </BossIdentity>
-
-                  <DifficultyCell>
-                    {difficulties.map((difficulty) => {
-                      const isSelected =
-                        selection?.enabled &&
-                        selection?.difficultyId === difficulty.id;
-                      const partySize = selection?.partySize ?? 1;
-                      const displayPartySize = clampPartySize(
-                        boss,
-                        partySize,
-                        difficulty.id,
-                      );
-                      const displayReward = hasRewardValue(difficulty.reward)
-                        ? difficulty.reward / displayPartySize
-                        : null;
-
-                      return (
-                        <DifficultyButton key={difficulty.id}>
-                          <DifficultyCheck
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() =>
-                              handleDifficultyChange(
-                                boss,
-                                difficulty.id,
-                                group.key,
-                              )
-                            }
-                          />
-                          <DifficultyIcon
-                            src={getDifficultyIcon(difficulty.id)}
-                            alt={`${difficulty.label} 아이콘`}
-                          />
-                          <DifficultyReward>
-                            {formatReward(displayReward)}
-                          </DifficultyReward>
-                        </DifficultyButton>
-                      );
-                    })}
-                  </DifficultyCell>
-
-                  <PartyCell>
-                    <PartySelect
-                      value={selection?.partySize ?? 1}
-                      onChange={(event) =>
-                        handlePartySizeChange(boss, event.target.value)
-                      }
+        return (
+          <Section key={group.key}>
+            <SectionHeader>
+              <SectionTitleWrap>
+                <SectionTitle>
+                  {activeCharacter
+                    ? `${activeCharacter.nickname} 주간 보스`
+                    : "주간 보스"}
+                  {activeCharacter && (
+                    <WeeklyCounter
+                      $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
                     >
-                      {Array.from(
-                        { length: maxPartySize },
-                        (_, index) => index + 1,
-                      ).map((count) => (
-                        <option key={count} value={count}>
-                          {count}인
-                        </option>
-                      ))}
-                    </PartySelect>
-                  </PartyCell>
-                </BossRow>
-              );
-            })}
-          </Rows>
-        </Section>
-      ))}
+                      {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
+                    </WeeklyCounter>
+                  )}
+                </SectionTitle>
+              </SectionTitleWrap>
+              <HeaderActions>
+                <HeaderButton
+                  type="button"
+                  $secondary
+                  onClick={() => toggleSort(group.key)}
+                >
+                  {sortModes[group.key] === "price" ? "기본순" : "가격순"}
+                </HeaderButton>
+                <HeaderButton
+                  type="button"
+                  $secondary
+                  onClick={handleResetSelections}
+                  disabled={!activeCharacter || activeWeeklySelectedCount === 0}
+                >
+                  초기화
+                </HeaderButton>
+              </HeaderActions>
+            </SectionHeader>
+
+            <Rows>
+              {getDisplayRows(group, sortModes[group.key]).map((row) => {
+                const { boss, difficulties, displayName, rowKey } = row;
+                const selection = activeCharacterSelections?.[boss.id];
+                const isRowEnabled =
+                  selection?.enabled &&
+                  difficulties.some(
+                    (difficulty) => difficulty.id === selection.difficultyId,
+                  );
+                const activeDifficultyId =
+                  selection?.difficultyId ?? boss.difficulties[0]?.id;
+                const maxPartySize = getDifficultyMaxPartySize(
+                  boss,
+                  activeDifficultyId,
+                );
+
+                return (
+                  <BossRow key={rowKey} $enabled={isRowEnabled}>
+                    <BossIdentity>
+                      <BossIconWrap>
+                        {boss.icon ? (
+                          <BossIcon
+                            src={boss.icon}
+                            alt={`${boss.bossName} 아이콘`}
+                          />
+                        ) : (
+                          <BossIconFallback>
+                            {boss.bossName.slice(0, 1)}
+                          </BossIconFallback>
+                        )}
+                      </BossIconWrap>
+                      <BossName>{displayName}</BossName>
+                    </BossIdentity>
+
+                    <DifficultyCell>
+                      {difficulties.map((difficulty) => {
+                        const isSelected =
+                          selection?.enabled &&
+                          selection?.difficultyId === difficulty.id;
+                        const partySize = selection?.partySize ?? 1;
+                        const displayPartySize = clampPartySize(
+                          boss,
+                          partySize,
+                          difficulty.id,
+                        );
+                        const displayReward = hasRewardValue(difficulty.reward)
+                          ? difficulty.reward / displayPartySize
+                          : null;
+
+                        return (
+                          <DifficultyButton key={difficulty.id}>
+                            <DifficultyCheck
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() =>
+                                handleDifficultyChange(
+                                  boss,
+                                  difficulty.id,
+                                  group.key,
+                                )
+                              }
+                            />
+                            <DifficultyIcon
+                              src={getDifficultyIcon(difficulty.id)}
+                              alt={`${difficulty.label} 아이콘`}
+                            />
+                            <DifficultyReward>
+                              {formatReward(displayReward)}
+                            </DifficultyReward>
+                          </DifficultyButton>
+                        );
+                      })}
+                    </DifficultyCell>
+
+                    <PartyCell>
+                      <PartySelect
+                        value={selection?.partySize ?? 1}
+                        onChange={(event) =>
+                          handlePartySizeChange(boss, event.target.value)
+                        }
+                      >
+                        {Array.from(
+                          { length: maxPartySize },
+                          (_, index) => index + 1,
+                        ).map((count) => (
+                          <option key={count} value={count}>
+                            {count}인
+                          </option>
+                        ))}
+                      </PartySelect>
+                    </PartyCell>
+                  </BossRow>
+                );
+              })}
+            </Rows>
+          </Section>
+        );
+      })}
     </ContentWrap>
   );
 };
