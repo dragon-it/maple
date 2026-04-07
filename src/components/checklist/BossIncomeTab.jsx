@@ -338,6 +338,7 @@ const buildCharacterSummary = (character) => {
       });
     });
   });
+  console.log(details);
 
   return {
     characterId: character.id,
@@ -796,15 +797,17 @@ export const BossIncomeTab = () => {
               <SectionTitleWrap>
                 <SectionTitle>
                   {activeCharacter
-                    ? `${activeCharacter.nickname} 주간 보스`
-                    : "주간 보스"}
-                  {activeCharacter && (
+                    ? `${activeCharacter.nickname} ${isWeekly ? "주간 보스" : "월간 보스"}`
+                    : isWeekly
+                      ? "주간 보스"
+                      : "월간 보스"}
+                  {activeCharacter && isWeekly ? (
                     <WeeklyCounter
                       $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
                     >
                       {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
                     </WeeklyCounter>
-                  )}
+                  ) : null}
                 </SectionTitle>
               </SectionTitleWrap>
               <HeaderActions>
