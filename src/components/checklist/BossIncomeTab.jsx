@@ -1282,7 +1282,6 @@ const PartySelect = styled.select`
   padding: 0 10px;
   border-radius: 6px;
   border: 1px solid rgba(93, 103, 112, 0.72);
-  background: linear-gradient(180deg, #eef2f5 0%, #dbe3e8 100%);
   color: #2d4254;
   font-size: 12px;
   font-weight: 700;
