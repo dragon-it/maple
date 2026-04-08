@@ -338,6 +338,7 @@ const buildCharacterSummary = (character) => {
       });
     });
   });
+  console.log(details);
 
   return {
     characterId: character.id,
@@ -787,139 +788,150 @@ export const BossIncomeTab = () => {
         )}
       </Section>
 
-      {periodGroups.map((group) => (
-        <Section key={group.key}>
-          <SectionHeader>
-            <SectionTitleWrap>
-              <SectionTitle>
-                {activeCharacter
-                  ? `${activeCharacter.nickname} 주간 보스`
-                  : "주간 보스"}
-                {activeCharacter && (
-                  <WeeklyCounter
-                    $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
-                  >
-                    {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
-                  </WeeklyCounter>
-                )}
-              </SectionTitle>
-            </SectionTitleWrap>
-            <HeaderActions>
-              <HeaderButton
-                type="button"
-                $secondary
-                onClick={() => toggleSort(group.key)}
-              >
-                {sortModes[group.key] === "price" ? "기본순" : "가격순"}
-              </HeaderButton>
-              <HeaderButton
-                type="button"
-                $secondary
-                onClick={handleResetSelections}
-                disabled={!activeCharacter || activeWeeklySelectedCount === 0}
-              >
-                초기화
-              </HeaderButton>
-            </HeaderActions>
-          </SectionHeader>
+      {periodGroups.map((group) => {
+        const isWeekly = group.key === "weekly";
 
-          <Rows>
-            {getDisplayRows(group, sortModes[group.key]).map((row) => {
-              const { boss, difficulties, displayName, rowKey } = row;
-              const selection = activeCharacterSelections?.[boss.id];
-              const isRowEnabled =
-                selection?.enabled &&
-                difficulties.some(
-                  (difficulty) => difficulty.id === selection.difficultyId,
-                );
-              const activeDifficultyId =
-                selection?.difficultyId ?? boss.difficulties[0]?.id;
-              const maxPartySize = getDifficultyMaxPartySize(
-                boss,
-                activeDifficultyId,
-              );
-
-              return (
-                <BossRow key={rowKey} $enabled={isRowEnabled}>
-                  <BossIdentity>
-                    <BossIconWrap>
-                      {boss.icon ? (
-                        <BossIcon
-                          src={boss.icon}
-                          alt={`${boss.bossName} 아이콘`}
-                        />
-                      ) : (
-                        <BossIconFallback>
-                          {boss.bossName.slice(0, 1)}
-                        </BossIconFallback>
-                      )}
-                    </BossIconWrap>
-                    <BossName>{displayName}</BossName>
-                  </BossIdentity>
-
-                  <DifficultyCell>
-                    {difficulties.map((difficulty) => {
-                      const isSelected =
-                        selection?.enabled &&
-                        selection?.difficultyId === difficulty.id;
-                      const partySize = selection?.partySize ?? 1;
-                      const displayPartySize = clampPartySize(
-                        boss,
-                        partySize,
-                        difficulty.id,
-                      );
-                      const displayReward = hasRewardValue(difficulty.reward)
-                        ? difficulty.reward / displayPartySize
-                        : null;
-
-                      return (
-                        <DifficultyButton key={difficulty.id}>
-                          <DifficultyCheck
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() =>
-                              handleDifficultyChange(
-                                boss,
-                                difficulty.id,
-                                group.key,
-                              )
-                            }
-                          />
-                          <DifficultyIcon
-                            src={getDifficultyIcon(difficulty.id)}
-                            alt={`${difficulty.label} 아이콘`}
-                          />
-                          <DifficultyReward>
-                            {formatReward(displayReward)}
-                          </DifficultyReward>
-                        </DifficultyButton>
-                      );
-                    })}
-                  </DifficultyCell>
-
-                  <PartyCell>
-                    <PartySelect
-                      value={selection?.partySize ?? 1}
-                      onChange={(event) =>
-                        handlePartySizeChange(boss, event.target.value)
-                      }
+        return (
+          <Section key={group.key}>
+            <SectionHeader>
+              <SectionTitleWrap>
+                <SectionTitle>
+                  {activeCharacter
+                    ? `${activeCharacter.nickname} ${isWeekly ? "주간 보스" : "월간 보스"}`
+                    : isWeekly
+                      ? "주간 보스"
+                      : "월간 보스"}
+                  {activeCharacter && isWeekly ? (
+                    <WeeklyCounter
+                      $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
                     >
-                      {Array.from(
-                        { length: maxPartySize },
-                        (_, index) => index + 1,
-                      ).map((count) => (
-                        <option key={count} value={count}>
-                          {count}인
-                        </option>
-                      ))}
-                    </PartySelect>
-                  </PartyCell>
-                </BossRow>
-              );
-            })}
-          </Rows>
-        </Section>
-      ))}
+                      {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
+                    </WeeklyCounter>
+                  ) : null}
+                </SectionTitle>
+              </SectionTitleWrap>
+              <HeaderActions $spread={isWeekly}>
+                <HeaderButton
+                  type="button"
+                  $secondary
+                  onClick={() => toggleSort(group.key)}
+                >
+                  {sortModes[group.key] === "price" ? "기본순" : "가격순"}
+                </HeaderButton>
+
+                {isWeekly ? (
+                  <HeaderButton
+                    type="button"
+                    $secondary
+                    onClick={handleResetSelections}
+                    disabled={
+                      !activeCharacter || activeWeeklySelectedCount === 0
+                    }
+                  >
+                    초기화
+                  </HeaderButton>
+                ) : null}
+              </HeaderActions>
+            </SectionHeader>
+
+            <Rows>
+              {getDisplayRows(group, sortModes[group.key]).map((row) => {
+                const { boss, difficulties, displayName, rowKey } = row;
+                const selection = activeCharacterSelections?.[boss.id];
+                const isRowEnabled =
+                  selection?.enabled &&
+                  difficulties.some(
+                    (difficulty) => difficulty.id === selection.difficultyId,
+                  );
+                const activeDifficultyId =
+                  selection?.difficultyId ?? boss.difficulties[0]?.id;
+                const maxPartySize = getDifficultyMaxPartySize(
+                  boss,
+                  activeDifficultyId,
+                );
+
+                return (
+                  <BossRow key={rowKey} $enabled={isRowEnabled}>
+                    <BossIdentity>
+                      <BossIconWrap>
+                        {boss.icon ? (
+                          <BossIcon
+                            src={boss.icon}
+                            alt={`${boss.bossName} 아이콘`}
+                          />
+                        ) : (
+                          <BossIconFallback>
+                            {boss.bossName.slice(0, 1)}
+                          </BossIconFallback>
+                        )}
+                      </BossIconWrap>
+                      <BossName>{displayName}</BossName>
+                    </BossIdentity>
+
+                    <DifficultyCell>
+                      {difficulties.map((difficulty) => {
+                        const isSelected =
+                          selection?.enabled &&
+                          selection?.difficultyId === difficulty.id;
+                        const partySize = selection?.partySize ?? 1;
+                        const displayPartySize = clampPartySize(
+                          boss,
+                          partySize,
+                          difficulty.id,
+                        );
+                        const displayReward = hasRewardValue(difficulty.reward)
+                          ? difficulty.reward / displayPartySize
+                          : null;
+
+                        return (
+                          <DifficultyButton key={difficulty.id}>
+                            <DifficultyCheck
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() =>
+                                handleDifficultyChange(
+                                  boss,
+                                  difficulty.id,
+                                  group.key,
+                                )
+                              }
+                            />
+                            <DifficultyIcon
+                              src={getDifficultyIcon(difficulty.id)}
+                              alt={`${difficulty.label} 아이콘`}
+                            />
+                            <DifficultyReward>
+                              {formatReward(displayReward)}
+                            </DifficultyReward>
+                          </DifficultyButton>
+                        );
+                      })}
+                    </DifficultyCell>
+
+                    <PartyCell>
+                      <PartySelect
+                        value={selection?.partySize ?? 1}
+                        onChange={(event) =>
+                          handlePartySizeChange(boss, event.target.value)
+                        }
+                      >
+                        {Array.from(
+                          { length: maxPartySize },
+                          (_, index) => index + 1,
+                        ).map((count) => (
+                          <option key={count} value={count}>
+                            {count}인
+                          </option>
+                        ))}
+                      </PartySelect>
+                    </PartyCell>
+                  </BossRow>
+                );
+              })}
+            </Rows>
+          </Section>
+        );
+      })}
     </ContentWrap>
   );
 };
@@ -1040,7 +1052,7 @@ const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 42px;
   padding: 6px 12px;
   border-radius: 3px;
   border: 1px solid rgba(178, 189, 197, 0.65);
@@ -1050,6 +1062,7 @@ const SectionHeader = styled.div`
   @media screen and (max-width: 1200px) {
     align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
   }
 `;
 
@@ -1074,12 +1087,17 @@ const SectionTitle = styled.h2`
 const HeaderActions = styled.div`
   display: flex;
   align-items: center;
+  justify-content: ${({ $spread }) =>
+    $spread ? "space-between" : "flex-start"};
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: ${({ $spread }) => ($spread ? "nowrap" : "wrap")};
+  flex: ${({ $spread }) => ($spread ? "1 1 0" : "0 0 auto")};
+  min-width: 0;
 
   @media screen and (max-width: 1200px) {
-    width: ${({ $fullWidthOnMobile }) =>
-      $fullWidthOnMobile ? "100%" : "auto"};
+    width: ${({ $spread, $fullWidthOnMobile }) =>
+      $spread || $fullWidthOnMobile ? "100%" : "auto"};
+    flex: ${({ $spread }) => ($spread ? "1 1 auto" : "0 0 auto")};
   }
 `;
 
@@ -1128,6 +1146,16 @@ const Rows = styled.div`
   flex-direction: column;
   gap: 5px;
   margin-top: 6px;
+
+  @media screen and (max-width: 1200px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 `;
 
 const BossRow = styled.article`
@@ -1148,6 +1176,7 @@ const BossRow = styled.article`
       "identity"
       "difficulty"
       "party";
+    align-content: space-between;
   }
 `;
 
@@ -1218,6 +1247,7 @@ const DifficultyButton = styled.label`
 `;
 
 const DifficultyCheck = styled.input`
+  cursor: pointer;
   width: 20px;
   height: 20px;
   margin: 0;
@@ -1242,6 +1272,7 @@ const PartyCell = styled.div`
 
   @media screen and (max-width: 1200px) {
     grid-area: party;
+    min-width: 0;
   }
 `;
 
@@ -1251,7 +1282,6 @@ const PartySelect = styled.select`
   padding: 0 10px;
   border-radius: 6px;
   border: 1px solid rgba(93, 103, 112, 0.72);
-  background: linear-gradient(180deg, #eef2f5 0%, #dbe3e8 100%);
   color: #2d4254;
   font-size: 12px;
   font-weight: 700;

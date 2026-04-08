@@ -261,7 +261,7 @@ const allPeriodGroups = [
   {
     key: "monthly",
     label: "월간",
-    weeklyMultiplier: 0.25,
+    weeklyMultiplier: 0,
     monthlyMultiplier: 1,
     bosses: [
       boss({
