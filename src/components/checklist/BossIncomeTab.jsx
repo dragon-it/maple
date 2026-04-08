@@ -818,14 +818,19 @@ export const BossIncomeTab = () => {
                 >
                   {sortModes[group.key] === "price" ? "기본순" : "가격순"}
                 </HeaderButton>
-                <HeaderButton
-                  type="button"
-                  $secondary
-                  onClick={handleResetSelections}
-                  disabled={!activeCharacter || activeWeeklySelectedCount === 0}
-                >
-                  초기화
-                </HeaderButton>
+
+                {isWeekly ? (
+                  <HeaderButton
+                    type="button"
+                    $secondary
+                    onClick={handleResetSelections}
+                    disabled={
+                      !activeCharacter || activeWeeklySelectedCount === 0
+                    }
+                  >
+                    초기화
+                  </HeaderButton>
+                ) : null}
               </HeaderActions>
             </SectionHeader>
 
