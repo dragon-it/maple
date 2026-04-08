@@ -810,7 +810,7 @@ export const BossIncomeTab = () => {
                   ) : null}
                 </SectionTitle>
               </SectionTitleWrap>
-              <HeaderActions>
+              <HeaderActions $spread={isWeekly}>
                 <HeaderButton
                   type="button"
                   $secondary
@@ -1052,7 +1052,7 @@ const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 42px;
   padding: 6px 12px;
   border-radius: 3px;
   border: 1px solid rgba(178, 189, 197, 0.65);
@@ -1062,6 +1062,7 @@ const SectionHeader = styled.div`
   @media screen and (max-width: 1200px) {
     align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
   }
 `;
 
@@ -1086,12 +1087,17 @@ const SectionTitle = styled.h2`
 const HeaderActions = styled.div`
   display: flex;
   align-items: center;
+  justify-content: ${({ $spread }) =>
+    $spread ? "space-between" : "flex-start"};
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: ${({ $spread }) => ($spread ? "nowrap" : "wrap")};
+  flex: ${({ $spread }) => ($spread ? "1 1 0" : "0 0 auto")};
+  min-width: 0;
 
   @media screen and (max-width: 1200px) {
-    width: ${({ $fullWidthOnMobile }) =>
-      $fullWidthOnMobile ? "100%" : "auto"};
+    width: ${({ $spread, $fullWidthOnMobile }) =>
+      $spread || $fullWidthOnMobile ? "100%" : "auto"};
+    flex: ${({ $spread }) => ($spread ? "1 1 auto" : "0 0 auto")};
   }
 `;
 
@@ -1140,6 +1146,16 @@ const Rows = styled.div`
   flex-direction: column;
   gap: 5px;
   margin-top: 6px;
+
+  @media screen and (max-width: 1200px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 `;
 
 const BossRow = styled.article`
@@ -1160,6 +1176,7 @@ const BossRow = styled.article`
       "identity"
       "difficulty"
       "party";
+    align-content: space-between;
   }
 `;
 
@@ -1255,6 +1272,7 @@ const PartyCell = styled.div`
 
   @media screen and (max-width: 1200px) {
     grid-area: party;
+    min-width: 0;
   }
 `;
 
