@@ -6,7 +6,7 @@ import { ExpirationCheckTab } from "./ExpirationCheckTab";
 
 const tabs = [
   { id: "boss-income", label: "보스 수익" },
-  // { id: "expiration", label: "기간 만료 체크" }, 추후 추가 예정
+  { id: "expiration", label: "기간 만료 체크" },
 ];
 
 export const ChecklistShell = () => {
