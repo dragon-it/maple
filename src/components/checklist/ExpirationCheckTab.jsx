@@ -205,18 +205,11 @@ export const ExpirationCheckTab = () => {
     if (loading || !combinedData) {
       return {
         getBasicInformation: dummyUserData.getCombinedData.getBasicInformation,
-        getCharacterPopularity:
-          dummyUserData.getCombinedData.getCharacterPopularity,
-        getDojang: dummyUserData.getCombinedData.getDojang,
-        getUnion: dummyUserData.getCombinedData.getUnion,
       };
     }
 
     return {
       getBasicInformation: combinedData.getBasicInformation,
-      getCharacterPopularity: combinedData.getCharacterPopularity,
-      getDojang: combinedData.getDojang,
-      getUnion: combinedData.getUnion,
     };
   }, [combinedData, loading]);
 
