@@ -2,8 +2,11 @@ import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { getCombinedData, getOcidApi } from "../../api/api";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
-import { BasicInformation } from "../user/Information/BasicInformation";
-import dummyUserData from "../user/Information/dummyUserData";
+import { CharacterPreviewCard } from "../common/CharacterPreviewCard";
+import {
+  expirationCheckDummyCharacter,
+  expirationCheckPlaceholderSections,
+} from "./expirationCheckDummyData";
 
 const formatExpire = (expireAt) =>
   new Intl.DateTimeFormat("ko-KR", {
@@ -72,7 +75,7 @@ const buildExpirationSections = (combinedData) => {
   const cashSectionKeys = [
     {
       key: "cash_item_equipment_base",
-      label: "캐시 보관 중",
+      label: "캐시",
     },
     {
       key: "cash_item_equipment_preset_1",
@@ -125,6 +128,26 @@ const buildExpirationSections = (combinedData) => {
     });
   }
 
+  const artifactItems =
+    combinedData?.getUnionArtiFact?.union_artifact_crystal
+      ?.filter((artifact) => artifact?.date_expire)
+      .map((artifact, index) => ({
+        id: `artifact-${index}`,
+        name: artifact.name || `Artifact ${index + 1}`,
+        slot: artifact.level ? `Lv.${artifact.level}` : "아티팩트",
+        expireAt: artifact.date_expire,
+        detail: "아티팩트 만료",
+      }))
+      .sort((a, b) => new Date(a.expireAt) - new Date(b.expireAt)) ?? [];
+
+  if (artifactItems.length > 0) {
+    sections.push({
+      id: "union-artifact",
+      title: "유니온 아티팩트",
+      items: artifactItems,
+    });
+  }
+
   const petEquipment = combinedData?.getPetEquipment ?? {};
   const petItems = [1, 2, 3]
     .map((index) => ({
@@ -151,42 +174,6 @@ const buildExpirationSections = (combinedData) => {
   return sections;
 };
 
-const placeholderSections = [
-  {
-    id: "placeholder-cash",
-    title: "캐시 프리셋",
-    items: [
-      {
-        id: "placeholder-cash-1",
-        name: "모자 옵션",
-        slot: "캐시",
-        expireAt: "2026-03-12T00:00:00+09:00",
-        detail: "옵션 유효 기간",
-      },
-      {
-        id: "placeholder-cash-2",
-        name: "장갑 옵션",
-        slot: "캐시",
-        expireAt: "2026-03-18T00:00:00+09:00",
-        detail: "옵션 유효 기간",
-      },
-    ],
-  },
-  {
-    id: "placeholder-pet",
-    title: "펫",
-    items: [
-      {
-        id: "placeholder-pet-1",
-        name: "펌 펌이",
-        slot: "루나",
-        expireAt: "2026-03-09T00:00:00+09:00",
-        detail: "마법의 시간",
-      },
-    ],
-  },
-];
-
 export const ExpirationCheckTab = () => {
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -196,21 +183,18 @@ export const ExpirationCheckTab = () => {
 
   const sections = useMemo(() => {
     if (loading) {
-      return placeholderSections;
+      return expirationCheckPlaceholderSections;
     }
+
     return combinedData ? buildExpirationSections(combinedData) : [];
   }, [combinedData, loading]);
 
-  const basicInfo = useMemo(() => {
+  const characterPreview = useMemo(() => {
     if (loading || !combinedData) {
-      return {
-        getBasicInformation: dummyUserData.getCombinedData.getBasicInformation,
-      };
+      return expirationCheckDummyCharacter;
     }
 
-    return {
-      getBasicInformation: combinedData.getBasicInformation,
-    };
+    return combinedData.getBasicInformation;
   }, [combinedData, loading]);
 
   const handleSubmit = async (event) => {
@@ -268,7 +252,7 @@ export const ExpirationCheckTab = () => {
     <ContentWrap>
       <SearchPanel onSubmit={handleSubmit}>
         <SearchLabel htmlFor="checklist-character-search">
-          {"캐릭터 닉네임"}
+          캐릭터 닉네임
         </SearchLabel>
         <SearchRow>
           <SearchInput
@@ -276,17 +260,16 @@ export const ExpirationCheckTab = () => {
             type="text"
             value={searchValue}
             maxLength={15}
-            placeholder={"닉네임을 입력하세요"}
+            placeholder="닉네임을 입력하세요"
             onChange={(event) => setSearchValue(event.target.value)}
           />
           <SearchButton type="submit" disabled={loading}>
-            {loading ? "검색 중" : "기간 만료 체크"}
+            {loading ? "검색 중..." : "기간 만료 체크"}
           </SearchButton>
         </SearchRow>
         <SearchHint>
-          {
-            "검색 시 캐시 옵션, 안드로이드 캐시, 펫 기간 만료 정보를 한 번에 정리합니다."
-          }
+          캐시 옵션, 안드로이드 캐시, 유니온 아티팩트, 펫의 만료 정보를 한 번에
+          정리합니다.
         </SearchHint>
       </SearchPanel>
 
@@ -295,7 +278,11 @@ export const ExpirationCheckTab = () => {
       {showResultArea ? (
         <ResultGrid>
           <InfoCard>
-            <BasicInformation BasicInfo={basicInfo} blur={loading} />
+            <CharacterPreviewCard
+              characterName={characterPreview?.character_name}
+              characterImage={characterPreview?.character_image}
+              blur={loading}
+            />
           </InfoCard>
 
           <SectionColumn>
@@ -322,17 +309,13 @@ export const ExpirationCheckTab = () => {
                 </ExpireSection>
               ))
             ) : (
-              <EmptyPanel>
-                {"현재 확인된 기간 만료 정보가 없습니다."}
-              </EmptyPanel>
+              <EmptyPanel>현재 확인할 기간 만료 정보가 없습니다.</EmptyPanel>
             )}
           </SectionColumn>
         </ResultGrid>
       ) : (
         <GuidePanel>
-          {
-            "기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 표시합니다."
-          }
+          기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 보여줍니다.
         </GuidePanel>
       )}
     </ContentWrap>
@@ -447,9 +430,13 @@ const ExpireSectionTitle = styled.h2`
 `;
 
 const ExpireList = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const ExpireCard = styled.article`
