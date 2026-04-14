@@ -22,15 +22,20 @@ const useReveal = (ready) => {
 export const CharacterPreviewCard = ({
   characterName,
   characterImage,
+  characterLevel,
   blur = false,
 }) => {
   const name = hasValue(characterName) ? characterName : "-";
+  const level = hasValue(characterLevel) ? characterLevel : "-";
   const hasCharacterImage =
-    hasValue(characterImage) && characterImage !== "-" && characterImage !== "null";
+    hasValue(characterImage) &&
+    characterImage !== "-" &&
+    characterImage !== "null";
   const nameInitial = name !== "-" ? String(name).slice(0, 1) : "?";
 
   const imageRevealed = useReveal(hasCharacterImage && !blur);
   const nameRevealed = useReveal(hasValue(characterName) && !blur);
+  const levelRevealed = useReveal(hasValue(characterLevel) && !blur);
 
   return (
     <Container>
@@ -46,6 +51,7 @@ export const CharacterPreviewCard = ({
         )}
       </Avatar>
       <Name $revealed={nameRevealed}>{name}</Name>
+      <Level $revealed={levelRevealed}>Lv.{level}</Level>
     </Container>
   );
 };
@@ -61,7 +67,11 @@ const Container = styled.div`
   border: 1px solid rgb(80, 92, 101);
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
-  background: linear-gradient(180deg, rgba(72, 81, 91, 0.96), rgba(42, 49, 58, 0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(72, 81, 91, 0.96),
+    rgba(42, 49, 58, 0.96)
+  );
 `;
 
 const Avatar = styled.div`
@@ -100,8 +110,20 @@ const Name = styled.div`
   color: white;
   filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(12px)")};
   opacity: ${({ $revealed }) => ($revealed ? 1 : 0.6)};
-  transition: filter 0.45s ease, opacity 0.45s ease;
+  transition:
+    filter 0.45s ease,
+    opacity 0.45s ease;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const Level = styled.div`
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(12px)")};
+  opacity: ${({ $revealed }) => ($revealed ? 1 : 0.6)};
+  transition:
+    filter 0.45s ease,
+    opacity 0.45s ease;
 `;

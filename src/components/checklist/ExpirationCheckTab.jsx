@@ -264,7 +264,7 @@ export const ExpirationCheckTab = () => {
             onChange={(event) => setSearchValue(event.target.value)}
           />
           <SearchButton type="submit" disabled={loading}>
-            {loading ? "검색 중..." : "기간 만료 체크"}
+            {loading ? "검색 중..." : "검색"}
           </SearchButton>
         </SearchRow>
         <SearchHint>
@@ -281,6 +281,7 @@ export const ExpirationCheckTab = () => {
             <CharacterPreviewCard
               characterName={characterPreview?.character_name}
               characterImage={characterPreview?.character_image}
+              characterLevel={characterPreview?.character_level}
               blur={loading}
             />
           </InfoCard>
