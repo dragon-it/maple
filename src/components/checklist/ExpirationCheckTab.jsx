@@ -71,6 +71,7 @@ const resolveOcid = async (characterName) => {
 
 const buildExpirationSections = (combinedData) => {
   const sections = [];
+  const titleEquipment = combinedData?.getItemEquipment?.title;
   const cashEquipment = combinedData?.getCashItemEquipment ?? {};
   const cashSectionKeys = [
     {
@@ -107,6 +108,23 @@ const buildExpirationSections = (combinedData) => {
       sections.push({ id: key, title: label, items });
     }
   });
+
+  if (titleEquipment?.date_option_expire) {
+    sections.push({
+      id: "title",
+      title: "칭호",
+      items: [
+        {
+          id: "title-option-expire",
+          name: titleEquipment.title_name || "칭호",
+          icon: titleEquipment.title_icon,
+          slot: "칭호",
+          expireAt: titleEquipment.date_option_expire,
+          detail: "유효 기간",
+        },
+      ],
+    });
+  }
 
   const androidItems =
     combinedData?.getAndroidEquipment?.android_cash_item_equipment
@@ -268,8 +286,8 @@ export const ExpirationCheckTab = () => {
           </SearchButton>
         </SearchRow>
         <SearchHint>
-          캐시 옵션, 안드로이드 캐시, 유니온 아티팩트, 펫의 만료 정보를 한 번에
-          정리합니다.
+          캐시 옵션, 칭호, 안드로이드 캐시, 유니온 아티팩트, 펫의 만료
+          정보를 한 번에 정리합니다.
         </SearchHint>
       </SearchPanel>
 
@@ -295,7 +313,15 @@ export const ExpirationCheckTab = () => {
                     {section.items.map((item) => (
                       <ExpireCard key={item.id} $blurred={loading}>
                         <ExpireCardTop>
-                          <ExpireName>{item.name}</ExpireName>
+                          <ExpireItemHeading>
+                            {item.icon && (
+                              <ExpireIcon
+                                src={item.icon}
+                                alt={`${item.name} 아이콘`}
+                              />
+                            )}
+                            <ExpireName>{item.name}</ExpireName>
+                          </ExpireItemHeading>
                           <RemainBadge $tone={getRemainTone(item.expireAt)}>
                             {formatRemainLabel(item.expireAt)}
                           </RemainBadge>
@@ -459,12 +485,30 @@ const ExpireCardTop = styled.div`
   gap: 10px;
 `;
 
+const ExpireItemHeading = styled.div`
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+`;
+
+const ExpireIcon = styled.img`
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: pixelated;
+`;
+
 const ExpireName = styled.div`
+  min-width: 0;
   font-size: 15px;
   font-weight: 600;
+  overflow-wrap: anywhere;
 `;
 
 const RemainBadge = styled.span`
+  flex: 0 0 auto;
   padding: 4px 8px;
   border-radius: 999px;
   font-size: 12px;
