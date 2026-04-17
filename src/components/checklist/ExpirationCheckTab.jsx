@@ -7,6 +7,7 @@ import {
   expirationCheckDummyCharacter,
   expirationCheckPlaceholderSections,
 } from "./expirationCheckDummyData";
+import { getUnionArtifactIcon } from "../user/union/unionArtifact/getUnionArtifactIcon";
 
 const formatExpire = (expireAt) =>
   new Intl.DateTimeFormat("ko-KR", {
@@ -98,6 +99,7 @@ const buildExpirationSections = (combinedData) => {
       .map((item, index) => ({
         id: `${key}-${index}`,
         name: item.cash_item_name,
+        icon: item.cash_item_icon,
         slot: item.cash_item_equipment_part,
         expireAt: item.date_option_expire,
         detail: "옵션 유효 기간",
@@ -132,6 +134,7 @@ const buildExpirationSections = (combinedData) => {
       .map((item, index) => ({
         id: `android-${index}`,
         name: item.cash_item_name,
+        icon: item.cash_item_icon,
         slot: item.cash_item_equipment_part,
         expireAt: item.date_option_expire,
         detail: "안드로이드 캐시 옵션",
@@ -152,6 +155,7 @@ const buildExpirationSections = (combinedData) => {
       .map((artifact, index) => ({
         id: `artifact-${index}`,
         name: artifact.name || `Artifact ${index + 1}`,
+        icon: getUnionArtifactIcon(artifact.name, artifact.level),
         slot: artifact.level ? `Lv.${artifact.level}` : "아티팩트",
         expireAt: artifact.date_expire,
         detail: "아티팩트 만료",
@@ -174,6 +178,7 @@ const buildExpirationSections = (combinedData) => {
         petEquipment[`pet_${index}_nickname`] ||
         petEquipment[`pet_${index}_name`] ||
         `Pet ${index}`,
+      icon: petEquipment[`pet_${index}_appearance_icon`] || null,
       slot: petEquipment[`pet_${index}_pet_type`] || "펫",
       expireAt: petEquipment[`pet_${index}_date_expire`],
       detail: "마법의 시간",
