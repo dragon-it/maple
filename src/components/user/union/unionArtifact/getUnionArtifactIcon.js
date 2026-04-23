@@ -1,15 +1,15 @@
 import UnionArtifactIcon from "./UnionArtifactIcon";
 
 const artifactNameKeyMap = {
-  "오렌지 버섯": "orange_Mushroom",
-  슬라임: "slime",
-  뿔버섯: "horny_Mushroom",
-  스텀프: "stump",
-  스톤골렘: "stone_Golem",
-  발록: "balrog",
-  자쿰: "zaqqum",
-  핑크빈: "pink_Bean",
-  파풀라투스: "papulatus",
+  "크리스탈 : 주황버섯": "orange_Mushroom",
+  "크리스탈 : 슬라임": "slime",
+  "크리스탈 : 뿔버섯": "horny_Mushroom",
+  "크리스탈 : 스텀프": "stump",
+  "크리스탈 : 스톤골렘": "stone_Golem",
+  "크리스탈 : 발록": "balrog",
+  "크리스탈 : 자쿰": "zaqqum",
+  "크리스탈 : 핑크빈": "pink_Bean",
+  "크리스탈 : 파풀라투스": "papulatus",
 };
 
 export const normalizeUnionArtifactName = (name = "") =>
