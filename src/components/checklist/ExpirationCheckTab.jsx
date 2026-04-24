@@ -219,6 +219,17 @@ export const ExpirationCheckTab = () => {
                             ? formatExpire(item.expireAt)
                             : item.emptyMessage}
                         </ExpireDate>
+                        {item.extraLines?.length > 0 && (
+                          <ExpireExtraList>
+                            {item.extraLines.map((line, index) => (
+                              <ExpireExtraLine
+                                key={`${item.id}-extra-${index}`}
+                              >
+                                {line}
+                              </ExpireExtraLine>
+                            ))}
+                          </ExpireExtraList>
+                        )}
                       </ExpireCard>
                     ))}
                   </ExpireList>
@@ -240,7 +251,7 @@ export const ExpirationCheckTab = () => {
 
 const panelCss = `
   ${ContainerCss};
-  padding: 14px;
+  padding: 8px;
   color: white;
 `;
 
@@ -311,8 +322,6 @@ const ErrorText = styled.div`
 `;
 
 const ResultGrid = styled.div`
-  display: grid;
-  grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
   gap: 12px;
   align-items: start;
 
@@ -323,7 +332,7 @@ const ResultGrid = styled.div`
 
 const InfoCard = styled.div`
   ${panelCss}
-
+  margin-bottom: 12px;
   > div {
     width: 100%;
   }
@@ -416,16 +425,29 @@ const RemainBadge = styled.span`
 `;
 
 const ExpireMeta = styled.div`
-  margin-top: 8px;
+  margin-top: 2px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.65);
 `;
 
 const ExpireDate = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 13px;
   color: ${({ $isEmpty }) =>
     $isEmpty ? "rgba(255, 255, 255, 0.64)" : "#fff2be"};
+`;
+
+const ExpireExtraList = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+`;
+
+const ExpireExtraLine = styled.div`
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 191, 102, 0.92);
+  word-break: break-word;
 `;
 
 const EmptyPanel = styled.div`

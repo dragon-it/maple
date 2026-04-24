@@ -1,12 +1,12 @@
 export const expirationCheckDummyCharacter = {
-  character_name: "메이플",
+  character_name: "메이플스토리",
   character_image: null,
 };
 
 export const expirationCheckPlaceholderSections = [
   {
     id: "placeholder-cash",
-    title: "캐시 프리셋",
+    title: "캐시",
     items: [
       {
         id: "placeholder-cash-1",
@@ -30,7 +30,7 @@ export const expirationCheckPlaceholderSections = [
     items: [
       {
         id: "placeholder-artifact-1",
-        name: "오렌지 버섯",
+        name: "주황 버섯",
         slot: "Lv.5",
         expireAt: "2026-03-10T00:00:00+09:00",
         detail: "아티팩트 만료",
