@@ -1,15 +1,5 @@
 import { getUnionArtifactIcon } from "../user/union/unionArtifact/getUnionArtifactIcon";
 
-const CASH_TRACKED_PARTS = [
-  "얼굴장식",
-  "눈장식",
-  "귀고리",
-  "장갑",
-  "무기",
-  "모자",
-  "망토",
-];
-
 const UNION_ARTIFACT_NAMES = [
   "크리스탈 : 주황버섯",
   "크리스탈 : 슬라임",
@@ -22,11 +12,12 @@ const UNION_ARTIFACT_NAMES = [
   "크리스탈 : 파풀라투스",
 ];
 
-const CASH_SECTION_KEYS = [
-  {
-    key: "cash_item_equipment_base",
-    label: "캐시",
-  },
+const CASH_BASE_SECTION = {
+  key: "cash_item_equipment_base",
+  label: "캐시",
+};
+
+const CASH_PRESET_SECTIONS = [
   {
     key: "cash_item_equipment_preset_1",
     label: "캐시 프리셋 1",
@@ -42,6 +33,12 @@ const CASH_SECTION_KEYS = [
 ];
 
 const normalizeLabel = (value) => value?.replace(/\s+/g, " ").trim() ?? "";
+
+const getCashItemIdentity = (item) =>
+  [
+    normalizeLabel(item?.cash_item_equipment_part),
+    normalizeLabel(item?.cash_item_name),
+  ].join("|");
 
 const createEmptyCard = ({
   id,
@@ -93,6 +90,7 @@ const createTimedCard = ({
   detail,
   expireAt,
   extraLines = [],
+  alertTone = null,
 }) => ({
   id,
   name,
@@ -101,53 +99,86 @@ const createTimedCard = ({
   detail,
   expireAt,
   extraLines,
+  alertTone,
 });
 
-const buildCashSections = (cashEquipment) =>
-  CASH_SECTION_KEYS.map(({ key, label }) => {
-    const itemsByPart = new Map(
-      (cashEquipment[key] ?? []).map((item) => [
-        normalizeLabel(item?.cash_item_equipment_part),
-        item,
-      ]),
+const buildBaseCashSection = (cashEquipment) => {
+  const items = (cashEquipment[CASH_BASE_SECTION.key] ?? [])
+    .filter((item) => item?.date_option_expire)
+    .map((item) =>
+      createTimedCard({
+        id: `${CASH_BASE_SECTION.key}-${getCashItemIdentity(item)}`,
+        name: item.cash_item_name || item.cash_item_equipment_part,
+        icon: item.cash_item_icon,
+        slot: item.cash_item_equipment_part || "캐시",
+        expireAt: item.date_option_expire,
+        detail: "캐시 장착 옵션 유효 기간",
+      }),
     );
 
-    const items = CASH_TRACKED_PARTS.map((part) => {
-      const item = itemsByPart.get(part);
+  if (items.length === 0) {
+    items.push(
+      createInformationalCard({
+        id: "cash-base-empty",
+        name: "캐시",
+        slot: "캐시",
+        detail: "만료 정보 없음",
+        emptyMessage: "캐시에 장착된 옵션 만료 아이템이 없습니다.",
+      }),
+    );
+  }
 
-      if (!item) {
-        return createEmptyCard({
-          id: `${key}-${part}`,
-          name: part,
-          slot: part,
-          detail: "장착 안 함",
-          emptyMessage: "해당 캐시 슬롯에 아이템이 없습니다.",
-        });
-      }
+  return {
+    id: CASH_BASE_SECTION.key,
+    title: CASH_BASE_SECTION.label,
+    items,
+  };
+};
 
-      if (!item.date_option_expire) {
-        return createInformationalCard({
-          id: `${key}-${part}`,
-          name: item.cash_item_name || part,
+const buildPresetCashWarningSection = (cashEquipment) => {
+  const baseItemIdentities = new Set(
+    (cashEquipment[CASH_BASE_SECTION.key] ?? [])
+      .filter((item) => item?.date_option_expire)
+      .map(getCashItemIdentity),
+  );
+
+  const warningItems = CASH_PRESET_SECTIONS.flatMap(({ key, label }) =>
+    (cashEquipment[key] ?? [])
+      .filter((item) => item?.date_option_expire)
+      .filter((item) => !baseItemIdentities.has(getCashItemIdentity(item)))
+      .map((item) =>
+        createTimedCard({
+          id: `${key}-${getCashItemIdentity(item)}`,
+          name: item.cash_item_name || item.cash_item_equipment_part,
           icon: item.cash_item_icon,
-          slot: part,
-          detail: "만료 정보 없음",
-          emptyMessage: "옵션 만료 정보가 없습니다.",
-        });
-      }
+          slot: `${label} / ${item.cash_item_equipment_part || "캐시"}`,
+          expireAt: item.date_option_expire,
+          detail: "프리셋에만 있는 옵션 유효 기간",
+          extraLines: [
+            "캐시가 아니라 프리셋에 장착되어 있어 해당 프리셋을 낄 때만 옵션이 유지됩니다.",
+            "항상 유지하려면 캐시에 장착해야 합니다.",
+          ],
+          alertTone: "danger",
+        }),
+      ),
+  );
 
-      return createTimedCard({
-        id: `${key}-${part}`,
-        name: item.cash_item_name || part,
-        icon: item.cash_item_icon,
-        slot: part,
-        expireAt: item.date_option_expire,
-        detail: "옵션 유효 기간",
-      });
-    });
+  if (warningItems.length === 0) {
+    return null;
+  }
 
-    return { id: key, title: label, items };
-  });
+  return {
+    id: "cash-preset-warning",
+    title: "캐시 프리셋",
+    items: warningItems,
+  };
+};
+
+const buildCashSections = (cashEquipment) =>
+  [
+    buildBaseCashSection(cashEquipment),
+    buildPresetCashWarningSection(cashEquipment),
+  ].filter(Boolean);
 
 const buildTitleSection = (titleEquipment) => {
   const hasTitleData = Boolean(

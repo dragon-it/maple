@@ -32,8 +32,8 @@ const getRemainTone = (expireAt) => {
   const diff = new Date(expireAt).getTime() - Date.now();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
-  if (days <= 1) return "danger";
-  if (days <= 7) return "warning";
+  if (days <= 7) return "danger";
+  if (days <= 14) return "warning";
   return "normal";
 };
 
@@ -187,51 +187,59 @@ export const ExpirationCheckTab = () => {
                 <ExpireSection key={section.id}>
                   <ExpireSectionTitle>{section.title}</ExpireSectionTitle>
                   <ExpireList>
-                    {section.items.map((item) => (
-                      <ExpireCard key={item.id} $blurred={loading}>
-                        <ExpireCardTop>
-                          <ExpireItemHeading>
-                            {item.icon && (
-                              <ExpireIcon
-                                src={item.icon}
-                                alt={`${item.name} 아이콘`}
-                              />
-                            )}
-                            <ExpireName>{item.name}</ExpireName>
-                          </ExpireItemHeading>
-                          <RemainBadge
-                            $tone={
-                              item.expireAt
-                                ? getRemainTone(item.expireAt)
-                                : item.badgeTone
-                            }
+                    {section.items.map((item) => {
+                      const remainTone = item.expireAt
+                        ? getRemainTone(item.expireAt)
+                        : item.badgeTone;
+
+                      return (
+                        <ExpireCard
+                          key={item.id}
+                          $blurred={loading}
+                          $alertTone={item.alertTone}
+                          $remainTone={remainTone}
+                        >
+                          <ExpireCardTop>
+                            <ExpireItemHeading>
+                              {item.icon && (
+                                <ExpireIcon
+                                  src={item.icon}
+                                  alt={`${item.name} 아이콘`}
+                                />
+                              )}
+                              <ExpireName>{item.name}</ExpireName>
+                            </ExpireItemHeading>
+                            <RemainBadge $tone={remainTone}>
+                              {item.expireAt
+                                ? formatRemainLabel(item.expireAt)
+                                : item.badgeLabel}
+                            </RemainBadge>
+                          </ExpireCardTop>
+                          <ExpireMeta>
+                            {item.slot} | {item.detail}
+                          </ExpireMeta>
+                          <ExpireDate
+                            $isEmpty={!item.expireAt}
+                            $tone={remainTone}
                           >
                             {item.expireAt
-                              ? formatRemainLabel(item.expireAt)
-                              : item.badgeLabel}
-                          </RemainBadge>
-                        </ExpireCardTop>
-                        <ExpireMeta>
-                          {item.slot} | {item.detail}
-                        </ExpireMeta>
-                        <ExpireDate $isEmpty={!item.expireAt}>
-                          {item.expireAt
-                            ? formatExpire(item.expireAt)
-                            : item.emptyMessage}
-                        </ExpireDate>
-                        {item.extraLines?.length > 0 && (
-                          <ExpireExtraList>
-                            {item.extraLines.map((line, index) => (
-                              <ExpireExtraLine
-                                key={`${item.id}-extra-${index}`}
-                              >
-                                {line}
-                              </ExpireExtraLine>
-                            ))}
-                          </ExpireExtraList>
-                        )}
-                      </ExpireCard>
-                    ))}
+                              ? formatExpire(item.expireAt)
+                              : item.emptyMessage}
+                          </ExpireDate>
+                          {item.extraLines?.length > 0 && (
+                            <ExpireExtraList>
+                              {item.extraLines.map((line, index) => (
+                                <ExpireExtraLine
+                                  key={`${item.id}-extra-${index}`}
+                                >
+                                  {line}
+                                </ExpireExtraLine>
+                              ))}
+                            </ExpireExtraList>
+                          )}
+                        </ExpireCard>
+                      );
+                    })}
                   </ExpireList>
                 </ExpireSection>
               ))
@@ -368,7 +376,19 @@ const ExpireCard = styled.article`
   padding: 12px;
   border-radius: 10px;
   background: rgba(15, 21, 26, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid
+    ${({ $alertTone, $remainTone }) =>
+      $alertTone === "danger" || $remainTone === "danger"
+        ? "rgba(255, 79, 79, 0.9)"
+        : $remainTone === "warning"
+        ? "rgba(255, 196, 22, 0.72)"
+        : "rgba(255, 255, 255, 0.08)"};
+  box-shadow: ${({ $alertTone, $remainTone }) =>
+    $alertTone === "danger" || $remainTone === "danger"
+      ? "0 0 0 1px rgba(255, 79, 79, 0.22), 0 0 16px rgba(214, 74, 74, 0.22)"
+      : $remainTone === "warning"
+      ? "0 0 0 1px rgba(255, 196, 22, 0.14), 0 0 14px rgba(255, 196, 22, 0.14)"
+      : "none"};
   filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
   opacity: ${({ $blurred }) => ($blurred ? 0.7 : 1)};
   transition:
@@ -433,8 +453,12 @@ const ExpireMeta = styled.div`
 const ExpireDate = styled.div`
   margin-top: 4px;
   font-size: 13px;
-  color: ${({ $isEmpty }) =>
-    $isEmpty ? "rgba(255, 255, 255, 0.64)" : "#fff2be"};
+  color: ${({ $isEmpty, $tone }) => {
+    if ($isEmpty) return "rgba(255, 255, 255, 0.64)";
+    if ($tone === "danger") return "#ffd1d1";
+    if ($tone === "warning") return "#ffdf69";
+    return "#fff2be";
+  }};
 `;
 
 const ExpireExtraList = styled.div`
