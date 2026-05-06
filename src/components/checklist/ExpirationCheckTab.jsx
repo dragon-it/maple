@@ -37,10 +37,11 @@ const formatRemainLabel = (expireAt) => {
   if (!expireDate) return "없음";
 
   const diff = expireDate.getTime() - Date.now();
+  if (diff < 0) return "만료됨";
+
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
   if (Number.isNaN(days)) return "-";
-  if (days < 0) return `D+${Math.abs(days)}`;
   return `D-${days}`;
 };
 
