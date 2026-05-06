@@ -9,18 +9,34 @@ import {
 } from "./expirationCheckDummyData";
 import { buildExpirationSections } from "./expirationCheckSectionData";
 
-const formatExpire = (expireAt) =>
-  new Intl.DateTimeFormat("ko-KR", {
+const getValidExpireDate = (expireAt) => {
+  const expireDate = new Date(expireAt);
+  return Number.isNaN(expireDate.getTime()) ? null : expireDate;
+};
+
+const formatExpire = (expireAt) => {
+  const expireDate = getValidExpireDate(expireAt);
+
+  if (!expireDate) {
+    return "만료 정보 없음";
+  }
+
+  return new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(new Date(expireAt));
+  }).format(expireDate);
+};
 
 const formatRemainLabel = (expireAt) => {
-  const diff = new Date(expireAt).getTime() - Date.now();
+  const expireDate = getValidExpireDate(expireAt);
+
+  if (!expireDate) return "-";
+
+  const diff = expireDate.getTime() - Date.now();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
   if (Number.isNaN(days)) return "-";
@@ -29,7 +45,11 @@ const formatRemainLabel = (expireAt) => {
 };
 
 const getRemainTone = (expireAt) => {
-  const diff = new Date(expireAt).getTime() - Date.now();
+  const expireDate = getValidExpireDate(expireAt);
+
+  if (!expireDate) return "empty";
+
+  const diff = expireDate.getTime() - Date.now();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
   if (days <= 7) return "danger";
@@ -188,9 +208,12 @@ export const ExpirationCheckTab = () => {
                   <ExpireSectionTitle>{section.title}</ExpireSectionTitle>
                   <ExpireList>
                     {section.items.map((item) => {
-                      const remainTone = item.expireAt
+                      const hasValidExpireAt = Boolean(
+                        item.expireAt && getValidExpireDate(item.expireAt),
+                      );
+                      const remainTone = hasValidExpireAt
                         ? getRemainTone(item.expireAt)
-                        : item.badgeTone;
+                        : item.badgeTone ?? getRemainTone(item.expireAt);
 
                       return (
                         <ExpireCard
@@ -210,21 +233,21 @@ export const ExpirationCheckTab = () => {
                               <ExpireName>{item.name}</ExpireName>
                             </ExpireItemHeading>
                             <RemainBadge $tone={remainTone}>
-                              {item.expireAt
+                              {hasValidExpireAt
                                 ? formatRemainLabel(item.expireAt)
-                                : item.badgeLabel}
+                                : item.badgeLabel ?? formatRemainLabel(item.expireAt)}
                             </RemainBadge>
                           </ExpireCardTop>
                           <ExpireMeta>
                             {item.slot} | {item.detail}
                           </ExpireMeta>
                           <ExpireDate
-                            $isEmpty={!item.expireAt}
+                            $isEmpty={!hasValidExpireAt}
                             $tone={remainTone}
                           >
-                            {item.expireAt
+                            {hasValidExpireAt
                               ? formatExpire(item.expireAt)
-                              : item.emptyMessage}
+                              : item.emptyMessage ?? formatExpire(item.expireAt)}
                           </ExpireDate>
                           {item.extraLines?.length > 0 && (
                             <ExpireExtraList>
