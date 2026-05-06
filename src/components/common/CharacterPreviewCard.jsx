@@ -62,8 +62,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 20px 16px;
+  padding: 8px 16px;
   border: 1px solid rgb(80, 92, 101);
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
@@ -80,6 +79,7 @@ const Avatar = styled.div`
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
