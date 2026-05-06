@@ -34,7 +34,7 @@ const formatExpire = (expireAt) => {
 const formatRemainLabel = (expireAt) => {
   const expireDate = getValidExpireDate(expireAt);
 
-  if (!expireDate) return "-";
+  if (!expireDate) return "없음";
 
   const diff = expireDate.getTime() - Date.now();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -213,7 +213,7 @@ export const ExpirationCheckTab = () => {
                       );
                       const remainTone = hasValidExpireAt
                         ? getRemainTone(item.expireAt)
-                        : item.badgeTone ?? getRemainTone(item.expireAt);
+                        : (item.badgeTone ?? getRemainTone(item.expireAt));
 
                       return (
                         <ExpireCard
@@ -235,7 +235,8 @@ export const ExpirationCheckTab = () => {
                             <RemainBadge $tone={remainTone}>
                               {hasValidExpireAt
                                 ? formatRemainLabel(item.expireAt)
-                                : item.badgeLabel ?? formatRemainLabel(item.expireAt)}
+                                : (item.badgeLabel ??
+                                  formatRemainLabel(item.expireAt))}
                             </RemainBadge>
                           </ExpireCardTop>
                           <ExpireMeta>
@@ -247,7 +248,8 @@ export const ExpirationCheckTab = () => {
                           >
                             {hasValidExpireAt
                               ? formatExpire(item.expireAt)
-                              : item.emptyMessage ?? formatExpire(item.expireAt)}
+                              : (item.emptyMessage ??
+                                formatExpire(item.expireAt))}
                           </ExpireDate>
                           {item.extraLines?.length > 0 && (
                             <ExpireExtraList>
@@ -404,14 +406,14 @@ const ExpireCard = styled.article`
       $alertTone === "danger" || $remainTone === "danger"
         ? "rgba(255, 79, 79, 0.9)"
         : $remainTone === "warning"
-        ? "rgba(255, 196, 22, 0.72)"
-        : "rgba(255, 255, 255, 0.08)"};
+          ? "rgba(255, 196, 22, 0.72)"
+          : "rgba(255, 255, 255, 0.08)"};
   box-shadow: ${({ $alertTone, $remainTone }) =>
     $alertTone === "danger" || $remainTone === "danger"
       ? "0 0 0 1px rgba(255, 79, 79, 0.22), 0 0 16px rgba(214, 74, 74, 0.22)"
       : $remainTone === "warning"
-      ? "0 0 0 1px rgba(255, 196, 22, 0.14), 0 0 14px rgba(255, 196, 22, 0.14)"
-      : "none"};
+        ? "0 0 0 1px rgba(255, 196, 22, 0.14), 0 0 14px rgba(255, 196, 22, 0.14)"
+        : "none"};
   filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
   opacity: ${({ $blurred }) => ($blurred ? 0.7 : 1)};
   transition:
