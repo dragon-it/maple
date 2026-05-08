@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import favorite_false from "../../assets/icons/favoriteIcon/favorite_Star_False.svg";
+import favorite_true from "../../assets/icons/favoriteIcon/favorite_Star_True.svg";
 
 const hasValue = (value) =>
   value !== undefined && value !== null && value !== "";
@@ -24,6 +26,10 @@ export const CharacterPreviewCard = ({
   characterImage,
   characterLevel,
   blur = false,
+  active = false,
+  favorite = false,
+  onClick,
+  onFavoriteClick,
 }) => {
   const name = hasValue(characterName) ? characterName : "-";
   const level = hasValue(characterLevel) ? characterLevel : "-";
@@ -38,7 +44,36 @@ export const CharacterPreviewCard = ({
   const levelRevealed = useReveal(hasValue(characterLevel) && !blur);
 
   return (
-    <Container>
+    <Container
+      $active={active}
+      $clickable={Boolean(onClick)}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={(event) => {
+        if (!onClick) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick();
+        }
+      }}
+    >
+      {onFavoriteClick && (
+        <FavoriteButton
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onFavoriteClick();
+          }}
+          aria-label={favorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+        >
+          <img
+            src={favorite ? favorite_true : favorite_false}
+            alt=""
+            aria-hidden="true"
+          />
+        </FavoriteButton>
+      )}
       <Avatar>
         {hasCharacterImage ? (
           <AvatarImage
@@ -57,13 +92,17 @@ export const CharacterPreviewCard = ({
 };
 
 const Container = styled.div`
-  width: 100%;
+  position: relative;
+  width: 112px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
-  border: 1px solid rgb(80, 92, 101);
+  padding: 8px;
+  border: 1px solid
+    ${({ $active }) =>
+      $active ? "rgba(255, 255, 255, 0.95)" : "rgb(80, 92, 101)"};
   outline: 1px solid rgb(42, 49, 58);
   border-radius: 5px;
   background: linear-gradient(
@@ -71,6 +110,36 @@ const Container = styled.div`
     rgba(72, 81, 91, 0.96),
     rgba(42, 49, 58, 0.96)
   );
+  box-shadow: ${({ $active }) =>
+    $active ? "0 0 0 1px rgba(255, 255, 255, 0.72)" : "none"};
+  cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
+`;
+
+const FavoriteButton = styled.button`
+  position: absolute;
+  z-index: 20;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
 `;
 
 const Avatar = styled.div`

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { getCombinedData, getOcidApi } from "../../api/api";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
@@ -8,6 +8,26 @@ import {
   expirationCheckPlaceholderSections,
 } from "./expirationCheckDummyData";
 import { buildExpirationSections } from "./expirationCheckSectionData";
+
+const FAVORITE_STORAGE_KEY = "checklist-expiration-favorite-characters";
+
+const readFavoriteCharacters = () => {
+  try {
+    const parsed = JSON.parse(
+      localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]",
+    );
+
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+const toFavoriteCharacter = (basicInformation) => ({
+  characterName: basicInformation?.character_name,
+  characterImage: basicInformation?.character_image,
+  characterLevel: basicInformation?.character_level,
+});
 
 const getValidExpireDate = (expireAt) => {
   const expireDate = new Date(expireAt);
@@ -97,6 +117,11 @@ export const ExpirationCheckTab = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState(null);
   const [combinedData, setCombinedData] = useState(null);
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+
+  useEffect(() => {
+    setFavoriteCharacters(readFavoriteCharacters());
+  }, []);
 
   const sections = useMemo(() => {
     if (loading) {
@@ -114,13 +139,65 @@ export const ExpirationCheckTab = () => {
     return combinedData.getBasicInformation;
   }, [combinedData, loading]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const currentFavoriteCharacter = useMemo(
+    () => toFavoriteCharacter(combinedData?.getBasicInformation),
+    [combinedData],
+  );
 
-    const characterName = searchValue.replace(/\s+/g, "");
+  const currentCharacterName = currentFavoriteCharacter.characterName;
+  const isCurrentFavorite = useMemo(
+    () =>
+      Boolean(
+        currentCharacterName &&
+          favoriteCharacters.some(
+            (character) => character.characterName === currentCharacterName,
+          ),
+      ),
+    [currentCharacterName, favoriteCharacters],
+  );
+
+  const saveFavoriteCharacters = (nextFavorites) => {
+    localStorage.setItem(FAVORITE_STORAGE_KEY, JSON.stringify(nextFavorites));
+    setFavoriteCharacters(nextFavorites);
+  };
+
+  const toggleFavoriteCharacter = (character) => {
+    if (!character?.characterName || loading) {
+      return;
+    }
+
+    const isFavorite = favoriteCharacters.some(
+      (favoriteCharacter) =>
+        favoriteCharacter.characterName === character.characterName,
+    );
+    const nextFavorites = isFavorite
+      ? favoriteCharacters.filter(
+          (favoriteCharacter) =>
+            favoriteCharacter.characterName !== character.characterName,
+        )
+      : [
+          ...favoriteCharacters,
+          {
+            characterName: character.characterName,
+            characterImage: character.characterImage,
+            characterLevel: character.characterLevel,
+          },
+        ];
+
+    saveFavoriteCharacters(nextFavorites);
+  };
+
+  const searchCharacter = async (rawCharacterName) => {
+    if (loading) {
+      return;
+    }
+
+    const characterName = rawCharacterName.replace(/\s+/g, "");
     if (!characterName) {
       return;
     }
+
+    setSearchValue(characterName);
 
     const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(characterName);
@@ -163,7 +240,19 @@ export const ExpirationCheckTab = () => {
     }
   };
 
-  const showResultArea = hasSearched || loading || combinedData;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await searchCharacter(searchValue);
+  };
+
+  const showExpirationArea = hasSearched || loading || combinedData;
+  const showCurrentCharacter = Boolean(combinedData) && !loading;
+  const visibleFavoriteCharacters = favoriteCharacters.filter(
+    (character) =>
+      !currentCharacterName || character.characterName !== currentCharacterName,
+  );
+  const showFavoriteGroup =
+    visibleFavoriteCharacters.length > 0 || !showExpirationArea;
 
   return (
     <ContentWrap>
@@ -191,18 +280,54 @@ export const ExpirationCheckTab = () => {
 
       {error && <ErrorText>{error}</ErrorText>}
 
-      {showResultArea ? (
-        <ResultGrid>
-          <InfoCard>
-            <CharacterPreviewCard
-              characterName={characterPreview?.character_name}
-              characterImage={characterPreview?.character_image}
-              characterLevel={characterPreview?.character_level}
-              blur={loading}
-            />
-          </InfoCard>
+      <ResultGrid>
+        <InfoCard>
+          <CharacterPanelTitle>캐릭터</CharacterPanelTitle>
+          <CharacterCardList>
+            {showCurrentCharacter && (
+              <CharacterGroupTitle>현재 검색</CharacterGroupTitle>
+            )}
+            {showCurrentCharacter && (
+              <CharacterPreviewCard
+                characterName={characterPreview?.character_name}
+                characterImage={characterPreview?.character_image}
+                characterLevel={characterPreview?.character_level}
+                blur={loading}
+                active={!loading && Boolean(combinedData)}
+                favorite={isCurrentFavorite}
+                onFavoriteClick={
+                  combinedData
+                    ? () => toggleFavoriteCharacter(currentFavoriteCharacter)
+                    : undefined
+                }
+              />
+            )}
+            {showFavoriteGroup && (
+              <>
+                <CharacterGroupTitle>즐겨찾기</CharacterGroupTitle>
+                {visibleFavoriteCharacters.map((character) => (
+                  <CharacterPreviewCard
+                    key={character.characterName}
+                    characterName={character.characterName}
+                    characterImage={character.characterImage}
+                    characterLevel={character.characterLevel}
+                    favorite
+                    onClick={() => searchCharacter(character.characterName)}
+                    onFavoriteClick={() => toggleFavoriteCharacter(character)}
+                  />
+                ))}
+                {visibleFavoriteCharacters.length === 0 && (
+                  <FavoriteEmptyText>
+                    현재 저장된 즐겨찾기가 없습니다.
+                  </FavoriteEmptyText>
+                )}
+              </>
+            )}
+          </CharacterCardList>
+        </InfoCard>
 
-          <SectionColumn>
+          {showExpirationArea && (
+            <SectionColumn>
             {sections.length > 0 ? (
               sections.map((section) => (
                 <ExpireSection key={section.id}>
@@ -272,9 +397,10 @@ export const ExpirationCheckTab = () => {
             ) : (
               <EmptyPanel>현재 확인할 기간 만료 정보가 없습니다.</EmptyPanel>
             )}
-          </SectionColumn>
+            </SectionColumn>
+          )}
         </ResultGrid>
-      ) : (
+      {false && (
         <GuidePanel>
           기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 보여줍니다.
         </GuidePanel>
@@ -370,6 +496,39 @@ const InfoCard = styled.div`
   > div {
     width: 100%;
   }
+`;
+
+const CharacterPanelTitle = styled.h2`
+  margin: 0 0 10px;
+  font-size: 17px;
+  color: rgb(220, 252, 2);
+`;
+
+const CharacterGroupTitle = styled.div`
+  flex: 0 0 100%;
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+
+  &:first-child {
+    margin-top: 0;
+  }
+`;
+
+const CharacterCardList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
+const FavoriteEmptyText = styled.div`
+  width: 100%;
+  padding: 16px 10px;
+  border-radius: 8px;
+  background: rgba(15, 21, 26, 0.38);
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  font-size: 14px;
 `;
 
 const SectionColumn = styled.div`
