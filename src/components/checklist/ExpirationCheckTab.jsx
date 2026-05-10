@@ -281,13 +281,54 @@ export const ExpirationCheckTab = () => {
       {error && <ErrorText>{error}</ErrorText>}
 
       <ResultGrid>
-        <InfoCard>
-          <CharacterPanelTitle>캐릭터</CharacterPanelTitle>
-          <CharacterCardList>
-            {showCurrentCharacter && (
-              <CharacterGroupTitle>현재 검색</CharacterGroupTitle>
-            )}
-            {showCurrentCharacter && (
+        {showFavoriteGroup && (
+          <InfoCard>
+            <CharacterPanelTitle>즐겨찾기</CharacterPanelTitle>
+            <FavoriteCharacterList>
+              {visibleFavoriteCharacters.map((character) => {
+                const nameInitial =
+                  typeof character.characterName === "string" &&
+                  character.characterName.length > 0
+                    ? character.characterName.slice(0, 1)
+                    : "?";
+
+                return (
+                  <FavoriteCharacterItem
+                    key={character.characterName}
+                    type="button"
+                    onClick={() => searchCharacter(character.characterName)}
+                  >
+                    <FavoriteCharacterAvatar>
+                      {character.characterImage ? (
+                        <img
+                          src={character.characterImage}
+                          alt={`${character.characterName} 이미지`}
+                        />
+                      ) : (
+                        <FavoriteAvatarFallback>
+                          {nameInitial}
+                        </FavoriteAvatarFallback>
+                      )}
+                    </FavoriteCharacterAvatar>
+                    <FavoriteCharacterName>
+                      {character.characterName}
+                    </FavoriteCharacterName>
+                  </FavoriteCharacterItem>
+                );
+              })}
+              {visibleFavoriteCharacters.length === 0 && (
+                <FavoriteEmptyText>
+                  현재 저장된 즐겨찾기가 없습니다.
+                </FavoriteEmptyText>
+              )}
+            </FavoriteCharacterList>
+          </InfoCard>
+        )}
+
+        {showCurrentCharacter && (
+          <InfoCard>
+            <CharacterPanelTitle>현재 검색</CharacterPanelTitle>
+            <CharacterCardList>
               <CharacterPreviewCard
                 characterName={characterPreview?.character_name}
                 characterImage={characterPreview?.character_image}
@@ -301,30 +342,9 @@ export const ExpirationCheckTab = () => {
                     : undefined
                 }
               />
-            )}
-            {showFavoriteGroup && (
-              <>
-                <CharacterGroupTitle>즐겨찾기</CharacterGroupTitle>
-                {visibleFavoriteCharacters.map((character) => (
-                  <CharacterPreviewCard
-                    key={character.characterName}
-                    characterName={character.characterName}
-                    characterImage={character.characterImage}
-                    characterLevel={character.characterLevel}
-                    favorite
-                    onClick={() => searchCharacter(character.characterName)}
-                    onFavoriteClick={() => toggleFavoriteCharacter(character)}
-                  />
-                ))}
-                {visibleFavoriteCharacters.length === 0 && (
-                  <FavoriteEmptyText>
-                    현재 저장된 즐겨찾기가 없습니다.
-                  </FavoriteEmptyText>
-                )}
-              </>
-            )}
-          </CharacterCardList>
-        </InfoCard>
+            </CharacterCardList>
+          </InfoCard>
+        )}
 
           {showExpirationArea && (
             <SectionColumn>
@@ -504,21 +524,71 @@ const CharacterPanelTitle = styled.h2`
   color: rgb(220, 252, 2);
 `;
 
-const CharacterGroupTitle = styled.div`
-  flex: 0 0 100%;
-  margin-top: 4px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.78);
-
-  &:first-child {
-    margin-top: 0;
-  }
-`;
-
 const CharacterCardList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+`;
+
+const FavoriteCharacterList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const FavoriteCharacterItem = styled.button`
+  min-width: 132px;
+  max-width: 180px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(15, 21, 26, 0.38);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.1);
+  }
+`;
+
+const FavoriteCharacterAvatar = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+
+  img {
+    width: 45px;
+    height: 45px;
+    object-fit: none;
+    image-rendering: pixelated;
+    transform: translate(-6%, -10%) scaleX(-1);
+  }
+`;
+
+const FavoriteAvatarFallback = styled.span`
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+`;
+
+const FavoriteCharacterName = styled.div`
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const FavoriteEmptyText = styled.div`
