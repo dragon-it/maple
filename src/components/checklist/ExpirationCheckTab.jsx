@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { getCombinedData, getOcidApi } from "../../api/api";
+import favorite_false from "../../assets/icons/favoriteIcon/favorite_Star_False.svg";
+import favorite_true from "../../assets/icons/favoriteIcon/favorite_Star_True.svg";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
-import { CharacterPreviewCard } from "../common/CharacterPreviewCard";
-import {
-  expirationCheckDummyCharacter,
-  expirationCheckPlaceholderSections,
-} from "./expirationCheckDummyData";
+import { expirationCheckPlaceholderSections } from "./expirationCheckDummyData";
 import { buildExpirationSections } from "./expirationCheckSectionData";
 
 const FAVORITE_STORAGE_KEY = "checklist-expiration-favorite-characters";
@@ -28,6 +26,19 @@ const toFavoriteCharacter = (basicInformation) => ({
   characterImage: basicInformation?.character_image,
   characterLevel: basicInformation?.character_level,
 });
+
+const hasCharacterImage = (characterImage) =>
+  Boolean(
+    characterImage && characterImage !== "-" && characterImage !== "null",
+  );
+
+const CharacterAvatar = ({ characterName, characterImage }) => (
+  <CharacterAvatarFrame>
+    {hasCharacterImage(characterImage) && (
+      <img src={characterImage} alt={`${characterName || "캐릭터"} 이미지`} />
+    )}
+  </CharacterAvatarFrame>
+);
 
 const getValidExpireDate = (expireAt) => {
   const expireDate = new Date(expireAt);
@@ -131,14 +142,6 @@ export const ExpirationCheckTab = () => {
     return combinedData ? buildExpirationSections(combinedData) : [];
   }, [combinedData, loading]);
 
-  const characterPreview = useMemo(() => {
-    if (loading || !combinedData) {
-      return expirationCheckDummyCharacter;
-    }
-
-    return combinedData.getBasicInformation;
-  }, [combinedData, loading]);
-
   const currentFavoriteCharacter = useMemo(
     () => toFavoriteCharacter(combinedData?.getBasicInformation),
     [combinedData],
@@ -149,9 +152,9 @@ export const ExpirationCheckTab = () => {
     () =>
       Boolean(
         currentCharacterName &&
-          favoriteCharacters.some(
-            (character) => character.characterName === currentCharacterName,
-          ),
+        favoriteCharacters.some(
+          (character) => character.characterName === currentCharacterName,
+        ),
       ),
     [currentCharacterName, favoriteCharacters],
   );
@@ -247,12 +250,8 @@ export const ExpirationCheckTab = () => {
 
   const showExpirationArea = hasSearched || loading || combinedData;
   const showCurrentCharacter = Boolean(combinedData) && !loading;
-  const visibleFavoriteCharacters = favoriteCharacters.filter(
-    (character) =>
-      !currentCharacterName || character.characterName !== currentCharacterName,
-  );
-  const showFavoriteGroup =
-    visibleFavoriteCharacters.length > 0 || !showExpirationArea;
+  const showFavoriteGroup = favoriteCharacters.length > 0 || !showExpirationArea;
+  const showCharacterContext = showFavoriteGroup || showCurrentCharacter;
 
   return (
     <ContentWrap>
@@ -281,73 +280,80 @@ export const ExpirationCheckTab = () => {
       {error && <ErrorText>{error}</ErrorText>}
 
       <ResultGrid>
-        {showFavoriteGroup && (
-          <InfoCard>
-            <CharacterPanelTitle>즐겨찾기</CharacterPanelTitle>
-            <FavoriteCharacterList>
-              {visibleFavoriteCharacters.map((character) => {
-                const nameInitial =
-                  typeof character.characterName === "string" &&
-                  character.characterName.length > 0
-                    ? character.characterName.slice(0, 1)
-                    : "?";
+        {showCharacterContext && (
+          <CharacterContextPanel>
+            {showFavoriteGroup && (
+              <CharacterContextGroup>
+                <CharacterContextTitle>즐겨찾기</CharacterContextTitle>
+                <FavoriteCharacterList>
+                  {favoriteCharacters.map((character) => (
+                    <FavoriteCharacterItem
+                      key={character.characterName}
+                      type="button"
+                      onClick={() => searchCharacter(character.characterName)}
+                    >
+                      <CharacterAvatar
+                        characterName={character.characterName}
+                        characterImage={character.characterImage}
+                      />
+                      <FavoriteCharacterName>
+                        {character.characterName}
+                      </FavoriteCharacterName>
+                      <FavoriteCharacterIcon
+                        src={favorite_true}
+                        alt=""
+                        aria-hidden="true"
+                      />
+                    </FavoriteCharacterItem>
+                  ))}
+                  {favoriteCharacters.length === 0 && (
+                    <FavoriteEmptyText>
+                      현재 저장된 즐겨찾기가 없습니다.
+                    </FavoriteEmptyText>
+                  )}
+                </FavoriteCharacterList>
+              </CharacterContextGroup>
+            )}
 
-                return (
-                  <FavoriteCharacterItem
-                    key={character.characterName}
+            {showCurrentCharacter && (
+              <CharacterContextGroup>
+                <CharacterContextTitle>현재 검색</CharacterContextTitle>
+                <CurrentCharacterCard>
+                  <CharacterAvatar
+                    characterName={currentFavoriteCharacter.characterName}
+                    characterImage={currentFavoriteCharacter.characterImage}
+                  />
+                  <CurrentCharacterMeta>
+                    <CurrentCharacterName>
+                      {currentFavoriteCharacter.characterName}
+                    </CurrentCharacterName>
+                    <CurrentCharacterLevel>
+                      Lv.{currentFavoriteCharacter.characterLevel}
+                    </CurrentCharacterLevel>
+                  </CurrentCharacterMeta>
+                  <CurrentFavoriteButton
                     type="button"
-                    onClick={() => searchCharacter(character.characterName)}
+                    onClick={() =>
+                      toggleFavoriteCharacter(currentFavoriteCharacter)
+                    }
+                    aria-label={
+                      isCurrentFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"
+                    }
                   >
-                    <FavoriteCharacterAvatar>
-                      {character.characterImage ? (
-                        <img
-                          src={character.characterImage}
-                          alt={`${character.characterName} 이미지`}
-                        />
-                      ) : (
-                        <FavoriteAvatarFallback>
-                          {nameInitial}
-                        </FavoriteAvatarFallback>
-                      )}
-                    </FavoriteCharacterAvatar>
-                    <FavoriteCharacterName>
-                      {character.characterName}
-                    </FavoriteCharacterName>
-                  </FavoriteCharacterItem>
-                );
-              })}
-              {visibleFavoriteCharacters.length === 0 && (
-                <FavoriteEmptyText>
-                  현재 저장된 즐겨찾기가 없습니다.
-                </FavoriteEmptyText>
-              )}
-            </FavoriteCharacterList>
-          </InfoCard>
+                    <img
+                      src={isCurrentFavorite ? favorite_true : favorite_false}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </CurrentFavoriteButton>
+                </CurrentCharacterCard>
+              </CharacterContextGroup>
+            )}
+          </CharacterContextPanel>
         )}
 
-        {showCurrentCharacter && (
-          <InfoCard>
-            <CharacterPanelTitle>현재 검색</CharacterPanelTitle>
-            <CharacterCardList>
-              <CharacterPreviewCard
-                characterName={characterPreview?.character_name}
-                characterImage={characterPreview?.character_image}
-                characterLevel={characterPreview?.character_level}
-                blur={loading}
-                active={!loading && Boolean(combinedData)}
-                favorite={isCurrentFavorite}
-                onFavoriteClick={
-                  combinedData
-                    ? () => toggleFavoriteCharacter(currentFavoriteCharacter)
-                    : undefined
-                }
-              />
-            </CharacterCardList>
-          </InfoCard>
-        )}
-
-          {showExpirationArea && (
-            <SectionColumn>
+        {showExpirationArea && (
+          <SectionColumn>
             {sections.length > 0 ? (
               sections.map((section) => (
                 <ExpireSection key={section.id}>
@@ -417,9 +423,9 @@ export const ExpirationCheckTab = () => {
             ) : (
               <EmptyPanel>현재 확인할 기간 만료 정보가 없습니다.</EmptyPanel>
             )}
-            </SectionColumn>
-          )}
-        </ResultGrid>
+          </SectionColumn>
+        )}
+      </ResultGrid>
       {false && (
         <GuidePanel>
           기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 보여줍니다.
@@ -450,14 +456,20 @@ const SearchLabel = styled.label`
   margin-bottom: 8px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.8);
+
+  @media screen and (max-width: 960px) {
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
 `;
 
 const SearchRow = styled.div`
   display: flex;
   gap: 10px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 960px) {
     flex-direction: column;
+    gap: 7px;
   }
 `;
 
@@ -471,6 +483,20 @@ const SearchInput = styled.input`
   background: rgba(255, 255, 255, 0.92);
   color: rgb(0, 0, 0);
   outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+
+  @media screen and (max-width: 960px) {
+    flex: none;
+    width: 100%;
+    height: 30px;
+    min-height: 0;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -481,10 +507,26 @@ const SearchButton = styled.button`
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: ${({ theme }) => theme.tabActiveColor};
   color: ${({ theme }) => theme.tabActiveTextColor};
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
 
   &:disabled {
     cursor: wait;
     opacity: 0.72;
+  }
+
+  @media screen and (max-width: 960px) {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    height: 32px;
+    min-height: 0;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 13px;
   }
 `;
 
@@ -493,6 +535,12 @@ const SearchHint = styled.p`
   font-size: 13px;
   color: rgba(255, 255, 255, 0.68);
   line-height: 1.45;
+
+  @media screen and (max-width: 960px) {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
 `;
 
 const ErrorText = styled.div`
@@ -510,24 +558,24 @@ const ResultGrid = styled.div`
   }
 `;
 
-const InfoCard = styled.div`
+const CharacterContextPanel = styled.div`
   ${panelCss}
   margin-bottom: 12px;
-  > div {
-    width: 100%;
-  }
-`;
-
-const CharacterPanelTitle = styled.h2`
-  margin: 0 0 10px;
-  font-size: 17px;
-  color: rgb(220, 252, 2);
-`;
-
-const CharacterCardList = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(24, 33, 40, 0.78);
+`;
+
+const CharacterContextGroup = styled.section`
+  min-width: 0;
+`;
+
+const CharacterContextTitle = styled.h2`
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.68);
 `;
 
 const FavoriteCharacterList = styled.div`
@@ -555,7 +603,7 @@ const FavoriteCharacterItem = styled.button`
   }
 `;
 
-const FavoriteCharacterAvatar = styled.div`
+const CharacterAvatarFrame = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -576,12 +624,6 @@ const FavoriteCharacterAvatar = styled.div`
   }
 `;
 
-const FavoriteAvatarFallback = styled.span`
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.85);
-`;
-
 const FavoriteCharacterName = styled.div`
   min-width: 0;
   font-size: 14px;
@@ -589,6 +631,70 @@ const FavoriteCharacterName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
+`;
+
+const FavoriteCharacterIcon = styled.img`
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+`;
+
+const CurrentCharacterCard = styled.div`
+  min-width: 220px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const CurrentCharacterMeta = styled.div`
+  min-width: 0;
+  flex: 1;
+`;
+
+const CurrentCharacterName = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const CurrentCharacterLevel = styled.div`
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+`;
+
+const CurrentFavoriteButton = styled.button`
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  img {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.46);
+  }
 `;
 
 const FavoriteEmptyText = styled.div`
