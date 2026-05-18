@@ -65,26 +65,39 @@ const Title = styled.h1`
 
 const TabBar = styled.div`
   display: flex;
-  gap: 8px;
-  margin-top: 14px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin: 18px 0 16px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
 
-  @media screen and (max-width: 640px) {
-    flex-direction: column;
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
   }
 `;
 
 const TabButton = styled.button`
   cursor: pointer;
-  padding: 10px 14px;
-  border-radius: 10px;
+  flex: 0 0 auto;
+  min-width: 130px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
   border: 1px solid
     ${({ $active }) =>
-      $active ? "rgba(255, 255, 255, 0.35)" : "rgba(255, 255, 255, 0.12)"};
-  background: ${({ $active, theme }) =>
-    $active ? theme.tabActiveColor : "rgba(255, 255, 255, 0.08)"};
-  color: ${({ $active, theme }) =>
-    $active ? theme.tabActiveTextColor : "rgba(255, 255, 255, 0.82)"};
+      $active ? "rgba(94, 210, 232, 0.9)" : "rgba(255, 255, 255, 0.16)"};
+  background: ${({ $active }) =>
+    $active
+      ? "linear-gradient(180deg, rgba(54, 184, 208, 0.95) 0%, rgba(34, 149, 184, 0.95) 100%)"
+      : "rgba(255, 255, 255, 0.08)"};
+  color: ${({ $active }) =>
+    $active ? "#ffffff" : "rgba(255, 255, 255, 0.88)"};
   font-size: 14px;
   font-weight: 600;
 `;
@@ -92,4 +105,5 @@ const TabButton = styled.button`
 const Body = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 18px;
 `;

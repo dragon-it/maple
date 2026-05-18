@@ -250,7 +250,8 @@ export const ExpirationCheckTab = () => {
 
   const showExpirationArea = hasSearched || loading || combinedData;
   const showCurrentCharacter = Boolean(combinedData) && !loading;
-  const showFavoriteGroup = favoriteCharacters.length > 0 || !showExpirationArea;
+  const showFavoriteGroup =
+    favoriteCharacters.length > 0 || !showExpirationArea;
   const showCharacterContext = showFavoriteGroup || showCurrentCharacter;
 
   return (
@@ -299,11 +300,17 @@ export const ExpirationCheckTab = () => {
                       <FavoriteCharacterName>
                         {character.characterName}
                       </FavoriteCharacterName>
-                      <FavoriteCharacterIcon
-                        src={favorite_true}
-                        alt=""
-                        aria-hidden="true"
-                      />
+                      <CurrentFavoriteButton
+                        type="button"
+                        onClick={() =>
+                          toggleFavoriteCharacter(currentFavoriteCharacter)
+                        }
+                        aria-label={
+                          isCurrentFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"
+                        }
+                      >
+                        <img src={favorite_true} alt="" aria-hidden="true" />
+                      </CurrentFavoriteButton>
                     </FavoriteCharacterItem>
                   ))}
                   {favoriteCharacters.length === 0 && (
@@ -444,7 +451,7 @@ const panelCss = `
 const ContentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 `;
 
 const SearchPanel = styled.form`
@@ -491,27 +498,39 @@ const SearchInput = styled.input`
   @media screen and (max-width: 960px) {
     flex: none;
     width: 100%;
-    height: 30px;
+    height: 36px;
     min-height: 0;
-    padding: 0 10px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 13px;
   }
 `;
 
 const SearchButton = styled.button`
   cursor: pointer;
   min-width: 140px;
-  padding: 0 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: ${({ theme }) => theme.tabActiveColor};
-  color: ${({ theme }) => theme.tabActiveTextColor};
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 184, 208, 0.95) 0%,
+    rgba(34, 149, 184, 0.95) 100%
+  );
+  color: #ffffff;
   box-sizing: border-box;
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
 
   &:disabled {
     cursor: wait;
@@ -522,10 +541,10 @@ const SearchButton = styled.button`
     flex: none;
     width: 100%;
     min-width: 0;
-    height: 32px;
+    height: 36px;
     min-height: 0;
-    padding: 0 10px;
-    border-radius: 8px;
+    padding: 0 12px;
+    border-radius: 12px;
     font-size: 13px;
   }
 `;
@@ -585,21 +604,26 @@ const FavoriteCharacterList = styled.div`
 `;
 
 const FavoriteCharacterItem = styled.button`
-  min-width: 132px;
+  min-width: 140px;
   max-width: 180px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(15, 21, 26, 0.38);
+  padding: 6px 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.38);
-    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    border-color: rgba(94, 210, 232, 0.4);
+    background: rgba(255, 255, 255, 0.14);
   }
 `;
 
@@ -634,24 +658,24 @@ const FavoriteCharacterName = styled.div`
   flex: 1;
 `;
 
-const FavoriteCharacterIcon = styled.img`
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-`;
-
 const CurrentCharacterCard = styled.div`
   min-width: 220px;
   width: fit-content;
   max-width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 8px;
+  border-radius: 18px;
+  border: 1px solid rgba(122, 242, 255, 0.88);
+  background:
+    linear-gradient(180deg, rgba(67, 202, 226, 0.2), rgba(255, 255, 255, 0.08)),
+    rgba(255, 255, 255, 0.08);
   color: white;
   display: flex;
   align-items: center;
   gap: 10px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 16px rgba(88, 222, 245, 0.46),
+    0 12px 32px rgba(0, 0, 0, 0.18);
 `;
 
 const CurrentCharacterMeta = styled.div`
