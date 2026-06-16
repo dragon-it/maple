@@ -302,12 +302,7 @@ export const ExpirationCheckTab = () => {
                       </FavoriteCharacterName>
                       <CurrentFavoriteButton
                         type="button"
-                        onClick={() =>
-                          toggleFavoriteCharacter(currentFavoriteCharacter)
-                        }
-                        aria-label={
-                          isCurrentFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"
-                        }
+                        onClick={(e) => { e.stopPropagation(); toggleFavoriteCharacter(character); }} aria-label="즐겨찾기 해제"
                       >
                         <img src={favorite_true} alt="" aria-hidden="true" />
                       </CurrentFavoriteButton>
