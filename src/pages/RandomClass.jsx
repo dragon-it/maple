@@ -24,7 +24,7 @@ export const RandomClass = () => {
     if (isRolling) {
       interval = setInterval(() => {
         setCurrentCharacterIndex(
-          (prevIndex) => (prevIndex + 1) % characters.length
+          (prevIndex) => (prevIndex + 1) % characters.length,
         );
       }, 20);
     }
@@ -40,7 +40,7 @@ export const RandomClass = () => {
     setTimeout(() => {
       setIsRolling(false);
       setSelectedCharacter(getRandomCharacter()); // 랜덤 캐릭터 선택
-    }, 1500); // 1초 후에 멈춤
+    }, 1000); // 1초 후에 멈춤
   };
 
   const getRandomCharacter = () => {
