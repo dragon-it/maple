@@ -25,7 +25,7 @@ const shuffle = (array) => {
 
 const chunkArray = (array, size) => {
   return Array.from({ length: size }, (_, i) =>
-    array.slice(i * size, i * size + size)
+    array.slice(i * size, i * size + size),
   );
 };
 
@@ -55,6 +55,7 @@ export const SlidingPuzzleLogic = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [level, setLevel] = useState("normal");
   const [artwork, setArtwork] = useState("artwork1");
+  const [showOriginal, setShowOriginal] = useState(false);
 
   useEffect(() => {
     if (startTime) {
@@ -103,7 +104,7 @@ export const SlidingPuzzleLogic = () => {
 
     // 0번 타일을 9번 타일로 변경 (size가 4일 경우 조정)
     const newBoard = board.map(
-      (row) => row.map((tile) => (tile === 0 ? size * size : tile)) // 3x3이면 9, 4x4면 16
+      (row) => row.map((tile) => (tile === 0 ? size * size : tile)), // 3x3이면 9, 4x4면 16
     );
     setBoard(newBoard);
   };
@@ -135,93 +136,89 @@ export const SlidingPuzzleLogic = () => {
   const imageMap = PuzzleImages[artwork]?.src;
 
   return (
-    <PuzzleContainer>
-      <HeaderText>SLIDING PUZZLE</HeaderText>
-      <OptionWrap>
-        <label>
-          <span>퍼즐 크기</span>
-          <CustomSelect value={size} onChange={handleSizeChange}>
-            <option value={3}>3x3</option>
-            <option value={4}>4x4</option>
-            <option value={5}>5x5</option>
-          </CustomSelect>
-        </label>
-        <label>
-          <span>아트웍 선택</span>
-          <CustomSelect value={artwork} onChange={handleArtworkChange}>
-            {Object.entries(PuzzleImages).map(([id, { label }]) => (
-              <option key={id} value={id}>
-                {label}
-              </option>
-            ))}
-          </CustomSelect>
-        </label>
-      </OptionWrap>
-      <SlidingPuzzleMusicPlayer won={won ? "true" : "false"} />
-      <LevelWrap>
-        <Normal onClick={() => handleLevelChange("normal")} $level={level}>
-          NORMAL
-          {level === "normal" && <LevelIndicator>◀</LevelIndicator>}
-        </Normal>
-        <Hard onClick={() => handleLevelChange("hard")} $level={level}>
-          HARD
-          {level === "hard" && <LevelIndicator>◀</LevelIndicator>}
-        </Hard>
-      </LevelWrap>
-      <TimerResetWrap>
-        <Timer>
-          <img src={TimerIcon} alt="timer-icon" />
-          {elapsedTime}초
-        </Timer>
-        <Reset onClick={handleRestart}>다시하기</Reset>
-      </TimerResetWrap>
-      <Board size={size} $won={won}>
-        {board.map((row, rowIndex) =>
-          row.map((tile, colIndex) => (
-            <Tile
-              key={`${rowIndex}-${colIndex}-${tile}`}
-              className={tile === 0 ? "empty" : ""} // won 상태에서는 empty 클래스 무시
-              onClick={() => handleClick(rowIndex, colIndex)}
-              style={{
-                backgroundImage: tile !== 0 ? `url(${imageMap})` : "none",
-                backgroundSize: `${size * 100}% ${size * 100}%`, // 3x3이면 300%, 4x4면 400%
-                backgroundPosition:
-                  tile !== 0 || won
-                    ? `${-((tile - 1) % size) * 100}% ${
-                        -Math.floor((tile - 1) / size) * 100
-                      }%`
-                    : "none", // 타일 위치 계산 (won일 때 tile이 9로 바뀜)
-              }}
-              $won={won}
-              tile={tile}
-              size={size}
-              level={level}
-              imageMap={imageMap}
-            >
-              {tile !== 0 && !won && level !== "hard" && tile}{" "}
-              {/* won일 때는 번호 숨김 */}
-            </Tile>
-          ))
-        )}
+    <OuterWrap>
+      <PuzzleContainer>
+        <HeaderText>SLIDING PUZZLE</HeaderText>
+        <OptionWrap>
+          <label>
+            <span>퍼즐 크기</span>
+            <CustomSelect value={size} onChange={handleSizeChange}>
+              <option value={3}>3x3</option>
+              <option value={4}>4x4</option>
+              <option value={5}>5x5</option>
+            </CustomSelect>
+          </label>
+          <label>
+            <span>아트웍 선택</span>
+            <CustomSelect value={artwork} onChange={handleArtworkChange}>
+              {Object.entries(PuzzleImages).map(([id, { label }]) => (
+                <option key={id} value={id}>
+                  {label}
+                </option>
+              ))}
+            </CustomSelect>
+          </label>
+        </OptionWrap>
+        <SlidingPuzzleMusicPlayer won={won ? "true" : "false"} />
+        <LevelWrap>
+          <Normal onClick={() => handleLevelChange("normal")} $level={level}>
+            NORMAL
+            {level === "normal" && <LevelIndicator>◀</LevelIndicator>}
+          </Normal>
+          <Hard onClick={() => handleLevelChange("hard")} $level={level}>
+            HARD
+            {level === "hard" && <LevelIndicator>◀</LevelIndicator>}
+          </Hard>
+        </LevelWrap>
+        <TimerResetWrap>
+          <Timer>
+            <img src={TimerIcon} alt="timer-icon" />
+            {elapsedTime}초
+          </Timer>
+          <ViewOriginalBtn onClick={() => setShowOriginal(!showOriginal)}>
+            {showOriginal ? "원본 숨기기" : "원본 보기"}
+          </ViewOriginalBtn>
+          <Reset onClick={handleRestart}>다시하기</Reset>
+        </TimerResetWrap>
 
-        {won && <WinImageWrap src={WinImage} alt="Win" />}
-      </Board>
-    </PuzzleContainer>
+        <Board size={size} $won={won}>
+          <OriginalOverlayMobile $show={showOriginal} $bg={imageMap} />
+          {board.map((row, rowIndex) =>
+            row.map((tile, colIndex) => (
+              <Tile
+                key={`${rowIndex}-${colIndex}-${tile}`}
+                className={tile === 0 ? "empty" : ""} // won 상태에서는 empty 클래스 무시
+                onClick={() => handleClick(rowIndex, colIndex)}
+                style={{
+                  backgroundImage: tile !== 0 ? `url(${imageMap})` : "none",
+                  backgroundSize: `${size * 100}% ${size * 100}%`, // 3x3이면 300%, 4x4면 400%
+                  backgroundPosition:
+                    tile !== 0 || won
+                      ? `${-((tile - 1) % size) * 100}% ${
+                          -Math.floor((tile - 1) / size) * 100
+                        }%`
+                      : "none", // 타일 위치 계산 (won일 때 tile이 9로 바뀜)
+                }}
+                $won={won}
+                tile={tile}
+                size={size}
+                level={level}
+                imageMap={imageMap}
+              >
+                {tile !== 0 && !won && level !== "hard" && tile}{" "}
+                {/* won일 때는 번호 숨김 */}
+              </Tile>
+            )),
+          )}
+          {won && <WinImageWrap src={WinImage} alt="Win" />}
+        </Board>
+      </PuzzleContainer>
+      <OriginalSlideOut $show={showOriginal}>
+        <SlideOutImg $bg={imageMap} />
+      </OriginalSlideOut>
+    </OuterWrap>
   );
 };
-
-const PuzzleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  background-color: ${colors.commonInfo.wrapBackground};
-  border: 1px solid ${colors.commonInfo.wrapBorder};
-  border-radius: 8px;
-  outline: 1px solid ${colors.commonInfo.wrapOutline};
-  padding: 7px;
-  transition: 0.2s;
-  gap: 5px;
-`;
 
 const HeaderText = styled.h1`
   color: ${colors.commonInfo.wrapHeaderText};
@@ -339,23 +336,6 @@ const Hard = styled.button`
     `}
 `;
 
-const Board = styled.div`
-  display: grid;
-  grid-template-columns: ${({ size }) => `repeat(${size}, 1fr)`};
-  grid-template-rows: ${({ size }) => `repeat(${size}, 1fr)`};
-  gap: 3px;
-  background-color: ${colors.commonInfo.contentBackground};
-  padding: 5px;
-  border-radius: 5px;
-  margin: 0px auto;
-  width: min(95vw, 95vh);
-  height: min(95vw, 95vh);
-  max-width: 550px;
-  max-height: 550px;
-
-  ${({ $won }) => $won && `gap: 0px;`}
-`;
-
 const Tile = styled.div.withConfig({
   shouldForwardProp: (prop) =>
     !["won", "tile", "size", "level", "imageMap"].includes(prop),
@@ -370,8 +350,10 @@ const Tile = styled.div.withConfig({
   cursor: pointer;
   user-select: none;
   color: ${colors.main.dark0};
-  text-shadow: 1px 1px 2px ${colors.main.white0},
-    -1px -1px 2px ${colors.main.white0}, 1px -1px 2px ${colors.main.white0},
+  text-shadow:
+    1px 1px 2px ${colors.main.white0},
+    -1px -1px 2px ${colors.main.white0},
+    1px -1px 2px ${colors.main.white0},
     -1px 1px 2px ${colors.main.white0};
 
   &:hover:not(.empty) {
@@ -426,4 +408,110 @@ const LevelIndicator = styled.span`
   font-size: 17px;
   color: ${colors.commonInfo.normalBtn.btnText};
   line-height: 1;
+`;
+
+const ViewOriginalBtn = styled(Reset)`
+  background: #36b6ce;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 182, 206, 1) 33%,
+    rgba(54, 152, 183, 1) 66%
+  );
+  border: 1px solid #5feef4;
+  &:active {
+    filter: brightness(0.85);
+  }
+`;
+
+const OuterWrap = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+`;
+
+const PuzzleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: ${colors.commonInfo.wrapBackground};
+  border: 1px solid ${colors.commonInfo.wrapBorder};
+  border-radius: 8px;
+  outline: 1px solid ${colors.commonInfo.wrapOutline};
+  padding: 7px;
+  transition: 0.2s;
+  gap: 5px;
+`;
+
+const Board = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: ${({ size }) => `repeat(${size}, 1fr)`};
+  grid-template-rows: ${({ size }) => `repeat(${size}, 1fr)`};
+  gap: 3px;
+  background-color: ${colors.commonInfo.contentBackground};
+  padding: 5px;
+  border-radius: 5px;
+  margin: 0px auto;
+  width: min(95vw, 95vh);
+  height: min(95vw, 95vh);
+  max-width: 550px;
+  max-height: 550px;
+
+  ${({ $won }) => $won && `gap: 0px;`}
+`;
+
+const OriginalOverlayMobile = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(${({ $bg }) => $bg});
+  background-size: 100% 100%;
+  background-position: center;
+  border-radius: 5px;
+  z-index: 10;
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  pointer-events: ${({ $show }) => ($show ? "auto" : "none")};
+  transition: opacity 0.3s ease;
+
+  @media (min-width: 1320px) {
+    display: none;
+  }
+`;
+
+const OriginalSlideOut = styled.div`
+  display: none;
+
+  @media (min-width: 1320px) {
+    display: flex;
+    position: absolute;
+    left: 100%;
+    bottom: 0px;
+    padding: 7px;
+    background-color: rgb(44, 51, 58);
+    border: 1px solid rgb(67, 79, 86);
+    border-radius: 8px;
+    outline: 1px solid rgb(36, 43, 51);
+    max-width: ${({ $show }) => ($show ? "450px" : "0px")};
+    opacity: ${({ $show }) => ($show ? 1 : 0)};
+    overflow: hidden;
+    transition:
+      max-width 0.4s ease,
+      opacity 0.4s ease,
+      margin-left 0.4s ease;
+    margin-left: ${({ $show }) => ($show ? "4px" : "0px")};
+    z-index: 1;
+  }
+`;
+
+const SlideOutImg = styled.div`
+  width: min(95vw, 95vh);
+  height: min(95vw, 95vh);
+  max-width: 350px;
+  max-height: 350px;
+  background-image: url(${({ $bg }) => $bg});
+  background-size: 100% 100%;
+  background-position: center;
+  border-radius: 5px;
 `;
