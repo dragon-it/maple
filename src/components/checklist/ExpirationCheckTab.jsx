@@ -302,7 +302,11 @@ export const ExpirationCheckTab = () => {
                       </FavoriteCharacterName>
                       <CurrentFavoriteButton
                         type="button"
-                        onClick={(e) => { e.stopPropagation(); toggleFavoriteCharacter(character); }} aria-label="즐겨찾기 해제"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavoriteCharacter(character);
+                        }}
+                        aria-label="즐겨찾기 해제"
                       >
                         <img src={favorite_true} alt="" aria-hidden="true" />
                       </CurrentFavoriteButton>
@@ -602,7 +606,7 @@ const FavoriteCharacterItem = styled.button`
   min-width: 140px;
   max-width: 180px;
   padding: 6px 8px;
-  border-radius: 16px;
+  border-radius: 7px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.08);
   color: white;
@@ -658,7 +662,7 @@ const CurrentCharacterCard = styled.div`
   width: fit-content;
   max-width: 100%;
   padding: 6px 8px;
-  border-radius: 18px;
+  border-radius: 7px;
   border: 1px solid rgba(122, 242, 255, 0.88);
   background:
     linear-gradient(180deg, rgba(67, 202, 226, 0.2), rgba(255, 255, 255, 0.08)),
