@@ -9,6 +9,12 @@ import artwork7 from "../../assets/pages/slidingPuzzle/artwork/artwork7.jpg";
 import artwork8 from "../../assets/pages/slidingPuzzle/artwork/artwork8.jpg";
 import artwork9 from "../../assets/pages/slidingPuzzle/artwork/artwork9.jpg";
 import artwork10 from "../../assets/pages/slidingPuzzle/artwork/artwork10.jpg";
+import artwork11 from "../../assets/pages/slidingPuzzle/artwork/artwork11.jpg";
+import artwork12 from "../../assets/pages/slidingPuzzle/artwork/artwork12.jpg";
+import artwork13 from "../../assets/pages/slidingPuzzle/artwork/artwork13.jpg";
+import artwork14 from "../../assets/pages/slidingPuzzle/artwork/artwork14.jpg";
+import artwork15 from "../../assets/pages/slidingPuzzle/artwork/artwork15.jpg";
+import artwork16 from "../../assets/pages/slidingPuzzle/artwork/artwork16.jpg";
 
 const PuzzleImages = {
   artwork0: { src: artwork0, label: "윷놀이" },
@@ -22,6 +28,12 @@ const PuzzleImages = {
   artwork8: { src: artwork8, label: "크리스마스1" },
   artwork9: { src: artwork9, label: "크리스마스2" },
   artwork10: { src: artwork10, label: "크리스마스3" },
+  artwork11: { src: artwork11, label: "렌" },
+  artwork12: { src: artwork12, label: "렌 여름" },
+  artwork13: { src: artwork13, label: "설날1" },
+  artwork14: { src: artwork14, label: "설날2" },
+  artwork15: { src: artwork15, label: "할로윈1" },
+  artwork16: { src: artwork16, label: "할로윈2" },
 };
 
 export default PuzzleImages;
