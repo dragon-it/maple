@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import HenesysBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/Henesys.mp3";
 import LithHarborBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
-import TitleBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/Title.mp3";
+import OldTitleBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/OldTitle.mp3";
+import NewTitleBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/NewTitle.mp3";
 import ChewChewBgm from "../../assets/pages/slidingPuzzle/backgroundMusic/ChewChew MainTheme.mp3";
 import RemembranceBgm from "../../assets/pages/slidingPuzzle/backgroundMusic/Remembrance.mp3";
 import HolyLandBgm from "../../assets/pages/slidingPuzzle/backgroundMusic/TheHolyLand.mp3";
@@ -14,7 +15,7 @@ import WinSound from "../../assets/pages/slidingPuzzle/backgroundMusic/Win.mp3";
 import colors from "../common/color/colors";
 
 export const SlidingPuzzleMusicPlayer = ({ won }) => {
-  const [bgm, setBgm] = useState(TitleBGM);
+  const [bgm, setBgm] = useState(OldTitleBGM);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [prevVolume, setPrevVolume] = useState(0.5);
@@ -88,7 +89,8 @@ export const SlidingPuzzleMusicPlayer = ({ won }) => {
           <span>배경 음악</span>
           <ControlContainer>
             <CustomSelect value={bgm} onChange={handleBgmChange}>
-              <option value={TitleBGM}>로그인</option>
+              <option value={OldTitleBGM}>(구)로그인</option>
+              <option value={NewTitleBGM}>로그인</option>
               <option value={HenesysBGM}>헤네시스</option>
               <option value={LithHarborBGM}>리스항구</option>
               <option value={RemembranceBgm}>추억의 길</option>
