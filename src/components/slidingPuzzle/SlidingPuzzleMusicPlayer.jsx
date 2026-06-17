@@ -3,6 +3,9 @@ import styled from "styled-components";
 import HenesysBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/Henesys.mp3";
 import LithHarborBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/LithHarbor.mp3";
 import TitleBGM from "../../assets/pages/slidingPuzzle/backgroundMusic/Title.mp3";
+import ChewChewBgm from "../../assets/pages/slidingPuzzle/backgroundMusic/ChewChew MainTheme.mp3";
+import RemembranceBgm from "../../assets/pages/slidingPuzzle/backgroundMusic/Remembrance.mp3";
+import HolyLandBgm from "../../assets/pages/slidingPuzzle/backgroundMusic/TheHolyLand.mp3";
 import VolumeIcon from "../../assets/pages/slidingPuzzle/icons/Speaker.svg";
 import MuteIcon from "../../assets/pages/slidingPuzzle/icons/Mute.svg";
 import StartIcon from "../../assets/pages/slidingPuzzle/icons/Start.svg";
@@ -88,6 +91,9 @@ export const SlidingPuzzleMusicPlayer = ({ won }) => {
               <option value={TitleBGM}>로그인</option>
               <option value={HenesysBGM}>헤네시스</option>
               <option value={LithHarborBGM}>리스항구</option>
+              <option value={RemembranceBgm}>추억의 길</option>
+              <option value={ChewChewBgm}>츄츄 아일랜드</option>
+              <option value={HolyLandBgm}>세르니움</option>
             </CustomSelect>
             <PlayBtn
               onClick={togglePlayPause}
