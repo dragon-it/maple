@@ -1077,7 +1077,7 @@ const SectionTitle = styled.h2`
   color: #f7f7f2;
   font-size: 19px;
   font-weight: 700;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 0 rgb(0, 0, 0);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1425,7 +1425,7 @@ const SelectedBossItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 `;
 
 const SelectedBossIconWrap = styled.div`
@@ -1506,13 +1506,17 @@ const DeleteButton = styled.button`
   width: 28px;
   height: 28px;
   padding: 0;
-  border: 0;
+  border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 6px;
-  background: transparent;
+  background: rgb(255, 255, 255);
   color: rgb(255, 55, 78);
   font-size: 26px;
   line-height: 1;
   font-weight: 700;
+
+  &:hover {
+    filter: brightness(0.7);
+  }
 
   @media screen and (max-width: 1200px) {
     grid-area: delete;

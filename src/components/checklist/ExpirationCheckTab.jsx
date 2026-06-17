@@ -252,7 +252,6 @@ export const ExpirationCheckTab = () => {
   const showCurrentCharacter = Boolean(combinedData) && !loading;
   const showFavoriteGroup =
     favoriteCharacters.length > 0 || !showExpirationArea;
-  const showCharacterContext = showFavoriteGroup || showCurrentCharacter;
 
   return (
     <ContentWrap>
@@ -280,158 +279,160 @@ export const ExpirationCheckTab = () => {
 
       {error && <ErrorText>{error}</ErrorText>}
 
-      <ResultGrid>
-        {showCharacterContext && (
-          <CharacterContextPanel>
-            {showFavoriteGroup && (
-              <CharacterContextGroup>
-                <CharacterContextTitle>즐겨찾기</CharacterContextTitle>
-                <FavoriteCharacterList>
-                  {favoriteCharacters.map((character) => (
-                    <FavoriteCharacterItem
-                      key={character.characterName}
-                      type="button"
-                      onClick={() => searchCharacter(character.characterName)}
-                    >
-                      <CharacterAvatar
-                        characterName={character.characterName}
-                        characterImage={character.characterImage}
-                      />
-                      <FavoriteCharacterName>
-                        {character.characterName}
-                      </FavoriteCharacterName>
-                      <CurrentFavoriteButton
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleFavoriteCharacter(character);
-                        }}
-                        aria-label="즐겨찾기 해제"
-                      >
-                        <img src={favorite_true} alt="" aria-hidden="true" />
-                      </CurrentFavoriteButton>
-                    </FavoriteCharacterItem>
-                  ))}
-                  {favoriteCharacters.length === 0 && (
-                    <FavoriteEmptyText>
-                      현재 저장된 즐겨찾기가 없습니다.
-                    </FavoriteEmptyText>
-                  )}
-                </FavoriteCharacterList>
-              </CharacterContextGroup>
-            )}
-
-            {showCurrentCharacter && (
-              <CharacterContextGroup>
-                <CharacterContextTitle>현재 검색</CharacterContextTitle>
-                <CurrentCharacterCard>
+      {showFavoriteGroup && (
+        <CharacterContextPanel>
+          <SectionHeader>
+            <SectionTitle>즐겨찾기</SectionTitle>
+          </SectionHeader>
+          <CharacterContextGroup>
+            <FavoriteCharacterList>
+              {favoriteCharacters.map((character) => (
+                <FavoriteCharacterItem
+                  key={character.characterName}
+                  type="button"
+                  onClick={() => searchCharacter(character.characterName)}
+                >
                   <CharacterAvatar
-                    characterName={currentFavoriteCharacter.characterName}
-                    characterImage={currentFavoriteCharacter.characterImage}
+                    characterName={character.characterName}
+                    characterImage={character.characterImage}
                   />
-                  <CurrentCharacterMeta>
-                    <CurrentCharacterName>
-                      {currentFavoriteCharacter.characterName}
-                    </CurrentCharacterName>
-                    <CurrentCharacterLevel>
-                      Lv.{currentFavoriteCharacter.characterLevel}
-                    </CurrentCharacterLevel>
-                  </CurrentCharacterMeta>
+                  <FavoriteCharacterName>
+                    {character.characterName}
+                  </FavoriteCharacterName>
                   <CurrentFavoriteButton
                     type="button"
-                    onClick={() =>
-                      toggleFavoriteCharacter(currentFavoriteCharacter)
-                    }
-                    aria-label={
-                      isCurrentFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"
-                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavoriteCharacter(character);
+                    }}
+                    aria-label="즐겨찾기 해제"
                   >
-                    <img
-                      src={isCurrentFavorite ? favorite_true : favorite_false}
-                      alt=""
-                      aria-hidden="true"
-                    />
+                    <img src={favorite_true} alt="" aria-hidden="true" />
                   </CurrentFavoriteButton>
-                </CurrentCharacterCard>
-              </CharacterContextGroup>
-            )}
-          </CharacterContextPanel>
-        )}
+                </FavoriteCharacterItem>
+              ))}
+              {favoriteCharacters.length === 0 && (
+                <FavoriteEmptyText>
+                  현재 저장된 즐겨찾기가 없습니다.
+                </FavoriteEmptyText>
+              )}
+            </FavoriteCharacterList>
+          </CharacterContextGroup>
+        </CharacterContextPanel>
+      )}
 
-        {showExpirationArea && (
-          <SectionColumn>
-            {sections.length > 0 ? (
-              sections.map((section) => (
-                <ExpireSection key={section.id}>
-                  <ExpireSectionTitle>{section.title}</ExpireSectionTitle>
-                  <ExpireList>
-                    {section.items.map((item) => {
-                      const hasValidExpireAt = Boolean(
-                        item.expireAt && getValidExpireDate(item.expireAt),
-                      );
-                      const remainTone = hasValidExpireAt
-                        ? getRemainTone(item.expireAt)
-                        : (item.badgeTone ?? getRemainTone(item.expireAt));
+      {showCurrentCharacter && (
+        <CharacterContextPanel>
+          <SectionHeader>
+            <SectionTitle>현재 검색</SectionTitle>
+          </SectionHeader>
+          <CharacterContextGroup>
+            <CurrentCharacterCard>
+              <CharacterAvatar
+                characterName={currentFavoriteCharacter.characterName}
+                characterImage={currentFavoriteCharacter.characterImage}
+              />
+              <CurrentCharacterMeta>
+                <CurrentCharacterName>
+                  {currentFavoriteCharacter.characterName}
+                </CurrentCharacterName>
+                <CurrentCharacterLevel>
+                  Lv.{currentFavoriteCharacter.characterLevel}
+                </CurrentCharacterLevel>
+              </CurrentCharacterMeta>
+              <CurrentFavoriteButton
+                type="button"
+                onClick={() =>
+                  toggleFavoriteCharacter(currentFavoriteCharacter)
+                }
+                aria-label={
+                  isCurrentFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"
+                }
+              >
+                <img
+                  src={isCurrentFavorite ? favorite_true : favorite_false}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </CurrentFavoriteButton>
+            </CurrentCharacterCard>
+          </CharacterContextGroup>
+        </CharacterContextPanel>
+      )}
 
-                      return (
-                        <ExpireCard
-                          key={item.id}
-                          $blurred={loading}
-                          $alertTone={item.alertTone}
-                          $remainTone={remainTone}
-                        >
-                          <ExpireCardTop>
-                            <ExpireItemHeading>
-                              {item.icon && (
-                                <ExpireIcon
-                                  src={item.icon}
-                                  alt={`${item.name} 아이콘`}
-                                />
-                              )}
-                              <ExpireName>{item.name}</ExpireName>
-                            </ExpireItemHeading>
-                            <RemainBadge $tone={remainTone}>
-                              {hasValidExpireAt
-                                ? formatRemainLabel(item.expireAt)
-                                : (item.badgeLabel ??
-                                  formatRemainLabel(item.expireAt))}
-                            </RemainBadge>
-                          </ExpireCardTop>
-                          <ExpireMeta>
-                            {item.slot} | {item.detail}
-                          </ExpireMeta>
-                          <ExpireDate
-                            $isEmpty={!hasValidExpireAt}
-                            $tone={remainTone}
-                          >
+      {showExpirationArea && (
+        <SectionColumn>
+          {sections.length > 0 ? (
+            sections.map((section) => (
+              <ExpireSection key={section.id}>
+                <ExpireSectionTitle>{section.title}</ExpireSectionTitle>
+                <ExpireList>
+                  {section.items.map((item) => {
+                    const hasValidExpireAt = Boolean(
+                      item.expireAt && getValidExpireDate(item.expireAt),
+                    );
+                    const remainTone = hasValidExpireAt
+                      ? getRemainTone(item.expireAt)
+                      : (item.badgeTone ?? getRemainTone(item.expireAt));
+
+                    return (
+                      <ExpireCard
+                        key={item.id}
+                        $blurred={loading}
+                        $alertTone={item.alertTone}
+                        $remainTone={remainTone}
+                      >
+                        <ExpireCardTop>
+                          <ExpireItemHeading>
+                            {item.icon && (
+                              <ExpireIcon
+                                src={item.icon}
+                                alt={`${item.name} 아이콘`}
+                              />
+                            )}
+                            <ExpireName>{item.name}</ExpireName>
+                          </ExpireItemHeading>
+                          <RemainBadge $tone={remainTone}>
                             {hasValidExpireAt
-                              ? formatExpire(item.expireAt)
-                              : (item.emptyMessage ??
-                                formatExpire(item.expireAt))}
-                          </ExpireDate>
-                          {item.extraLines?.length > 0 && (
-                            <ExpireExtraList>
-                              {item.extraLines.map((line, index) => (
-                                <ExpireExtraLine
-                                  key={`${item.id}-extra-${index}`}
-                                >
-                                  {line}
-                                </ExpireExtraLine>
-                              ))}
-                            </ExpireExtraList>
-                          )}
-                        </ExpireCard>
-                      );
-                    })}
-                  </ExpireList>
-                </ExpireSection>
-              ))
-            ) : (
-              <EmptyPanel>현재 확인할 기간 만료 정보가 없습니다.</EmptyPanel>
-            )}
-          </SectionColumn>
-        )}
-      </ResultGrid>
+                              ? formatRemainLabel(item.expireAt)
+                              : (item.badgeLabel ??
+                                formatRemainLabel(item.expireAt))}
+                          </RemainBadge>
+                        </ExpireCardTop>
+                        <ExpireMeta>
+                          {item.slot} | {item.detail}
+                        </ExpireMeta>
+                        <ExpireDate
+                          $isEmpty={!hasValidExpireAt}
+                          $tone={remainTone}
+                        >
+                          {hasValidExpireAt
+                            ? formatExpire(item.expireAt)
+                            : (item.emptyMessage ??
+                              formatExpire(item.expireAt))}
+                        </ExpireDate>
+                        {item.extraLines?.length > 0 && (
+                          <ExpireExtraList>
+                            {item.extraLines.map((line, index) => (
+                              <ExpireExtraLine
+                                key={`${item.id}-extra-${index}`}
+                              >
+                                {line}
+                              </ExpireExtraLine>
+                            ))}
+                          </ExpireExtraList>
+                        )}
+                      </ExpireCard>
+                    );
+                  })}
+                </ExpireList>
+              </ExpireSection>
+            ))
+          ) : (
+            <EmptyPanel>현재 확인할 기간 만료 정보가 없습니다.</EmptyPanel>
+          )}
+        </SectionColumn>
+      )}
       {false && (
         <GuidePanel>
           기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 보여줍니다.
@@ -567,21 +568,11 @@ const ErrorText = styled.div`
   color: #ffd4d4;
 `;
 
-const ResultGrid = styled.div`
-  gap: 12px;
-  align-items: start;
-
-  @media screen and (max-width: 960px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
 const CharacterContextPanel = styled.div`
   ${panelCss}
-  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 7px;
   background: rgba(24, 33, 40, 0.78);
 `;
 
@@ -589,11 +580,30 @@ const CharacterContextGroup = styled.section`
   min-width: 0;
 `;
 
-const CharacterContextTitle = styled.h2`
-  margin: 0 0 8px;
-  font-size: 17px;
+const SectionHeader = styled.div`
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(178, 189, 197, 0.65);
+  background: #8f979c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  @media screen and (max-width: 1200px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+`;
+
+const SectionTitle = styled.h2`
+  margin: 0;
+  color: #f7f7f2;
+  font-size: 19px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.68);
+  text-shadow: 0 1px 0 rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 `;
 
 const FavoriteCharacterList = styled.div`
@@ -749,7 +759,7 @@ const ExpireSectionTitle = styled.h2`
 const ExpireList = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 5px;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;

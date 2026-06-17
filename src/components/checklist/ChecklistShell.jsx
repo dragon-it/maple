@@ -45,6 +45,7 @@ export const ChecklistShell = () => {
 const Wrap = styled.div`
   width: min(1100px, 100%);
   ${ContainerCss};
+  height: 100%;
   padding: 8px;
   color: white;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
@@ -66,7 +67,7 @@ const Title = styled.h1`
 const TabBar = styled.div`
   display: flex;
   gap: 10px;
-  margin: 18px 0 16px;
+  margin: 18px 0 5px;
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -88,7 +89,7 @@ const TabButton = styled.button`
   min-width: 130px;
   height: 40px;
   padding: 0 18px;
-  border-radius: 999px;
+  border-radius: 9px;
   border: 1px solid
     ${({ $active }) =>
       $active ? "rgba(94, 210, 232, 0.9)" : "rgba(255, 255, 255, 0.16)"};
