@@ -19,12 +19,9 @@ export const Checklist = () => {
 };
 
 const PageWrap = styled.div`
-  width: 100%;
+  width: 90%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 20px;
-
-  @media screen and (max-width: 768px) {
-    padding: 12px;
-  }
+  margin: 20px 0px;
 `;

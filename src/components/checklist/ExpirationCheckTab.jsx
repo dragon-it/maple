@@ -1,35 +1,91 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { getCombinedData, getOcidApi } from "../../api/api";
+import favorite_false from "../../assets/icons/favoriteIcon/favorite_Star_False.svg";
+import favorite_true from "../../assets/icons/favoriteIcon/favorite_Star_True.svg";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
-import { BasicInformation } from "../user/Information/BasicInformation";
-import dummyUserData from "../user/Information/dummyUserData";
+import { expirationCheckPlaceholderSections } from "./expirationCheckDummyData";
+import { buildExpirationSections } from "./expirationCheckSectionData";
 
-const formatExpire = (expireAt) =>
-  new Intl.DateTimeFormat("ko-KR", {
+const FAVORITE_STORAGE_KEY = "checklist-expiration-favorite-characters";
+
+const readFavoriteCharacters = () => {
+  try {
+    const parsed = JSON.parse(
+      localStorage.getItem(FAVORITE_STORAGE_KEY) || "[]",
+    );
+
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+const toFavoriteCharacter = (basicInformation) => ({
+  characterName: basicInformation?.character_name,
+  characterImage: basicInformation?.character_image,
+  characterLevel: basicInformation?.character_level,
+});
+
+const hasCharacterImage = (characterImage) =>
+  Boolean(
+    characterImage && characterImage !== "-" && characterImage !== "null",
+  );
+
+const CharacterAvatar = ({ characterName, characterImage }) => (
+  <CharacterAvatarFrame>
+    {hasCharacterImage(characterImage) && (
+      <img src={characterImage} alt={`${characterName || "캐릭터"} 이미지`} />
+    )}
+  </CharacterAvatarFrame>
+);
+
+const getValidExpireDate = (expireAt) => {
+  const expireDate = new Date(expireAt);
+  return Number.isNaN(expireDate.getTime()) ? null : expireDate;
+};
+
+const formatExpire = (expireAt) => {
+  const expireDate = getValidExpireDate(expireAt);
+
+  if (!expireDate) {
+    return "만료 정보 없음";
+  }
+
+  return new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(new Date(expireAt));
+  }).format(expireDate);
+};
 
 const formatRemainLabel = (expireAt) => {
-  const diff = new Date(expireAt).getTime() - Date.now();
+  const expireDate = getValidExpireDate(expireAt);
+
+  if (!expireDate) return "없음";
+
+  const diff = expireDate.getTime() - Date.now();
+  if (diff < 0) return "만료됨";
+
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
   if (Number.isNaN(days)) return "-";
-  if (days < 0) return `D+${Math.abs(days)}`;
   return `D-${days}`;
 };
 
 const getRemainTone = (expireAt) => {
-  const diff = new Date(expireAt).getTime() - Date.now();
+  const expireDate = getValidExpireDate(expireAt);
+
+  if (!expireDate) return "empty";
+
+  const diff = expireDate.getTime() - Date.now();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
-  if (days <= 1) return "danger";
-  if (days <= 7) return "warning";
+  if (days <= 7) return "danger";
+  if (days <= 14) return "warning";
   return "normal";
 };
 
@@ -66,167 +122,85 @@ const resolveOcid = async (characterName) => {
   return null;
 };
 
-const buildExpirationSections = (combinedData) => {
-  const sections = [];
-  const cashEquipment = combinedData?.getCashItemEquipment ?? {};
-  const cashSectionKeys = [
-    {
-      key: "cash_item_equipment_base",
-      label: "캐시 보관 중",
-    },
-    {
-      key: "cash_item_equipment_preset_1",
-      label: "캐시 프리셋 1",
-    },
-    {
-      key: "cash_item_equipment_preset_2",
-      label: "캐시 프리셋 2",
-    },
-    {
-      key: "cash_item_equipment_preset_3",
-      label: "캐시 프리셋 3",
-    },
-  ];
-
-  cashSectionKeys.forEach(({ key, label }) => {
-    const items = (cashEquipment[key] ?? [])
-      .filter((item) => item?.date_option_expire)
-      .map((item, index) => ({
-        id: `${key}-${index}`,
-        name: item.cash_item_name,
-        slot: item.cash_item_equipment_part,
-        expireAt: item.date_option_expire,
-        detail: "옵션 유효 기간",
-      }))
-      .sort((a, b) => new Date(a.expireAt) - new Date(b.expireAt));
-
-    if (items.length > 0) {
-      sections.push({ id: key, title: label, items });
-    }
-  });
-
-  const androidItems =
-    combinedData?.getAndroidEquipment?.android_cash_item_equipment
-      ?.filter((item) => item?.date_option_expire)
-      .map((item, index) => ({
-        id: `android-${index}`,
-        name: item.cash_item_name,
-        slot: item.cash_item_equipment_part,
-        expireAt: item.date_option_expire,
-        detail: "안드로이드 캐시 옵션",
-      }))
-      .sort((a, b) => new Date(a.expireAt) - new Date(b.expireAt)) ?? [];
-
-  if (androidItems.length > 0) {
-    sections.push({
-      id: "android-cash",
-      title: "안드로이드 캐시",
-      items: androidItems,
-    });
-  }
-
-  const petEquipment = combinedData?.getPetEquipment ?? {};
-  const petItems = [1, 2, 3]
-    .map((index) => ({
-      id: `pet-${index}`,
-      name:
-        petEquipment[`pet_${index}_nickname`] ||
-        petEquipment[`pet_${index}_name`] ||
-        `Pet ${index}`,
-      slot: petEquipment[`pet_${index}_pet_type`] || "펫",
-      expireAt: petEquipment[`pet_${index}_date_expire`],
-      detail: "마법의 시간",
-    }))
-    .filter((item) => item.expireAt)
-    .sort((a, b) => new Date(a.expireAt) - new Date(b.expireAt));
-
-  if (petItems.length > 0) {
-    sections.push({
-      id: "pets",
-      title: "펫",
-      items: petItems,
-    });
-  }
-
-  return sections;
-};
-
-const placeholderSections = [
-  {
-    id: "placeholder-cash",
-    title: "캐시 프리셋",
-    items: [
-      {
-        id: "placeholder-cash-1",
-        name: "모자 옵션",
-        slot: "캐시",
-        expireAt: "2026-03-12T00:00:00+09:00",
-        detail: "옵션 유효 기간",
-      },
-      {
-        id: "placeholder-cash-2",
-        name: "장갑 옵션",
-        slot: "캐시",
-        expireAt: "2026-03-18T00:00:00+09:00",
-        detail: "옵션 유효 기간",
-      },
-    ],
-  },
-  {
-    id: "placeholder-pet",
-    title: "펫",
-    items: [
-      {
-        id: "placeholder-pet-1",
-        name: "펌 펌이",
-        slot: "루나",
-        expireAt: "2026-03-09T00:00:00+09:00",
-        detail: "마법의 시간",
-      },
-    ],
-  },
-];
-
 export const ExpirationCheckTab = () => {
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState(null);
   const [combinedData, setCombinedData] = useState(null);
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+
+  useEffect(() => {
+    setFavoriteCharacters(readFavoriteCharacters());
+  }, []);
 
   const sections = useMemo(() => {
     if (loading) {
-      return placeholderSections;
+      return expirationCheckPlaceholderSections;
     }
+
     return combinedData ? buildExpirationSections(combinedData) : [];
   }, [combinedData, loading]);
 
-  const basicInfo = useMemo(() => {
-    if (loading || !combinedData) {
-      return {
-        getBasicInformation: dummyUserData.getCombinedData.getBasicInformation,
-        getCharacterPopularity:
-          dummyUserData.getCombinedData.getCharacterPopularity,
-        getDojang: dummyUserData.getCombinedData.getDojang,
-        getUnion: dummyUserData.getCombinedData.getUnion,
-      };
+  const currentFavoriteCharacter = useMemo(
+    () => toFavoriteCharacter(combinedData?.getBasicInformation),
+    [combinedData],
+  );
+
+  const currentCharacterName = currentFavoriteCharacter.characterName;
+  const isCurrentFavorite = useMemo(
+    () =>
+      Boolean(
+        currentCharacterName &&
+        favoriteCharacters.some(
+          (character) => character.characterName === currentCharacterName,
+        ),
+      ),
+    [currentCharacterName, favoriteCharacters],
+  );
+
+  const saveFavoriteCharacters = (nextFavorites) => {
+    localStorage.setItem(FAVORITE_STORAGE_KEY, JSON.stringify(nextFavorites));
+    setFavoriteCharacters(nextFavorites);
+  };
+
+  const toggleFavoriteCharacter = (character) => {
+    if (!character?.characterName || loading) {
+      return;
     }
 
-    return {
-      getBasicInformation: combinedData.getBasicInformation,
-      getCharacterPopularity: combinedData.getCharacterPopularity,
-      getDojang: combinedData.getDojang,
-      getUnion: combinedData.getUnion,
-    };
-  }, [combinedData, loading]);
+    const isFavorite = favoriteCharacters.some(
+      (favoriteCharacter) =>
+        favoriteCharacter.characterName === character.characterName,
+    );
+    const nextFavorites = isFavorite
+      ? favoriteCharacters.filter(
+          (favoriteCharacter) =>
+            favoriteCharacter.characterName !== character.characterName,
+        )
+      : [
+          ...favoriteCharacters,
+          {
+            characterName: character.characterName,
+            characterImage: character.characterImage,
+            characterLevel: character.characterLevel,
+          },
+        ];
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+    saveFavoriteCharacters(nextFavorites);
+  };
 
-    const characterName = searchValue.replace(/\s+/g, "");
+  const searchCharacter = async (rawCharacterName) => {
+    if (loading) {
+      return;
+    }
+
+    const characterName = rawCharacterName.replace(/\s+/g, "");
     if (!characterName) {
       return;
     }
+
+    setSearchValue(characterName);
 
     const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(characterName);
@@ -269,13 +243,21 @@ export const ExpirationCheckTab = () => {
     }
   };
 
-  const showResultArea = hasSearched || loading || combinedData;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await searchCharacter(searchValue);
+  };
+
+  const showExpirationArea = hasSearched || loading || combinedData;
+  const showCurrentCharacter = Boolean(combinedData) && !loading;
+  const showFavoriteGroup =
+    favoriteCharacters.length > 0 || !showExpirationArea;
 
   return (
     <ContentWrap>
       <SearchPanel onSubmit={handleSubmit}>
         <SearchLabel htmlFor="checklist-character-search">
-          {"캐릭터 닉네임"}
+          캐릭터 닉네임
         </SearchLabel>
         <SearchRow>
           <SearchInput
@@ -283,63 +265,177 @@ export const ExpirationCheckTab = () => {
             type="text"
             value={searchValue}
             maxLength={15}
-            placeholder={"닉네임을 입력하세요"}
+            placeholder="닉네임을 입력하세요"
             onChange={(event) => setSearchValue(event.target.value)}
           />
           <SearchButton type="submit" disabled={loading}>
-            {loading ? "검색 중" : "기간 만료 체크"}
+            {loading ? "검색 중..." : "검색"}
           </SearchButton>
         </SearchRow>
         <SearchHint>
-          {
-            "검색 시 캐시 옵션, 안드로이드 캐시, 펫 기간 만료 정보를 한 번에 정리합니다."
-          }
+          캐시 옵션, 칭호, 유니온 아티팩트, 펫의 만료 정보를 한 번에 정리합니다.
         </SearchHint>
       </SearchPanel>
 
       {error && <ErrorText>{error}</ErrorText>}
 
-      {showResultArea ? (
-        <ResultGrid>
-          <InfoCard>
-            <BasicInformation BasicInfo={basicInfo} blur={loading} />
-          </InfoCard>
+      {showFavoriteGroup && (
+        <CharacterContextPanel>
+          <SectionHeader>
+            <SectionTitle>즐겨찾기</SectionTitle>
+          </SectionHeader>
+          <CharacterContextGroup>
+            <FavoriteCharacterList>
+              {favoriteCharacters.map((character) => (
+                <FavoriteCharacterItem
+                  key={character.characterName}
+                  type="button"
+                  onClick={() => searchCharacter(character.characterName)}
+                >
+                  <CharacterAvatar
+                    characterName={character.characterName}
+                    characterImage={character.characterImage}
+                  />
+                  <FavoriteCharacterName>
+                    {character.characterName}
+                  </FavoriteCharacterName>
+                  <CurrentFavoriteButton
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavoriteCharacter(character);
+                    }}
+                    aria-label="즐겨찾기 해제"
+                  >
+                    <img src={favorite_true} alt="" aria-hidden="true" />
+                  </CurrentFavoriteButton>
+                </FavoriteCharacterItem>
+              ))}
+              {favoriteCharacters.length === 0 && (
+                <FavoriteEmptyText>
+                  현재 저장된 즐겨찾기가 없습니다.
+                </FavoriteEmptyText>
+              )}
+            </FavoriteCharacterList>
+          </CharacterContextGroup>
+        </CharacterContextPanel>
+      )}
 
-          <SectionColumn>
-            {sections.length > 0 ? (
-              sections.map((section) => (
-                <ExpireSection key={section.id}>
-                  <ExpireSectionTitle>{section.title}</ExpireSectionTitle>
-                  <ExpireList>
-                    {section.items.map((item) => (
-                      <ExpireCard key={item.id} $blurred={loading}>
+      {showCurrentCharacter && (
+        <CharacterContextPanel>
+          <SectionHeader>
+            <SectionTitle>현재 검색</SectionTitle>
+          </SectionHeader>
+          <CharacterContextGroup>
+            <CurrentCharacterCard>
+              <CharacterAvatar
+                characterName={currentFavoriteCharacter.characterName}
+                characterImage={currentFavoriteCharacter.characterImage}
+              />
+              <CurrentCharacterMeta>
+                <CurrentCharacterName>
+                  {currentFavoriteCharacter.characterName}
+                </CurrentCharacterName>
+                <CurrentCharacterLevel>
+                  Lv.{currentFavoriteCharacter.characterLevel}
+                </CurrentCharacterLevel>
+              </CurrentCharacterMeta>
+              <CurrentFavoriteButton
+                type="button"
+                onClick={() =>
+                  toggleFavoriteCharacter(currentFavoriteCharacter)
+                }
+                aria-label={
+                  isCurrentFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"
+                }
+              >
+                <img
+                  src={isCurrentFavorite ? favorite_true : favorite_false}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </CurrentFavoriteButton>
+            </CurrentCharacterCard>
+          </CharacterContextGroup>
+        </CharacterContextPanel>
+      )}
+
+      {showExpirationArea && (
+        <SectionColumn>
+          {sections.length > 0 ? (
+            sections.map((section) => (
+              <ExpireSection key={section.id}>
+                <ExpireSectionTitle>{section.title}</ExpireSectionTitle>
+                <ExpireList>
+                  {section.items.map((item) => {
+                    const hasValidExpireAt = Boolean(
+                      item.expireAt && getValidExpireDate(item.expireAt),
+                    );
+                    const remainTone = hasValidExpireAt
+                      ? getRemainTone(item.expireAt)
+                      : (item.badgeTone ?? getRemainTone(item.expireAt));
+
+                    return (
+                      <ExpireCard
+                        key={item.id}
+                        $blurred={loading}
+                        $alertTone={item.alertTone}
+                        $remainTone={remainTone}
+                      >
                         <ExpireCardTop>
-                          <ExpireName>{item.name}</ExpireName>
-                          <RemainBadge $tone={getRemainTone(item.expireAt)}>
-                            {formatRemainLabel(item.expireAt)}
+                          <ExpireItemHeading>
+                            {item.icon && (
+                              <ExpireIcon
+                                src={item.icon}
+                                alt={`${item.name} 아이콘`}
+                              />
+                            )}
+                            <ExpireName>{item.name}</ExpireName>
+                          </ExpireItemHeading>
+                          <RemainBadge $tone={remainTone}>
+                            {hasValidExpireAt
+                              ? formatRemainLabel(item.expireAt)
+                              : (item.badgeLabel ??
+                                formatRemainLabel(item.expireAt))}
                           </RemainBadge>
                         </ExpireCardTop>
                         <ExpireMeta>
                           {item.slot} | {item.detail}
                         </ExpireMeta>
-                        <ExpireDate>{formatExpire(item.expireAt)}</ExpireDate>
+                        <ExpireDate
+                          $isEmpty={!hasValidExpireAt}
+                          $tone={remainTone}
+                        >
+                          {hasValidExpireAt
+                            ? formatExpire(item.expireAt)
+                            : (item.emptyMessage ??
+                              formatExpire(item.expireAt))}
+                        </ExpireDate>
+                        {item.extraLines?.length > 0 && (
+                          <ExpireExtraList>
+                            {item.extraLines.map((line, index) => (
+                              <ExpireExtraLine
+                                key={`${item.id}-extra-${index}`}
+                              >
+                                {line}
+                              </ExpireExtraLine>
+                            ))}
+                          </ExpireExtraList>
+                        )}
                       </ExpireCard>
-                    ))}
-                  </ExpireList>
-                </ExpireSection>
-              ))
-            ) : (
-              <EmptyPanel>
-                {"현재 확인된 기간 만료 정보가 없습니다."}
-              </EmptyPanel>
-            )}
-          </SectionColumn>
-        </ResultGrid>
-      ) : (
+                    );
+                  })}
+                </ExpireList>
+              </ExpireSection>
+            ))
+          ) : (
+            <EmptyPanel>현재 확인할 기간 만료 정보가 없습니다.</EmptyPanel>
+          )}
+        </SectionColumn>
+      )}
+      {false && (
         <GuidePanel>
-          {
-            "기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 표시합니다."
-          }
+          기간 만료 체크 탭에서 닉네임을 검색하면 만료 예정 항목을 보여줍니다.
         </GuidePanel>
       )}
     </ContentWrap>
@@ -348,14 +444,14 @@ export const ExpirationCheckTab = () => {
 
 const panelCss = `
   ${ContainerCss};
-  padding: 14px;
+  padding: 8px;
   color: white;
 `;
 
 const ContentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 `;
 
 const SearchPanel = styled.form`
@@ -367,14 +463,20 @@ const SearchLabel = styled.label`
   margin-bottom: 8px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.8);
+
+  @media screen and (max-width: 960px) {
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
 `;
 
 const SearchRow = styled.div`
   display: flex;
   gap: 10px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 960px) {
     flex-direction: column;
+    gap: 7px;
   }
 `;
 
@@ -388,20 +490,62 @@ const SearchInput = styled.input`
   background: rgba(255, 255, 255, 0.92);
   color: rgb(0, 0, 0);
   outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.2;
+
+  @media screen and (max-width: 960px) {
+    flex: none;
+    width: 100%;
+    height: 36px;
+    min-height: 0;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
 `;
 
 const SearchButton = styled.button`
   cursor: pointer;
   min-width: 140px;
-  padding: 0 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: ${({ theme }) => theme.tabActiveColor};
-  color: ${({ theme }) => theme.tabActiveTextColor};
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 184, 208, 0.95) 0%,
+    rgba(34, 149, 184, 0.95) 100%
+  );
+  color: #ffffff;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
 
   &:disabled {
     cursor: wait;
     opacity: 0.72;
+  }
+
+  @media screen and (max-width: 960px) {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    height: 36px;
+    min-height: 0;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 13px;
   }
 `;
 
@@ -410,6 +554,12 @@ const SearchHint = styled.p`
   font-size: 13px;
   color: rgba(255, 255, 255, 0.68);
   line-height: 1.45;
+
+  @media screen and (max-width: 960px) {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
 `;
 
 const ErrorText = styled.div`
@@ -418,23 +568,176 @@ const ErrorText = styled.div`
   color: #ffd4d4;
 `;
 
-const ResultGrid = styled.div`
-  display: grid;
-  grid-template-columns: minmax(290px, 360px) minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
+const CharacterContextPanel = styled.div`
+  ${panelCss}
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  background: rgba(24, 33, 40, 0.78);
+`;
 
-  @media screen and (max-width: 960px) {
-    grid-template-columns: 1fr;
+const CharacterContextGroup = styled.section`
+  min-width: 0;
+`;
+
+const SectionHeader = styled.div`
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(178, 189, 197, 0.65);
+  background: #8f979c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  @media screen and (max-width: 1200px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
   }
 `;
 
-const InfoCard = styled.div`
-  ${panelCss}
+const SectionTitle = styled.h2`
+  margin: 0;
+  color: #f7f7f2;
+  font-size: 19px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+`;
 
-  > div {
-    width: 100%;
+const FavoriteCharacterList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+const FavoriteCharacterItem = styled.button`
+  min-width: 140px;
+  max-width: 180px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: rgba(94, 210, 232, 0.4);
+    background: rgba(255, 255, 255, 0.14);
   }
+`;
+
+const CharacterAvatarFrame = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+
+  img {
+    width: 45px;
+    height: 45px;
+    object-fit: none;
+    image-rendering: pixelated;
+    transform: translate(-6%, -10%) scaleX(-1);
+  }
+`;
+
+const FavoriteCharacterName = styled.div`
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+`;
+
+const CurrentCharacterCard = styled.div`
+  min-width: 220px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 8px;
+  border-radius: 7px;
+  border: 1px solid rgba(122, 242, 255, 0.88);
+  background:
+    linear-gradient(180deg, rgba(67, 202, 226, 0.2), rgba(255, 255, 255, 0.08)),
+    rgba(255, 255, 255, 0.08);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 16px rgba(88, 222, 245, 0.46),
+    0 12px 32px rgba(0, 0, 0, 0.18);
+`;
+
+const CurrentCharacterMeta = styled.div`
+  min-width: 0;
+  flex: 1;
+`;
+
+const CurrentCharacterName = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const CurrentCharacterLevel = styled.div`
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+`;
+
+const CurrentFavoriteButton = styled.button`
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  img {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.46);
+  }
+`;
+
+const FavoriteEmptyText = styled.div`
+  width: 100%;
+  padding: 16px 10px;
+  border-radius: 8px;
+  background: rgba(15, 21, 26, 0.38);
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  font-size: 14px;
 `;
 
 const SectionColumn = styled.div`
@@ -454,16 +757,32 @@ const ExpireSectionTitle = styled.h2`
 `;
 
 const ExpireList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const ExpireCard = styled.article`
   padding: 12px;
   border-radius: 10px;
   background: rgba(15, 21, 26, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid
+    ${({ $alertTone, $remainTone }) =>
+      $alertTone === "danger" || $remainTone === "danger"
+        ? "rgba(255, 79, 79, 0.9)"
+        : $remainTone === "warning"
+          ? "rgba(255, 196, 22, 0.72)"
+          : "rgba(255, 255, 255, 0.08)"};
+  box-shadow: ${({ $alertTone, $remainTone }) =>
+    $alertTone === "danger" || $remainTone === "danger"
+      ? "0 0 0 1px rgba(255, 79, 79, 0.22), 0 0 16px rgba(214, 74, 74, 0.22)"
+      : $remainTone === "warning"
+        ? "0 0 0 1px rgba(255, 196, 22, 0.14), 0 0 14px rgba(255, 196, 22, 0.14)"
+        : "none"};
   filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
   opacity: ${({ $blurred }) => ($blurred ? 0.7 : 1)};
   transition:
@@ -478,12 +797,30 @@ const ExpireCardTop = styled.div`
   gap: 10px;
 `;
 
+const ExpireItemHeading = styled.div`
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+`;
+
+const ExpireIcon = styled.img`
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: pixelated;
+`;
+
 const ExpireName = styled.div`
+  min-width: 0;
   font-size: 15px;
   font-weight: 600;
+  overflow-wrap: anywhere;
 `;
 
 const RemainBadge = styled.span`
+  flex: 0 0 auto;
   padding: 4px 8px;
   border-radius: 999px;
   font-size: 12px;
@@ -495,20 +832,40 @@ const RemainBadge = styled.span`
   color: ${({ $tone }) => {
     if ($tone === "danger") return "#ffd1d1";
     if ($tone === "warning") return "#ffefb0";
+    if ($tone === "empty") return "#d4d9df";
+    if ($tone === "muted") return "#bfe7ff";
     return "#d8f4ff";
   }};
 `;
 
 const ExpireMeta = styled.div`
-  margin-top: 8px;
+  margin-top: 2px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.65);
 `;
 
 const ExpireDate = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 13px;
-  color: #fff2be;
+  color: ${({ $isEmpty, $tone }) => {
+    if ($isEmpty) return "rgba(255, 255, 255, 0.64)";
+    if ($tone === "danger") return "#ffd1d1";
+    if ($tone === "warning") return "#ffdf69";
+    return "#fff2be";
+  }};
+`;
+
+const ExpireExtraList = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+`;
+
+const ExpireExtraLine = styled.div`
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 191, 102, 0.92);
+  word-break: break-word;
 `;
 
 const EmptyPanel = styled.div`
