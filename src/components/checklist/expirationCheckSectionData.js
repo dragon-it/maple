@@ -290,11 +290,12 @@ const buildPetEquipmentExtraLines = (equipment) => {
 
   return scrollLine ? [...optionLines, scrollLine] : optionLines;
 };
+const buildPetEquipmentCard = (targetPetData, index) => {
+  // 활성화된 펫 데이터 내부의 equipment 객체를 가져옴
+  const equipment = targetPetData?.equipment || null;
 
-const buildPetEquipmentCard = (petEquipment, index) => {
-  const equipment = petEquipment[`pet_${index}_equipment`] || null;
-
-  if (!equipment) {
+  // 장비 객체가 없거나 실제 아이템 이름이 없으면 장착 안 함 처리
+  if (!equipment || !equipment.item_name) {
     return createEmptyCard({
       id: `pet-equipment-${index}`,
       name: `펫 장비 ${index}`,
@@ -308,7 +309,8 @@ const buildPetEquipmentCard = (petEquipment, index) => {
   const expireAt = getPetEquipmentExpireAt(equipment);
   const extraLines = buildPetEquipmentExtraLines(equipment);
 
-  if (!expireAt) {
+  // 만료 정보가 없거나 "-1"(영구)인 경우 처리
+  if (!expireAt || expireAt === "-1") {
     return createInformationalCard({
       id: `pet-equipment-${index}`,
       name: equipment.item_name || `펫 장비 ${index}`,
@@ -332,21 +334,36 @@ const buildPetEquipmentCard = (petEquipment, index) => {
 };
 
 const buildPetSection = (petEquipment) => {
+  // 1. pet_activate_flag 값에 따라 접두사(Prefix) 결정 (기본값 "0"은 개인 펫)
+  const isWorldShare = petEquipment?.pet_activate_flag === "1";
+  const prefix = isWorldShare ? "world_share_pet" : "pet";
+
   const items = [1, 2, 3].flatMap((index) => {
+    // 2. 현재 순번(index)에 맞는 펫 데이터를 정규화해서 추출
+    const targetPetData = {
+      name: petEquipment[`${prefix}_${index}_name`],
+      nickname: petEquipment[`${prefix}_${index}_nickname`],
+      icon:
+        petEquipment[`${prefix}_${index}_appearance_icon`] ||
+        petEquipment[`${prefix}_${index}_icon`],
+      petType: petEquipment[`${prefix}_${index}_pet_type`],
+      dateExpire: petEquipment[`${prefix}_${index}_date_expire`],
+      appearance: petEquipment[`${prefix}_${index}_appearance`],
+      equipment: petEquipment[`${prefix}_${index}_equipment`],
+    };
+
     const petName =
-      petEquipment[`pet_${index}_nickname`] ||
-      petEquipment[`pet_${index}_name`] ||
-      `펫 ${index}`;
-    const petIcon = petEquipment[`pet_${index}_appearance_icon`] || null;
-    const petType = petEquipment[`pet_${index}_pet_type`] || `펫 ${index}`;
-    const petExpireAt = petEquipment[`pet_${index}_date_expire`] || null;
+      targetPetData.nickname || targetPetData.name || `펫 ${index}`;
+    const petType = targetPetData.petType || `펫 ${index}`;
+
     const hasPetData = Boolean(
-      petEquipment[`pet_${index}_nickname`] ||
-      petEquipment[`pet_${index}_name`] ||
-      petEquipment[`pet_${index}_appearance`] ||
-      petIcon,
+      targetPetData.name ||
+      targetPetData.nickname ||
+      targetPetData.appearance ||
+      targetPetData.icon,
     );
 
+    // 3. 펫 카드 생성
     const petCard = !hasPetData
       ? createEmptyCard({
           id: `pet-${index}`,
@@ -355,11 +372,11 @@ const buildPetSection = (petEquipment) => {
           detail: "장착 안 함",
           emptyMessage: "해당 펫 슬롯이 비어 있습니다.",
         })
-      : !petExpireAt
+      : !targetPetData.dateExpire
         ? createInformationalCard({
             id: `pet-${index}`,
             name: petName,
-            icon: petIcon,
+            icon: targetPetData.icon,
             slot: petType,
             detail: "마법의 시간 만료 기간",
             emptyMessage: "펫 만료 정보가 없습니다.",
@@ -367,13 +384,14 @@ const buildPetSection = (petEquipment) => {
         : createTimedCard({
             id: `pet-${index}`,
             name: petName,
-            icon: petIcon,
+            icon: targetPetData.icon,
             slot: petType,
-            expireAt: petExpireAt,
+            expireAt: targetPetData.dateExpire,
             detail: "마법의 시간 만료 기간",
           });
 
-    return [petCard, buildPetEquipmentCard(petEquipment, index)];
+    // 4. 추출해둔 데이터를 넘겨서 장비 카드 생성
+    return [petCard, buildPetEquipmentCard(targetPetData, index)];
   });
 
   return {
@@ -382,7 +400,6 @@ const buildPetSection = (petEquipment) => {
     items,
   };
 };
-
 export const buildExpirationSections = (combinedData) => {
   const titleEquipment = combinedData?.getItemEquipment?.title;
   const cashEquipment = combinedData?.getCashItemEquipment ?? {};
