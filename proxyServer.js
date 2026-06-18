@@ -506,6 +506,7 @@ app.get("/api/character/information", async (req, res) => {
       dojang,
       unionLanking,
       allSkills,
+      vmatrix,
     ] = await Promise.all([
       callMapleStoryAPI("character/basic", { ocid }),
       callMapleStoryAPI("character/stat", { ocid }),
@@ -523,6 +524,7 @@ app.get("/api/character/information", async (req, res) => {
       callMapleStoryAPI("character/link-skill", { ocid }),
       callMapleStoryAPI("character/hexamatrix", { ocid }),
       callMapleStoryAPI("character/hexamatrix-stat", { ocid }),
+
       callMapleStoryAPI("user/union", { ocid }),
       callMapleStoryAPI("user/union-artifact", { ocid }),
       callMapleStoryAPI("user/union-raider", { ocid }),
@@ -533,7 +535,9 @@ app.get("/api/character/information", async (req, res) => {
         date,
         page: 1,
       }),
+
       fetchAllSkills(ocid),
+      callMapleStoryAPI("character/vmatrix", { ocid }),
     ]);
 
     // unionChampion에서 챔피언 이름을 가져오는 함수
@@ -600,6 +604,7 @@ app.get("/api/character/information", async (req, res) => {
       getUnionChampion: unionChampion,
       getDojang: dojang,
       getChampionDetails: championDetails,
+      getVMatrix: vmatrix,
     });
   } catch (error) {
     console.error("Combined API error:", error.message);

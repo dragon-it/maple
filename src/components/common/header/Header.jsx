@@ -193,7 +193,7 @@ const itemStyles = css`
   align-items: center;
   height: 100%;
   transition: 0.15s ease;
-  padding: 0 8px;
+  padding: 0 4px;
   cursor: pointer;
   border-bottom: 3px solid transparent;
   color: rgb(205, 205, 205);
@@ -249,8 +249,9 @@ const ItemList = styled.ul`
     display: none;
   }
 
-  @media screen and (max-width: 1024px) {
-    gap: 0;
+  @media screen and (max-width: 1280px) {
+    margin-left: 0px;
+    gap: 5px;
   }
 `;
 
@@ -274,7 +275,6 @@ const ThemeToggleWrap = styled.div`
   align-items: center;
 
   @media screen and (max-width: 1024px) {
-    flex: 0.5;
     min-width: 0;
     justify-content: flex-end;
   }
