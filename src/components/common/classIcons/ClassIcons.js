@@ -41,6 +41,7 @@ const ClassMapping = {
     "일리움",
     "라라",
     "키네시스",
+    "레테",
   ],
   archerClass: [
     "보우마스터",
