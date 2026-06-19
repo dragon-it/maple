@@ -194,6 +194,9 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
 
   @media (max-width: 1600px) {
     flex-direction: column;
@@ -201,55 +204,46 @@ const Wrapper = styled.div`
     gap: 15px;
   }
 `;
-
 const ContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: auto;
+  width: fit-content;
+  max-width: 100%;
   gap: 5px;
   border-radius: 5px;
   border: 1px solid rgb(30, 38, 47);
   outline: 2px solid rgb(56, 87, 106);
   background-color: rgb(43, 53, 62);
   padding: 10px;
-  box-shadow: 0 4px 8px rgb(0, 0, 0);
-  position: relative;
-  z-index: 2;
   box-sizing: border-box;
-
-  @media (max-width: 900px) {
-    width: 100%;
-    max-width: 1060px;
-  }
 `;
 
 const CardsGrid = styled.div`
-  display: grid;
-  /* 💡 핵심 수정: props.$rollMode 값에 맞춰 열 개수를 동적으로 생성합니다 (1개면 1열, 5개면 5열) */
-  grid-template-columns: repeat(${(props) => props.$rollMode}, 200px);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  max-width: 1060px;
-  width: 100%;
-
-  @media (max-width: 1080px) {
-    /* 모바일/태블릿에서는 개수와 상관없이 화면에 맞춰 유연하게 흐르도록 설정 */
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  }
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
 
   @media (max-width: 570px) {
-    grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
 `;
 
 const CardItem = styled.div`
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  width: 100%;
+  width: 200px;
+
+  @media (max-width: 570px) {
+    width: calc((100vw - 80px) / 2);
+    max-width: 200px;
+  }
 `;
 
 const HistoryWrap = styled.div`
@@ -269,7 +263,6 @@ const HistoryWrap = styled.div`
   box-shadow: 0 4px 8px rgb(0, 0, 0);
   z-index: 1;
   box-sizing: border-box;
-
   animation: slideIn 0.3s ease-out forwards;
 
   @keyframes slideIn {
