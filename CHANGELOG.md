@@ -1,8 +1,20 @@
 # Changelog
 
+## [1.10.2] - 2026-06-21
+
+### Feats
+
+-
+
+### Styles
+
+- footer 레이아웃 구조 개선(footer 하단 잘림)
+
 ## [1.10.1] - 2026-06-19
 
 ### Feats
+
+-
 
 ### Styles
 
