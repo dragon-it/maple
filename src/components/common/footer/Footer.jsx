@@ -4,43 +4,41 @@ import { FooterText } from "./FooterText";
 
 export const Footer = () => {
   useEffect(() => {
-    let initialized = false;
+    const pushAds = () => {
+      try {
+        const ads = document.querySelectorAll(
+          ".adsbygoogle:not([data-adsbygoogle-status])",
+        );
+
+        ads.forEach(() => {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        });
+      } catch (e) {
+        console.error("Adsense Error:", e);
+      }
+    };
 
     const loadAds = () => {
+      const existingScript = document.querySelector(
+        'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]',
+      );
+
+      if (existingScript) {
+        pushAds();
+        return;
+      }
+
       const script = document.createElement("script");
       script.src =
         "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9967012422287379";
       script.async = true;
       script.crossOrigin = "anonymous";
-      document.head.appendChild(script);
-
-      script.onload = () => {
-        try {
-          const ads = document.querySelectorAll(".adsbygoogle");
-          if (ads.length > 0 && !initialized) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-            initialized = true;
-          }
-        } catch (e) {
-          console.error("Adsense Error:", e);
-        }
-      };
-
+      script.onload = pushAds;
       script.onerror = () => {
         console.error("Failed to load AdSense script");
       };
-    };
 
-    const reloadAds = () => {
-      try {
-        const ads = document.querySelectorAll(".adsbygoogle");
-        ads.forEach((ad) => {
-          ad.innerHTML = ""; // 기존 광고 초기화
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        });
-      } catch (e) {
-        console.error("Adsense Reload Error:", e);
-      }
+      document.head.appendChild(script);
     };
 
     if (document.readyState === "complete") {
@@ -48,11 +46,9 @@ export const Footer = () => {
     } else {
       window.addEventListener("load", loadAds);
     }
-    window.addEventListener("resize", reloadAds);
 
     return () => {
       window.removeEventListener("load", loadAds);
-      window.removeEventListener("resize", reloadAds);
     };
   }, []);
 
@@ -94,7 +90,9 @@ const Adsense = styled.div`
 const FooterTextDiv = styled.div`
   width: 100%;
   padding: 3px 0;
-  margin-bottom: var(--footer-safe-area, 0px);
+  margin-bottom: calc(
+    var(--footer-safe-area, 0px) + var(--adsense-footer-safe-area, 0px)
+  );
   display: flex;
   justify-content: center;
   align-items: center;
