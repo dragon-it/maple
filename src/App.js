@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -19,6 +19,37 @@ import { UserPage } from "./pages/UserPage";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 
 function App() {
+  useEffect(() => {
+    if (typeof document === "undefined" || !document.body) return;
+
+    const moveAdsenseBodyPaddingToFooter = () => {
+      const paddingBottom = document.body.style.paddingBottom;
+      const safeArea =
+        paddingBottom && paddingBottom !== "0px" ? paddingBottom : "0px";
+
+      document.documentElement.style.setProperty(
+        "--adsense-footer-safe-area",
+        safeArea,
+      );
+      document.body.style.setProperty("padding-bottom", "0px", "important");
+    };
+
+    moveAdsenseBodyPaddingToFooter();
+
+    const observer = new MutationObserver(moveAdsenseBodyPaddingToFooter);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty(
+        "--adsense-footer-safe-area",
+      );
+    };
+  }, []);
+
   return (
     <HelmetProvider>
       <ThemeProvider>

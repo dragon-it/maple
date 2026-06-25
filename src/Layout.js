@@ -48,39 +48,21 @@ function Layout({ children }) {
 
   return (
     <NoticeEventProvider value={contextValue}>
-      <PageLayout>
-        <HeaderContentsWrap>
-          <Header />
-          <Notice isSunday={isSunday} error={error} />
-        </HeaderContentsWrap>
-        <ContentWrap>{children}</ContentWrap>
-        {location.pathname !== "/" && <Footer />}
-      </PageLayout>
+      <HeaderContentsWrap>
+        <Header />
+        <Notice isSunday={isSunday} error={error} />
+      </HeaderContentsWrap>
+      {children}
+      {location.pathname !== "/" && <Footer />}
     </NoticeEventProvider>
   );
 }
-
-const PageLayout = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 const HeaderContentsWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-shrink: 0;
-`;
-
-const ContentWrap = styled.main`
-  width: 100%;
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
 `;
 
 export default Layout;
