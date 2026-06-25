@@ -16,6 +16,7 @@ import { SlidingPuzzle } from "./pages/SlidingPuzzle";
 import { Checklist } from "./pages/Checklist";
 import Layout from "./Layout";
 import { UserPage } from "./pages/UserPage";
+import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 
 function App() {
   useEffect(() => {
@@ -141,6 +142,14 @@ function App() {
                 element={
                   <Layout>
                     <SlidingPuzzle />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/privacy"
+                element={
+                  <Layout>
+                    <PrivacyPolicy />
                   </Layout>
                 }
               />
