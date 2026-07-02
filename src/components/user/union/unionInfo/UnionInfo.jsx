@@ -85,7 +85,12 @@ const Container = styled.div`
   border: 1px solid rgb(69, 89, 100);
   outline: 1px solid rgb(56, 70, 81);
   height: 100%;
-  min-width: 300px;
+  width: ${(props) => (props.$activeTab === "raider" ? "680px" : "340px")};
+  box-sizing: border-box;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 
 const UnionWrap = styled.div`
