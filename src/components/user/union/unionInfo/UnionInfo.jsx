@@ -35,9 +35,8 @@ const selectIcon = (level) => {
   return UnionIcons[rankCategory][rank];
 };
 
-export const UnionInfo = ({ Data, $activeTab }) => {
+export const UnionInfo = ({ Data, $activeTab, selectedPresetNo }) => {
   const icon = selectIcon(Data.union.union_level);
-
   const toRoman = (gradeString) => {
     // 로마 숫자 배열
     const roman = ["I", "II", "III", "IV", "V"];
@@ -53,7 +52,7 @@ export const UnionInfo = ({ Data, $activeTab }) => {
   const romanGrade = toRoman(Data.union.union_grade);
 
   return (
-    <Container>
+    <Container $activeTab={$activeTab}>
       <UnionWrap>
         <UnionGrade>{romanGrade}</UnionGrade>
         <InfoWrap>
@@ -70,7 +69,7 @@ export const UnionInfo = ({ Data, $activeTab }) => {
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
-      <UnionArtifactEffect Data={Data} activeTab={$activeTab} />
+      <UnionArtifactEffect Data={Data} activeTab={$activeTab} selectedPresetNo={selectedPresetNo} />
     </Container>
   );
 };
@@ -85,7 +84,7 @@ const Container = styled.div`
   border: 1px solid rgb(69, 89, 100);
   outline: 1px solid rgb(56, 70, 81);
   height: 100%;
-  width: ${(props) => (props.$activeTab === "raider" ? "680px" : "340px")};
+  width: ${(props) => (props.$activeTab === "raider" ? "480px" : "340px")};
   box-sizing: border-box;
 
   @media screen and (max-width: 1024px) {
