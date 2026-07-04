@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import UnionArtifactIcon from "../unionArtifact/UnionArtifactIcon";
 import { UnionRaider } from "../UnionRaider";
-import { UnionOccupiedStat } from "../unionInfo/UnionOccupiedStat";
 import { UnionChampion } from "../unionChampion/UnionChampion";
 import colors from "../../../common/color/colors";
 
-export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
+export const UnionArtifact = ({
+  Data,
+  $activeTab,
+  setActiveTab,
+  selectedPresetNo,
+  setSelectedPresetNo,
+}) => {
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
   );
@@ -82,12 +87,13 @@ export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
             </ArtifactWrap>
           )}
           {$activeTab === "raider" && (
-            <>
-              <RaiderWrap>
-                <UnionRaider Data={Data.unionRaider} />
-              </RaiderWrap>
-              <UnionOccupiedStat Data={Data.unionRaider} />
-            </>
+            <RaiderWrap>
+              <UnionRaider
+                Data={Data.unionRaider}
+                selectedPresetNo={selectedPresetNo}
+                setSelectedPresetNo={setSelectedPresetNo}
+              />
+            </RaiderWrap>
           )}
           {$activeTab === "champion" && (
             <ChampionWrap>
