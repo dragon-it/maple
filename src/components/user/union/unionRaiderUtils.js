@@ -143,3 +143,54 @@ export const STAT_MATCHERS = [
   // 마력은 문구 그대로 매칭
   { key: "magicPower", includes: ["마력"] },
 ];
+
+export const getSafePresetNo = (presetNo) => {
+  const num = Number(presetNo);
+  return isNaN(num) || num === 0 ? 1 : num;
+};
+
+export const findSelectedPreset = (presets, selectedPresetNo) => {
+  if (!Array.isArray(presets)) return null;
+  const targetNo = getSafePresetNo(selectedPresetNo);
+  return presets.find((p) => Number(p.preset_no) === targetNo) || null;
+};
+
+export const buildStatRows = (selectedUnionStateStat) => {
+  return UNION_RAIDER_STATS.map((statDef) => {
+    const matcher = STAT_MATCHERS.find((m) => m.key === statDef.key);
+    let value = 0;
+
+    if (matcher && Array.isArray(selectedUnionStateStat)) {
+      const matchingString = selectedUnionStateStat.find((statStr) => {
+        if (typeof statStr !== "string") return false;
+        return matcher.includes.some((inc) => statStr.includes(inc));
+      });
+
+      if (matchingString) {
+        const match = matchingString.match(/(\d+(?:\.\d+)?)/);
+        if (match) {
+          value = parseFloat(match[1]);
+        }
+      }
+    }
+
+    const point = statDef.valuePerPoint ? Math.round(value / statDef.valuePerPoint) : 0;
+    
+    let displayValue = "";
+    if (value === 0) {
+      displayValue = statDef.unit ? `0${statDef.unit}` : "0";
+    } else {
+      const formattedVal = statDef.decimal !== undefined ? value.toFixed(statDef.decimal) : value;
+      displayValue = `+${formattedVal}${statDef.unit}`;
+    }
+
+    return {
+      key: statDef.key,
+      label: statDef.label,
+      maxPoint: statDef.maxPoint,
+      point: Math.min(point, statDef.maxPoint),
+      displayValue,
+    };
+  });
+};
+

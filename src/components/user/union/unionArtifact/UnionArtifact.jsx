@@ -114,9 +114,11 @@ export const UnionArtifact = ({
 const Wrap = styled.div`
   display: flex;
   gap: 0px;
+  flex: 1;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
+    width: 100%;
   }
 `;
 
@@ -152,6 +154,8 @@ const RaiderWrap = styled.div`
   border: 2px solid rgb(69, 89, 100);
   outline: 2px solid rgb(56, 70, 81);
   height: fit-content;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const InfoWrap = styled.div`
