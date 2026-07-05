@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { UnionInfo } from "./union/unionInfo/UnionInfo";
 import styled from "styled-components";
 import { UnionArtifact } from "./union/unionArtifact/UnionArtifact";
+import { getSafePresetNo } from "./union/unionRaiderUtils";
 
 export const Union = ({ result }) => {
   const [activeTab, setActiveTab] = useState("artifact");
+
+  const unionRaiderData = result?.getCombinedData?.getUnionRaider;
+  const initialPresetNo = unionRaiderData ? getSafePresetNo(unionRaiderData.use_preset_no) : 1;
+  const [selectedPresetNo, setSelectedPresetNo] = useState(initialPresetNo);
 
   return (
     <Container>
@@ -18,6 +23,8 @@ export const Union = ({ result }) => {
           }}
           $activeTab={activeTab}
           setActiveTab={setActiveTab}
+          selectedPresetNo={selectedPresetNo}
+          setSelectedPresetNo={setSelectedPresetNo}
         />
         <UnionInfo
           Data={{
@@ -27,6 +34,7 @@ export const Union = ({ result }) => {
             unionChampion: result.getCombinedData.getUnionChampion,
           }}
           $activeTab={activeTab}
+          selectedPresetNo={selectedPresetNo}
         />
       </InfoWrap>
     </Container>

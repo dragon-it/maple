@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import UnionArtifactIcon from "../unionArtifact/UnionArtifactIcon";
 import { UnionRaider } from "../UnionRaider";
-import { UnionOccupiedStat } from "../unionInfo/UnionOccupiedStat";
 import { UnionChampion } from "../unionChampion/UnionChampion";
 import colors from "../../../common/color/colors";
 
-export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
+export const UnionArtifact = ({
+  Data,
+  $activeTab,
+  setActiveTab,
+  selectedPresetNo,
+  setSelectedPresetNo,
+}) => {
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
   );
@@ -82,12 +87,13 @@ export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
             </ArtifactWrap>
           )}
           {$activeTab === "raider" && (
-            <>
-              <RaiderWrap>
-                <UnionRaider Data={Data.unionRaider} />
-              </RaiderWrap>
-              <UnionOccupiedStat Data={Data.unionRaider} />
-            </>
+            <RaiderWrap>
+              <UnionRaider
+                Data={Data.unionRaider}
+                selectedPresetNo={selectedPresetNo}
+                setSelectedPresetNo={setSelectedPresetNo}
+              />
+            </RaiderWrap>
           )}
           {$activeTab === "champion" && (
             <ChampionWrap>
@@ -108,9 +114,11 @@ export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
 const Wrap = styled.div`
   display: flex;
   gap: 0px;
+  flex: 1;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
+    width: 100%;
   }
 `;
 
@@ -146,6 +154,8 @@ const RaiderWrap = styled.div`
   border: 2px solid rgb(69, 89, 100);
   outline: 2px solid rgb(56, 70, 81);
   height: fit-content;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const InfoWrap = styled.div`
