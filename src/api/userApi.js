@@ -7,19 +7,29 @@ import {
 } from "./api";
 import apiFunctions from "./ApiFuntion";
 
-const getAllCaseCombinations = (str) => {
-  if (str.length === 0) return [""]; // 문자열이 빈 경우, 빈 문자열 배열 반환
-
-  const firstChar = str[0]; // 문자열의 첫 번째 문자
-  const rest = getAllCaseCombinations(str.slice(1)); // 첫 번째 문자를 제외한 나머지 문자열의 조합을 재귀적으로 계산
-
-  const combinations = []; // 조합을 저장할 배열
-  for (let sub of rest) {
-    // 나머지 문자열의 조합을 순회
-    combinations.push(firstChar.toLowerCase() + sub); // 첫 번째 문자를 소문자로 결합한 조합 추가
-    combinations.push(firstChar.toUpperCase() + sub); // 첫 번째 문자를 대문자로 결합한 조합 추가
+// 캐릭터 대소문자 조합 생성 함수 (최대 개수 제한으로 성능 최적화)
+const getLimitedCaseCombinations = (str, limit = 20) => {
+  let combinations = [""];
+  for (let char of str) {
+    const nextCombinations = [];
+    const lower = char.toLowerCase();
+    const upper = char.toUpperCase();
+    
+    for (let combo of combinations) {
+      nextCombinations.push(combo + lower);
+      if (lower !== upper && nextCombinations.length < limit) {
+        nextCombinations.push(combo + upper);
+      }
+      if (nextCombinations.length >= limit) {
+        break;
+      }
+    }
+    combinations = nextCombinations;
+    if (combinations.length >= limit) {
+      break;
+    }
   }
-  return combinations; // 모든 조합을 반환
+  return combinations;
 };
 
 // 캐릭터 OCID 함수
@@ -28,10 +38,10 @@ const getOcid = async (characterName) => {
     const isKorean = /^[가-힣]+$/.test(characterName); // 한글인지 확인
     const combinations = isKorean
       ? [characterName]
-      : getAllCaseCombinations(characterName); // 한글이면 조합 생성 생략
+      : getLimitedCaseCombinations(characterName, 20); // 한글이면 조합 생성 생략
 
-    // 조합에서 최대 10개까지만 시도하도록 제한
-    const limitedCombinations = combinations.slice(0, 20);
+    // 조합에서 최대 20개까지만 시도하도록 제한 (이미 함수에서 제한됨)
+    const limitedCombinations = combinations;
 
     // 1. 입력한 이름 그대로 먼저 시도
     try {

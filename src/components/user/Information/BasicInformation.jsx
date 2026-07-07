@@ -363,8 +363,9 @@ const CharacterImg = styled.div`
     transform: translate(-50%, -53%) scaleX(-1);
     image-rendering: pixelated;
     object-fit: cover;
-    filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(10px)")};
+    filter: ${({ $revealed }) => ($revealed ? "none" : "blur(10px)")};
     transition: filter 0.45s ease;
+    
   }
 `;
 
@@ -421,12 +422,9 @@ const Contents = styled.div`
   align-items: center;
   overflow: hidden;
   image-rendering: pixelated;
-
-  background: rgba(107, 107, 107, 0.3);
+  background: rgba(45, 52, 60, 0.75);
   border: 1px solid rgba(59, 59, 59, 0.3);
-  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.15);
 
   color: white;
   font-weight: 500;
@@ -457,7 +455,7 @@ const Value = styled.div`
 const RevealText = styled.span`
   display: inline-flex;
   align-items: center;
-  filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(12px)")};
+  filter: ${({ $revealed }) => ($revealed ? "none" : "blur(12px)")};
   opacity: ${({ $revealed }) => ($revealed ? 1 : 0.6)};
   transition: filter 0.45s ease, opacity 0.45s ease;
 `;

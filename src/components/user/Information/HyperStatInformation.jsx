@@ -124,6 +124,7 @@ const ShowAllStatBtn = styled.div`
   box-sizing: border-box;
   font-family: maple-light;
   cursor: pointer;
+  transition: background-color 0.15s ease;
 
   p {
     display: flex;
@@ -133,7 +134,8 @@ const ShowAllStatBtn = styled.div`
     padding: 0 10px;
     border-radius: 5px;
   }
-  :hover {
+  
+  &:hover {
     background-color: rgba(134, 148, 160, 0.5);
   }
 `;
@@ -161,7 +163,10 @@ const StatWrap = styled.ul`
 const StatInfo = styled.li`
   padding: 2px 0;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  :hover {
+  transition: background-color 0.15s ease;
+  will-change: background-color;
+  
+  &:hover {
     background-color: rgba(59, 66, 75, 0.9);
   }
 `;
@@ -169,11 +174,11 @@ const StatInfo = styled.li`
 const Level = styled.span`
   display: flex;
 
-  :first-child {
+  & > :first-child {
     color: rgb(197, 220, 242);
   }
 
-  :nth-child(2) {
+  & > :nth-child(2) {
     width: 20px;
     text-align: center;
   }
@@ -207,6 +212,9 @@ const PresetButton = styled.button`
   color: ${(props) => (props.$isSelected ? "#FFFFFF" : "#e4e4e4")};
   background: ${(props) => (props.$isSelected ? "#444F59" : "#828F9A")};
   border: 1px solid ${(props) => (props.$isSelected ? "#d8e1e6" : "#454D57")};
+  transition: filter 0.15s ease, background-color 0.15s ease;
+  will-change: filter, background-color;
+  
   &:hover {
     filter: brightness(1.2);
   }
@@ -243,8 +251,8 @@ const RemainPoint = styled.span`
 `;
 
 const RevealValue = styled.span`
-  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
-  transition: filter 0.45s ease;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "none")};
+  transition: filter 0.15s ease;
 `;
 
 export default HyperStatInformation;

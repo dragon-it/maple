@@ -103,6 +103,6 @@ const ChartWrap = styled.div`
   width: 100%;
   background-color: rgb(103, 113, 125);
   border-radius: 5px;
-  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "none")};
   transition: filter 0.45s ease;
 `;
