@@ -87,13 +87,11 @@ export const UnionArtifact = ({
             </ArtifactWrap>
           )}
           {$activeTab === "raider" && (
-            <RaiderWrap>
-              <UnionRaider
-                Data={Data.unionRaider}
-                selectedPresetNo={selectedPresetNo}
-                setSelectedPresetNo={setSelectedPresetNo}
-              />
-            </RaiderWrap>
+            <UnionRaider
+              Data={Data.unionRaider}
+              selectedPresetNo={selectedPresetNo}
+              setSelectedPresetNo={setSelectedPresetNo}
+            />
           )}
           {$activeTab === "champion" && (
             <ChampionWrap>
@@ -146,17 +144,6 @@ const ContentsWrap = styled.div`
   }
 `;
 
-const RaiderWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(56, 60, 69);
-  border-radius: 5px;
-  border: 2px solid rgb(69, 89, 100);
-  outline: 2px solid rgb(56, 70, 81);
-  height: fit-content;
-  width: 100%;
-  box-sizing: border-box;
-`;
 
 const InfoWrap = styled.div`
   display: flex;
