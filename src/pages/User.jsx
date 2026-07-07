@@ -789,8 +789,7 @@ const Container = styled.div`
     position: absolute;
     inset: 0;
     border-radius: 5px;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(7px);
+    background: rgba(0, 0, 0, 0.65);
     pointer-events: none;
     z-index: 0;
   }

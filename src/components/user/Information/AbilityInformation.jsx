@@ -183,7 +183,7 @@ const RemainFame = styled.span`
 `;
 
 const RevealValue = styled.span`
-  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "none")};
   transition: filter 0.45s ease;
 `;
 
