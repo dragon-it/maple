@@ -91,13 +91,7 @@ export const UnionRaider = ({ Data, selectedPresetNo, setSelectedPresetNo }) => 
   );
 };
 const Container = styled.section`
-  width: min(940px, 100%);
-  padding: 12px;
-  color: ${colors.main.white0};
-  background: radial-gradient(circle at 50% 242%, #3d87a9 38%, #23292E 64%);
-  border: 1px solid rgb(200, 169, 129);
-  border-radius: 6px;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  width: 100%;
 `;
 
 const Header = styled.header`
@@ -131,10 +125,9 @@ const PointValue = styled.span`
   height: 28px;
   padding: 0 14px;
   color: ${colors.main.white0};
-  background: rgba(43, 50, 59, 1);
-  border: 1px solid rgb(58, 82, 96);
+  background: rgb(43, 50, 59);
   border-radius: 999px;
-
+  border-bottom: 1px solid rgb(77, 101, 117);
 `;
 
 const PresetWrap = styled.div`
@@ -160,17 +153,14 @@ const PresetButton = styled.button`
   color: ${(props) =>
     props.$isSelected ? colors.main.white0 : "rgb(181, 197, 205)"};
   font-weight: 700;
-  line-height: 1;
   background: ${(props) =>
     props.$isSelected
       ? "linear-gradient(180deg, rgb(142, 200, 68), rgb(81, 141, 35))"
-      : "linear-gradient(180deg, rgb(66, 82, 92), rgb(39, 52, 61))"};
-  border: 1px solid
-    ${(props) => (props.$isApplied ? "rgb(232, 245, 126)" : "rgb(76, 99, 111)")};
-  border-radius: 5px;
+      : "linear-gradient(180deg, rgb(88, 105, 114), rgb(83, 99, 108))"};
+  border: 2px solid
+    ${(props) => (props.$isApplied ? "rgb(255, 255, 255)" : "rgb(126, 149, 161)")};
+  border-radius: 9px;
   cursor: pointer;
-  box-shadow: ${(props) =>
-    props.$isSelected ? "0 0 0 1px rgba(255, 255, 255, 0.45)" : "none"};
 
   &:hover {
     filter: brightness(1.12);
@@ -183,7 +173,7 @@ const StatSection = styled.section``;
 const StatGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9px;
+  gap: 8px;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -195,14 +185,13 @@ const StatGrid = styled.div`
 `;
 
 const StatCard = styled.article`
-  min-height: 86px;
   padding: 6px 6px 8px;
   text-align: center;
   background: radial-gradient(circle at 50% 327%, #3d87a9 49%, rgb(46, 55, 64) 82%), linear-gradient(180deg, #252B31 0%, rgb(28, 52, 66) 100%);
   border: 1px solid
     ${(props) => (props.$hasPoint ? "rgb(210, 169, 108)" : "#405562")};
   outline: 1px solid rgb(36, 43, 51);
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 3px 0 rgb(37, 49, 57);
 `;
 

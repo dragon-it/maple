@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import colors from "../../../common/color/colors";
 
 export const UnionArtifactEffect = ({ Data, activeTab, selectedPresetNo }) => {
   const characterStats = Data?.unionRaider?.union_raider_stat
@@ -46,26 +45,27 @@ export const UnionArtifactEffect = ({ Data, activeTab, selectedPresetNo }) => {
       {activeTab === "artifact" && (
         <>
           <Header>아티팩트 효과</Header>
-          <EffectContainer>
-            {Data.unionArtiFact.union_artifact_effect.map((artifact, index) => (
-              <InfoWrap key={index}>
-                <Level>Lv.{artifact.level}</Level>
-                <Name>{artifact.name}</Name>
-              </InfoWrap>
-            ))}
-          </EffectContainer>
+          <EffectBox style={{ height: "100%" }}>
+            <ScrollArea>
+              {Data.unionArtiFact.union_artifact_effect.map((artifact, index) => (
+                <StatItem key={index}>
+                  Lv.{artifact.level} {artifact.name}
+                </StatItem>
+              ))}
+            </ScrollArea>
+          </EffectBox>
         </>
       )}
       {activeTab === "champion" && (
         <>
           <Header>챔피언 휘장 효과</Header>
-          <EffectContainer>
-            {Data.unionChampion.champion_badge_total_info.map((stat, index) => (
-              <InfoWrap key={index}>
-                <Name>{stat.stat}</Name>
-              </InfoWrap>
-            ))}
-          </EffectContainer>
+          <EffectBox style={{ height: "100%" }}>
+            <ScrollArea>
+              {Data.unionChampion.champion_badge_total_info.map((stat, index) => (
+                <StatItem key={index}>{stat.stat}</StatItem>
+              ))}
+            </ScrollArea>
+          </EffectBox>
         </>
       )}
     </Container>
@@ -88,10 +88,14 @@ const Container = styled.div`
 `;
 
 const Header = styled.p`
-  color: ${colors.union.unionChampion.levelColor};
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-family: 'DungGeunMo', sans-serif; 
+  background: linear-gradient(to bottom, #F5D6B6 0%, #D5BA9B 60%, #9A8068 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(1px 1px 0px #1A1C21) drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.8));
+  font-size: 14px;
+  font-weight: 900;
 `;
 
 const UnionEffectWrapper = styled.div`
@@ -167,37 +171,4 @@ const StatItem = styled.li`
   white-space: normal;
 `;
 
-const EffectContainer = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  :hover {
-    filter: brightness(1.4);
-  }
-`;
 
-const InfoWrap = styled.li`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 5px;
-  border-radius: 3px;
-  border: 1px solid rgb(136, 184, 212);
-  outline: 1px solid rgb(56, 70, 81);
-  max-width: 300px;
-  font-size: 12px;
-
-  @media screen and (max-width: 1024px) {
-    max-width: 100%;
-  }
-`;
-
-const Level = styled.span`
-  width: 35px;
-  flex-shrink: 0;
-`;
-
-const Name = styled.span`
-  overflow: hidden;
-  white-space: wrap;
-`;
