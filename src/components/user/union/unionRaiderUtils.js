@@ -181,7 +181,7 @@ export const buildStatRows = (selectedUnionStateStat) => {
       displayValue = statDef.unit ? `0${statDef.unit}` : "0";
     } else {
       const formattedVal = statDef.decimal !== undefined ? value.toFixed(statDef.decimal) : value;
-      displayValue = `+${formattedVal}${statDef.unit}`;
+      displayValue = `${formattedVal}${statDef.unit}`;
     }
 
     return {
