@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import UnionIcons from "../unionInfo/UnionIcon";
 import { UnionArtifactEffect } from "../unionArtifact/UnionArtifactEffect";
+import UnionTitleIcons from "./UnionTitleIcon";
 
 const selectIcon = (level) => {
   let baseLevel, rankCategory;
@@ -35,27 +36,47 @@ const selectIcon = (level) => {
   return UnionIcons[rankCategory][rank];
 };
 
-export const UnionInfo = ({ Data, $activeTab }) => {
+export const UnionInfo = ({ Data, $activeTab, selectedPresetNo }) => {
   const icon = selectIcon(Data.union.union_level);
 
-  const toRoman = (gradeString) => {
-    // 로마 숫자 배열
-    const roman = ["I", "II", "III", "IV", "V"];
-    // gradeString에서 숫자 추출
-    const num = parseInt(gradeString?.match(/\d+/)[0], 10);
-    // 추출된 숫자를 로마 숫자로 변환
-    const romanNumeral = roman[num - 1]; // 배열은 0부터 시작하므로 num - 1을 사용
-    // 원래 문자열에서 숫자를 로마 숫자로 대체
-    return gradeString?.replace(num, romanNumeral);
+  const getTitleImage = (gradeString) => {
+    if (!gradeString) return null;
+
+    const prefixMap = {
+      "노비스 유니온": "novice",
+      "베테랑 유니온": "veteran",
+      "마스터 유니온": "master",
+      "그랜드 마스터 유니온": "grand_master",
+      "슈프림 유니온": "supreme",
+    };
+
+    const prefixKey = Object.keys(prefixMap).find((prefix) =>
+      gradeString.includes(prefix)
+    );
+    if (!prefixKey) return null;
+
+    const numMatch = gradeString.match(/\d+/);
+    if (!numMatch) return null;
+    const suffixIndex = parseInt(numMatch[0], 10) - 1;
+
+    const category = prefixMap[prefixKey];
+    return UnionTitleIcons[category]?.[suffixIndex] || null;
   };
 
-  // Data.union_grade에서 숫자를 로마 숫자로 변환
-  const romanGrade = toRoman(Data.union.union_grade);
+  const titleImage = getTitleImage(Data.union.union_grade);
+  console.log("Union Grade Input:", Data.union.union_grade);
+  console.log("Resolved Title Image URL:", titleImage);
 
   return (
-    <Container>
+    <Container $activeTab={$activeTab}>
       <UnionWrap>
-        <UnionGrade>{romanGrade}</UnionGrade>
+        <UnionGrade>
+          {titleImage ? (
+            <img src={titleImage} alt={Data.union.union_grade} />
+          ) : (
+            Data.union.union_grade
+          )}
+        </UnionGrade>
         <InfoWrap>
           <UnionIcon style={{ backgroundImage: `url(${icon})` }}></UnionIcon>
           <LevelWrap>
@@ -70,7 +91,7 @@ export const UnionInfo = ({ Data, $activeTab }) => {
           </LevelWrap>
         </InfoWrap>
       </UnionWrap>
-      <UnionArtifactEffect Data={Data} activeTab={$activeTab} />
+      <UnionArtifactEffect Data={Data} activeTab={$activeTab} selectedPresetNo={selectedPresetNo} />
     </Container>
   );
 };
@@ -85,7 +106,12 @@ const Container = styled.div`
   border: 1px solid rgb(69, 89, 100);
   outline: 1px solid rgb(56, 70, 81);
   height: 100%;
-  min-width: 300px;
+  width: 380px;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 
 const UnionWrap = styled.div`
@@ -102,10 +128,14 @@ const UnionWrap = styled.div`
 `;
 
 const UnionGrade = styled.div`
-  color: rgb(255, 255, 0);
-  text-shadow: 0px 0px 3px rgb(219, 250, 46);
-  font-size: 20px;
-  font-family: maple-light;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: auto;
+    object-fit: contain;
+  }
 `;
 
 const InfoWrap = styled.div`

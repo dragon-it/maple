@@ -150,7 +150,7 @@ const GridContainer = styled.div`
   width: 100%;
   height: 100%;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
+  gap: 8px;
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -242,7 +242,7 @@ const CharacterImage = styled.div`
   height: 175px;
   margin: 2px auto;
   overflow: hidden;
-  z-index: 999;
+  z-index: 99;
 
   img {
     width: 300px;

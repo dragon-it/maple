@@ -162,7 +162,7 @@ const AvatarImage = styled.img`
   object-fit: none;
   image-rendering: pixelated;
   transform: translate(-6%, -10%) scaleX(-1);
-  filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(10px)")};
+  filter: ${({ $revealed }) => ($revealed ? "none" : "blur(10px)")};
   transition: filter 0.45s ease;
 `;
 
@@ -177,7 +177,7 @@ const Name = styled.div`
   font-size: 18px;
   font-weight: 700;
   color: white;
-  filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(12px)")};
+  filter: ${({ $revealed }) => ($revealed ? "none" : "blur(12px)")};
   opacity: ${({ $revealed }) => ($revealed ? 1 : 0.6)};
   transition:
     filter 0.45s ease,
@@ -190,7 +190,7 @@ const Name = styled.div`
 const Level = styled.div`
   font-size: 14px;
   color: rgba(255, 255, 255, 0.85);
-  filter: ${({ $revealed }) => ($revealed ? "blur(0)" : "blur(12px)")};
+  filter: ${({ $revealed }) => ($revealed ? "none" : "blur(12px)")};
   opacity: ${({ $revealed }) => ($revealed ? 1 : 0.6)};
   transition:
     filter 0.45s ease,

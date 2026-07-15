@@ -1,11 +1,29 @@
 import styled from "styled-components";
 import UnionArtifactIcon from "../unionArtifact/UnionArtifactIcon";
 import { UnionRaider } from "../UnionRaider";
-import { UnionOccupiedStat } from "../unionInfo/UnionOccupiedStat";
 import { UnionChampion } from "../unionChampion/UnionChampion";
 import colors from "../../../common/color/colors";
+import level1 from "../../../../assets/pages/user/union/artifact/artifact_level_1.png";
+import level2 from "../../../../assets/pages/user/union/artifact/artifact_level_2.png";
+import level3 from "../../../../assets/pages/user/union/artifact/artifact_level_3.png";
+import level4 from "../../../../assets/pages/user/union/artifact/artifact_level_4.png";
+import level5 from "../../../../assets/pages/user/union/artifact/artifact_level_5.png";
 
-export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
+const levelIcons = {
+  1: level1,
+  2: level2,
+  3: level3,
+  4: level4,
+  5: level5,
+};
+
+export const UnionArtifact = ({
+  Data,
+  $activeTab,
+  setActiveTab,
+  selectedPresetNo,
+  setSelectedPresetNo,
+}) => {
   const NameValue = Data.unionArtiFact.union_artifact_crystal.map((crystal) =>
     crystal.name.replace("크리스탈 : ", "")
   );
@@ -63,13 +81,18 @@ export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
                 Data.unionArtiFact.union_artifact_crystal.map(
                   (crystal, index) => (
                     <InfoWrap key={index}>
-                      <img
-                        src={getIcon(NameValue[index], crystal.level)}
-                        alt={`${NameValue[index]} 아이콘`}
-                      />
-                      <Name>
-                        {NameValue[index]} Lv.{crystal.level}
-                      </Name>
+                      <CrystalWrap>
+                        {levelIcons[crystal.level] && (
+                          <LevelBadge
+                            src={levelIcons[crystal.level]}
+                            alt={`Lv.${crystal.level}`}
+                          />
+                        )}
+                        <CrystalIcon
+                          src={getIcon(NameValue[index], crystal.level)}
+                          alt={`${NameValue[index]} 아이콘`}
+                        />
+                      </CrystalWrap>
                       <Option>
                         <p>{crystal.crystal_option_name_1}</p>
                         <p>{crystal.crystal_option_name_2}</p>
@@ -82,12 +105,11 @@ export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
             </ArtifactWrap>
           )}
           {$activeTab === "raider" && (
-            <>
-              <RaiderWrap>
-                <UnionRaider Data={Data.unionRaider} />
-              </RaiderWrap>
-              <UnionOccupiedStat Data={Data.unionRaider} />
-            </>
+            <UnionRaider
+              Data={Data.unionRaider}
+              selectedPresetNo={selectedPresetNo}
+              setSelectedPresetNo={setSelectedPresetNo}
+            />
           )}
           {$activeTab === "champion" && (
             <ChampionWrap>
@@ -108,9 +130,11 @@ export const UnionArtifact = ({ Data, $activeTab, setActiveTab }) => {
 const Wrap = styled.div`
   display: flex;
   gap: 0px;
+  flex: 1;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
+    width: 100%;
   }
 `;
 
@@ -119,15 +143,15 @@ const ContentsWrap = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
-  background-color: ${colors.deepBlue.deepBlue3};
-  border-radius: 5px;
-  border: 1px solid ${colors.deepBlue.deepBlue4};
-  outline: 1px solid ${colors.deepBlue.deepBlue1};
-  padding: 5px;
+  padding: 8px;
   height: fit-content;
   color: white;
-  width: ${(props) => (props.$activeTab === "artifact" ? "682px" : "100%")};
+  width: 580px;
   flex-direction: row;
+  background: radial-gradient(circle at 50% 242%, #3d87a9 38%, #23292E 64%);
+  border: 1px solid rgb(200, 169, 129);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 
   @media screen and (max-width: 1024px) {
     width: 100%;
@@ -138,55 +162,68 @@ const ContentsWrap = styled.div`
   }
 `;
 
-const RaiderWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(56, 60, 69);
-  border-radius: 5px;
-  border: 2px solid rgb(69, 89, 100);
-  outline: 2px solid rgb(56, 70, 81);
-  height: fit-content;
-`;
 
 const InfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgb(48, 54, 63);
-  border-radius: 5px;
-  border: 1px solid rgb(136, 184, 212);
+  background-image: linear-gradient(rgb(48, 54, 63), rgb(48, 54, 63)), 
+                    linear-gradient(to bottom, rgb(173, 200, 234), rgb(124, 146, 181));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border-radius: 13px;
+  border: 4px solid transparent;
   outline: 1px solid rgb(56, 70, 81);
-  gap: 5px;
-  padding: 5px;
+  gap: 8px;
+  padding: 8px 6px;
+  height: 100%;
+  box-sizing: border-box;
 
   &:hover {
     filter: brightness(0.85);
   }
-  img {
-    width: 90px;
-    height: 90px;
-  }
+`;
+
+const CrystalWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const CrystalIcon = styled.img`
+  width: 100px;
+  height: 100px;
+`;
+
+const LevelBadge = styled.img`
+    width: 95px;
+    height: auto;
 `;
 
 const Option = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 13px;
-`;
+  font-size: 12px;
+  text-align: center;
+  word-break: keep-all;
+  width: 100%;
+  margin-top: 4px;
 
-const Name = styled.p``;
+  p {
+    margin: 1px 0;
+    line-height: 1.2;
+    color: #e2e8f0;
+  }
+`;
 
 const ArtifactWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  width: 970px;
-
-  @media screen and (max-width: 1024px) {
-    width: 100%;
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-auto-rows: 1fr;
+  gap: 8px;
+  width: 100%;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);

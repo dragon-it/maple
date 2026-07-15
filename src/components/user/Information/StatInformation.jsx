@@ -331,13 +331,13 @@ const StatValue = styled.span`
   align-items: flex-end;
   font-size: 14px;
   color: white;
-  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
-  transition: filter 0.45s ease;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "none")};
+  transition: filter 0.25s ease;
 `;
 
 const RevealValue = styled.span`
-  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "blur(0)")};
-  transition: filter 0.45s ease;
+  filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "none")};
+  transition: filter 0.25s ease;
 `;
 
 const AttackFontWrap = styled.div`

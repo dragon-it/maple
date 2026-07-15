@@ -133,7 +133,7 @@ export const User = () => {
         </ErrorWrap>
       ) : (
         <UserLayout>
-          <SubHeader>
+          <SubHeader $activeTab={activeTab}>
             <SummaryRow $collapsed={isSubHeaderCollapsed}>
               <Avatar>
                 {characterImage ? (
@@ -459,7 +459,14 @@ const SubHeader = styled.div`
   flex-direction: column;
   gap: 3px;
   padding: 3px 12px;
-  width: min(100%, 920px);
+  width: ${({ $activeTab }) =>
+    $activeTab === 3
+      ? "min(100%, 940px)"
+      : $activeTab === 4
+        ? "min(100%, 1200px)"
+        : $activeTab === 5
+          ? "min(100%, 980px)"
+          : "min(100%, 920px)"};
   border-radius: 0px 0px 12px 12px;
   border-top: none;
   background: rgba(15, 20, 26, 0.6);
@@ -625,7 +632,7 @@ const TabButton = styled.button`
   gap: 4px;
   border: 1px solid
     ${({ $activeTab }) =>
-      $activeTab ? "rgba(255, 255, 255, 0.35)" : "transparent"};
+    $activeTab ? "rgba(255, 255, 255, 0.35)" : "transparent"};
   background-color: ${({ theme, $activeTab }) =>
     $activeTab ? theme.tabActiveColor : "rgba(255, 255, 255, 0.08)"};
   color: ${({ theme, $activeTab }) =>
@@ -637,7 +644,7 @@ const TabButton = styled.button`
 
   &:hover {
     background-color: ${({ theme, $activeTab }) =>
-      $activeTab ? theme.tabActiveColor : theme.tabHoverColor};
+    $activeTab ? theme.tabActiveColor : theme.tabHoverColor};
   }
 
   &:disabled {
@@ -730,7 +737,7 @@ const MobileTabButton = styled.button`
   gap: 4px;
   border: 1px solid
     ${({ $activeTab }) =>
-      $activeTab ? "rgba(255, 255, 255, 0.35)" : "transparent"};
+    $activeTab ? "rgba(255, 255, 255, 0.35)" : "transparent"};
   background-color: ${({ theme, $activeTab }) =>
     $activeTab ? theme.tabActiveColor : "rgba(255, 255, 255, 0.08)"};
   color: ${({ theme, $activeTab }) =>
@@ -761,7 +768,13 @@ const MobileTabButton = styled.button`
 const Container = styled.div`
   position: relative;
   width: ${({ $activeTab }) =>
-    $activeTab === 3 ? "940px" : $activeTab === 5 ? "980px" : "fit-content"};
+    $activeTab === 3
+      ? "940px"
+      : $activeTab === 4
+        ? "fit-content"
+        : $activeTab === 5
+          ? "980px"
+          : "fit-content"};
   height: fit-content;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
@@ -770,7 +783,8 @@ const Container = styled.div`
 
   @media screen and (max-width: 1024px) {
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
-    width: ${({ $activeTab }) => ($activeTab === 3 ? "95%" : "fit-content")};
+    width: ${({ $activeTab }) =>
+    $activeTab === 3 || $activeTab === 4 ? "95%" : "fit-content"};
   }
 
   @media screen and (max-width: 576px) {
@@ -789,8 +803,7 @@ const Container = styled.div`
     position: absolute;
     inset: 0;
     border-radius: 5px;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(7px);
+    background: rgba(0, 0, 0, 0.65);
     pointer-events: none;
     z-index: 0;
   }
