@@ -586,12 +586,6 @@ const SectionHeader = styled.div`
   border: 1px solid rgba(178, 189, 197, 0.65);
   background: #8f979c;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
-
-  @media screen and (max-width: 1200px) {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
 `;
 
 const SectionTitle = styled.h2`

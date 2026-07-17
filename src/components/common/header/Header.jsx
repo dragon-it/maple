@@ -7,10 +7,6 @@ import logoApril from "../../../assets/logos/Logo_April.svg";
 import logoTextApril from "../../../assets/logos/Logo_Text_April.svg";
 import ThemeToggleButton from "../../../context/ThemeToggleButton";
 import { Search } from "../../main/Search";
-import {
-  MenuContainer as DropdownContainer,
-  Menus as DropdownLink,
-} from "../menu/Menu";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -321,19 +317,49 @@ const MiniGameTrigger = styled.a`
   align-items: center;
 `;
 
-const MiniDropdown = styled(DropdownContainer)`
+const MiniDropdown = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 140px;
+  height: auto;
   top: 50px;
   left: 0;
-  width: 140px;
+  font-size: 14px;
+  background-color: rgb(36, 39, 43);
+  outline: 1px solid rgb(46, 48, 53);
+  border: 1px solid rgb(61, 69, 78);
+  border-radius: 7px;
+  z-index: 9999999;
+  text-align: center;
+
   opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
   visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
   pointer-events: ${({ $isClicked }) => ($isClicked ? "auto" : "none")};
   transform: translateY(${({ $isClicked }) => ($isClicked ? "0" : "-5px")});
+  box-shadow: ${({ $isClicked }) =>
+    $isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
   transition:
     opacity 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    visibility 0.2s ease;
 `;
 
-const DropdownMenuItem = styled(DropdownLink)`
+const DropdownMenuItem = styled(Link)`
+  color: rgb(255, 255, 255);
   font-size: 14px;
+  padding: 10px 0px;
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(91, 91, 91, 0.5);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    color: rgb(199, 222, 90);
+    background: rgba(82, 82, 82, 0.7);
+  }
 `;
+
