@@ -134,6 +134,6 @@ const Container = styled.div`
     display: block;
     min-height: 100vh;
     height: 100%;
-    outline: 1px solid rgba(0, 0, 0, 0);
+    filter: brightness(0.9);
   }
 `;
