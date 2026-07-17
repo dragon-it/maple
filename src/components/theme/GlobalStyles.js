@@ -1,6 +1,15 @@
 import { createGlobalStyle } from "styled-components";
+import MapleLightFont from "../../fonts/Maplestory_Light.woff2";
 
 export const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: "maple-light";
+    src: url(${MapleLightFont}) format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
   body {
     background: ${({ theme }) => theme.bgColor};
     color: ${({ theme }) => theme.textColor};
