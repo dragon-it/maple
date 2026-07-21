@@ -1,14 +1,6 @@
 import { createGlobalStyle } from "styled-components";
-import MapleLightFont from "../../fonts/Maplestory_Light.woff2";
 
 export const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: "maple-light";
-    src: url(${MapleLightFont}) format("woff2");
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-  }
 
   body {
     background: ${({ theme }) => theme.bgColor};
@@ -49,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   :root {
-    --global-font-stack: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, 
+    --global-font-stack:  "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, 
                           "Segoe UI", '맑은 고딕', 'Malgun Gothic', Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   

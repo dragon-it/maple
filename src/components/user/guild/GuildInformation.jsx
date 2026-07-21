@@ -84,7 +84,6 @@ export const GuildInformation = ({ result }) => {
 };
 
 const Container = styled.div`
-  font-family: maple-light;
   width: 100%;
 `;
 

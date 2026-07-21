@@ -110,7 +110,6 @@ const StatisticsContainer = styled.div`
 `;
 
 const ChartWrap = styled.div`
-  font-family: maple-light;
   width: 500px;
   height: 300px;
   h3 {
@@ -140,7 +139,6 @@ const TopClassesContainer = styled.div`
   border: 1px solid rgb(255, 255, 255);
   margin-left: 20px;
   font-size: 16px;
-  font-family: maple-light;
   h3 {
     text-align: center;
     margin-bottom: 15px;

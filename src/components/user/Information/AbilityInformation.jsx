@@ -147,12 +147,10 @@ const AbilityDetail = styled.div`
 `;
 
 const AbilityGradeHeader = styled.p`
-  font-family: maple-light;
   margin-bottom: 5px;
 `;
 
 const AbilityNoData = styled.p`
-  font-family: maple-light;
 `;
 
 const ButtonContainer = styled.div`
