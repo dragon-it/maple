@@ -1,7 +1,13 @@
 @font-face {
-  font-family: "maple-light";
-  src: url("./fonts/Maplestory_Light.woff2") format("woff2");
-  font-weight: 300;
+  font-family: maple-light;
+  src: url('https://cdn.jsdelivr.net/gh/fontbee/font@main/Nexon/MaplestoryOTFLight.woff') format('woff');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: maple-bold;
+  src: url('https://cdn.jsdelivr.net/gh/fontbee/font@main/Nexon/MaplestoryOTFBold.woff') format('woff');
   font-style: normal;
   font-display: swap;
 }

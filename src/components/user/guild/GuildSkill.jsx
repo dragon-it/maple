@@ -55,7 +55,7 @@ export const GuildSkill = ({ result }) => {
   return (
     <Container onMouseOut={handleMouseLeave}>
       {result.guildBasicInformation.guild_skill &&
-      result.guildBasicInformation.guild_skill.length > 0 ? (
+        result.guildBasicInformation.guild_skill.length > 0 ? (
         <>
           {/* 길드 일반 스킬 */}
           <Table>
@@ -244,9 +244,7 @@ const SkillHeader = styled.span`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
-  font-family: maple-light;
 `;
 
 const SkillNoDataText = styled.span`
-  font-family: maple-light;
 `;

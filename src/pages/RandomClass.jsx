@@ -95,48 +95,48 @@ export const RandomClass = () => {
           <CardsGrid $rollMode={rollMode}>
             {isRolling
               ? Array.from({ length: rollMode }).map((_, i) => {
-                  const charIndex =
-                    (currentCharacterIndex + i * 7) % characters.length;
-                  const char = characters[charIndex];
-                  return (
-                    <CardItem key={i}>
-                      <ClassImage
-                        style={{ "--bg-image": `url(${char.image})` }}
-                        $hasImage={true}
-                        $isRolling={true}
-                        alt="Character"
-                      />
-                      <ClassName>{char.name}</ClassName>
-                    </CardItem>
-                  );
-                })
+                const charIndex =
+                  (currentCharacterIndex + i * 7) % characters.length;
+                const char = characters[charIndex];
+                return (
+                  <CardItem key={i}>
+                    <ClassImage
+                      style={{ "--bg-image": `url(${char.image})` }}
+                      $hasImage={true}
+                      $isRolling={true}
+                      alt="Character"
+                    />
+                    <ClassName>{char.name}</ClassName>
+                  </CardItem>
+                );
+              })
               : results.length > 0
                 ? results.map((char, i) => (
-                    <CardItem key={i}>
-                      <ClassImage
-                        style={{ "--bg-image": `url(${char.image})` }}
-                        $hasImage={true}
-                        $isRolling={false}
-                        alt="Selected Character"
-                      />
-                      <ClassName>
-                        {char.name} <span>당첨!</span>
-                      </ClassName>
-                    </CardItem>
-                  ))
+                  <CardItem key={i}>
+                    <ClassImage
+                      style={{ "--bg-image": `url(${char.image})` }}
+                      $hasImage={true}
+                      $isRolling={false}
+                      alt="Selected Character"
+                    />
+                    <ClassName>
+                      {char.name} <span>당첨!</span>
+                    </ClassName>
+                  </CardItem>
+                ))
                 : Array.from({ length: rollMode }).map((_, i) => (
-                    <CardItem key={i}>
-                      <ClassImage
-                        style={{ "--bg-image": `url(${card_Backgrnd})` }}
-                        $hasImage={false}
-                        $isRolling={false}
-                        alt="Background"
-                      />
-                      <ClassName style={{ display: "none" }}>
-                        - <span>당첨!</span>
-                      </ClassName>
-                    </CardItem>
-                  ))}
+                  <CardItem key={i}>
+                    <ClassImage
+                      style={{ "--bg-image": `url(${card_Backgrnd})` }}
+                      $hasImage={false}
+                      $isRolling={false}
+                      alt="Background"
+                    />
+                    <ClassName style={{ display: "none" }}>
+                      - <span>당첨!</span>
+                    </ClassName>
+                  </CardItem>
+                ))}
           </CardsGrid>
 
           <BtnGroup>
@@ -423,9 +423,9 @@ const ClassImage = styled.div`
 
   background-image: var(--bg-image)
     ${(props) =>
-      props.$hasImage
-        ? ", linear-gradient(to right, #ff0000, #ff7f00, #ffff00,  #ff0000)"
-        : ""};
+    props.$hasImage
+      ? ", linear-gradient(to right, #ff0000, #ff7f00, #ffff00,  #ff0000)"
+      : ""};
   background-origin: padding-box, border-box;
   background-clip: padding-box, border-box;
   background-size:
@@ -454,7 +454,7 @@ const ClassImage = styled.div`
       rgb(255 255 255 / 0%) 66%
     );
     animation: ${(props) =>
-      props.$isRolling ? "none" : "holo-move 1.5s infinite linear"};
+    props.$isRolling ? "none" : "holo-move 1.5s infinite linear"};
     opacity: ${(props) => (props.$isRolling ? 0 : 1)};
     pointer-events: none;
   }
@@ -520,6 +520,6 @@ const StartBtn = styled.div`
 
   &:hover {
     filter: ${(props) =>
-      props.disabled ? "brightness(0.6)" : "brightness(1.1)"};
+    props.disabled ? "brightness(0.6)" : "brightness(1.1)"};
   }
 `;

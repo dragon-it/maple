@@ -63,9 +63,7 @@ export const UnionInfo = ({ Data, $activeTab, selectedPresetNo }) => {
     return UnionTitleIcons[category]?.[suffixIndex] || null;
   };
 
-  const titleImage = getTitleImage(Data.union.union_grade);
-  console.log("Union Grade Input:", Data.union.union_grade);
-  console.log("Resolved Title Image URL:", titleImage);
+  const titleImage = getTitleImage(Data.union.union_grade)
 
   return (
     <Container $activeTab={$activeTab}>

@@ -138,7 +138,6 @@ const GuildBasicInformation = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: maple-light;
 `;
 
 const Icon = styled.div`
@@ -166,10 +165,9 @@ const Tab = styled.span`
   border-radius: 3px;
   min-height: 25px;
   font-size: 15px;
-  font-family: maple-light;
   &:hover {
     background-color: ${(props) =>
-      props.$activeTab ? "transparents" : "rgb(119, 119, 119)"};
+    props.$activeTab ? "transparents" : "rgb(119, 119, 119)"};
   }
 
   @media screen and (max-width: 768px) {
@@ -197,7 +195,6 @@ const TabHeader = styled.div`
   margin-bottom: 5px;
   font-size: 18px;
   color: rgb(200, 175, 137);
-  font-family: maple-light;
 `;
 
 const NoDataWrap = styled.div`
@@ -219,5 +216,4 @@ const NoDataHeader = styled.div`
 `;
 
 const NoDataText = styled.div`
-  font-family: maple-light;
 `;

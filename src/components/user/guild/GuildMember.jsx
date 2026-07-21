@@ -273,7 +273,6 @@ const ToggleBtn = styled.div`
   position: absolute;
   right: 0;
   top: -31px;
-  font-family: maple-light;
   border: 1px solid rgb(0, 0, 0);
   background-color: rgb(85, 85, 85);
   border-radius: 5px;
