@@ -322,13 +322,11 @@ const StatRightWrap = styled.div`
 `;
 
 const StatHeader = styled.span`
-  align-items: flex-start;
   font-size: 14px;
   color: rgb(210, 221, 225);
 `;
 
 const StatValue = styled.span`
-  align-items: flex-end;
   font-size: 14px;
   color: white;
   filter: ${({ $blurred }) => ($blurred ? "blur(12px)" : "none")};

@@ -179,9 +179,6 @@ const StatGrid = styled.div`
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  @media screen and (max-width: 420px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 const StatCard = styled.article`

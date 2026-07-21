@@ -122,7 +122,6 @@ const Container = styled.div`
 const ShowAllStatBtn = styled.div`
   color: rgb(247, 247, 247);
   box-sizing: border-box;
-  font-family: maple-light;
   cursor: pointer;
   transition: background-color 0.15s ease;
 

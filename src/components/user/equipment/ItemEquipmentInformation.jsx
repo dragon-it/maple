@@ -128,8 +128,7 @@ const ItemIcon = styled.div`
   overflow: hidden;
   cursor: pointer;
   border: ${({ $grade, $gradeColors }) =>
-    `2px solid ${
-      $gradeColors && $gradeColors[$grade] ? $gradeColors[$grade] : "none"
+    `2px solid ${$gradeColors && $gradeColors[$grade] ? $gradeColors[$grade] : "none"
     }`};
   img {
     image-rendering: pixelated;
@@ -541,7 +540,7 @@ export const ItemEquipmentInformation = ({ EquipData, BasicData }) => {
                     {[1, 2, 3].map((index) => {
                       const pet =
                         EquipData.getPetEquipment[
-                          `pet_${index}_appearance_icon`
+                        `pet_${index}_appearance_icon`
                         ];
                       if (!pet) return null;
 
@@ -822,7 +821,6 @@ const BaseButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   color: white;
-  font-family: maple-light;
   background: ${({ $isSelected }) =>
     $isSelected ? "#4f5358" : "rgb(161, 161, 161)"};
   border: 1px solid

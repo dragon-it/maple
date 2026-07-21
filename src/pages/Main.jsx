@@ -50,7 +50,6 @@ export const Main = () => {
       {isSunday && (
         <ScrollTopButton onClick={scrollToTop}>
           <ToTopIcon
-            onClick={scrollToTop}
             src={theme === "dark" ? dark_to_top_icon : light_to_top_icon}
             alt="to-top-icon"
           />

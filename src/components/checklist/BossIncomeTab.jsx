@@ -179,8 +179,8 @@ const findCharacterOcid = async (nickname) => {
   const candidates = isKorean
     ? [nickname]
     : Array.from(
-        new Set([nickname, ...getAllCaseCombinations(nickname)]),
-      ).slice(0, 20);
+      new Set([nickname, ...getAllCaseCombinations(nickname)]),
+    ).slice(0, 20);
 
   for (const candidate of candidates) {
     const ocidData = await getOcidApi(candidate);
@@ -338,7 +338,6 @@ const buildCharacterSummary = (character) => {
       });
     });
   });
-  console.log(details);
 
   return {
     characterId: character.id,
@@ -588,9 +587,9 @@ export const BossIncomeTab = () => {
       prev.map((character) =>
         character.id === activeCharacterId
           ? {
-              ...character,
-              selections: createInitialSelections(),
-            }
+            ...character,
+            selections: createInitialSelections(),
+          }
           : character,
       ),
     );
@@ -684,7 +683,7 @@ export const BossIncomeTab = () => {
               const isActive = summary.characterId === activeCharacterId;
               const nameInitial =
                 typeof summary.nickname === "string" &&
-                summary.nickname.length > 0
+                  summary.nickname.length > 0
                   ? summary.nickname.slice(0, 1)
                   : "?";
 
@@ -1096,7 +1095,7 @@ const HeaderActions = styled.div`
 
   @media screen and (max-width: 1200px) {
     width: ${({ $spread, $fullWidthOnMobile }) =>
-      $spread || $fullWidthOnMobile ? "100%" : "auto"};
+    $spread || $fullWidthOnMobile ? "100%" : "auto"};
     flex: ${({ $spread }) => ($spread ? "1 1 auto" : "0 0 auto")};
   }
 `;
@@ -1109,7 +1108,7 @@ const HeaderButton = styled.button`
   border-radius: 6px;
   border: 1px solid
     ${({ $secondary }) =>
-      $secondary ? "rgba(57, 68, 77, 0.36)" : "rgba(57, 68, 77, 0.42)"};
+    $secondary ? "rgba(57, 68, 77, 0.36)" : "rgba(57, 68, 77, 0.42)"};
   background: ${({ $secondary }) =>
     $secondary
       ? "linear-gradient(180deg, #eef3f6 0%, #d7e0e6 100%)"
@@ -1138,7 +1137,7 @@ const WeeklyCounter = styled.span`
   color: ${({ $isFull }) => ($isFull ? "#ffe28b" : "rgba(220, 232, 242, 0.9)")};
   border: 1px solid
     ${({ $isFull }) =>
-      $isFull ? "rgba(255, 120, 80, 0.6)" : "rgba(255,255,255,0.18)"};
+    $isFull ? "rgba(255, 120, 80, 0.6)" : "rgba(255,255,255,0.18)"};
 `;
 
 const Rows = styled.div`
@@ -1456,7 +1455,7 @@ const SelectedBossBadge = styled.div`
   padding: 2px 8px 3px;
   border: 1px solid
     ${({ $difficultyId }) =>
-      difficultyBadgeStyleMap[$difficultyId]?.border ?? "#947055"};
+    difficultyBadgeStyleMap[$difficultyId]?.border ?? "#947055"};
   background: ${({ $difficultyId }) =>
     difficultyBadgeStyleMap[$difficultyId]?.background ?? "#77553B"};
 
