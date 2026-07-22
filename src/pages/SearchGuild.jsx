@@ -14,7 +14,7 @@ import SearchGuildFetch from "../api/searchGuildFetch";
 
 export const SearchGuild = () => {
   const { theme } = useTheme();
-  const { guildName } = useParams();
+  const { guildName, worldName } = useParams();
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -71,8 +71,8 @@ export const SearchGuild = () => {
         </Container>
       ) : (
         <>
-          <Container result={result}>
-            <HeaderWrap>
+          <Container $hasResult={!!result}>
+            <HeaderWrap $isGuildDetail={!!worldName}>
               <SearchGuildInput setResult={setResult} setError={setError} />
 
               {!result && (
@@ -100,7 +100,9 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: ${({ $hasResult }) => ($hasResult ? "flex-start" : "center")};
+  padding-top: ${({ $hasResult }) => ($hasResult ? "60px" : "0px")};
+  box-sizing: border-box;
   margin: 10px 0px;
   min-height: 100vh;
 
@@ -109,7 +111,7 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    padding: 0 5px;
+    padding: ${({ $hasResult }) => ($hasResult ? "60px 5px 0" : "0 5px")};
   }
 `;
 
@@ -117,20 +119,32 @@ const HeaderWrap = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 10px;
-  gap: 10px;
-  background-color: rgba(34, 34, 34, 0.9);
-  border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
-  outline: 1px solid rgb(141, 141, 141);
-  box-shadow: 0 0px 4px 4px rgba(167, 167, 167, 0.5);
+  gap: 10px;
+  box-sizing: border-box;
+
+  /* 길드 상세 정보일 때는 캐릭터 검색 > 길드 탭과 동일한 컨테이너 크기/스타일 제공 */
+  width: ${({ $isGuildDetail }) => ($isGuildDetail ? "980px" : "fit-content")};
+  background-color: rgba(34, 34, 34, 0.9);
+  border: ${({ $isGuildDetail }) => ($isGuildDetail ? "1px solid rgba(158, 206, 230, 0.32)" : "1px solid rgb(255, 255, 255)")};
+  outline: ${({ $isGuildDetail }) => ($isGuildDetail ? "1px solid rgba(54, 96, 124, 0.5)" : "1px solid rgb(141, 141, 141)")};
+  padding: ${({ $isGuildDetail }) => ($isGuildDetail ? "7px" : "10px")};
+  box-shadow: ${({ $isGuildDetail }) => ($isGuildDetail ? "10px 5px 5px rgba(0, 0, 0, 0.5)" : "0 0px 4px 4px rgba(167, 167, 167, 0.5)")};
 
   @media screen and (max-width: 1024px) {
-    width: 70%;
+    min-width: ${({ $isGuildDetail }) => ($isGuildDetail ? "75%" : "0")};
+    width: ${({ $isGuildDetail }) => ($isGuildDetail ? "fit-content" : "70%")};
   }
 
   @media screen and (max-width: 576px) {
-    width: 80%;
+    width: ${({ $isGuildDetail }) => ($isGuildDetail ? "fit-content" : "80%")};
+    ${({ $isGuildDetail }) =>
+      $isGuildDetail &&
+      `
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    `}
   }
 `;
 

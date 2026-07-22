@@ -134,6 +134,6 @@ const Container = styled.div`
     display: block;
     min-height: 100vh;
     height: 100%;
-    filter: brightness(0.8);
+    filter: brightness(0.83);
   }
 `;
