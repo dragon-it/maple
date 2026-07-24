@@ -2,27 +2,38 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import OpenAPILogo from "../../../assets/logos/footerLogo.svg";
-import logoIcon from "../../../assets/logos/LogoIcon.svg";
-import logoText from "../../../assets/logos/Logo_Text_Only.svg";
 
 export const FooterText = () => {
   return (
     <FooterContainer>
       <FooterInnerWrap>
-        {/* Left Section: Logo & Company Metadata */}
         <FooterLeftSection>
 
           <FooterInfoGroup>
             <InfoRow>
               <span>메짱 (MapleStory Search & Utility)</span>
               <Divider>|</Divider>
-              <span>제공: NEXON OPEN API</span>
+              <NexonApiWrap>
+                <span>Data By</span>
+                <a
+                  href="https://openapi.nexon.com/ko/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="NEXON OPEN API 바로가기"
+                >
+                  <img
+                    src={OpenAPILogo}
+                    alt="NEXON OPEN API"
+                    className="inline-nexon-logo"
+                  />
+                </a>
+              </NexonApiWrap>
               <Divider>|</Divider>
               <span>폰트: MapleStory Font</span>
             </InfoRow>
 
             <InfoRow>
-              <span>Contact: sideoff0217@naver.com</span>
+              <span>문의: sideoff0217@naver.com</span>
               <Divider>|</Divider>
               <PrivacyLink to="/privacy">개인정보 처리방침</PrivacyLink>
             </InfoRow>
@@ -33,7 +44,6 @@ export const FooterText = () => {
           </FooterInfoGroup>
         </FooterLeftSection>
 
-        {/* Right Section: NEXON OPEN API Badge & Compliance */}
         <FooterRightSection>
           <ComplianceBadge>
             <a
@@ -63,9 +73,7 @@ export const FooterText = () => {
 const FooterContainer = styled.footer`
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  background: ${({ theme }) => theme.footerBgColor || "rgba(15, 23, 42, 0.85)"};
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: ${({ theme }) => theme.footerBgColor || "rgba(15, 23, 42, 0.8)"};
   padding: 24px 20px;
   box-sizing: border-box;
   margin-top: auto;
@@ -98,23 +106,6 @@ const FooterLeftSection = styled.div`
   }
 `;
 
-const FooterLogoWrap = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-
-  .footer-logo-icon {
-    width: 32px;
-    height: auto;
-  }
-
-  .footer-logo-text {
-    width: 48px;
-    height: auto;
-  }
-`;
-
 const FooterInfoGroup = styled.div`
   display: flex;
   flex-direction: column;
@@ -130,6 +121,18 @@ const InfoRow = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
+`;
+
+const NexonApiWrap = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  .inline-nexon-logo {
+    height: 10px;
+    width: auto;
+    display: block;
+  }
 `;
 
 const Divider = styled.span`
@@ -148,11 +151,6 @@ const PrivacyLink = styled(Link)`
   }
 `;
 
-const NoticeRow = styled.div`
-  margin-top: 4px;
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.45);
-`;
 
 const CopyrightRow = styled.div`
   margin-top: 2px;
