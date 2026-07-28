@@ -1,5 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import normalGradeImg from "../../../assets/pages/user/search/abilityTitle.normal.png";
+import rareGradeImg from "../../../assets/pages/user/search/abilityTitle.rare.png";
+import epicGradeImg from "../../../assets/pages/user/search/abilityTitle.epic.png";
+import uniqueGradeImg from "../../../assets/pages/user/search/abilityTitle.unique.png";
+import legendaryGradeImg from "../../../assets/pages/user/search/abilityTitle.legendary.png";
+
+const GRADE_IMAGES = {
+  "노멀": normalGradeImg,
+  "Normal": normalGradeImg,
+  "normal": normalGradeImg,
+  "레어": rareGradeImg,
+  "Rare": rareGradeImg,
+  "rare": rareGradeImg,
+  "에픽": epicGradeImg,
+  "Epic": epicGradeImg,
+  "epic": epicGradeImg,
+  "유니크": uniqueGradeImg,
+  "Unique": uniqueGradeImg,
+  "unique": uniqueGradeImg,
+  "레전드리": legendaryGradeImg,
+  "Legendary": legendaryGradeImg,
+  "legendary": legendaryGradeImg,
+};
+
+const getGradeImage = (grade) => {
+  if (!grade) return null;
+  return GRADE_IMAGES[grade] || null;
+};
 
 export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
@@ -13,13 +41,25 @@ export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
   const getGradeColor = (grade) => {
     switch (grade) {
       case "에픽":
+      case "Epic":
+      case "epic":
         return "rgb(127,102,211)";
       case "레어":
+      case "Rare":
+      case "rare":
         return "rgb(54,184,208)";
       case "유니크":
+      case "Unique":
+      case "unique":
         return "rgb(232,156,9)";
       case "레전드리":
+      case "Legendary":
+      case "legendary":
         return "rgb(164,199,0)";
+      case "노멀":
+      case "Normal":
+      case "normal":
+        return "rgb(120,120,120)";
       default:
         return "white";
     }
@@ -36,6 +76,9 @@ export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
     );
   }
 
+  const grade = currentPreset.ability_preset_grade || AbilityInfo.ability_grade;
+  const gradeImg = getGradeImage(grade);
+
   const backgroundColors = currentPreset.ability_info.map((info) =>
     getGradeColor(info.ability_grade)
   );
@@ -46,10 +89,11 @@ export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
       <PresetWrap>
         <AbilityHeader>ABILITY</AbilityHeader>
         <AbilityGradeHeader>
-          어빌리티 등급 :{" "}
-          <RevealValue $blurred={blur}>
-            {currentPreset.ability_preset_grade}
-          </RevealValue>
+          {gradeImg ? (
+            <GradeImage src={gradeImg} alt={grade || "어빌리티 등급"} />
+          ) : (
+            grade
+          )}
         </AbilityGradeHeader>
         <AbilityDetail>
           {backgroundColors.map((color, index) => (
@@ -127,7 +171,7 @@ const AbilityDetail = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 3px;
+  padding: 2px;
   margin-bottom: 10px;
   border-radius: 5px;
 
@@ -146,8 +190,14 @@ const AbilityDetail = styled.div`
   }
 `;
 
-const AbilityGradeHeader = styled.p`
-  margin-bottom: 5px;
+const AbilityGradeHeader = styled.div`
+  margin-bottom: 2px;
+`;
+
+const GradeImage = styled.img`
+  width: 100%;
+  vertical-align: middle;
+  object-fit: fill;
 `;
 
 const AbilityNoData = styled.p`
