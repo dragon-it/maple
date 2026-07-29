@@ -14,7 +14,7 @@ export const FooterText = () => {
               <span>메짱 (MapleStory Search & Utility)</span>
               <Divider>|</Divider>
               <NexonApiWrap>
-                <span>Data By</span>
+                <span>data by</span>
                 <a
                   href="https://openapi.nexon.com/ko/"
                   target="_blank"
