@@ -29,11 +29,11 @@ export const FooterText = () => {
                 </a>
               </NexonApiWrap>
               <Divider>|</Divider>
-              <span>폰트: MapleStory Font</span>
+              <span>폰트 : MapleStory Font</span>
             </InfoRow>
 
             <InfoRow>
-              <span>문의: sideoff0217@naver.com</span>
+              <span>E-mail : sideoff0217@naver.com</span>
               <Divider>|</Divider>
               <PrivacyLink to="/privacy">개인정보 처리방침</PrivacyLink>
             </InfoRow>
@@ -74,7 +74,7 @@ const FooterContainer = styled.footer`
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   background: ${({ theme }) => theme.footerBgColor || "rgba(15, 23, 42, 0.8)"};
-  padding: 24px 20px;
+  padding: 16px 12px;
   box-sizing: border-box;
   margin-top: auto;
 `;

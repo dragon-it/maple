@@ -112,28 +112,47 @@ export const BackgroundImage = () => {
 
   return (
     <Container>
-      <img src={imageSrc} alt="Background" width="1920" height="1080" />
+      <img src={imageSrc} alt="" width="1920" height="1080" />
+      <LinearOverlay />
+      <RadialOverlay />
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 100%;
   position: fixed;
+  inset: 0;
   z-index: -1;
+  pointer-events: none;
 
   img {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0;
-    object-fit: cover;
-    padding: 0;
-    position: absolute;
     width: 100%;
-    display: block;
-    min-height: 100vh;
     height: 100%;
-    filter: brightness(0.83);
+    object-fit: cover;
+    display: block;
   }
+`;
+
+const LinearOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.2) 0%,
+    rgba(15, 23, 42, 0.08) 50%,
+    rgba(15, 23, 42, 0.45) 100%
+  );
+  pointer-events: none;
+`;
+
+const RadialOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.04) 55%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  pointer-events: none;
 `;
