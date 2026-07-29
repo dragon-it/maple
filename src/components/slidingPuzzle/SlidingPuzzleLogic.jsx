@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { ExternalLink } from "lucide-react";
 import WinImage from "../../assets/pages/slidingPuzzle/Minigame.win.png";
 import TimerIcon from "../../assets/pages/slidingPuzzle/icons/Clock.svg";
 import { SlidingPuzzleMusicPlayer } from "./SlidingPuzzleMusicPlayer";
@@ -159,6 +160,7 @@ export const SlidingPuzzleLogic = () => {
             </CustomSelect>
           </label>
         </OptionWrap>
+
         <SlidingPuzzleMusicPlayer won={won ? "true" : "false"} />
         <LevelWrap>
           <Normal onClick={() => handleLevelChange("normal")} $level={level}>
@@ -194,9 +196,8 @@ export const SlidingPuzzleLogic = () => {
                   backgroundSize: `${size * 100}% ${size * 100}%`, // 3x3이면 300%, 4x4면 400%
                   backgroundPosition:
                     tile !== 0 || won
-                      ? `${-((tile - 1) % size) * 100}% ${
-                          -Math.floor((tile - 1) / size) * 100
-                        }%`
+                      ? `${-((tile - 1) % size) * 100}% ${-Math.floor((tile - 1) / size) * 100
+                      }%`
                       : "none", // 타일 위치 계산 (won일 때 tile이 9로 바뀜)
                 }}
                 $won={won}
@@ -212,6 +213,16 @@ export const SlidingPuzzleLogic = () => {
           )}
           {won && <WinImageWrap src={WinImage} alt="Win" />}
         </Board>
+
+        <ArtworkBanner
+          href="https://maplestory.nexon.com/Media/ArtWork"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="공식 메이플스토리 아트웍 보러가기"
+        >
+          <span>더 많은 메이플스토리 공식 아트웍 보러가기</span>
+          <ExternalLink size={13} className="banner-link-icon" />
+        </ArtworkBanner>
       </PuzzleContainer>
       <OriginalSlideOut $show={showOriginal}>
         <SlideOutImg $bg={imageMap} />
@@ -255,6 +266,40 @@ const CustomSelect = styled.select`
 
   &:hover {
     background-color: ${colors.commonInfo.normalBtn.btnHover};
+  }
+`;
+
+const ArtworkBanner = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  margin: 4px 0 6px 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgb(220, 252, 2);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(220, 252, 2, 0.4);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .banner-icon {
+    color: rgb(220, 252, 2);
+  }
+
+  .banner-link-icon {
+    opacity: 0.8;
   }
 `;
 
