@@ -31,6 +31,37 @@ import checkListAprilLightBGI from "../../assets/backgruondImg/checkList/checkLi
 import checkListAprilDarkBGI from "../../assets/backgruondImg/checkList/checkList_april_dark.webp";
 import { useTheme } from "../../context/ThemeProvider";
 
+const ALL_BACKGROUND_IMAGES = [
+  mainLightBGI,
+  mainDarkBGI,
+  mainAprilLightBGI,
+  mainAprilDarkBGI,
+  findMainLightBGI,
+  findMainDarkBGI,
+  findMainAprilLightBGI,
+  findMainAprilDarkBGI,
+  searchGuildDarkBGI,
+  searchGuildLightBGI,
+  searchGuildAprilDarkBGI,
+  searchGuildAprilLightBGI,
+  randomClassDarkBGI,
+  randomClassLightBGI,
+  randomClassAprilDarkBGI,
+  randomClassAprilLightBGI,
+  expSimulatorDarkBGI,
+  expSimulatorLightBGI,
+  expSimulatorAprilDarkBGI,
+  expSimulatorAprilLightBGI,
+  slidingPuzzleLightBGI,
+  slidingPuzzleDarkBGI,
+  slidingPuzzleAprilLightBGI,
+  slidingPuzzleAprilDarkBGI,
+  checkListLightBGI,
+  checkListDarkBGI,
+  checkListAprilLightBGI,
+  checkListAprilDarkBGI,
+];
+
 const isAprilFoolsDay = () => {
   const today = new Date();
   return today.getMonth() === 3 && today.getDate() === 1;
@@ -42,6 +73,14 @@ export const BackgroundImage = () => {
   const [imageSrc, setImageSrc] = useState(
     getBackgroundImage(theme, location.pathname),
   );
+
+  // 모든 배경 이미지 사전 로딩 (브라우저 캐시에 저장하여 페이지 전환 시 딜레이 제거)
+  useEffect(() => {
+    ALL_BACKGROUND_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
   function getBackgroundImage(theme, pathname) {
@@ -112,7 +151,7 @@ export const BackgroundImage = () => {
 
   return (
     <Container>
-      <img src={imageSrc} alt="" width="1920" height="1080" />
+      <img src={imageSrc} alt="" width="1920" height="1080" decoding="sync" />
       <LinearOverlay />
       <RadialOverlay />
     </Container>
