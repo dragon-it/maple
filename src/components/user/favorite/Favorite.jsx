@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import favorite_true from "../../../assets/icons/favoriteIcon/favorite_Star_True.svg";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Star, X } from "lucide-react";
 
 export const Favorite = () => {
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
@@ -15,7 +15,8 @@ export const Favorite = () => {
   }, []);
 
   // 즐겨찾기 삭제 함수
-  const removeFavorite = (characterName) => {
+  const removeFavorite = (e, characterName) => {
+    e.stopPropagation();
     const updatedFavorites = favoriteCharacters.filter(
       (name) => name !== characterName
     );
@@ -33,65 +34,124 @@ export const Favorite = () => {
 
   return (
     <FavoriteWrap>
-      <FavoriteHeader>즐겨찾기</FavoriteHeader>
-      <>
+      <FavoriteTitleGroup>
+        <Star size={14} color="#facc15" fill="#facc15" />
+        <span>즐겨찾기</span>
+      </FavoriteTitleGroup>
+
+      <ChipListContainer>
         {favoriteCharacters.length > 0 ? (
           favoriteCharacters.map((characterName) => (
-            <CharacterNameListItem
+            <FavoriteChip
               key={characterName}
               onClick={() => navigateToCharacter(characterName)}
             >
-              {characterName}
-              <img
-                src={favorite_true}
-                alt="Favorite"
-                style={{ width: "20px" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeFavorite(characterName);
-                }}
-              />
-            </CharacterNameListItem>
+              <NameText>{characterName}</NameText>
+              <DeleteIconBtn
+                type="button"
+                onClick={(e) => removeFavorite(e, characterName)}
+                title="즐겨찾기 삭제"
+              >
+                <X size={12} />
+              </DeleteIconBtn>
+            </FavoriteChip>
           ))
         ) : (
-          <NoFavoriteText>즐겨찾기한 캐릭터가 없습니다.</NoFavoriteText>
+          <EmptyChip>
+            <span>즐겨찾기한 캐릭터가 없습니다</span>
+          </EmptyChip>
         )}
-      </>
+      </ChipListContainer>
     </FavoriteWrap>
   );
 };
 
 const FavoriteWrap = styled.div`
-  width: 200px;
-  padding: 10px 5px;
-  color: rgb(255, 255, 255);
-  max-height: 500px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 688px;
+  margin: 16px auto 10px auto;
+  padding: 0 16px;
+  box-sizing: border-box;
 `;
 
-const FavoriteHeader = styled.span`
+const FavoriteTitleGroup = styled.div`
   display: flex;
-  justify-content: center;
-  font-size: 1.1rem;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 `;
 
-const CharacterNameListItem = styled.div`
+const ChipListContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: end;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+`;
+
+const FavoriteChip = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.65);
+  color: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 5px;
-  padding: 0px 5px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background-color: rgba(184, 184, 184, 0.25);
+    background: rgba(30, 41, 65, 0.85);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 `;
 
-const NoFavoriteText = styled.div`
-  display: flex;
+const NameText = styled.span`
+  line-height: 1;
+`;
+
+const DeleteIconBtn = styled.span`
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.15s ease;
+  margin-left: 2px;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.85);
+    color: #ffffff;
+  }
+`;
+
+const EmptyChip = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.65);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 500;
 `;
