@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { X } from "lucide-react";
 
 export const SundayMaple = ({ eventData, loading, error }) => {
   const [booting, setBooting] = useState(true);
@@ -15,7 +16,6 @@ export const SundayMaple = ({ eventData, loading, error }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
   const [reserveH, setReserveH] = useState(0);
-
   const wrapRef = useRef(null);
 
   const isSkipActive = useMemo(() => {
@@ -102,7 +102,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     if (!el) return;
     const update = () => {
       const h = el.getBoundingClientRect().height;
-      setReserveH(h - 300);
+      setReserveH(h - 600);
     };
     update();
     const ro = new ResizeObserver(update);
@@ -133,20 +133,39 @@ export const SundayMaple = ({ eventData, loading, error }) => {
         <OverlayContainer $show>
           <ContentsWrap ref={wrapRef}>
             <ButtonWrap>
-              <SkipDayCheckboxWrapper>
-                <input
-                  type="checkbox"
-                  id="skip-day-checkbox"
-                  checked={isChecked}
-                  onChange={handleSkipDay}
-                />
-                <label htmlFor="skip-day-checkbox">오늘 하루 보지 않기</label>
-              </SkipDayCheckboxWrapper>
-              <CloseButton onClick={() => setIsVisible(false)}>X</CloseButton>
+              <TitleHeader>SUNDAYMAPLE</TitleHeader>
+              <RightControls>
+                <SkipDayCheckboxWrapper>
+                  <input
+                    type="checkbox"
+                    id="skip-day-checkbox-top"
+                    checked={isChecked}
+                    onChange={handleSkipDay}
+                  />
+                  <label htmlFor="skip-day-checkbox-top">오늘 하루 보지 않기</label>
+                </SkipDayCheckboxWrapper>
+                <CloseButton onClick={() => setIsVisible(false)} aria-label="닫기">
+                  <X size={15} />
+                </CloseButton>
+              </RightControls>
             </ButtonWrap>
             <Contents>
               <img src={imgSrc} alt="썬데이 메이플" />
             </Contents>
+            <BottomButtonWrap>
+              <SkipDayCheckboxWrapper>
+                <input
+                  type="checkbox"
+                  id="skip-day-checkbox-bottom"
+                  checked={isChecked}
+                  onChange={handleSkipDay}
+                />
+                <label htmlFor="skip-day-checkbox-bottom">오늘 하루 보지 않기</label>
+              </SkipDayCheckboxWrapper>
+              <CloseButton onClick={() => setIsVisible(false)} aria-label="닫기">
+                <X size={15} />
+              </CloseButton>
+            </BottomButtonWrap>
           </ContentsWrap>
         </OverlayContainer>
       )}
@@ -174,14 +193,20 @@ const OverlayContainer = styled.div`
 
 const ContentsWrap = styled.div`
   position: relative;
-  padding: 3px 10px 10px 10px;
+  padding: 10px 14px 12px 14px;
   margin: 10px;
   width: 95%;
   max-width: 876px;
-  border: 1px solid rgb(33, 40, 48);
-  outline: 2px solid rgb(54, 82, 100);
-  background: rgb(43, 53, 62);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgb(25, 33, 50),
+    rgb(20, 26, 4)
+  );
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
   overflow: hidden;
 `;
 
@@ -191,44 +216,111 @@ const Contents = styled.div`
     width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 8px;
-    border: 1px solid rgb(119, 119, 119);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
-  justify-content: end;
-  gap: 15px;
-  margin: 0 5px 5px 0;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 2px 2px;
 `;
-const CloseButton = styled.button`
-  background: rgba(255, 255, 255, 0.35);
-  color: #fff;
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background: #888;
-  }
+
+const TitleHeader = styled.h2`
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(220, 252, 2);
+  margin: 0;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+  letter-spacing: 0.05em;
 `;
-const SkipDayCheckboxWrapper = styled.div`
+
+const RightControls = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: rgb(216, 216, 216);
-  font-family: maple-light;
-  input {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+  gap: 12px;
+`;
+
+const BottomButtonWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 2px 2px;
+`;
+
+const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.08);
   }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+const SkipDayCheckboxWrapper = styled.div`
+  display: flex;
+  gap: 2px;
+  color: var(--muted-foreground, rgba(255, 255, 255, 0.85));
+  font-size: 1rem;
+  font-weight: 500;
+  user-select: none;
+
+  input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.18s ease;
+
+    &:checked {
+      background: var(--primary, oklch(0.72 0.16 285));
+      border-color: var(--primary, oklch(0.72 0.16 285));
+    }
+
+    &:checked::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 4px;
+      height: 8px;
+      border: solid #ffffff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
   label {
     cursor: pointer;
-    padding: 4px;
+    transition: color 0.15s ease;
     &:hover {
-      color: #fff;
+      color: #ffffff;
     }
   }
 `;
