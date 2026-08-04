@@ -47,22 +47,21 @@ const Container = styled.form`
   position: relative;
   width: 100%;
   display: flex;
-  gap: 5px;
+  gap: 10px;
   flex-direction: column;
+  align-items: center;
 `;
 
-const GuildHead = styled.div`
+const GuildHead = styled.h2`
   width: 100%;
-  margin: 5px 0;
-  text-shadow: 0px 0px 4px rgb(180, 180, 180);
-  color: rgb(204, 204, 204);
+  margin: 0 0 4px 0;
   font-size: 15px;
-  font-weight: bold;
-  position: relative;
-  padding: 0 10px;
+  font-weight: 700;
+  color: rgb(220, 252, 2);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
   text-align: center;
-  border-radius: 5px;
   cursor: pointer;
+  letter-spacing: 0.05em;
 `;
 
 const InputWrap = styled.div`
@@ -70,38 +69,60 @@ const InputWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 5px;
+  align-items: center;
+  gap: 8px;
 `;
 
 const GuildNameInput = styled.input`
   position: relative;
-  max-width: 200px;
+  max-width: 220px;
   width: 100%;
-  padding: 2px 30px 2px 5px;
-  border-radius: 5px;
-  background: rgb(204, 204, 204);
-  color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 2px 2px rgb(148, 148, 148);
+  height: 34px;
+  padding: 2px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.6);
+  color: #ffffff;
+  font-size: 13px;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: rgba(220, 252, 2, 0.6);
+    box-shadow: 0 0 10px rgba(220, 252, 2, 0.25);
+    background: rgba(15, 23, 42, 0.85);
+  }
 
   &::placeholder {
-    color: rgba(0, 0, 0, 0.8);
-    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
   }
 `;
 
 const SearchBtn = styled.button`
-  width: 70px;
-  height: 28px;
-  background: rgb(170, 187, 51);
-  color: rgb(255, 255, 255);
-  border-radius: 5px;
-  text-shadow: 1px 1px rgba(58, 58, 58, 0.5);
-  box-shadow: 0px 2px 2px rgb(148, 148, 148);
+  height: 34px;
+  padding: 0 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 196, 22, 1) 0%,
+    rgba(246, 164, 1, 1) 100%
+  );
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 229, 36, 0.8);
+  text-shadow: 1px 1px 0px rgba(189, 109, 5, 0.8);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
+  transition: all 0.15s ease;
 
   &:hover {
-    background: rgb(187, 202, 88);
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;

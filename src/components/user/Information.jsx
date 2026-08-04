@@ -165,11 +165,6 @@ const InfoWrap = styled.div`
   gap: 5px;
   flex-direction: row;
 
-  img {
-    display: flex;
-    max-width: 96px;
-  }
-
   @media screen and (max-width: 1300px) {
     display: flex;
     flex-direction: column;
@@ -225,8 +220,7 @@ const ImgWrap = styled.div`
 
   img {
     width: 100%;
-    max-height: 220px;
-    max-width: 345px;
+    max-width: 298px;
     margin: auto;
   }
 `;
