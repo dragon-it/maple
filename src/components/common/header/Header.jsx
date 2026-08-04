@@ -5,12 +5,28 @@ import logo from "../../../assets/logos/LogoIcon.svg";
 import logo_text from "../../../assets/logos/Logo_Text_Only.svg";
 import logoApril from "../../../assets/logos/Logo_April.svg";
 import logoTextApril from "../../../assets/logos/Logo_Text_April.svg";
-import ThemeToggleButton from "../../../context/ThemeToggleButton";
+import { useTheme } from "../../../context/ThemeProvider";
 import { Search } from "../../main/Search";
+import {
+  Menu as MenuIcon,
+  X as CloseIcon,
+  User,
+  Camera,
+  Users,
+  Gamepad2,
+  TrendingUp,
+  CheckSquare,
+  CalendarHeart,
+  Sparkles,
+  Puzzle,
+  Sun,
+  Moon,
+} from "lucide-react";
 
 export const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const isHomePage = location.pathname === "/";
   const isAprilFoolsDay = (() => {
     const today = new Date();
@@ -23,9 +39,10 @@ export const Header = () => {
   const [canHover, setCanHover] = useState(false);
   const [sundayMapleUrl, setSundayMapleUrl] = useState(
     localStorage.getItem("sundayMaple") ||
-      "https://maplestory.nexon.com/News/Event",
+    "https://maplestory.nexon.com/News/Event",
   );
   const miniRef = useRef(null);
+  const leaveTimeoutRef = useRef(null);
 
   const routes = {
     home: "/",
@@ -95,11 +112,14 @@ export const Header = () => {
   }, [canHover]);
 
   const handleMiniEnter = () => {
-    if (canHover) setIsMiniOpen(true);
+    if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+    setIsMiniOpen(true);
   };
 
   const handleMiniLeave = () => {
-    if (canHover) setIsMiniOpen(false);
+    leaveTimeoutRef.current = setTimeout(() => {
+      setIsMiniOpen(false);
+    }, 150);
   };
 
   const handleMiniClick = (event) => {
@@ -109,78 +129,173 @@ export const Header = () => {
     setIsMiniOpen((prev) => !prev);
   };
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <PcHeaderContainer>
-      <LogoWrap>
-        <HeaderLogo
-          src={currentLogo}
-          alt="로고"
-          onClick={() => navigate(routes.home)}
-        />
-        <HeaderLogoText
-          src={currentLogoText}
-          alt="로고 텍스트"
-          onClick={() => navigate(routes.home)}
-        />
-      </LogoWrap>
+    <>
+      <PcHeaderContainer>
+        <LogoWrap>
+          <HeaderLogo
+            src={currentLogo}
+            alt="로고"
+            onClick={() => navigate(routes.home)}
+          />
+          <HeaderLogoText
+            src={currentLogoText}
+            alt="로고 텍스트"
+            onClick={() => navigate(routes.home)}
+          />
+        </LogoWrap>
 
-      <ItemList>
-        <Item>
-          <ItemLink to={routes.home}>캐릭터 검색</ItemLink>
-        </Item>
-        <Item>
-          <ItemLink to={routes.characterCapture}>캐릭터 캡처</ItemLink>
-        </Item>
-        <Item>
-          <ItemLink to={routes.searchGuild}>길드 검색</ItemLink>
-        </Item>
+        <ItemList>
+          <Item>
+            <ItemLink to={routes.home}>캐릭터 검색</ItemLink>
+          </Item>
+          <Item>
+            <ItemLink to={routes.characterCapture}>캐릭터 캡처</ItemLink>
+          </Item>
+          <Item>
+            <ItemLink to={routes.searchGuild}>길드 검색</ItemLink>
+          </Item>
 
-        <MiniGameWrapper
-          ref={miniRef}
-          onMouseEnter={handleMiniEnter}
-          onMouseLeave={handleMiniLeave}
-        >
-          <MiniGameTrigger href="#" onClick={handleMiniClick}>
-            <span>미니게임</span>
-          </MiniGameTrigger>
-
-          <MiniDropdown $isClicked={isMiniOpen}>
-            <DropdownMenuItem to={routes.randomClass}>
-              랜덤 직업 뽑기
-            </DropdownMenuItem>
-            <DropdownMenuItem to={routes.slidingPuzzle}>
-              슬라이딩 퍼즐
-            </DropdownMenuItem>
-          </MiniDropdown>
-        </MiniGameWrapper>
-
-        <Item>
-          <ItemLink to={routes.expSimulator}>EXP 시뮬레이터</ItemLink>
-        </Item>
-        <Item>
-          <ItemLink to={routes.checklist}>체크리스트</ItemLink>
-        </Item>
-
-        <Item>
-          <ItemExternal
-            href={sundayMapleUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <MiniGameWrapper
+            ref={miniRef}
+            onMouseEnter={handleMiniEnter}
+            onMouseLeave={handleMiniLeave}
           >
-            썬데이메이플
-          </ItemExternal>
-        </Item>
-      </ItemList>
+            <MiniGameTrigger href="#" onClick={handleMiniClick}>
+              <span>미니게임</span>
+            </MiniGameTrigger>
 
-      <ThemeToggleWrap>
-        {!isHomePage && (
-          <HeaderSearchWrap $compact={!isHomePage}>
-            <Search variant="header" compact={!isHomePage} />
-          </HeaderSearchWrap>
-        )}
-        <ThemeToggleButton />
-      </ThemeToggleWrap>
-    </PcHeaderContainer>
+            <MiniDropdown $isClicked={isMiniOpen}>
+              <DropdownMenuItem to={routes.randomClass}>
+                랜덤 직업 뽑기
+              </DropdownMenuItem>
+              <DropdownMenuItem to={routes.slidingPuzzle}>
+                슬라이딩 퍼즐
+              </DropdownMenuItem>
+            </MiniDropdown>
+          </MiniGameWrapper>
+
+          <Item>
+            <ItemLink to={routes.expSimulator}>EXP 시뮬레이터</ItemLink>
+          </Item>
+          <Item>
+            <ItemLink to={routes.checklist}>체크리스트</ItemLink>
+          </Item>
+
+          <Item>
+            <ItemExternal
+              href={sundayMapleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              썬데이메이플
+            </ItemExternal>
+          </Item>
+        </ItemList>
+
+        <ThemeToggleWrap>
+          {!isHomePage && (
+            <HeaderSearchWrap $compact={!isHomePage}>
+              <Search variant="header" compact={!isHomePage} />
+            </HeaderSearchWrap>
+          )}
+          <HeaderIconBtn
+            onClick={toggleTheme}
+            type="button"
+            aria-label="테마 전환"
+          >
+            {theme === "dark" ? (
+              <Sun size={20} className="header-action-icon" />
+            ) : (
+              <Moon size={20} className="header-action-icon" />
+            )}
+          </HeaderIconBtn>
+          <MobileMenuBtn
+            type="button"
+            onClick={toggleMobileMenu}
+            aria-label="메뉴 열기"
+          >
+            <MenuIcon size={20} className="header-action-icon" />
+          </MobileMenuBtn>
+        </ThemeToggleWrap>
+      </PcHeaderContainer>
+
+      {/* 모바일 햄버거 슬라이드 서이드 드로어 */}
+      {isMobileMenuOpen && (
+        <MobileDrawerOverlay onClick={closeMobileMenu}>
+          <MobileDrawerContent onClick={(e) => e.stopPropagation()}>
+            <DrawerHeader>
+              <DrawerLogoWrap onClick={() => { navigate(routes.home); closeMobileMenu(); }}>
+                <HeaderLogo src={currentLogo} alt="로고" />
+                <HeaderLogoText src={currentLogoText} alt="로고 텍스트" />
+              </DrawerLogoWrap>
+              <DrawerCloseBtn onClick={closeMobileMenu} aria-label="메뉴 닫기">
+                <CloseIcon size={18} />
+              </DrawerCloseBtn>
+            </DrawerHeader>
+
+            <DrawerNav>
+              <DrawerNavLink to={routes.home} onClick={closeMobileMenu}>
+                <User size={18} className="drawer-icon" />
+                <span>캐릭터 검색</span>
+              </DrawerNavLink>
+              <DrawerNavLink to={routes.characterCapture} onClick={closeMobileMenu}>
+                <Camera size={18} className="drawer-icon" />
+                <span>캐릭터 캡처</span>
+              </DrawerNavLink>
+              <DrawerNavLink to={routes.searchGuild} onClick={closeMobileMenu}>
+                <Users size={18} className="drawer-icon" />
+                <span>길드 검색</span>
+              </DrawerNavLink>
+
+              <DrawerSectionTitle>
+                <Gamepad2 size={15} style={{ display: "inline-block", marginRight: "6px", verticalAlign: "middle" }} />
+                미니게임
+              </DrawerSectionTitle>
+              <DrawerSubNavLink to={routes.randomClass} onClick={closeMobileMenu}>
+                <Sparkles size={16} className="drawer-icon" />
+                <span>랜덤 직업 뽑기</span>
+              </DrawerSubNavLink>
+              <DrawerSubNavLink to={routes.slidingPuzzle} onClick={closeMobileMenu}>
+                <Puzzle size={16} className="drawer-icon" />
+                <span>슬라이딩 퍼즐</span>
+              </DrawerSubNavLink>
+
+              <DrawerNavLink to={routes.expSimulator} onClick={closeMobileMenu}>
+                <TrendingUp size={18} className="drawer-icon" />
+                <span>EXP 시뮬레이터</span>
+              </DrawerNavLink>
+              <DrawerNavLink to={routes.checklist} onClick={closeMobileMenu}>
+                <CheckSquare size={18} className="drawer-icon" />
+                <span>체크리스트</span>
+              </DrawerNavLink>
+              <DrawerExternalLink
+                href={sundayMapleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMobileMenu}
+              >
+                <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <CalendarHeart size={18} className="drawer-icon" />
+                  <span>썬데이메이플</span>
+                </span>
+                <span>↗</span>
+              </DrawerExternalLink>
+            </DrawerNav>
+          </MobileDrawerContent>
+        </MobileDrawerOverlay>
+      )}
+    </>
   );
 };
 
@@ -206,16 +321,21 @@ const PcHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 0 16px;
   width: 100%;
   gap: 10px;
   max-height: 50px;
-  background: rgba(38, 38, 38, 0.85);
+  background: rgba(15, 23, 42, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 `;
 
 const LogoWrap = styled.div`
   display: flex;
   align-items: center;
+  flex: 1 1 0;
+  justify-content: flex-start;
+  min-width: 0;
 `;
 
 const HeaderLogo = styled.img`
@@ -230,24 +350,22 @@ const HeaderLogoText = styled.img`
 
 const ItemList = styled.ul`
   display: flex;
-  flex: 1;
-  align-items: stretch;
-  gap: 10px;
-  margin-left: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
   font-size: 0.9rem;
   height: 50px;
   list-style: none;
   padding: 0;
-  margin-top: 0;
-  margin-bottom: 0;
 
   @media screen and (max-width: 768px) {
     display: none;
   }
 
   @media screen and (max-width: 1280px) {
-    margin-left: 0px;
-    gap: 5px;
+    gap: 4px;
   }
 `;
 
@@ -267,17 +385,11 @@ const ItemExternal = styled.a`
 
 const ThemeToggleWrap = styled.div`
   display: flex;
-  gap: 5px;
   align-items: center;
-
-  @media screen and (max-width: 1024px) {
-    min-width: 0;
-    justify-content: flex-end;
-  }
-
-  @media screen and (max-width: 768px) {
-    flex: 1;
-  }
+  flex: 1 1 0;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
 `;
 
 const HeaderSearchWrap = styled.div`
@@ -309,6 +421,7 @@ const MiniGameWrapper = styled.li`
   display: flex;
   align-items: center;
   height: 100%;
+  z-index: 99999;
 `;
 
 const MiniGameTrigger = styled.a`
@@ -321,45 +434,288 @@ const MiniDropdown = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 140px;
-  height: auto;
-  top: 50px;
-  left: 0;
-  font-size: 14px;
-  background-color: rgb(36, 39, 43);
-  outline: 1px solid rgb(46, 48, 53);
-  border: 1px solid rgb(61, 69, 78);
-  border-radius: 7px;
-  z-index: 9999999;
+  width: 155px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%)
+    translateY(${({ $isClicked }) => ($isClicked ? "0" : "-6px")});
+  font-size: 13px;
+  padding: 6px;
+  background: linear-gradient(
+    135deg,
+    rgba(20, 28, 44, 0.96),
+    rgba(15, 23, 38, 0.96)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  z-index: 9999999;  
   text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
 
   opacity: ${({ $isClicked }) => ($isClicked ? 1 : 0)};
   visibility: ${({ $isClicked }) => ($isClicked ? "visible" : "hidden")};
   pointer-events: ${({ $isClicked }) => ($isClicked ? "auto" : "none")};
-  transform: translateY(${({ $isClicked }) => ($isClicked ? "0" : "-5px")});
-  box-shadow: ${({ $isClicked }) =>
-    $isClicked ? "0px 0px 10px rgba(0, 0, 0, 0.5)" : "none"};
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    visibility 0.2s ease;
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    right: -15px;
+    height: 25px;
+    background: transparent;
+  }
 `;
 
 const DropdownMenuItem = styled(Link)`
-  color: rgb(255, 255, 255);
-  font-size: 14px;
-  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 12px;
+  border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
-  border-bottom: 1px solid rgba(91, 91, 91, 0.5);
+  transition: all 0.15s ease;
 
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    color: rgb(220, 252, 2);
+    background: rgba(255, 255, 255, 0.12);
+  }
+`;
+
+const HeaderIconBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+`;
+
+const MobileMenuBtn = styled.button`
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const MobileDrawerOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const MobileDrawerContent = styled.div`
+  width: 80%;
+  max-width: 320px;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.96),
+    rgba(20, 26, 40, 0.96)
+  );
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  animation: slideLeft 0.22s ease-out;
+
+  @keyframes slideLeft {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+`;
+
+const DrawerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const DrawerLogoWrap = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const DrawerCloseBtn = styled.button`
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+`;
+
+const DrawerNav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const DrawerNavLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--foreground, rgba(255, 255, 255, 0.9));
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.15s ease;
+
+  .drawer-icon {
+    color: var(--primary, oklch(0.72 0.16 285));
+    transition: transform 0.15s ease;
   }
 
   &:hover {
-    color: rgb(199, 222, 90);
-    background: rgba(82, 82, 82, 0.7);
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+
+    .drawer-icon {
+      transform: scale(1.1);
+    }
+  }
+`;
+
+const DrawerSectionTitle = styled.div`
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary, oklch(0.72 0.16 285));
+  margin: 12px 0 4px 12px;
+  display: flex;
+  align-items: center;
+`;
+
+const DrawerSubNavLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 10px 20px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.15s ease;
+
+  .drawer-icon {
+    color: rgba(168, 85, 247, 0.75);
+    transition: transform 0.15s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+
+    .drawer-icon {
+      transform: scale(1.1);
+    }
+  }
+`;
+
+const DrawerExternalLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.15s ease;
+
+  .drawer-icon {
+    color: rgba(168, 85, 247, 0.9);
+    transition: transform 0.15s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+
+    .drawer-icon {
+      transform: scale(1.1);
+    }
   }
 `;
 
