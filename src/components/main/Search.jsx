@@ -237,7 +237,7 @@ const InputWrap = styled.div`
   padding: 14px 20px;
   border-radius: 9999px;
   box-sizing: border-box;
-  background: var(--glass, rgba(25, 33, 50, 0.62));
+  background: rgba(36, 45, 57, 0.7);
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
   border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
@@ -264,7 +264,7 @@ const InputWrap = styled.div`
       gap: 6px;
       border-radius: 9999px;
       border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.15));
-      background: var(--glass, rgba(25, 33, 50, 0.62));
+      background: rgba(36, 45, 57, 0.63);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       transition: all 0.2s ease;
 

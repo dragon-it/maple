@@ -210,27 +210,29 @@ const NoticeWrap = styled.div`
   display: flex;
   flex-direction: column;
   background: linear-gradient(
-    135deg,
-    rgba(25, 33, 50, 0.72),
-    rgba(20, 26, 40, 0.55)
+    rgb(49 60 70 / 94%) 0%,
+    rgb(40 48 55 / 88%) 9%,
+    rgb(38 44 50 / 86%) 100%
   );
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(79, 96, 107);
+  outline: rgb(36, 43, 51) solid 1px;
+  border-radius: 16px;
   width: 564px;
   max-width: 100%;
-  border-radius: 24px;
-  padding: 16px;
+  padding: 8px;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 10px 24px;
   box-sizing: border-box;
   transition: border-color 0.2s ease;
-
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  
   &:hover {
     border-color: rgba(255, 255, 255, 0.2);
   }
 
   @media screen and (max-width: 500px) {
-    padding: 16px;
+    padding: 8px;
   }
 `;
 
@@ -240,7 +242,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 
   @media screen and (max-width: 500px) {
     margin-bottom: 12px;
@@ -250,34 +252,22 @@ const Header = styled.div`
 const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 
-  @media screen and (max-width: 500px) {
-    gap: 8px;
-  }
 `;
 
 const HeaderIconWrap = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  background: rgba(168, 85, 247, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 
-  @media screen and (max-width: 500px) {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-  }
 `;
 
 const HeaderImg = styled.img`
-  height: 36px;
   width: auto;
-  image-rendering: pixelated;
+
+  transform: scaleX(-1);
 
   @media screen and (max-width: 500px) {
     height: 26px;
@@ -292,7 +282,8 @@ const HeaderTitleGroup = styled.div`
 const TitleMain = styled.h2`
   font-size: 1.125rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgb(220, 252, 2);
+  text-shadow: rgba(0, 0, 0, 0.35) 0px 0px 8px;
   margin: 0;
   letter-spacing: -0.3px;
 
@@ -405,44 +396,49 @@ const DdayBadge = styled.span`
   align-items: center;
   justify-content: center;
   height: 28px;
-  width: 80px;
-  font-size: 0.75rem;
+  width: 82px;
+  font-size: 0.825rem;
   font-weight: 700;
   border-radius: 6px;
   flex-shrink: 0;
+  box-sizing: border-box;
   
   ${({ $type }) =>
     $type === "today" &&
     css`
-      background-color: oklch(0.58 0.22 25);
-      color: oklch(0.98 0.01 240);
+      background-color: rgba(244, 63, 94, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(251, 113, 133, 0.6);
     `}
 
   ${({ $type }) =>
     $type === "week" &&
     css`
-      background-color: oklch(0.62 0.18 160);
-      color: oklch(0.12 0.03 264);
+      background-color: rgba(245, 158, 11, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(252, 211, 77, 0.6);
     `}
 
   ${({ $type }) =>
     $type === "d" &&
     css`
-      background-color: oklch(0.72 0.16 285);
-      color: oklch(0.12 0.03 264);
+      background-color: rgba(59, 130, 246, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(147, 197, 253, 0.6);
     `}
 
   ${({ $type }) =>
     $type === "end" &&
     css`
-      background-color: rgba(160, 165, 181, 0.25);
-      color: oklch(0.72 0.04 250);
+      background-color: rgba(107, 114, 128, 0.7);
+      color: #f3f4f6;
+      border: 1px solid rgba(156, 163, 175, 0.5);
     `}
 `;
 
 const DateText = styled.span`
   min-width: 70px;
-  color: var(--muted-foreground, oklch(0.72 0.04 250));
+  color: #a0a5b5;
   font-size: 0.8rem;
   flex-shrink: 0;
 `;

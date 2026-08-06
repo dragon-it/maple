@@ -101,9 +101,9 @@ const ChipListContainer = styled.div`
 
 const FavoriteChip = styled.button`
   display: inline-flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 6px 6px 6px 14px;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(15, 23, 42, 0.65);

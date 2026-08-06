@@ -136,9 +136,9 @@ const SubHeading = styled.p`
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  color: ${({ theme }) => (theme.mode === "light" ? "#334155" : "rgba(255, 255, 255, 0.75)")};
-  text-shadow: ${({ theme }) => (theme.mode === "light" ? "0 1px 2px rgba(255, 255, 255, 0.9)" : "0 2px 8px rgba(0, 0, 0, 0.5)")};
-`;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  `;
 
 const HeroLogo = styled.img`
   height: 112px;
@@ -154,8 +154,8 @@ const DescriptionText = styled.p`
   margin: 16px 0 0 0;
   font-size: 1rem;
   font-weight: 500;
-  color: ${({ theme }) => (theme.mode === "light" ? "#0f172a" : "rgba(255, 255, 255, 0.9)")};
-  text-shadow: ${({ theme }) => (theme.mode === "light" ? "0 1px 4px rgba(255, 255, 255, 0.95)" : "0 2px 10px rgba(0, 0, 0, 0.6)")};
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 
   @media screen and (max-width: 768px) {
     font-size: 0.875rem;
