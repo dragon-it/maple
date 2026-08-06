@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import OpenAPILogo from "../../../assets/logos/footerLogo.svg";
+import PartnersLogo from "../../../assets/icons/etc/partners.png";
 
 export const FooterText = () => {
   return (
@@ -46,23 +47,20 @@ export const FooterText = () => {
 
         <FooterRightSection>
           <ComplianceBadge>
+            <span className="with-text">with</span>
             <a
-              href="https://openapi.nexon.com/ko/"
+              href="https://partners.maplestory.nexon.com/developers"
               target="_blank"
               rel="noopener noreferrer"
-              className="nexon-logo-link"
-              title="NEXON OPEN API 바로가기"
+              className="partners-logo-link"
+              title="메이플스토리 파트너스 바로가기"
             >
               <img
-                src={OpenAPILogo}
-                alt="NEXON OPEN API"
-                className="nexon-api-logo"
+                src={PartnersLogo}
+                alt="메이플스토리 파트너스"
+                className="partners-logo"
               />
             </a>
-            <BadgeTextGroup>
-              <span className="badge-title">NEXON OPEN API</span>
-              <span className="badge-sub">공식 가이드라인을 준수합니다</span>
-            </BadgeTextGroup>
           </ComplianceBadge>
         </FooterRightSection>
       </FooterInnerWrap>
@@ -167,39 +165,26 @@ const FooterRightSection = styled.div`
 const ComplianceBadge = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
+  gap: 8px;
+  padding: 6px 14px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 
-  .nexon-logo-link {
+  .with-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .partners-logo-link {
     display: flex;
     align-items: center;
   }
 
-  .nexon-api-logo {
-    width: 120px;
-    height: auto;
+  .partners-logo {
+    height: 32px;
+    width: auto;
     display: block;
-  }
-`;
-
-const BadgeTextGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-  padding-left: 10px;
-
-  .badge-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .badge-sub {
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.5);
   }
 `;
