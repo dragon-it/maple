@@ -21,6 +21,8 @@ import {
   Puzzle,
   Sun,
   Moon,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 
 export const Header = () => {
@@ -130,6 +132,7 @@ export const Header = () => {
   };
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMiniOpen, setIsMobileMiniOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -137,6 +140,7 @@ export const Header = () => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+    setIsMobileMiniOpen(false);
   };
 
   return (
@@ -258,18 +262,38 @@ export const Header = () => {
                 <span>길드 검색</span>
               </DrawerNavLink>
 
-              <DrawerSectionTitle>
-                <Gamepad2 size={15} style={{ display: "inline-block", marginRight: "6px", verticalAlign: "middle" }} />
-                미니게임
-              </DrawerSectionTitle>
-              <DrawerSubNavLink to={routes.randomClass} onClick={closeMobileMenu}>
-                <Sparkles size={16} className="drawer-icon" />
-                <span>랜덤 직업 뽑기</span>
-              </DrawerSubNavLink>
-              <DrawerSubNavLink to={routes.slidingPuzzle} onClick={closeMobileMenu}>
-                <Puzzle size={16} className="drawer-icon" />
-                <span>슬라이딩 퍼즐</span>
-              </DrawerSubNavLink>
+              <DrawerAccordionBtn
+                onClick={() => setIsMobileMiniOpen((prev) => !prev)}
+                type="button"
+              >
+                <span style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <Gamepad2 size={18} className="drawer-icon" />
+                  <span>미니게임</span>
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`chevron-icon ${isMobileMiniOpen ? "open" : ""}`}
+                />
+              </DrawerAccordionBtn>
+
+              {isMobileMiniOpen && (
+                <DrawerSubGroup>
+                  <DrawerSubNavLink to={routes.randomClass} onClick={closeMobileMenu}>
+                    <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <Sparkles size={16} className="drawer-icon" />
+                      <span>랜덤 직업 뽑기</span>
+                    </span>
+                    <ChevronRight size={14} className="sub-arrow" />
+                  </DrawerSubNavLink>
+                  <DrawerSubNavLink to={routes.slidingPuzzle} onClick={closeMobileMenu}>
+                    <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <Puzzle size={16} className="drawer-icon" />
+                      <span>슬라이딩 퍼즐</span>
+                    </span>
+                    <ChevronRight size={14} className="sub-arrow" />
+                  </DrawerSubNavLink>
+                </DrawerSubGroup>
+              )}
 
               <DrawerNavLink to={routes.expSimulator} onClick={closeMobileMenu}>
                 <TrendingUp size={18} className="drawer-icon" />
@@ -651,43 +675,7 @@ const DrawerNavLink = styled(Link)`
   }
 `;
 
-const DrawerSectionTitle = styled.div`
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--primary, oklch(0.72 0.16 285));
-  margin: 12px 0 4px 12px;
-  display: flex;
-  align-items: center;
-`;
 
-const DrawerSubNavLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px 10px 20px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  transition: all 0.15s ease;
-
-  .drawer-icon {
-    color: rgba(168, 85, 247, 0.75);
-    transition: transform 0.15s ease;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-
-    .drawer-icon {
-      transform: scale(1.1);
-    }
-  }
-`;
 
 const DrawerExternalLink = styled.a`
   display: flex;
@@ -704,7 +692,7 @@ const DrawerExternalLink = styled.a`
   transition: all 0.15s ease;
 
   .drawer-icon {
-    color: rgba(168, 85, 247, 0.9);
+    color: var(--primary, oklch(0.72 0.16 285));
     transition: transform 0.15s ease;
   }
 
@@ -715,6 +703,98 @@ const DrawerExternalLink = styled.a`
 
     .drawer-icon {
       transform: scale(1.1);
+    }
+  }
+`;
+
+const DrawerAccordionBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--foreground, rgba(255, 255, 255, 0.9));
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  .drawer-icon {
+    color: var(--primary, oklch(0.72 0.16 285));
+    transition: transform 0.15s ease;
+  }
+
+  .chevron-icon {
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s ease;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+
+    .drawer-icon {
+      transform: scale(1.1);
+    }
+
+    .chevron-icon {
+      color: #ffffff;
+    }
+  }
+`;
+
+const DrawerSubGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: -2px;
+  margin-bottom: 4px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(168, 85, 247, 0.5);
+  animation: fadeIn 0.15s ease-out;
+`;
+
+const DrawerSubNavLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.15s ease;
+
+  .drawer-icon {
+    color: var(--primary, oklch(0.72 0.16 285));
+    transition: transform 0.15s ease;
+  }
+
+  .sub-arrow {
+    color: rgba(255, 255, 255, 0.35);
+    transition: all 0.15s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+
+    .drawer-icon {
+      transform: scale(1.1);
+    }
+
+    .sub-arrow {
+      color: rgba(255, 255, 255, 0.85);
+      transform: translateX(3px);
     }
   }
 `;
