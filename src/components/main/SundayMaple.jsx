@@ -193,20 +193,21 @@ const OverlayContainer = styled.div`
 
 const ContentsWrap = styled.div`
   position: relative;
-  padding: 10px 14px 12px 14px;
+  padding: 6px 12px 12px 12px;
   margin: 10px;
   width: 95%;
   max-width: 876px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   background: linear-gradient(
-    135deg,
-    rgb(25, 33, 50),
-    rgb(20, 26, 4)
+    rgb(49 60 70 / 100%) 0%,
+    rgb(40 48 55 / 100%) 9%,
+    rgb(38 44 50 / 100%) 100%
   );
+  border: 1px solid rgb(79, 96, 107);
+  outline: rgb(36, 43, 51) solid 1px;
+  border-radius: 13px;
   box-shadow:
     0 16px 40px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
   overflow: hidden;
 `;
 
