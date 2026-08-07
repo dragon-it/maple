@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { SearchGuildDetail } from "./SearchGuildDetail";
 import WorldIcons from "../common/worldIcon/WorldIcons";
 
 export const SearchGuildRendering = ({ result }) => {
-  const { guildName } = useParams();
+  const { guildName, worldName } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const [selectedGuild, setSelectedGuild] = useState({
     oguild_id: null,
     world_name: "",
@@ -19,12 +18,7 @@ export const SearchGuildRendering = ({ result }) => {
     navigate(`/guild-search/${guildName}/${world_name}`);
   };
 
-  // 현재 URL과 선택된 world_name을 비교
-  const isGuildDetail = location.pathname.startsWith(
-    `/guild-search/${encodeURIComponent(guildName)}/${encodeURIComponent(
-      selectedGuild.world_name
-    )}`
-  );
+  const isGuildDetail = !!worldName;
 
   const sortedResult = result
     ? [...result].sort(

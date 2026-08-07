@@ -89,15 +89,7 @@ const Adsense = styled.div`
 
 const FooterTextDiv = styled.div`
   width: 100%;
-  padding: 3px 0;
   margin-bottom: calc(
     var(--footer-safe-area, 0px) + var(--adsense-footer-safe-area, 0px)
   );
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: ${({ theme }) => theme.footerBgColor};
-  color: ${({ theme }) => theme.footerTextColor};
-  text-decoration: none;
 `;

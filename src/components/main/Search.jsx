@@ -230,122 +230,126 @@ const InputContainer = styled.form`
 const InputWrap = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
   margin: 0 auto;
   max-width: 688px;
-  width: 87%;
-  border-radius: 24px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-  border: 2px solid rgb(0, 0, 0);
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 9999px;
+  box-sizing: border-box;
+  background: rgba(36, 45, 57, 0.7);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
   position: relative;
-  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease-in-out;
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
   &:focus-within {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    border-color: var(--primary, oklch(0.72 0.16 285));
+    box-shadow:
+      0 0 0 1px var(--glow),
+      0 0 24px -8px var(--glow);
   }
 
-  ${({ $variant, $compact, $mobileHeader, $mobileExpanded }) =>
+  ${({ $variant, $compact }) =>
     $variant === "header" &&
     css`
       margin: 0;
       width: 100%;
-      height: 36px;
-      transition:
-        width 0.28s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+      height: 38px;
+      padding: 4px 6px 4px 14px;
+      gap: 6px;
+      border-radius: 9999px;
+      border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.15));
+      background: rgba(36, 45, 57, 0.63);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
 
       ${$compact &&
       css`
         min-width: 0;
-        max-width: 240px;
-        border: none;
-        border-radius: 10px;
-      `}
-
-      ${$mobileHeader &&
-      css`
-        width: ${$mobileExpanded ? "100%" : "36px"};
-        max-width: none;
-        transform-origin: right center;
+        max-width: 230px;
       `}
     `}
 `;
 
 const StyledInput = styled.input`
   flex: 1;
-  height: 38px;
-  padding: 0 16px;
+  min-width: 0;
+  width: 100%;
+  height: 40px;
+  padding: 0 8px;
   border: none;
   background: transparent;
   outline: none;
-  border-radius: 10px;
-  font-size: 14px;
-  color: rgb(0, 0, 0);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.95);
 
   &::placeholder {
-    color: rgb(0, 0, 0);
+    color: rgba(255, 255, 255, 0.6);
   }
 
-  ${({ $variant, $mobileHeader, $mobileExpanded }) =>
+  &:focus {
+    outline: none;
+  }
+
+  ${({ $variant }) =>
     $variant === "header" &&
     css`
       font-size: 13px;
       height: 100%;
-      padding-right: 40px;
-      background-color: #ffffff;
+      padding: 0 4px;
+      background: transparent;
+      color: var(--foreground, rgba(255, 255, 255, 0.95));
 
-      ${$mobileHeader &&
-      css`
-        width: ${$mobileExpanded ? "100%" : "0"};
-        min-width: 0;
-        transition:
-          opacity 0.18s ease,
-          width 0.28s ease,
-          padding 0.28s ease;
-        display: ${$mobileExpanded ? "block" : "none"};
-      `}
+      &::placeholder {
+        color: var(--muted-foreground, rgba(255, 255, 255, 0.6));
+      }
     `}
 `;
 
 const StyledButton = styled.button`
-  position: absolute;
+  position: relative;
   width: 36px;
   height: 36px;
-  right: 0;
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 10px;
-  background: none;
+  border-radius: 9999px;
+  background: var(--primary, oklch(0.72 0.16 285));
+  color: var(--primary-foreground, #ffffff);
   cursor: pointer;
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.35);
+  transition: all 0.2s ease;
 
-  ${({ $variant, $mobileHeader, $mobileExpanded }) =>
+  &:hover {
+    background: var(--primary, oklch(0.76 0.17 285));
+    filter: brightness(1.15);
+    transform: scale(1.06);
+    box-shadow: 0 0 16px var(--glow, rgba(168, 85, 247, 0.5));
+  }
+
+  ${({ $variant }) =>
     $variant === "header" &&
     css`
-      z-index: 2;
+      position: relative;
+      right: auto;
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: var(--primary, oklch(0.72 0.16 285));
+      color: var(--primary-foreground, #ffffff);
+      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.35);
 
-      ${$mobileHeader &&
-      css`
-        flex-shrink: 0;
-        transform: translateZ(0);
-        background-color: ${({ theme }) => theme.headerBgColor};
-        border: ${({ theme }) => theme.toggleBorderColor};
-        &:hover {
-          background-color: ${({ theme }) => theme.headerIconHoverColor};
-        }
-      `}
-
-      ${$mobileExpanded &&
-      css`
-        background-color: transparent;
-        border: none;
-        &:hover {
-          background-color: transparent;
-        }
-      `}
+      &:hover {
+        background: var(--primary, oklch(0.76 0.17 285));
+        filter: brightness(1.15);
+        transform: scale(1.06);
+      }
     `}
 `;

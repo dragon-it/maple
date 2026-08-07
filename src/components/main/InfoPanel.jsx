@@ -1,5 +1,4 @@
-import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import event_Header_Img from "../../assets/pages/main/infoPanel/Event_header_img.png";
 import Notice_Header_Img from "../../assets/pages/main/infoPanel/Notice_header_img2.png";
 import { useNavigate } from "react-router-dom";
@@ -26,8 +25,8 @@ export const InfoPanel = () => {
   const normalizedEventData = Array.isArray(eventData)
     ? eventData
     : eventData
-    ? [eventData]
-    : [];
+      ? [eventData]
+      : [];
 
   // D-day 타입 설정
   const getDdayType = (dDayText) => {
@@ -80,8 +79,22 @@ export const InfoPanel = () => {
       ) : (
         <NoticeWrap>
           <Header>
-            <HeaderImg src={event_Header_Img} alt="이벤트" />
-            <span>진행중인 이벤트</span>
+            <HeaderLeft>
+              <HeaderIconWrap>
+                <HeaderImg src={event_Header_Img} alt="이벤트" />
+              </HeaderIconWrap>
+              <HeaderTitleGroup>
+                <TitleMain>진행중인 이벤트</TitleMain>
+                <TitleSub>Current Events</TitleSub>
+              </HeaderTitleGroup>
+            </HeaderLeft>
+            <HeaderLink
+              href="https://maplestory.nexon.com/News/Event"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              전체보기 <span>&rsaquo;</span>
+            </HeaderLink>
           </Header>
           <List>
             {loading ? (
@@ -120,8 +133,22 @@ export const InfoPanel = () => {
 
       <NoticeWrap>
         <Header>
-          <HeaderImg src={Notice_Header_Img} alt="정보센터" />
-          <span>정보센터</span>
+          <HeaderLeft>
+            <HeaderIconWrap>
+              <HeaderImg src={Notice_Header_Img} alt="정보센터" />
+            </HeaderIconWrap>
+            <HeaderTitleGroup>
+              <TitleMain>정보센터</TitleMain>
+              <TitleSub>Notices &amp; Patch Notes</TitleSub>
+            </HeaderTitleGroup>
+          </HeaderLeft>
+          <HeaderLink
+            href="https://maplestory.nexon.com/News/Notice"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            전체보기 <span>&rsaquo;</span>
+          </HeaderLink>
         </Header>
         <List>
           {loading ? (
@@ -167,66 +194,173 @@ export const InfoPanel = () => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 24px;
   width: 100%;
-  height: 450px;
-
-  @media screen and (max-width: 768px) {
-    flex-direction: ${({ $error }) => ($error ? "row" : "column;")};
-    height: ${({ $error }) => ($error ? "auto" : "550px;")};
-    margin: 30px 0;
-    width: 70%;
-  }
+  max-width: 100%;
+  margin: 48px auto 0 auto;
+  box-sizing: border-box;
 `;
 
 const NoticeWrap = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.infoPanelColor.contentsBackground};
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-  border: 1px solid ${colors.greyScale.grey3Alpha50};
-  overflow-y: auto;
-  flex: 1 1 0;
-  min-width: 380px;
-  max-width: 380px;
-  width: 100%;
-  height: fit-content;
-  border-radius: 5px;
-  backdrop-filter: blur(7px);
+  background: linear-gradient(
+    rgb(49 60 70 / 94%) 0%,
+    rgb(40 48 55 / 88%) 9%,
+    rgb(38 44 50 / 86%) 100%
+  );
+  border: 1px solid rgb(79, 96, 107);
+  outline: rgb(36, 43, 51) solid 1px;
+  border-radius: 16px;
+  width: 564px;
+  max-width: 100%;
+  padding: 8px;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 10px 24px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
 
-  @media screen and (max-width: 768px) {
-    min-width: 0px;
+  @media screen and (max-width: 500px) {
+    padding: 8px;
   }
 `;
 
-const Header = styled.h2`
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 12px;
+
+  @media screen and (max-width: 500px) {
+    margin-bottom: 12px;
+  }
+`;
+
+const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+`;
+
+const HeaderIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+`;
+
+const HeaderImg = styled.img`
+  width: auto;
+
+  transform: scaleX(-1);
+
+  @media screen and (max-width: 500px) {
+    height: 26px;
+  }
+`;
+
+const HeaderTitleGroup = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const TitleMain = styled.h2`
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: rgb(220, 252, 2);
+  text-shadow: rgba(0, 0, 0, 0.35) 0px 0px 8px;
+  margin: 0;
+  letter-spacing: -0.3px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 0.95rem;
+  }
+`;
+
+const TitleSub = styled.p`
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 2px 0 0 0;
+
+  @media screen and (max-width: 500px) {
+    font-size: 0.68rem;
+  }
+`;
+
+const HeaderLink = styled.a`
+  display: flex;
   align-items: center;
-  font-size: 14px;
-  padding: 3px;
-  background-color: ${({ theme }) => theme.infoPanelColor.headerBackground};
-  border-bottom: 1px solid ${colors.greyScale.grey3Alpha50};
+  gap: 2px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--primary, oklch(0.72 0.16 285));
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: oklch(0.78 0.18 285);
+    text-decoration: underline;
+  }
+
+  span {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 0.78rem;
+  }
 `;
 
 const List = styled.ul`
-  margin: 1px 0;
-  height: 180px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
   overflow-y: auto;
+  list-style: none;
 `;
 
 const ListItem = styled.li`
-  padding: 6px 10px;
-  font-size: 0.85rem;
+  padding: 10px 14px;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
+  gap: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 
-  @media screen and (max-width: 768px) {
-    font-size: 0.75rem;
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  @media screen and (max-width: 500px) {
+    padding: 8px 10px;
+    gap: 8px;
+    font-size: 0.8rem;
+    border-radius: 10px;
   }
 `;
 
@@ -236,51 +370,77 @@ const ErrorText = styled.span`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 20px 0;
+  color: rgba(255, 255, 255, 0.6);
 `;
 
 const Link = styled.a`
   text-decoration: none;
-  color: inherit;
+  color: var(--foreground, rgba(255, 255, 255, 0.95));
+  font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: block;
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  min-width: 0;
 
   &:hover {
+    color: #ffffff;
     text-decoration: underline;
   }
 `;
 
 const DdayBadge = styled.span`
-  display: inline-block;
-  min-width: 56px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #fff;
-  background: ${({ $type }) =>
-    $type === "today"
-      ? "#ff3300"
-      : $type === "end"
-      ? "#7a7a7a"
-      : $type === "week"
-      ? "#d28019"
-      : "#1976d2"};
-  border-radius: 12px;
-  padding: 1px 5px;
-  margin-right: 8px;
-  text-align: center;
-`;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  width: 82px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  
+  ${({ $type }) =>
+    $type === "today" &&
+    css`
+      background-color: rgba(244, 63, 94, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(251, 113, 133, 0.6);
+    `}
 
-const HeaderImg = styled.img`
-  height: 69px;
-  image-rendering: pixelated;
+  ${({ $type }) =>
+    $type === "week" &&
+    css`
+      background-color: rgba(245, 158, 11, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(252, 211, 77, 0.6);
+    `}
+
+  ${({ $type }) =>
+    $type === "d" &&
+    css`
+      background-color: rgba(59, 130, 246, 0.75);
+      color: #ffffff;
+      border: 1px solid rgba(147, 197, 253, 0.6);
+    `}
+
+  ${({ $type }) =>
+    $type === "end" &&
+    css`
+      background-color: rgba(107, 114, 128, 0.7);
+      color: #f3f4f6;
+      border: 1px solid rgba(156, 163, 175, 0.5);
+    `}
 `;
 
 const DateText = styled.span`
-  min-width: 63px;
-  color: ${({ theme }) => theme.infoPanelColor.dateColor};
-  font-size: 0.75rem;
+  min-width: 70px;
+  color: #a0a5b5;
+  font-size: 0.8rem;
+  flex-shrink: 0;
 `;
 
 const RecommendText = styled.p`

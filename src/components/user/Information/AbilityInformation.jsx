@@ -1,5 +1,31 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+const getGradeClass = (grade) => {
+  switch (grade) {
+    case "노멀":
+    case "Normal":
+    case "normal":
+      return "normal";
+    case "레어":
+    case "Rare":
+    case "rare":
+      return "rare";
+    case "유니크":
+    case "Unique":
+    case "unique":
+      return "unique";
+    case "에픽":
+    case "Epic":
+    case "epic":
+      return "epic";
+    case "레전드리":
+    case "Legendary":
+    case "legendary":
+      return "legendary";
+    default:
+      return "normal";
+  }
+};
 
 export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
   const [selectedPreset, setSelectedPreset] = useState(1);
@@ -13,13 +39,25 @@ export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
   const getGradeColor = (grade) => {
     switch (grade) {
       case "에픽":
+      case "Epic":
+      case "epic":
         return "rgb(127,102,211)";
       case "레어":
+      case "Rare":
+      case "rare":
         return "rgb(54,184,208)";
       case "유니크":
+      case "Unique":
+      case "unique":
         return "rgb(232,156,9)";
       case "레전드리":
+      case "Legendary":
+      case "legendary":
         return "rgb(164,199,0)";
+      case "노멀":
+      case "Normal":
+      case "normal":
+        return "rgb(120,120,120)";
       default:
         return "white";
     }
@@ -36,6 +74,9 @@ export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
     );
   }
 
+  const grade = currentPreset.ability_preset_grade || AbilityInfo.ability_grade;
+  const gradeClass = getGradeClass(grade);
+
   const backgroundColors = currentPreset.ability_info.map((info) =>
     getGradeColor(info.ability_grade)
   );
@@ -45,13 +86,20 @@ export const AbilityInformation = ({ AbilityInfo, blur = false }) => {
     <Container>
       <PresetWrap>
         <AbilityHeader>ABILITY</AbilityHeader>
-        <AbilityGradeHeader>
-          어빌리티 등급 :{" "}
-          <RevealValue $blurred={blur}>
-            {currentPreset.ability_preset_grade}
-          </RevealValue>
-        </AbilityGradeHeader>
         <AbilityDetail>
+          <AbilityGradeHeader>
+            <div className={`ability-title ${gradeClass}`}>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M19 22L12 14L5 22V2H19V22Z" />
+              </svg>
+              <span>{grade || "어빌리티 등급"} 어빌리티</span>
+            </div>
+          </AbilityGradeHeader>
           {backgroundColors.map((color, index) => (
             <p
               key={index}
@@ -127,7 +175,7 @@ const AbilityDetail = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 3px;
+  padding: 2px;
   margin-bottom: 10px;
   border-radius: 5px;
 
@@ -146,8 +194,62 @@ const AbilityDetail = styled.div`
   }
 `;
 
-const AbilityGradeHeader = styled.p`
-  margin-bottom: 5px;
+const AbilityGradeHeader = styled.div`
+  margin-bottom: 1px;
+
+  .ability-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 3px;
+    height: 26px;
+    padding-left: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+  }
+
+  .ability-title.normal {
+    background: linear-gradient(180deg, #4D4D55 0%, #3A3A42 100%);
+    border: 1px solid #2E2E36;
+    border-top-color: #5A5A62;
+    border-bottom: 2px solid rgba(46, 53, 61, 0.3);
+    color: #C8C8C8;
+  }
+  .ability-title.rare {
+    background: 
+      linear-gradient(180deg, #3AB6D1 0%, #259ABB 100%) padding-box,
+      linear-gradient(180deg, #54D7E6 0%, #4CCADB 20%, #2CA4BF 80%, #27A1C0 100%) border-box;
+    border: 1px solid transparent;
+    border-bottom: 2px solid rgba(46, 53, 61, 0.3);
+    color: #FFFFFF;
+  }
+  .ability-title.unique {
+    background: 
+      linear-gradient(180deg, #F3B50E 0%, #E89D09 100%) padding-box,
+      linear-gradient(180deg, #F8D614 0%, #F0CA16 20%, #E4A70E 80%, #EAA30A 100%) border-box;
+    border: 1px solid transparent;
+    border-bottom: 2px solid rgba(46, 53, 61, 0.3);
+    color: #FFFFFF;
+  }
+  .ability-title.epic {
+    background: 
+      linear-gradient(180deg, #7E66D2 0%, #6750B2 100%) padding-box,
+      linear-gradient(180deg, #B894E7 0%, #AA89E1 20%, #725BB8 80%, #6E56B7 100%) border-box;
+    border: 1px solid transparent;
+    border-bottom: 2px solid rgba(46, 53, 61, 0.3);
+    color: #FFFFFF;
+  }
+  .ability-title.legendary {
+    background: 
+      linear-gradient(180deg, #A5C205 0%, #85A911 100%) padding-box,
+      linear-gradient(180deg, #CEDE07 0%, #C0D30C 20%, #92B014 80%, #8CAE12 100%) border-box;
+    border: 1px solid transparent;
+    border-bottom: 2px solid rgba(46, 53, 61, 0.3);
+    color: #FFFFFF;
+  }
 `;
 
 const AbilityNoData = styled.p`

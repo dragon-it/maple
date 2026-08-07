@@ -31,6 +31,37 @@ import checkListAprilLightBGI from "../../assets/backgruondImg/checkList/checkLi
 import checkListAprilDarkBGI from "../../assets/backgruondImg/checkList/checkList_april_dark.webp";
 import { useTheme } from "../../context/ThemeProvider";
 
+const ALL_BACKGROUND_IMAGES = [
+  mainLightBGI,
+  mainDarkBGI,
+  mainAprilLightBGI,
+  mainAprilDarkBGI,
+  findMainLightBGI,
+  findMainDarkBGI,
+  findMainAprilLightBGI,
+  findMainAprilDarkBGI,
+  searchGuildDarkBGI,
+  searchGuildLightBGI,
+  searchGuildAprilDarkBGI,
+  searchGuildAprilLightBGI,
+  randomClassDarkBGI,
+  randomClassLightBGI,
+  randomClassAprilDarkBGI,
+  randomClassAprilLightBGI,
+  expSimulatorDarkBGI,
+  expSimulatorLightBGI,
+  expSimulatorAprilDarkBGI,
+  expSimulatorAprilLightBGI,
+  slidingPuzzleLightBGI,
+  slidingPuzzleDarkBGI,
+  slidingPuzzleAprilLightBGI,
+  slidingPuzzleAprilDarkBGI,
+  checkListLightBGI,
+  checkListDarkBGI,
+  checkListAprilLightBGI,
+  checkListAprilDarkBGI,
+];
+
 const isAprilFoolsDay = () => {
   const today = new Date();
   return today.getMonth() === 3 && today.getDate() === 1;
@@ -42,6 +73,14 @@ export const BackgroundImage = () => {
   const [imageSrc, setImageSrc] = useState(
     getBackgroundImage(theme, location.pathname),
   );
+
+  // 모든 배경 이미지 사전 로딩 (브라우저 캐시에 저장하여 페이지 전환 시 딜레이 제거)
+  useEffect(() => {
+    ALL_BACKGROUND_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
   function getBackgroundImage(theme, pathname) {
@@ -112,28 +151,47 @@ export const BackgroundImage = () => {
 
   return (
     <Container>
-      <img src={imageSrc} alt="Background" width="1920" height="1080" />
+      <img src={imageSrc} alt="" width="1920" height="1080" decoding="sync" />
+      <LinearOverlay />
+      <RadialOverlay />
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 100%;
   position: fixed;
+  inset: 0;
   z-index: -1;
+  pointer-events: none;
 
   img {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 0;
-    object-fit: cover;
-    padding: 0;
-    position: absolute;
     width: 100%;
-    display: block;
-    min-height: 100vh;
     height: 100%;
-    filter: brightness(0.8);
+    object-fit: cover;
+    display: block;
   }
+`;
+
+const LinearOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.2) 0%,
+    rgba(15, 23, 42, 0.08) 50%,
+    rgba(15, 23, 42, 0.45) 100%
+  );
+  pointer-events: none;
+`;
+
+const RadialOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.04) 55%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  pointer-events: none;
 `;

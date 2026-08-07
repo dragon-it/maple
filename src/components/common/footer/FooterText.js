@@ -1,35 +1,190 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import OpenAPILogo from "../../../assets/logos/footerLogo.svg";
+import PartnersLogo from "../../../assets/icons/etc/partners.png";
 
 export const FooterText = () => {
   return (
-    <div className="footer-text">
-      <p>
-        Data By{" "}
-        <a href="https://openapi.nexon.com/ko/">
-          <img
-            src={OpenAPILogo}
-            alt="Data by OpenAPI"
-            style={{ width: "150px" }}
-          />
-        </a>
-      </p>
+    <FooterContainer>
+      <FooterInnerWrap>
+        <FooterLeftSection>
 
-      <p>Font By MapleStory</p>
-      <p>Contact: sideoff0217@naver.com</p>
-      <p>
-        <Link
-          to="/privacy"
-          style={{
-            color: "inherit",
-            textDecoration: "underline",
-            textUnderlineOffset: "3px",
-          }}
-        >
-          개인정보 처리방침
-        </Link>
-      </p>
-    </div>
+          <FooterInfoGroup>
+            <InfoRow>
+              <span>메짱 (MapleStory Search & Utility)</span>
+              <Divider>|</Divider>
+              <NexonApiWrap>
+                <span>data by</span>
+                <a
+                  href="https://openapi.nexon.com/ko/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="NEXON OPEN API 바로가기"
+                >
+                  <img
+                    src={OpenAPILogo}
+                    alt="NEXON OPEN API"
+                    className="inline-nexon-logo"
+                  />
+                </a>
+              </NexonApiWrap>
+              <Divider>|</Divider>
+              <span>폰트 : MapleStory Font</span>
+            </InfoRow>
+
+            <InfoRow>
+              <span>E-mail : sideoff0217@naver.com</span>
+              <Divider>|</Divider>
+              <PrivacyLink to="/privacy">개인정보 처리방침</PrivacyLink>
+            </InfoRow>
+
+            <CopyrightRow>
+              Copyright ⓒ 메짱. All rights reserved.
+            </CopyrightRow>
+          </FooterInfoGroup>
+        </FooterLeftSection>
+
+        <FooterRightSection>
+          <ComplianceBadge>
+            <span className="with-text">with</span>
+            <a
+              href="https://partners.maplestory.nexon.com/developers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="partners-logo-link"
+              title="메이플스토리 파트너스 바로가기"
+            >
+              <img
+                src={PartnersLogo}
+                alt="메이플스토리 파트너스"
+                className="partners-logo"
+              />
+            </a>
+          </ComplianceBadge>
+        </FooterRightSection>
+      </FooterInnerWrap>
+    </FooterContainer>
   );
 };
+
+const FooterContainer = styled.footer`
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: ${({ theme }) => theme.footerBgColor || "rgba(15, 23, 42, 0.8)"};
+  padding: 16px 12px;
+  box-sizing: border-box;
+  margin-top: auto;
+`;
+
+const FooterInnerWrap = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+
+  @media screen and (max-width: 860px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+`;
+
+const FooterLeftSection = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex: 1;
+
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+    gap: 12px;
+  }
+`;
+
+const FooterInfoGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  font-size: 0.75rem;
+  color: var(--muted-foreground, rgba(255, 255, 255, 0.65));
+  line-height: 1.5;
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+
+const NexonApiWrap = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  .inline-nexon-logo {
+    height: 10px;
+    width: auto;
+    display: block;
+  }
+`;
+
+const Divider = styled.span`
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.7rem;
+`;
+
+const PrivacyLink = styled(Link)`
+  color: var(--foreground, rgba(255, 255, 255, 0.85));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+
+  &:hover {
+    color: var(--primary, oklch(0.72 0.16 285));
+  }
+`;
+
+
+const CopyrightRow = styled.div`
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+`;
+
+const FooterRightSection = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+`;
+
+const ComplianceBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  .with-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .partners-logo-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .partners-logo {
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+`;

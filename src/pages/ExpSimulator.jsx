@@ -36,22 +36,22 @@ const Container = styled.div`
 
 const Header = styled.h1`
   width: 100%;
-  margin: 5px 0;
-  text-shadow: 0px 0px 7px rgb(38, 151, 185);
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  position: relative;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
+  margin: 2px 0 6px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(220, 252, 2);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.25);
+  text-align: left;
+  letter-spacing: 0.05em;
 `;
 
 const Notice = styled.div`
   display: flex;
-  gap: 2px;
-  font-size: 13px;
-  margin-top: 5px;
-  color: rgb(192, 192, 192);
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.75);
 `;
 
 const Icon = styled.div`
@@ -73,12 +73,19 @@ const RenderingBox = styled.div`
   display: flex;
   flex-direction: column;
   width: fit-content;
+  max-width: 100%;
   height: auto;
-  gap: 5px;
-  border-radius: 5px;
-  border: 1px solid rgb(30, 38, 47);
-  outline: 2px solid rgb(56, 87, 106);
-  background-color: rgb(43, 53, 62);
-  padding: 7px;
-  box-shadow: 0 4px 8px rgb(0, 0, 0);
+  gap: 10px;
+  border-radius: 7px;
+  border: 1px solid rgb(80, 92, 101);
+  outline: 1px solid rgb(42, 49, 58);
+  background: linear-gradient(
+    135deg,
+    rgba(32, 41, 52, 0.95),
+    rgba(22, 29, 38, 0.95)
+  );
+  padding: 8px;
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 `;
