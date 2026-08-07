@@ -43,6 +43,33 @@ export const GlobalStyle = createGlobalStyle`
   :root {
     --global-font-stack:  "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, 
                           "Segoe UI", '맑은 고딕', 'Malgun Gothic', Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    --radius: 0.875rem;
+    --background: oklch(0.12 0.03 264);
+    --foreground: oklch(0.96 0.01 240);
+    --card: oklch(0.18 0.04 264 / 0.72);
+    --card-foreground: oklch(0.96 0.01 240);
+    --popover: oklch(0.16 0.04 264 / 0.85);
+    --popover-foreground: oklch(0.96 0.01 240);
+    --primary: oklch(0.72 0.16 285);
+    --primary-foreground: oklch(0.12 0.03 264);
+    --secondary: oklch(0.22 0.05 260 / 0.65);
+    --secondary-foreground: oklch(0.96 0.01 240);
+    --muted: oklch(0.24 0.04 260 / 0.55);
+    --muted-foreground: oklch(0.72 0.04 250);
+    --accent: oklch(0.62 0.18 160);
+    --accent-foreground: oklch(0.12 0.03 264);
+    --destructive: oklch(0.58 0.22 25);
+    --destructive-foreground: oklch(0.98 0.01 240);
+    --border: rgba(255, 255, 255, 0.12);
+    --input: rgba(255, 255, 255, 0.14);
+    --ring: oklch(0.72 0.16 285 / 0.6);
+
+    --glass: oklch(0.15 0.03 264 / 0.62);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-hover: rgba(255, 255, 255, 0.08);
+    --glow: rgba(168, 85, 247, 0.35);
+    --glow-soft: rgba(34, 197, 94, 0.25);
   }
   
   html, body {
