@@ -1,7 +1,6 @@
 import React, {
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -9,46 +8,64 @@ import axios from "axios";
 import styled from "styled-components";
 import { X } from "lucide-react";
 
+const checkIsSkipActive = () => {
+  try {
+    const raw = localStorage.getItem("skipDay");
+    if (!raw) return false;
+    const d = new Date(raw);
+    return !isNaN(d.getTime()) && d > new Date();
+  } catch {
+    return false;
+  }
+};
+
+const checkIsSessionClosed = () => {
+  try {
+    return sessionStorage.getItem("sundayMapleClosed") === "true";
+  } catch {
+    return false;
+  }
+};
+
 export const SundayMaple = ({ eventData, loading, error }) => {
-  const [booting, setBooting] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
+  const [booting, setBooting] = useState(() => !checkIsSkipActive() && !checkIsSessionClosed());
+  const [isVisible, setIsVisible] = useState(() => !checkIsSkipActive() && !checkIsSessionClosed());
   const [ready, setReady] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
   const [reserveH, setReserveH] = useState(0);
   const wrapRef = useRef(null);
 
-  const isSkipActive = useMemo(() => {
-    const raw = localStorage.getItem("skipDay");
-    if (!raw) return false;
-    const d = new Date(raw);
-    return !isNaN(d) && d > new Date();
-  }, []);
-
   useEffect(() => {
-    if (isSkipActive) {
-      setIsVisible(false);
-      setBooting(false);
-    }
-  }, [isSkipActive]);
+    let isMounted = true;
 
-  useEffect(() => {
     const run = async () => {
-      if (booting === false) return;
+      if (checkIsSkipActive() || checkIsSessionClosed()) {
+        if (isMounted) {
+          setIsVisible(false);
+          setBooting(false);
+        }
+        return;
+      }
+
       if (loading || error || !eventData) return;
 
       const notices = eventData.event_notice || eventData || [];
       const sunday = (notices || []).find((n) => n.title?.includes("썬데이"));
       if (!sunday) {
-        setIsVisible(false);
-        setBooting(false);
+        if (isMounted) {
+          setIsVisible(false);
+          setBooting(false);
+        }
         return;
       }
 
       const end = new Date(sunday.date_event_end);
       if (!(end > new Date())) {
-        setIsVisible(false);
-        setBooting(false);
+        if (isMounted) {
+          setIsVisible(false);
+          setBooting(false);
+        }
         return;
       }
 
@@ -56,6 +73,8 @@ export const SundayMaple = ({ eventData, loading, error }) => {
         const { status, data } = await axios.get("/notice-event/detail", {
           params: { notice_id: Number(sunday.notice_id) },
         });
+        if (!isMounted) return;
+
         if (status !== 200 || !data?.contents) {
           setIsVisible(false);
           setBooting(false);
@@ -73,6 +92,12 @@ export const SundayMaple = ({ eventData, loading, error }) => {
 
         const pre = new Image();
         pre.onload = () => {
+          if (!isMounted) return;
+          if (checkIsSkipActive() || checkIsSessionClosed()) {
+            setIsVisible(false);
+            setBooting(false);
+            return;
+          }
           setImgSrc(src);
           setReady(true);
           setIsVisible(true);
@@ -81,17 +106,25 @@ export const SundayMaple = ({ eventData, loading, error }) => {
           window.dispatchEvent(new Event("sundayMapleUpdated"));
         };
         pre.onerror = () => {
+          if (!isMounted) return;
           setIsVisible(false);
           setBooting(false);
         };
         pre.src = src;
       } catch {
-        setIsVisible(false);
-        setBooting(false);
+        if (isMounted) {
+          setIsVisible(false);
+          setBooting(false);
+        }
       }
     };
+
     run();
-  }, [booting, eventData, loading, error]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [eventData, loading, error]);
 
   useLayoutEffect(() => {
     if (!ready || !isVisible) {
@@ -114,18 +147,29 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     };
   }, [ready, isVisible]);
 
-  const handleSkipDay = () => {
-    const next = !isChecked;
-    setIsChecked(next);
-    if (next) {
+  const handleSkipDay = (e) => {
+    const checked = e ? e.target.checked : !isChecked;
+    setIsChecked(checked);
+    if (checked) {
       const d = new Date();
       d.setDate(d.getDate() + 1);
       localStorage.setItem("skipDay", d.toISOString());
       setIsVisible(false);
+    } else {
+      localStorage.removeItem("skipDay");
     }
   };
 
-  if (booting) return null;
+  const handleClose = () => {
+    setIsVisible(false);
+    try {
+      sessionStorage.setItem("sundayMapleClosed", "true");
+    } catch {
+      // ignore
+    }
+  };
+
+  if (booting || !isVisible) return null;
 
   return (
     <>
@@ -144,7 +188,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
                   />
                   <label htmlFor="skip-day-checkbox-top">오늘 하루 보지 않기</label>
                 </SkipDayCheckboxWrapper>
-                <CloseButton onClick={() => setIsVisible(false)} aria-label="닫기">
+                <CloseButton onClick={handleClose} aria-label="닫기">
                   <X size={15} />
                 </CloseButton>
               </RightControls>
@@ -162,7 +206,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
                 />
                 <label htmlFor="skip-day-checkbox-bottom">오늘 하루 보지 않기</label>
               </SkipDayCheckboxWrapper>
-              <CloseButton onClick={() => setIsVisible(false)} aria-label="닫기">
+              <CloseButton onClick={handleClose} aria-label="닫기">
                 <X size={15} />
               </CloseButton>
             </BottomButtonWrap>
@@ -173,6 +217,7 @@ export const SundayMaple = ({ eventData, loading, error }) => {
     </>
   );
 };
+
 
 const OverlayContainer = styled.div`
   position: absolute;
