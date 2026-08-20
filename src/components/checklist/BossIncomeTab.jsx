@@ -133,6 +133,28 @@ const countSelectedBosses = (selections) =>
     );
   }, 0);
 
+const countSelectedRegularBosses = (selections) =>
+  periodGroups.reduce((count, group) => {
+    if (group.key !== "weekly") {
+      return count;
+    }
+
+    return (
+      count +
+      group.bosses.filter((boss) => {
+        return selections?.[boss.id]?.enabled && !boss.isSeasonBoss;
+      }).length
+    );
+  }, 0);
+
+const hasSeasonBossSelected = (selections) =>
+  periodGroups.some((group) =>
+    group.key === "weekly" &&
+    group.bosses.some(
+      (boss) => boss.isSeasonBoss && selections?.[boss.id]?.enabled,
+    ),
+  );
+
 const getDisplayRows = (group, sortMode) => {
   if (sortMode !== "price") {
     return group.bosses.map((boss) => ({
@@ -345,6 +367,8 @@ const buildCharacterSummary = (character) => {
     nickname: character.nickname,
     characterImage: character.characterImage,
     selectedCount: countSelectedBosses(character.selections),
+    regularCount: countSelectedRegularBosses(character.selections),
+    hasSeasonBoss: hasSeasonBossSelected(character.selections),
     weeklyTotal: details.reduce(
       (sum, item) => sum + (item.weeklyIncome ?? 0),
       0,
@@ -484,6 +508,12 @@ export const BossIncomeTab = () => {
   const activeWeeklySelectedCount = activeCharacterSelections
     ? countSelectedBosses(activeCharacterSelections)
     : 0;
+  const activeWeeklyRegularCount = activeCharacterSelections
+    ? countSelectedRegularBosses(activeCharacterSelections)
+    : 0;
+  const activeWeeklyHasSeasonBoss = activeCharacterSelections
+    ? hasSeasonBossSelected(activeCharacterSelections)
+    : false;
 
   const showToast = useCallback((message) => {
     setToastMessage(message);
@@ -567,12 +597,16 @@ export const BossIncomeTab = () => {
         }
 
         if (groupKey === "weekly" && !current.enabled) {
-          const weeklyCount = countSelectedBosses(character.selections);
-          if (weeklyCount >= MAX_WEEKLY_BOSSES) {
-            showToast(
-              `캐릭터별로 주간 보스는 최대 ${MAX_WEEKLY_BOSSES}개까지 선택할 수 있습니다.`,
+          if (!boss.isSeasonBoss) {
+            const regularCount = countSelectedRegularBosses(
+              character.selections,
             );
-            return character;
+            if (regularCount >= MAX_WEEKLY_BOSSES) {
+              showToast(
+                `캐릭터별로 일반 주간 보스는 최대 ${MAX_WEEKLY_BOSSES}개까지 선택할 수 있습니다.`,
+              );
+              return character;
+            }
           }
         }
 
@@ -772,11 +806,16 @@ export const BossIncomeTab = () => {
                     <CharacterNameBlock>
                       <CharacterNameRow>
                         <CharacterName>{summary.nickname}</CharacterName>
-                        <CharacterCountBadge
-                          $isFull={summary.selectedCount >= MAX_WEEKLY_BOSSES}
-                        >
-                          {summary.selectedCount} / {MAX_WEEKLY_BOSSES}
-                        </CharacterCountBadge>
+                        <BadgeWrap>
+                          <CharacterCountBadge
+                            $isFull={summary.regularCount >= MAX_WEEKLY_BOSSES}
+                          >
+                            {summary.selectedCount} / {MAX_WEEKLY_BOSSES}
+                          </CharacterCountBadge>
+                          {summary.hasSeasonBoss ? (
+                            <SeasonBossSubtext>(시즌 보스 포함)</SeasonBossSubtext>
+                          ) : null}
+                        </BadgeWrap>
                       </CharacterNameRow>
                     </CharacterNameBlock>
                   </CharacterIdentity>
@@ -858,11 +897,18 @@ export const BossIncomeTab = () => {
                       ? "주간 보스"
                       : "월간 보스"}
                   {activeCharacter && isWeekly ? (
-                    <WeeklyCounter
-                      $isFull={activeWeeklySelectedCount >= MAX_WEEKLY_BOSSES}
-                    >
-                      {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
-                    </WeeklyCounter>
+                    <BadgeWrapHeader>
+                      <WeeklyCounter
+                        $isFull={activeWeeklyRegularCount >= MAX_WEEKLY_BOSSES}
+                      >
+                        {activeWeeklySelectedCount} / {MAX_WEEKLY_BOSSES}
+                      </WeeklyCounter>
+                      {activeWeeklyHasSeasonBoss ? (
+                        <HeaderSeasonBossSubtext>
+                          (시즌 보스 포함)
+                        </HeaderSeasonBossSubtext>
+                      ) : null}
+                    </BadgeWrapHeader>
                   ) : null}
                 </SectionTitle>
               </SectionTitleWrap>
@@ -1489,11 +1535,41 @@ const CharacterName = styled.div`
 
 const CharacterCountBadge = styled(WeeklyCounter)``;
 
+const BadgeWrap = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+`;
+
+const SeasonBossSubtext = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  color: #D32F2F;
+  line-height: 1;
+
+`;
+
+const BadgeWrapHeader = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const HeaderSeasonBossSubtext = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+  color: #D32F2F;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: none;
+`;
+
 const CharacterBossList = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 5px;
   min-width: 0;
 
   @media screen and (max-width: 1200px) {
