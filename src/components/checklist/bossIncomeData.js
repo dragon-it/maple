@@ -1,14 +1,13 @@
 import BaldrixIcon from "../../assets/pages/checklist/Baldrix_icon.png";
+import BellonaIcon from "../../assets/pages/checklist/Bellona_icon.png";
 import BlackMageIcon from "../../assets/pages/checklist/Black_Mage_icon.png";
 import BloodyQueenIcon from "../../assets/pages/checklist/Bloody_Queen_icon.png";
 import ChosenSerenIcon from "../../assets/pages/checklist/Chosen_Seren_icon.png";
-import CygnusIcon from "../../assets/pages/checklist/Cygnus_icon.png";
 import DamienIcon from "../../assets/pages/checklist/Damien_icon.png";
 import DunkelIcon from "../../assets/pages/checklist/Dunkel_icon.png";
 import DuskIcon from "../../assets/pages/checklist/Dusk_icon.png";
 import FirstAdversaryIcon from "../../assets/pages/checklist/First_Adversary_icon.png";
 import GuardianAngelSlimeIcon from "../../assets/pages/checklist/Guardian_Angel_Slime_icon.png";
-import HillaIcon from "../../assets/pages/checklist/Hilla_icon.png";
 import JupiterIcon from "../../assets/pages/checklist/Jupiter_icon.png";
 import KalingIcon from "../../assets/pages/checklist/Kaling_icon.png";
 import KalosGuardianIcon from "../../assets/pages/checklist/Kalos_the_Guardian_icon.png";
@@ -18,7 +17,6 @@ import LucidIcon from "../../assets/pages/checklist/Lucid_icon.png";
 import MagnusIcon from "../../assets/pages/checklist/Magnus_icon.png";
 import PapulatusIcon from "../../assets/pages/checklist/Papulatus_icon.png";
 import PierreIcon from "../../assets/pages/checklist/Pierre_icon.png";
-import PinkBeanIcon from "../../assets/pages/checklist/Pink_Bean_icon.png";
 import RadiantMaleficIcon from "../../assets/pages/checklist/Radiant_Malefic_icon.png";
 import VellumIcon from "../../assets/pages/checklist/Vellum_icon.png";
 import VerusHillaIcon from "../../assets/pages/checklist/Verus_Hilla_icon.png";
@@ -93,12 +91,6 @@ const allPeriodGroups = [
         difficulties: [hard(8560000)],
       }),
       boss({
-        id: "hilla_hard",
-        bossName: "힐라",
-        icon: HillaIcon,
-        difficulties: [hard(1280000)],
-      }),
-      boss({
         id: "papulatus_chaos",
         bossName: "파풀라투스",
         icon: PapulatusIcon,
@@ -127,18 +119,6 @@ const allPeriodGroups = [
         bossName: "벨룸",
         icon: VellumIcon,
         difficulties: [chaos(9280000)],
-      }),
-      boss({
-        id: "pink_bean_chaos",
-        bossName: "핑크빈",
-        icon: PinkBeanIcon,
-        difficulties: [chaos(1320000)],
-      }),
-      boss({
-        id: "cygnus",
-        bossName: "시그너스",
-        icon: CygnusIcon,
-        difficulties: [easy(4555555), normal(1360000)],
       }),
       boss({
         id: "lotus",
@@ -233,6 +213,13 @@ const allPeriodGroups = [
         bossName: "찬란한 흉성",
         icon: RadiantMaleficIcon,
         difficulties: [normal(625000000), hard(2678000000)],
+        maxPartySize: 3,
+      }),
+      boss({
+        id: "Bellona",
+        bossName: "벨로나",
+        icon: BellonaIcon,
+        difficulties: [easy(440000000), normal(890000000), hard(2950000000)],
         maxPartySize: 3,
       }),
       boss({

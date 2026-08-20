@@ -8,6 +8,7 @@ import React, {
 import styled, { css, keyframes } from "styled-components";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
 import { periodGroups } from "./bossIncomeData";
+import { GripVertical } from "lucide-react";
 import { getCombinedData, getOcidApi } from "../../api/api";
 import EasyDifficultyIcon from "../../assets/pages/checklist/icons/Easy_icon.png";
 import NormalDifficultyIcon from "../../assets/pages/checklist/icons/Normal__icon.png";
@@ -343,7 +344,7 @@ const buildCharacterSummary = (character) => {
     characterId: character.id,
     nickname: character.nickname,
     characterImage: character.characterImage,
-    selectedCount: details.length,
+    selectedCount: countSelectedBosses(character.selections),
     weeklyTotal: details.reduce(
       (sum, item) => sum + (item.weeklyIncome ?? 0),
       0,
@@ -371,7 +372,52 @@ export const BossIncomeTab = () => {
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [newCharacterName, setNewCharacterName] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
   const toastTimerRef = useRef(null);
+
+  const handleDragStart = (e, index) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", index.toString());
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (dragOverIndex !== index) {
+      setDragOverIndex(index);
+    }
+  };
+
+  const handleDragLeave = (e, index) => {
+    if (dragOverIndex === index) {
+      setDragOverIndex(null);
+    }
+  };
+
+  const handleDrop = (e, targetIndex) => {
+    e.preventDefault();
+    setDragOverIndex(null);
+    if (draggedIndex === null || draggedIndex === targetIndex) {
+      setDraggedIndex(null);
+      return;
+    }
+
+    setCharacters((prev) => {
+      const updated = [...prev];
+      const [movedItem] = updated.splice(draggedIndex, 1);
+      updated.splice(targetIndex, 0, movedItem);
+      return updated;
+    });
+
+    setDraggedIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -679,7 +725,7 @@ export const BossIncomeTab = () => {
 
         {characterSummaries.length > 0 ? (
           <CharacterRows>
-            {characterSummaries.map((summary) => {
+            {characterSummaries.map((summary, index) => {
               const isActive = summary.characterId === activeCharacterId;
               const nameInitial =
                 typeof summary.nickname === "string" &&
@@ -691,6 +737,14 @@ export const BossIncomeTab = () => {
                 <CharacterCard
                   key={summary.characterId}
                   $active={isActive}
+                  $isDragging={draggedIndex === index}
+                  $isDragOver={dragOverIndex === index}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDragLeave={(e) => handleDragLeave(e, index)}
+                  onDrop={(e) => handleDrop(e, index)}
+                  onDragEnd={handleDragEnd}
                   onClick={() => handleCharacterSelect(summary.characterId)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
@@ -702,6 +756,9 @@ export const BossIncomeTab = () => {
                   tabIndex={0}
                 >
                   <CharacterIdentity>
+                    <DragHandleIcon title="드래그하여 위치 변경">
+                      <GripVertical size={20} />
+                    </DragHandleIcon>
                     <Avatar>
                       {summary.characterImage ? (
                         <img
@@ -1332,11 +1389,19 @@ const CharacterCard = styled(BossRow)`
   grid-template-columns:
     minmax(220px, 235px) minmax(180px, 1fr)
     130px 130px 44px;
-  cursor: pointer;
-  border-color: ${({ $active }) => ($active ? "#fff1a1" : "#eaebec")};
-  outline-color: ${({ $active }) => ($active ? "#d88a1e" : "#9aa3a7")};
+  cursor: grab;
+  border-color: ${({ $active, $isDragOver }) =>
+    $isDragOver ? "#41A8C4" : $active ? "#fff1a1" : "#eaebec"};
+  outline-color: ${({ $active, $isDragOver }) =>
+    $isDragOver ? "#41A8C4" : $active ? "#d88a1e" : "#9aa3a7"};
   background: ${({ $active }) => ($active ? "#dfd2a2" : "#d1d4d6")};
   box-shadow: 0 2px ${({ $active }) => ($active ? "#b97718" : "#9aa3a7")};
+  opacity: ${({ $isDragging }) => ($isDragging ? 0.4 : 1)};
+  transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
+
+  &:active {
+    cursor: grabbing;
+  }
 
   @media screen and (max-width: 1200px) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1344,6 +1409,22 @@ const CharacterCard = styled(BossRow)`
       "identity identity"
       "bosses bosses"
       "weekly monthly";
+  }
+`;
+
+const DragHandleIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(50, 66, 80, 0.45);
+  width: 20px;
+  height: 20px;
+  user-select: none;
+  cursor: grab;
+  flex-shrink: 0;
+
+  &:hover {
+    color: rgba(50, 66, 80, 0.85);
   }
 `;
 
@@ -1478,12 +1559,18 @@ const CharacterBossEmpty = styled.div`
 const CharacterIncome = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  justify-self: center;
+  text-align: left;
   gap: 2px;
 
   @media screen and (max-width: 1200px) {
     grid-area: ${({ $area }) => $area};
     flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
+    justify-self: auto;
     gap: 6px;
   }
 `;
@@ -1492,12 +1579,14 @@ const IncomeLabel = styled.div`
   color: rgba(50, 66, 80, 0.72);
   font-size: 11px;
   font-weight: 700;
+  text-align: left;
 `;
 
 const IncomeValue = styled.div`
   color: #24476a;
   font-size: 14px;
   font-weight: 800;
+  text-align: left;
 `;
 
 const DeleteButton = styled.button`
