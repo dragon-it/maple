@@ -15,6 +15,7 @@ import LimboIcon from "../../assets/pages/checklist/Limbo_icon.png";
 import LotusIcon from "../../assets/pages/checklist/Lotus_icon.png";
 import LucidIcon from "../../assets/pages/checklist/Lucid_icon.png";
 import MagnusIcon from "../../assets/pages/checklist/Magnus_icon.png";
+import MaerinIcon from "../../assets/pages/checklist/Maerin_icon.png";
 import PapulatusIcon from "../../assets/pages/checklist/Papulatus_icon.png";
 import PierreIcon from "../../assets/pages/checklist/Pierre_icon.png";
 import RadiantMaleficIcon from "../../assets/pages/checklist/Radiant_Malefic_icon.png";
@@ -51,6 +52,7 @@ const boss = ({
   levelRequirement = null,
   difficulties,
   maxPartySize = 6,
+  isSeasonBoss = false,
 }) => ({
   id,
   bossName,
@@ -58,6 +60,7 @@ const boss = ({
   levelRequirement,
   difficulties,
   maxPartySize,
+  isSeasonBoss,
 });
 
 const easy = (reward = null, maxPartySize) =>
@@ -221,6 +224,14 @@ const allPeriodGroups = [
         icon: BellonaIcon,
         difficulties: [easy(440000000), normal(890000000), hard(2950000000)],
         maxPartySize: 3,
+      }),
+      boss({
+        id: "maerin",
+        bossName: "메이린",
+        icon: MaerinIcon,
+        difficulties: [normal(300000000), hard(600000000)],
+        maxPartySize: 1,
+        isSeasonBoss: true,
       }),
       boss({
         id: "limbo",
