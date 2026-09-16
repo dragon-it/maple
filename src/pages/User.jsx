@@ -749,7 +749,7 @@ const MobileTabBar = styled.div`
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(12px);
     transform: ${({ $visible }) =>
-      $visible ? "translateY(0)" : "translateY(100%)"};
+    $visible ? "translateY(0)" : "translateY(100%)"};
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
     /* 맨 아래 1px 서브픽셀 틈새 노출 방지 오버플로우 가드 */
@@ -826,11 +826,8 @@ const Container = styled.div`
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   margin: 10px 0px;
-  font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-family: "맑은 고딕", var(--global-font-stack);
 
-  &, & * {
-    font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
-  }
 
   @media screen and (max-width: 1024px) {
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
