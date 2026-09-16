@@ -89,7 +89,4 @@ const Adsense = styled.div`
 
 const FooterTextDiv = styled.div`
   width: 100%;
-  margin-bottom: calc(
-    var(--footer-safe-area, 0px) + var(--adsense-footer-safe-area, 0px)
-  );
 `;
