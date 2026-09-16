@@ -96,6 +96,8 @@ export const User = () => {
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  const [isTabBarVisible, setIsTabBarVisible] = useState(true);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const update = () => {
@@ -108,6 +110,37 @@ export const User = () => {
       window.removeEventListener("resize", update);
       document.documentElement.style.removeProperty("--footer-safe-area");
     };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const scrollDelta = currentScrollY - lastScrollY;
+
+          if (currentScrollY <= 40) {
+            setIsTabBarVisible(true);
+          } else if (scrollDelta > 8) {
+            setIsTabBarVisible(false);
+          } else if (scrollDelta < -8) {
+            setIsTabBarVisible(true);
+          }
+
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleTabClick = (tabNumber) => {
@@ -317,7 +350,7 @@ export const User = () => {
                 ))}
             </Container>
           </ContentWrap>
-          <MobileTabBar>
+          <MobileTabBar $visible={isTabBarVisible}>
             <MobileTabs>
               <MobileTabButton
                 type="button"
@@ -706,46 +739,60 @@ const MobileTabBar = styled.div`
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: -1px;
     z-index: 130;
     display: flex;
     justify-content: center;
-    padding: 1px 10px 3px;
-    background: rgba(15, 20, 26, 0.7);
+    padding: 0 0 calc(2px + env(safe-area-inset-bottom, 0px));
+    background: rgba(15, 20, 26, 0.92);
     border-top: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.18);
-    backdrop-filter: blur(10px);
-    border-top: none;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    transform: ${({ $visible }) =>
+      $visible ? "translateY(0)" : "translateY(100%)"};
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* 맨 아래 1px 서브픽셀 틈새 노출 방지 오버플로우 가드 */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      height: 30px;
+      background: rgba(15, 20, 26, 0.95);
+      pointer-events: none;
+    }
   }
 `;
 
 const MobileTabs = styled.div`
-  width: min(100%, 520px);
+  width: 100%;
+  max-width: 520px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
+  gap: 0;
 `;
 
 const MobileTabButton = styled.button`
   cursor: pointer;
-  padding: 6px 4px;
-  border-radius: 0px 0px 12px 12px;
+  padding: 8px 4px 6px;
+  border-radius: 0;
   font-size: 11px;
+  font-weight: 500;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  border: 1px solid
-    ${({ $activeTab }) =>
-    $activeTab ? "rgba(255, 255, 255, 0.35)" : "transparent"};
+  border: none;
   background-color: ${({ theme, $activeTab }) =>
-    $activeTab ? theme.tabActiveColor : "rgba(255, 255, 255, 0.08)"};
+    $activeTab ? theme.tabActiveColor : "transparent"};
   color: ${({ theme, $activeTab }) =>
-    $activeTab ? theme.tabActiveTextColor : "rgba(255, 255, 255, 0.8)"};
+    $activeTab ? theme.tabActiveTextColor : "rgba(255, 255, 255, 0.75)"};
   transition:
     background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    color 0.2s ease;
 
   &:disabled {
     cursor: not-allowed;
@@ -779,7 +826,11 @@ const Container = styled.div`
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   margin: 10px 0px;
-  font-family: "맑은 고딕", var(--global-font-stack);
+  font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
+
+  &, & * {
+    font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
+  }
 
   @media screen and (max-width: 1024px) {
     min-width: ${({ $activeTab }) => ($activeTab === 5 ? "75%" : "0")};
