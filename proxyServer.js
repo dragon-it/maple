@@ -30,7 +30,7 @@ const callMapleStoryAPI = async (endpoint, params) => {
         ...params,
       },
       headers: {
-        "x-nxopen-api-key": process.env.REACT_APP_API_KEY,
+        "x-nxopen-api-key": process.env.NEXON_API_KEY,
       },
     });
     if (response.status === 200) {
