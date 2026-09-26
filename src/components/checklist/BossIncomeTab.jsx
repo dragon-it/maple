@@ -8,24 +8,13 @@ import React, {
 import styled, { css, keyframes } from "styled-components";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
 import { periodGroups } from "./bossIncomeData";
-import { GripVertical } from "lucide-react";
+import { ChevronDown, GripVertical } from "lucide-react";
+import { BossPartyPanel } from "./BossPartyPanel";
 import { getCombinedData, getOcidApi } from "../../api/api";
-import EasyDifficultyIcon from "../../assets/pages/checklist/icons/Easy_icon.png";
-import NormalDifficultyIcon from "../../assets/pages/checklist/icons/Normal__icon.png";
-import HardDifficultyIcon from "../../assets/pages/checklist/icons/Hard__icon.png";
-import ChaosDifficultyIcon from "../../assets/pages/checklist/icons/Chaos_icon.png";
-import ExtremeDifficultyIcon from "../../assets/pages/checklist/icons/Extreme_icon.png";
+import { BossIconWrap, BossIcon, DifficultyIcon, getDifficultyIcon } from "./BossVisuals";
 
 const STORAGE_KEY = "checklist-boss-income-characters-v2";
 const MAX_WEEKLY_BOSSES = 12;
-
-const difficultyIconMap = {
-  easy: EasyDifficultyIcon,
-  normal: NormalDifficultyIcon,
-  hard: HardDifficultyIcon,
-  chaos: ChaosDifficultyIcon,
-  extreme: ExtremeDifficultyIcon,
-};
 
 const bossLookup = periodGroups.reduce((acc, group) => {
   group.bosses.forEach((boss) => {
@@ -59,6 +48,7 @@ const createInitialSelections = () =>
         enabled: false,
         difficultyId: boss.difficulties[0]?.id ?? null,
         partySize: 1,
+        partyMembers: [],
       };
     });
     return acc;
@@ -77,9 +67,6 @@ const clampPartySize = (boss, partySize, difficultyId) =>
     Math.max(Number(partySize) || 1, 1),
     getDifficultyMaxPartySize(boss, difficultyId),
   );
-
-const getDifficultyIcon = (difficultyId) =>
-  difficultyIconMap[difficultyId] ?? NormalDifficultyIcon;
 
 const difficultyBadgeStyleMap = {
   chaos: {
@@ -248,6 +235,10 @@ const normalizeSelections = (rawSelections) => {
         : defaultValue.difficultyId;
 
       acc[bossId] = {
+        partyMembers: Array.isArray(currentValue?.partyMembers)
+          ? currentValue.partyMembers.slice(0, 5).map((name) =>
+              typeof name === "string" ? name.slice(0, 15) : "")
+          : [],
         enabled: Boolean(currentValue?.enabled),
         difficultyId,
         partySize: clampPartySize(
@@ -354,6 +345,8 @@ const buildCharacterSummary = (character) => {
         difficultyId: difficulty.id,
         difficultyLabel: difficulty.label,
         difficultyInitial: getDifficultyInitial(difficulty.id),
+        partySize,
+        partyMembers: selection.partyMembers || [],
         weeklyIncome:
           splitReward === null ? null : splitReward * group.weeklyMultiplier,
         monthlyIncome:
@@ -398,49 +391,87 @@ export const BossIncomeTab = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [expandedParties, setExpandedParties] = useState({});
+  const dragRef = useRef(null);
+  const scrollFrameRef = useRef(null);
   const toastTimerRef = useRef(null);
 
-  const handleDragStart = (e, index) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", index.toString());
-  };
-
-  const handleDragOver = (e, index) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    if (dragOverIndex !== index) {
-      setDragOverIndex(index);
-    }
-  };
-
-  const handleDragLeave = (e, index) => {
-    if (dragOverIndex === index) {
-      setDragOverIndex(null);
-    }
-  };
-
-  const handleDrop = (e, targetIndex) => {
-    e.preventDefault();
-    setDragOverIndex(null);
-    if (draggedIndex === null || draggedIndex === targetIndex) {
-      setDraggedIndex(null);
-      return;
-    }
-
-    setCharacters((prev) => {
-      const updated = [...prev];
-      const [movedItem] = updated.splice(draggedIndex, 1);
-      updated.splice(targetIndex, 0, movedItem);
+  const moveCharacter = (sourceId, targetId) => {
+    setCharacters((previous) => {
+      const from = previous.findIndex(({ id }) => id === sourceId);
+      const to = previous.findIndex(({ id }) => id === targetId);
+      if (from < 0 || to < 0 || from === to) return previous;
+      const updated = [...previous];
+      updated.splice(to, 0, updated.splice(from, 1)[0]);
       return updated;
     });
-
-    setDraggedIndex(null);
   };
 
-  const handleDragEnd = () => {
+  const updateDragTarget = () => {
+    const drag = dragRef.current;
+    if (!drag?.moved) return;
+    const row = document.elementFromPoint(drag.x, drag.y)?.closest('[data-character-row]');
+    if (row) {
+      drag.targetId = row.dataset.characterRow;
+      setDragOverIndex(Number(row.dataset.characterIndex));
+    }
+  };
+
+  const handlePointerStart = (event, characterId, index) => {
+    if (!event.isPrimary || event.button !== 0) return;
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragRef.current = { id: characterId, targetId: characterId, index,
+      pointerId: event.pointerId, startX: event.clientX, startY: event.clientY,
+      x: event.clientX, y: event.clientY, moved: false };
+    const scroll = () => {
+      const drag = dragRef.current;
+      if (!drag) return;
+      if (drag.moved) {
+        const step = drag.y < 70 ? -12 : drag.y > window.innerHeight - 70 ? 12 : 0;
+        if (step) { window.scrollBy(0, step); updateDragTarget(); }
+      }
+      scrollFrameRef.current = requestAnimationFrame(scroll);
+    };
+    scrollFrameRef.current = requestAnimationFrame(scroll);
+  };
+
+  const handlePointerMove = (event) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    drag.x = event.clientX;
+    drag.y = event.clientY;
+    if (!drag.moved && Math.hypot(drag.x - drag.startX, drag.y - drag.startY) >= 6) {
+      drag.moved = true;
+      setDraggedIndex(drag.index);
+    }
+    updateDragTarget();
+  };
+
+  const finishPointerDrag = (event, cancel = false) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    if (!cancel && drag.moved) moveCharacter(drag.id, drag.targetId);
+    dragRef.current = null;
+    cancelAnimationFrame(scrollFrameRef.current);
     setDraggedIndex(null);
     setDragOverIndex(null);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  useEffect(() => () => cancelAnimationFrame(scrollFrameRef.current), []);
+
+  const handlePartyMemberChange = (characterId, bossId, index, name) => {
+    setCharacters((previous) => previous.map((character) => {
+      if (character.id !== characterId) return character;
+      const selection = character.selections[bossId];
+      const partyMembers = [...(selection.partyMembers || [])];
+      partyMembers[index] = name;
+      return { ...character, selections: { ...character.selections,
+        [bossId]: { ...selection, partyMembers } } };
+    }));
   };
 
   useEffect(() => {
@@ -768,19 +799,18 @@ export const BossIncomeTab = () => {
                   : "?";
 
               return (
-                <CharacterCard
+                <CharacterEntry
                   key={summary.characterId}
+                  data-character-row={summary.characterId}
+                  data-character-index={index}
+                >
+                <CharacterCard
                   $active={isActive}
                   $isDragging={draggedIndex === index}
                   $isDragOver={dragOverIndex === index}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, index)}
-                  onDragOver={(e) => handleDragOver(e, index)}
-                  onDragLeave={(e) => handleDragLeave(e, index)}
-                  onDrop={(e) => handleDrop(e, index)}
-                  onDragEnd={handleDragEnd}
                   onClick={() => handleCharacterSelect(summary.characterId)}
                   onKeyDown={(event) => {
+                    if (event.target !== event.currentTarget) return;
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
                       handleCharacterSelect(summary.characterId);
@@ -790,7 +820,24 @@ export const BossIncomeTab = () => {
                   tabIndex={0}
                 >
                   <CharacterIdentity>
-                    <DragHandleIcon title="드래그하여 위치 변경">
+                    <DragHandleIcon
+                      type="button"
+                      title="끌어서 이동 · 키보드 위/아래 화살표로 이동"
+                      aria-label={`${summary.nickname} 순서 변경`}
+                      onPointerDown={(event) => handlePointerStart(event, summary.characterId, index)}
+                      onPointerMove={handlePointerMove}
+                      onPointerUp={finishPointerDrag}
+                      onPointerCancel={(event) => finishPointerDrag(event, true)}
+                      onLostPointerCapture={(event) => finishPointerDrag(event, true)}
+                      onClick={(event) => event.stopPropagation()}
+                      onKeyDown={(event) => {
+                        event.stopPropagation();
+                        if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+                        event.preventDefault();
+                        const target = characters[index + (event.key === "ArrowUp" ? -1 : 1)];
+                        if (target) moveCharacter(summary.characterId, target.id);
+                      }}
+                    >
                       <GripVertical size={20} />
                     </DragHandleIcon>
                     <Avatar>
@@ -873,6 +920,26 @@ export const BossIncomeTab = () => {
                     ×
                   </DeleteButton>
                 </CharacterCard>
+                <PartyToggle
+                  type="button"
+                  aria-expanded={!!expandedParties[summary.characterId]}
+                  aria-controls={`party-${summary.characterId}`}
+                  onClick={() => setExpandedParties((previous) => ({
+                    ...previous,
+                    [summary.characterId]: !previous[summary.characterId],
+                  }))}
+                >
+                  {expandedParties[summary.characterId] ? "접기" : "더보기"}
+                  <ChevronDown size={16} style={{ transform: expandedParties[summary.characterId] ? "rotate(180deg)" : undefined }} />
+                </PartyToggle>
+                {expandedParties[summary.characterId] && (
+                  <BossPartyPanel
+                    id={`party-${summary.characterId}`}
+                    summary={summary}
+                    onMemberChange={handlePartyMemberChange}
+                  />
+                )}
+                </CharacterEntry>
               );
             })}
           </CharacterRows>
@@ -1292,24 +1359,6 @@ const BossIdentity = styled.div`
   }
 `;
 
-const BossIconWrap = styled.div`
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid rgba(79, 86, 93, 0.8);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
-  background: linear-gradient(180deg, #6c747a 0%, #4a4f54 100%);
-`;
-
-const BossIcon = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-`;
-
 const BossIconFallback = styled.div`
   display: grid;
   width: 100%;
@@ -1353,12 +1402,6 @@ const DifficultyCheck = styled.input`
   width: 20px;
   height: 20px;
   margin: 0;
-`;
-
-const DifficultyIcon = styled.img`
-  height: 18px;
-  display: block;
-  object-fit: contain;
 `;
 
 const DifficultyReward = styled.span`
@@ -1426,22 +1469,57 @@ const FormButton = styled(HeaderButton)`
 const CharacterRows = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   margin-top: 10px;
+`;
+
+const CharacterEntry = styled.div`
+  min-width: 0;
+`;
+
+const PartyToggle = styled.button`
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: calc(100% + 2px);
+  min-height: 32px;
+  margin-top: 0;
+  margin-left: -1px;
+  border: 1px solid #91a6b5;
+  border-radius: 0 0 5px 5px;
+  background: #dce6ed;
+  color: #354f62;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  &[aria-expanded="true"] {
+    border-radius: 0;
+    background: #cbdbe6;
+    border-bottom-color: #afc1cd;
+  }
+  &:hover { background: #c4d7e4; }
+  &:focus-visible { outline: 2px solid #348ca6; outline-offset: 2px; }
+  @media (pointer: coarse) {
+    min-height: 44px;
+  }
 `;
 
 const CharacterCard = styled(BossRow)`
   position: relative;
+  border-radius: 3px 3px 0 0;
   grid-template-columns:
     minmax(220px, 235px) minmax(180px, 1fr)
     130px 130px 44px;
-  cursor: grab;
+  cursor: pointer;
   border-color: ${({ $active, $isDragOver }) =>
     $isDragOver ? "#41A8C4" : $active ? "#fff1a1" : "#eaebec"};
   outline-color: ${({ $active, $isDragOver }) =>
     $isDragOver ? "#41A8C4" : $active ? "#d88a1e" : "#9aa3a7"};
   background: ${({ $active }) => ($active ? "#dfd2a2" : "#d1d4d6")};
-  box-shadow: 0 2px ${({ $active }) => ($active ? "#b97718" : "#9aa3a7")};
+  box-shadow: none;
   opacity: ${({ $isDragging }) => ($isDragging ? 0.4 : 1)};
   transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
 
@@ -1458,13 +1536,17 @@ const CharacterCard = styled(BossRow)`
   }
 `;
 
-const DragHandleIcon = styled.div`
+const DragHandleIcon = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(50, 66, 80, 0.45);
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 44px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  touch-action: none;
   user-select: none;
   cursor: grab;
   flex-shrink: 0;
@@ -1472,6 +1554,7 @@ const DragHandleIcon = styled.div`
   &:hover {
     color: rgba(50, 66, 80, 0.85);
   }
+  &:focus-visible { outline: 2px solid #348ca6; border-radius: 4px; }
 `;
 
 const CharacterIdentity = styled.div`

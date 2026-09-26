@@ -19,10 +19,9 @@ function Layout({ children }) {
 
     (async () => {
       try {
-        const headers = { "x-nxopen-api-key": process.env.REACT_APP_API_KEY };
         const [ev, no] = await Promise.all([
-          axios.get("/notice-event", { headers, signal: ctrl.signal }),
-          axios.get("/notice", { headers, signal: ctrl.signal }),
+          axios.get("/notice-event", { signal: ctrl.signal }),
+          axios.get("/notice", { signal: ctrl.signal }),
         ]);
         if (ev.status === 200) setEventData(ev.data);
         if (no.status === 200) setNoticeData(no.data);
