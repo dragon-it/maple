@@ -31,37 +31,6 @@ import checkListAprilLightBGI from "../../assets/backgruondImg/checkList/checkLi
 import checkListAprilDarkBGI from "../../assets/backgruondImg/checkList/checkList_april_dark.webp";
 import { useTheme } from "../../context/ThemeProvider";
 
-const ALL_BACKGROUND_IMAGES = [
-  mainLightBGI,
-  mainDarkBGI,
-  mainAprilLightBGI,
-  mainAprilDarkBGI,
-  findMainLightBGI,
-  findMainDarkBGI,
-  findMainAprilLightBGI,
-  findMainAprilDarkBGI,
-  searchGuildDarkBGI,
-  searchGuildLightBGI,
-  searchGuildAprilDarkBGI,
-  searchGuildAprilLightBGI,
-  randomClassDarkBGI,
-  randomClassLightBGI,
-  randomClassAprilDarkBGI,
-  randomClassAprilLightBGI,
-  expSimulatorDarkBGI,
-  expSimulatorLightBGI,
-  expSimulatorAprilDarkBGI,
-  expSimulatorAprilLightBGI,
-  slidingPuzzleLightBGI,
-  slidingPuzzleDarkBGI,
-  slidingPuzzleAprilLightBGI,
-  slidingPuzzleAprilDarkBGI,
-  checkListLightBGI,
-  checkListDarkBGI,
-  checkListAprilLightBGI,
-  checkListAprilDarkBGI,
-];
-
 const isAprilFoolsDay = () => {
   const today = new Date();
   return today.getMonth() === 3 && today.getDate() === 1;
@@ -73,14 +42,6 @@ export const BackgroundImage = () => {
   const [imageSrc, setImageSrc] = useState(
     getBackgroundImage(theme, location.pathname),
   );
-
-  // 모든 배경 이미지 사전 로딩 (브라우저 캐시에 저장하여 페이지 전환 시 딜레이 제거)
-  useEffect(() => {
-    ALL_BACKGROUND_IMAGES.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
 
   // 경로와 테마에 따른 백그라운드 이미지를 반환하는 함수
   function getBackgroundImage(theme, pathname) {
@@ -145,13 +106,30 @@ export const BackgroundImage = () => {
     }
   }
 
+  const nextImageSrc = getBackgroundImage(theme, location.pathname);
+
   useEffect(() => {
-    setImageSrc(getBackgroundImage(theme, location.pathname));
-  }, [location.pathname, theme]);
+    if (nextImageSrc === imageSrc) return;
+
+    let cancelled = false;
+    const image = new Image();
+    image.src = nextImageSrc;
+
+    // 기존 배경을 유지하고 새 이미지의 다운로드와 디코딩이 끝나면 교체한다.
+    image.decode().then(() => {
+      if (!cancelled) setImageSrc(nextImageSrc);
+    }).catch(() => {
+      // 로딩 실패 시에도 현재 배경을 유지한다.
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [nextImageSrc, imageSrc]);
 
   return (
     <Container>
-      <img src={imageSrc} alt="" width="1920" height="1080" decoding="sync" />
+      <img src={imageSrc} alt="" width="1920" height="1080" decoding="async" />
       <LinearOverlay />
       <RadialOverlay />
     </Container>
@@ -163,6 +141,7 @@ const Container = styled.div`
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  background: #263449;
 
   img {
     width: 100%;
