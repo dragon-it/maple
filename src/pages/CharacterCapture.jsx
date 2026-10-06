@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useLatestQuery } from "../hooks/useLatestQuery";
 import styled from "styled-components";
 import { useTheme } from "../context/ThemeProvider";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import npc from "../assets/npc/npc_fish.png";
@@ -12,32 +13,18 @@ import { CaptureInput } from "../components/characterCapture/CaptureInput";
 import { CaptureRenderingBox } from "../components/characterCapture/CaptureRenderingBox";
 import { NpcChatBox } from "../components/common/npcChat/NpcChatBox";
 
+const fetchCapture = (key, options) =>
+  characterCaptureFetch(JSON.parse(key)[0], options);
+
 export const CharacterCapture = () => {
   const { theme } = useTheme();
   const { characterName } = useParams();
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setResult(null);
-    setLoading(false);
-    setError(null);
-    if (!characterName) return;
-
-    const fetchDataAndUpdateState = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        await characterCaptureFetch(characterName, setResult, setError);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDataAndUpdateState();
-  }, [characterName]);
+  const location = useLocation();
+  // 같은 이름을 다시 제출한 경우에도 새 조회로 처리
+  const queryKey = characterName
+    ? JSON.stringify([characterName, location.key])
+    : null;
+  const { result, loading, error } = useLatestQuery(queryKey, fetchCapture);
 
   return (
     <>
@@ -58,7 +45,7 @@ export const CharacterCapture = () => {
       ) : error ? (
         <Container>
           <HeaderWrap>
-            <CaptureInput setResult={setResult} setError={setError} />
+            <CaptureInput />
             <NpcWarp>
               <NpcChatBox
                 text={error}
@@ -73,7 +60,7 @@ export const CharacterCapture = () => {
         <>
           <Container result={result}>
             <HeaderWrap>
-              <CaptureInput setResult={setResult} setError={setError} />
+              <CaptureInput />
 
               {!result && (
                 <NpcWarp>

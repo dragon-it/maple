@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useLatestQuery } from "../hooks/useLatestQuery";
 import styled from "styled-components";
 import { useTheme } from "../context/ThemeProvider";
 import { Helmet } from "react-helmet-async";
@@ -15,29 +16,7 @@ import SearchGuildFetch from "../api/searchGuildFetch";
 export const SearchGuild = () => {
   const { theme } = useTheme();
   const { guildName, worldName } = useParams();
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setResult(null);
-    setLoading(false);
-    setError(null);
-    if (!guildName) return;
-
-    const fetchDataAndUpdateState = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        await SearchGuildFetch(guildName, setResult, setError);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDataAndUpdateState();
-  }, [guildName]);
+  const { result, loading, error } = useLatestQuery(guildName, SearchGuildFetch);
 
   return (
     <>
@@ -58,7 +37,7 @@ export const SearchGuild = () => {
       ) : error ? (
         <Container>
           <HeaderWrap>
-            <SearchGuildInput setResult={setResult} setError={setError} />
+            <SearchGuildInput />
             <NpcWarp>
               <NpcChatBox
                 text={error}
@@ -73,7 +52,7 @@ export const SearchGuild = () => {
         <>
           <Container $hasResult={!!result}>
             <HeaderWrap $isGuildDetail={!!worldName}>
-              <SearchGuildInput setResult={setResult} setError={setError} />
+              <SearchGuildInput />
 
               {!result && (
                 <NpcWarp>

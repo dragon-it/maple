@@ -1,3 +1,4 @@
+import { isRequestCanceled, throwIfAborted } from "./requestCancellation";
 import { getOcidApi } from "./api";
 import characterCaptureApi from "./ApiFuntion";
 
@@ -17,7 +18,8 @@ const getAllCaseCombinations = (str) => {
 };
 
 // 캐릭터 OCID 함수
-const getOcid = async (characterName) => {
+const getOcid = async (characterName, signal) => {
+  throwIfAborted(signal);
   try {
     const isKorean = /^[가-힣]+$/.test(characterName); // 한글인지 확인
     const combinations = isKorean
@@ -29,11 +31,14 @@ const getOcid = async (characterName) => {
 
     // 1. 입력한 이름 그대로 먼저 시도
     try {
-      const ocidData = await getOcidApi(characterName); // OCID API 호출
+      const ocidData = await getOcidApi(characterName, { signal }); // OCID API 호출
+      throwIfAborted(signal);
       if (ocidData) {
         return ocidData.ocid; // OCID 반환
       }
     } catch (error) {
+      throwIfAborted(signal);
+      if (isRequestCanceled(error)) throw error;
       console.log(
         `Direct search failed for ${characterName}, trying combinations...`
       );
@@ -42,11 +47,14 @@ const getOcid = async (characterName) => {
     // 2. 제한된 대소문자 조합 시도 (10개까지만)
     for (let name of limitedCombinations) {
       try {
-        const ocidData = await getOcidApi(name); // OCID API 호출
+        const ocidData = await getOcidApi(name, { signal }); // OCID API 호출
+        throwIfAborted(signal);
         if (ocidData) {
           return ocidData.ocid; // OCID 반환
         }
       } catch (error) {
+        throwIfAborted(signal);
+        if (isRequestCanceled(error)) throw error;
         console.log(`Failed for ${name}: ${error.message}`);
         continue; // 오류 발생 시 다음 조합으로 넘어감
       }
@@ -54,6 +62,8 @@ const getOcid = async (characterName) => {
 
     return null; // 모든 조합을 시도한 후에도 OCID를 찾지 못한 경우 null 반환
   } catch (error) {
+    throwIfAborted(signal);
+    if (isRequestCanceled(error)) throw error;
     console.error(`getOcid error: ${error.message}`);
     return null; // 예기치 않은 오류 발생 시 null 반환
   }
@@ -68,44 +78,26 @@ const validateCharacterName = (characterName) => {
   }
 };
 
-const characterCaptureFetch = async (
-  characterName,
-  setResult = () => {},
-  setError = () => {}
-) => {
-  if (characterName.trim() !== "") {
-    try {
-      validateCharacterName(characterName);
-
-      const ocid = await getOcid(characterName);
-      if (ocid) {
-        const apiResults = await Promise.all(
-          characterCaptureApi.map(({ function: apiFunction }) =>
-            apiFunction(ocid)
-          )
-        );
-
-        const resultObject = {};
-        characterCaptureApi.forEach(({ name }, index) => {
-          resultObject[name] = apiResults[index];
-        });
-
-        if (!resultObject.getCombinedData.getBasicInformation) {
-          setError("기본 정보가 없습니다.");
-        } else {
-          setResult(resultObject);
-        }
-
-        return resultObject;
-      } else {
-        setError(
-          "존재하지 않는 캐릭터 명이거나 오랫동안 접속하지 않은 캐릭터입니다.."
-        );
-      }
-    } catch (error) {
-      setError(error.message);
-    }
+const characterCaptureFetch = async (characterName, { signal } = {}) => {
+  throwIfAborted(signal);
+  if (!characterName.trim()) throw new Error("닉네임을 입력해주세요.");
+  validateCharacterName(characterName);
+  const ocid = await getOcid(characterName, signal);
+  throwIfAborted(signal);
+  if (!ocid) {
+    throw new Error("존재하지 않는 캐릭터 명이거나 오랫동안 접속하지 않은 캐릭터입니다.");
   }
+  const apiResults = await Promise.all(
+    characterCaptureApi.map(({ function: apiFunction }) => apiFunction(ocid, { signal })),
+  );
+  throwIfAborted(signal);
+  const result = Object.fromEntries(
+    characterCaptureApi.map(({ name }, index) => [name, apiResults[index]]),
+  );
+  if (!result.getCombinedData?.getBasicInformation) {
+    throw new Error("기본 정보가 없습니다.");
+  }
+  return result;
 };
 
 export default characterCaptureFetch;

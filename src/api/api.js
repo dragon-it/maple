@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isRequestCanceled, throwIfAborted } from "./requestCancellation";
 
 /**
  * MapleStory API를 호출하는 함수
@@ -7,9 +8,11 @@ import axios from "axios";
  * @returns {object|boolean} - API 응답 데이터 또는 실패 시 false 반환
  */
 
-const callMapleStoryAPI = async (endpoint, params) => {
+const callMapleStoryAPI = async (endpoint, params, { signal } = {}) => {
   try {
-    const response = await axios.get(`/api/${endpoint}`, { params });
+    throwIfAborted(signal);
+    const response = await axios.get(`/api/${endpoint}`, { params, signal });
+    throwIfAborted(signal);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -19,6 +22,8 @@ const callMapleStoryAPI = async (endpoint, params) => {
       return false;
     }
   } catch (error) {
+    throwIfAborted(signal);
+    if (isRequestCanceled(error)) throw error;
     console.error(`Error in API call to /api/${endpoint}:`, error.message);
     return false;
   }
@@ -31,8 +36,8 @@ const getYesterDayFormatted = () => {
 };
 
 // Ocid 함수
-const getOcidApi = async (characterName) => {
-  return callMapleStoryAPI("ocid", { character_name: characterName });
+const getOcidApi = async (characterName, { signal } = {}) => {
+  return callMapleStoryAPI("ocid", { character_name: characterName }, { signal });
 };
 
 // 선데이메이플 공지
@@ -48,40 +53,40 @@ const getNoticeDetail = async (notice_id) => {
 };
 
 // 길드 id
-const getOguildId = async (guildName, worldName) => {
+const getOguildId = async (guildName, worldName, { signal } = {}) => {
   return callMapleStoryAPI("guild/id", {
     guild_name: guildName,
     world_name: worldName,
-  });
+  }, { signal });
 };
 
 // 길드 모든 월드 id
-const getAllOguildId = async (guildName) => {
+const getAllOguildId = async (guildName, { signal } = {}) => {
   return callMapleStoryAPI(
     "guild/all",
     {
       guild_name: guildName,
     },
     {
-      headers: {
-        "Cache-Control": "no-cache",
-      },
+      signal,
     }
   );
 };
 
 // 길드 정보 함수
-const getGuildBasicInformation = async (oguildId) => {
+const getGuildBasicInformation = async (oguildId, { signal } = {}) => {
   return callMapleStoryAPI("guild/basic", {
     oguild_id: oguildId,
-  });
+  }, { signal });
 };
 
 // 길드 멤버 정보 함수
-const getGuildMembers = async (guildMembers) => {
+const getGuildMembers = async (guildMembers, { signal } = {}) => {
   try {
-    const response = await axios.post("/api/guild/members", { guildMembers });
+    throwIfAborted(signal);
+    const response = await axios.post("/api/guild/members", { guildMembers }, { signal });
 
+    throwIfAborted(signal);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -89,18 +94,23 @@ const getGuildMembers = async (guildMembers) => {
       return false;
     }
   } catch (error) {
+    throwIfAborted(signal);
+    if (isRequestCanceled(error)) throw error;
     console.error("Error fetching guild members:", error.message);
     return false;
   }
 };
 
 // Combined API 호출 함수
-const getCombinedData = async (ocid) => {
+const getCombinedData = async (ocid, { signal } = {}) => {
   try {
+    throwIfAborted(signal);
     const response = await axios.get(`/api/character/information`, {
       params: { ocid },
+      signal,
     });
 
+    throwIfAborted(signal);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -108,18 +118,23 @@ const getCombinedData = async (ocid) => {
       return false;
     }
   } catch (error) {
+    throwIfAborted(signal);
+    if (isRequestCanceled(error)) throw error;
     console.error("Error fetching combined data:", error);
     return false;
   }
 };
 
 // 경험치 히스토리 API
-const getExpHistory = async (ocid) => {
+const getExpHistory = async (ocid, { signal } = {}) => {
   try {
+    throwIfAborted(signal);
     const response = await axios.get(`/api/character/exp-history`, {
       params: { ocid },
+      signal,
     });
 
+    throwIfAborted(signal);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -127,18 +142,23 @@ const getExpHistory = async (ocid) => {
       return false;
     }
   } catch (error) {
+    throwIfAborted(signal);
+    if (isRequestCanceled(error)) throw error;
     console.error("Error fetching exp history data:", error);
     return false;
   }
 };
 
 // 캐릭터 캡처 API
-const getCharacterCapture = async (ocid) => {
+const getCharacterCapture = async (ocid, { signal } = {}) => {
   try {
+    throwIfAborted(signal);
     const response = await axios.get(`/api/character-capture`, {
       params: { ocid },
+      signal,
     });
 
+    throwIfAborted(signal);
     if (response.status === 200) {
       return response.data;
     } else {
@@ -146,17 +166,19 @@ const getCharacterCapture = async (ocid) => {
       return false;
     }
   } catch (error) {
+    throwIfAborted(signal);
+    if (isRequestCanceled(error)) throw error;
     console.error("Error fetching combined data:", error);
     return false;
   }
 };
 
 // 길드 랭킹 함수
-const getGuildRanking = async (guildName, worldName) => {
+const getGuildRanking = async (guildName, worldName, { signal } = {}) => {
   return callMapleStoryAPI("ranking/guild", {
     guild_name: guildName,
     world_name: worldName,
-  });
+  }, { signal });
 };
 
 export {
