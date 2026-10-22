@@ -1,17 +1,11 @@
 import { getAllOguildId } from "./api";
+import { throwIfAborted } from "./requestCancellation";
 
-const SearchGuildFetch = async (guildName, setResult, setError) => {
-  try {
-    const response = await getAllOguildId(guildName);
-
-    if (response) {
-      setResult(response);
-    } else {
-      setError("길드를 찾을 수 없습니다.");
-    }
-  } catch (error) {
-    setError("API 요청 중 오류가 발생했습니다.");
-  }
+const SearchGuildFetch = async (guildName, { signal } = {}) => {
+  const response = await getAllOguildId(guildName, { signal });
+  throwIfAborted(signal);
+  if (!response) throw new Error("길드를 찾을 수 없습니다.");
+  return response;
 };
 
 export default SearchGuildFetch;

@@ -1,3 +1,4 @@
+import { CHARACTER_NAME_MAX_LENGTH, normalizeCharacterName } from "../../utils/characterName";
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -94,7 +95,7 @@ export const Search = ({ variant = "page", compact = false }) => {
       return;
     }
 
-    const processedSearchValue = searchValue.replace(/\s+/g, "");
+    const processedSearchValue = normalizeCharacterName(searchValue);
 
     if (location.pathname.startsWith("/character-capture")) {
       navigate(
@@ -160,7 +161,7 @@ export const Search = ({ variant = "page", compact = false }) => {
           value={searchValue}
           onChange={handleInputChange}
           onBlur={handleMobileInputBlur}
-          maxLength={15}
+          maxLength={CHARACTER_NAME_MAX_LENGTH}
           autoFocus={shouldFocusInput}
           $variant={variant}
           $compact={compact}

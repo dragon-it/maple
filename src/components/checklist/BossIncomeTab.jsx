@@ -1,3 +1,5 @@
+import { resolveCharacterOcid } from "../../api/resolveCharacterOcid";
+import { CHARACTER_NAME_MAX_LENGTH, normalizeCharacterName } from "../../utils/characterName";
 import React, {
   useMemo,
   useState,
@@ -10,7 +12,7 @@ import { ContainerCss } from "../common/searchCharacter/ContainerBox";
 import { periodGroups } from "./bossIncomeData";
 import { ChevronDown, GripVertical } from "lucide-react";
 import { BossPartyPanel } from "./BossPartyPanel";
-import { getCombinedData, getOcidApi } from "../../api/api";
+import { getCombinedData } from "../../api/api";
 import { BossIconWrap, BossIcon, DifficultyIcon, getDifficultyIcon } from "./BossVisuals";
 
 const STORAGE_KEY = "checklist-boss-income-characters-v2";
@@ -167,43 +169,8 @@ const getDisplayRows = (group, sortMode) => {
     );
 };
 
-const getAllCaseCombinations = (text) => {
-  if (!text) {
-    return [""];
-  }
-
-  const [firstChar, ...restChars] = text;
-  const rest = getAllCaseCombinations(restChars.join(""));
-  const combinations = [];
-
-  rest.forEach((suffix) => {
-    combinations.push(firstChar.toLowerCase() + suffix);
-    combinations.push(firstChar.toUpperCase() + suffix);
-  });
-
-  return combinations;
-};
-
-const findCharacterOcid = async (nickname) => {
-  const isKorean = /^[가-힣]+$/.test(nickname);
-  const candidates = isKorean
-    ? [nickname]
-    : Array.from(
-      new Set([nickname, ...getAllCaseCombinations(nickname)]),
-    ).slice(0, 20);
-
-  for (const candidate of candidates) {
-    const ocidData = await getOcidApi(candidate);
-    if (ocidData?.ocid) {
-      return ocidData.ocid;
-    }
-  }
-
-  return null;
-};
-
 const fetchCharacterProfile = async (nickname) => {
-  const ocid = await findCharacterOcid(nickname);
+  const ocid = await resolveCharacterOcid(nickname);
   if (!ocid) {
     return null;
   }
@@ -709,7 +676,7 @@ export const BossIncomeTab = () => {
   const handleAddCharacter = async (event) => {
     event.preventDefault();
 
-    const nickname = newCharacterName.trim();
+    const nickname = normalizeCharacterName(newCharacterName);
     if (!nickname) {
       showToast("등록할 캐릭터 닉네임을 입력해주세요.");
       return;
@@ -722,7 +689,9 @@ export const BossIncomeTab = () => {
     try {
       profile = await fetchCharacterProfile(nickname);
     } catch (error) {
-      profile = null;
+      showToast(error.message);
+      setIsRegistering(false);
+      return;
     }
 
     const nextCharacter = {
@@ -780,7 +749,7 @@ export const BossIncomeTab = () => {
               value={newCharacterName}
               onChange={(event) => setNewCharacterName(event.target.value)}
               placeholder="닉네임을 입력하세요"
-              maxLength={12}
+              maxLength={CHARACTER_NAME_MAX_LENGTH}
             />
             <FormButton type="submit" disabled={isRegistering}>
               {isRegistering ? "등록 중..." : "등록"}
