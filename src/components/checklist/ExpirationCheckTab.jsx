@@ -239,18 +239,19 @@ export const ExpirationCheckTab = () => {
           <CharacterContextGroup>
             <FavoriteCharacterList>
               {favoriteCharacters.map((character) => (
-                <FavoriteCharacterItem
-                  key={character.characterName}
-                  type="button"
-                  onClick={() => searchCharacter(character.characterName)}
-                >
-                  <CharacterAvatar
-                    characterName={character.characterName}
-                    characterImage={character.characterImage}
-                  />
-                  <FavoriteCharacterName>
-                    {character.characterName}
-                  </FavoriteCharacterName>
+                <FavoriteCharacterItem key={character.characterName}>
+                  <FavoriteCharacterSearch
+                    type="button"
+                    onClick={() => searchCharacter(character.characterName)}
+                  >
+                    <CharacterAvatar
+                      characterName={character.characterName}
+                      characterImage={character.characterImage}
+                    />
+                    <FavoriteCharacterName>
+                      {character.characterName}
+                    </FavoriteCharacterName>
+                  </FavoriteCharacterSearch>
                   <CurrentFavoriteButton
                     type="button"
                     onClick={(e) => {
@@ -558,7 +559,7 @@ const FavoriteCharacterList = styled.div`
   gap: 8px;
 `;
 
-const FavoriteCharacterItem = styled.button`
+const FavoriteCharacterItem = styled.div`
   min-width: 140px;
   max-width: 180px;
   padding: 6px 8px;
@@ -580,6 +581,22 @@ const FavoriteCharacterItem = styled.button`
     border-color: rgba(94, 210, 232, 0.4);
     background: rgba(255, 255, 255, 0.14);
   }
+`;
+
+// 검색과 즐겨찾기 해제를 형제 버튼으로 나눠 키보드로도 각각 실행할 수 있게 함
+const FavoriteCharacterSearch = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 `;
 
 const CharacterAvatarFrame = styled.div`
