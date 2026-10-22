@@ -1,5 +1,6 @@
 const express = require("express");
 const { createOcidHandler } = require("./server/ocid");
+const { createPartyProfileHandler } = require("./server/partyProfile");
 const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -380,6 +381,9 @@ app.get("/api/guild/all", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// 파티 목록에 필요한 기본 프로필과 전투력만 조회함
+app.get("/api/character/party-profile", createPartyProfileHandler(callMapleStoryAPI));
 
 // 경험치 히스토리 API
 app.get("/api/character/exp-history", async (req, res) => {
