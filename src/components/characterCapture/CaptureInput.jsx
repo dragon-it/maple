@@ -1,3 +1,4 @@
+import { CHARACTER_NAME_MAX_LENGTH, normalizeCharacterName } from "../../utils/characterName";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -22,7 +23,7 @@ export const CaptureInput = () => {
   const handleSearch = async () => {
     if (!searchValue.trim()) return;
 
-    const processedSearchValue = searchValue.replace(/\s+/g, "");
+    const processedSearchValue = normalizeCharacterName(searchValue);
     requestRef.current?.abort();
     setError(null);
 
@@ -60,7 +61,7 @@ export const CaptureInput = () => {
       }
     } catch (error) {
       if (controller.signal.aborted || isRequestCanceled(error)) return;
-      setError("오류가 발생하였습니다. 닉네임을 확인해주세요.");
+      setError(error.message || "조회에 실패했습니다. 잠시 후 다시 시도해주세요.");
       console.error("본캐 찾기 중 오류 발생:", error);
     }
   };
@@ -89,7 +90,7 @@ export const CaptureInput = () => {
           placeholder="캐릭터 닉네임을 입력해주세요."
           value={searchValue}
           onChange={handleInputChange}
-          maxLength={15}
+          maxLength={CHARACTER_NAME_MAX_LENGTH}
         />
         <StyledButton>
           <img src={serchIcon} alt="검색" width={20} height={20} />

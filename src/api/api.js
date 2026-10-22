@@ -37,7 +37,12 @@ const getYesterDayFormatted = () => {
 
 // Ocid 함수
 const getOcidApi = async (characterName, { signal } = {}) => {
-  return callMapleStoryAPI("ocid", { character_name: characterName }, { signal });
+  throwIfAborted(signal);
+  const response = await axios.get("/api/ocid", {
+    params: { character_name: characterName }, signal,
+  });
+  throwIfAborted(signal);
+  return response.data;
 };
 
 // 선데이메이플 공지

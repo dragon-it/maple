@@ -1,3 +1,4 @@
+import { CHARACTER_NAME_MAX_LENGTH } from "../../utils/characterName";
 import React from "react";
 import styled from "styled-components";
 import {
@@ -55,7 +56,7 @@ export const BossPartyPanel = ({ summary, onMemberChange, id }) => {
                       }
                       placeholder="닉네임 입력"
                       aria-label={`${boss.bossName} 파티원 ${index + 2}`}
-                      maxLength={15}
+                      maxLength={CHARACTER_NAME_MAX_LENGTH}
                       autoComplete="off"
                       spellCheck={false}
                     />

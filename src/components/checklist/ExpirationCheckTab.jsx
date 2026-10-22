@@ -1,6 +1,8 @@
+import { resolveCharacterOcid } from "../../api/resolveCharacterOcid";
+import { CHARACTER_NAME_MAX_LENGTH, normalizeCharacterName } from "../../utils/characterName";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { getCombinedData, getOcidApi } from "../../api/api";
+import { getCombinedData } from "../../api/api";
 import favorite_false from "../../assets/icons/favoriteIcon/favorite_Star_False.svg";
 import favorite_true from "../../assets/icons/favoriteIcon/favorite_Star_True.svg";
 import { ContainerCss } from "../common/searchCharacter/ContainerBox";
@@ -89,39 +91,6 @@ const getRemainTone = (expireAt) => {
   return "normal";
 };
 
-const getAllCaseCombinations = (value) => {
-  if (!value.length) {
-    return [""];
-  }
-
-  const first = value[0];
-  const rest = getAllCaseCombinations(value.slice(1));
-  const next = [];
-
-  rest.forEach((entry) => {
-    next.push(first.toLowerCase() + entry);
-    next.push(first.toUpperCase() + entry);
-  });
-
-  return next;
-};
-
-const resolveOcid = async (characterName) => {
-  const isKorean = /^[가-힣]+$/.test(characterName);
-  const candidates = isKorean
-    ? [characterName]
-    : [characterName, ...getAllCaseCombinations(characterName).slice(0, 20)];
-
-  for (const candidate of candidates) {
-    const ocidData = await getOcidApi(candidate);
-    if (ocidData?.ocid) {
-      return ocidData.ocid;
-    }
-  }
-
-  return null;
-};
-
 export const ExpirationCheckTab = () => {
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -195,29 +164,12 @@ export const ExpirationCheckTab = () => {
       return;
     }
 
-    const characterName = rawCharacterName.replace(/\s+/g, "");
+    const characterName = normalizeCharacterName(rawCharacterName);
     if (!characterName) {
       return;
     }
 
     setSearchValue(characterName);
-
-    const isChosung = /^[ㄱ-ㅎ]+$/.test(characterName);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(characterName);
-
-    if (isChosung) {
-      setError("초성만으로는 검색할 수 없습니다.");
-      setCombinedData(null);
-      setHasSearched(true);
-      return;
-    }
-
-    if (hasSpecialChar) {
-      setError("특수문자가 포함된 닉네임은 검색할 수 없습니다.");
-      setCombinedData(null);
-      setHasSearched(true);
-      return;
-    }
 
     try {
       setHasSearched(true);
@@ -225,7 +177,7 @@ export const ExpirationCheckTab = () => {
       setError(null);
       setCombinedData(null);
 
-      const ocid = await resolveOcid(characterName);
+      const ocid = await resolveCharacterOcid(characterName);
       if (!ocid) {
         throw new Error("캐릭터를 찾지 못했습니다.");
       }
@@ -264,7 +216,7 @@ export const ExpirationCheckTab = () => {
             id="checklist-character-search"
             type="text"
             value={searchValue}
-            maxLength={15}
+            maxLength={CHARACTER_NAME_MAX_LENGTH}
             placeholder="닉네임을 입력하세요"
             onChange={(event) => setSearchValue(event.target.value)}
           />

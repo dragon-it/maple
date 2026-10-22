@@ -2,102 +2,22 @@ import { isRequestCanceled, throwIfAborted } from "./requestCancellation";
 import {
   getGuildBasicInformation,
   getGuildRanking,
-  getOcidApi,
   getOguildId,
   getGuildMembers,
 } from "./api";
 import apiFunctions from "./ApiFuntion";
-
-// 캐릭터 대소문자 조합 생성 함수 (최대 개수 제한으로 성능 최적화)
-const getLimitedCaseCombinations = (str, limit = 20) => {
-  let combinations = [""];
-  for (let char of str) {
-    const nextCombinations = [];
-    const lower = char.toLowerCase();
-    const upper = char.toUpperCase();
-
-    for (let combo of combinations) {
-      nextCombinations.push(combo + lower);
-      if (lower !== upper && nextCombinations.length < limit) {
-        nextCombinations.push(combo + upper);
-      }
-      if (nextCombinations.length >= limit) {
-        break;
-      }
-    }
-    combinations = nextCombinations;
-    if (combinations.length >= limit) {
-      break;
-    }
-  }
-  return combinations;
-};
-
-// 캐릭터 OCID 함수
-const getOcid = async (characterName, signal) => {
-  throwIfAborted(signal);
-  try {
-    const isKorean = /^[가-힣]+$/.test(characterName); // 한글인지 확인
-    const combinations = isKorean
-      ? [characterName]
-      : getLimitedCaseCombinations(characterName, 20); // 한글이면 조합 생성 생략
-
-    // 조합에서 최대 20개까지만 시도하도록 제한 (이미 함수에서 제한됨)
-    const limitedCombinations = combinations;
-
-    // 1. 입력한 이름 그대로 먼저 시도
-    try {
-      const ocidData = await getOcidApi(characterName, { signal }); // OCID API 호출
-      throwIfAborted(signal);
-      if (ocidData) {
-        return ocidData.ocid; // OCID 반환
-      }
-    } catch (error) {
-      throwIfAborted(signal);
-      if (isRequestCanceled(error)) throw error;
-      console.log(
-        `Direct search failed for ${characterName}, trying combinations...`,
-      );
-    }
-
-    // 2. 제한된 대소문자 조합 시도 (10개까지만)
-    for (let name of limitedCombinations) {
-      try {
-        const ocidData = await getOcidApi(name, { signal }); // OCID API 호출
-        throwIfAborted(signal);
-        if (ocidData) {
-          return ocidData.ocid; // OCID 반환
-        }
-      } catch (error) {
-        throwIfAborted(signal);
-        if (isRequestCanceled(error)) throw error;
-        console.log(`Failed for ${name}: ${error.message}`);
-        continue; // 오류 발생 시 다음 조합으로 넘어감
-      }
-    }
-
-    return null; // 모든 조합을 시도한 후에도 OCID를 찾지 못한 경우 null 반환
-  } catch (error) {
-    throwIfAborted(signal);
-    if (isRequestCanceled(error)) throw error;
-    console.error(`getOcid error: ${error.message}`);
-    return null; // 예기치 않은 오류 발생 시 null 반환
-  }
-};
+import { resolveCharacterOcid } from "./resolveCharacterOcid";
 
 const UserApi = async (characterName, { signal } = {}) => {
   throwIfAborted(signal);
-  if (!characterName.trim()) throw new Error("닉네임을 입력해주세요.");
-  if (/^[ㄱ-ㅎ]+$/.test(characterName)) {
-    throw new Error("초성만으로 검색할 수 없습니다.");
-  }
-  if (/[!@#$%^&*(),.?":{}|<>]/.test(characterName)) {
-    throw new Error("특수문자가 포함된 닉네임은 검색할 수 없습니다.");
-  }
-
-  const ocid = await getOcid(characterName, signal);
+  // 입력 검증, 이름 후보 생성, 요청 공유와 취소를 공통 조회에 맡김
+  const ocid = await resolveCharacterOcid(characterName, { signal });
   throwIfAborted(signal);
-  if (!ocid) throw new Error("OCID 가져오기 오류");
+
+  // 서비스 장애는 위에서 예외로 전달됨. 모든 후보를 조회한 뒤 못 찾은 경우만 안내함
+  if (!ocid) {
+    throw new Error("캐릭터를 찾지 못했습니다.");
+  }
 
   const apiResults = await Promise.all(
     apiFunctions.map(({ function: apiFunction }) =>
