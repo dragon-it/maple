@@ -1,4 +1,4 @@
-import { resolveCharacterOcid } from "../../api/resolveCharacterOcid";
+import { loadPartyProfile } from "../../api/partyProfile";
 import { CHARACTER_NAME_MAX_LENGTH, normalizeCharacterName } from "../../utils/characterName";
 import React, {
   useMemo,
@@ -12,7 +12,6 @@ import { ContainerCss } from "../common/searchCharacter/ContainerBox";
 import { periodGroups } from "./bossIncomeData";
 import { ChevronDown, GripVertical } from "lucide-react";
 import { BossPartyPanel } from "./BossPartyPanel";
-import { getCombinedData } from "../../api/api";
 import { BossIconWrap, BossIcon, DifficultyIcon, getDifficultyIcon } from "./BossVisuals";
 
 const STORAGE_KEY = "checklist-boss-income-characters-v2";
@@ -170,22 +169,7 @@ const getDisplayRows = (group, sortMode) => {
 };
 
 const fetchCharacterProfile = async (nickname) => {
-  const ocid = await resolveCharacterOcid(nickname);
-  if (!ocid) {
-    return null;
-  }
-
-  const combinedData = await getCombinedData(ocid);
-  const basicInfo = combinedData?.getBasicInformation;
-
-  if (!basicInfo) {
-    return null;
-  }
-
-  return {
-    nickname: basicInfo.character_name || nickname,
-    characterImage: basicInfo.character_image || null,
-  };
+  return loadPartyProfile(JSON.stringify({ name: nickname }));
 };
 
 const normalizeSelections = (rawSelections) => {
@@ -362,6 +346,30 @@ export const BossIncomeTab = () => {
   const dragRef = useRef(null);
   const scrollFrameRef = useRef(null);
   const toastTimerRef = useRef(null);
+
+  useEffect(() => {
+    let disposed = false;
+    // 저장된 이미지를 먼저 표시한 뒤 순서대로 갱신해 초기 요청 집중을 줄임
+    const refreshImages = async () => {
+      for (const character of storedState.characters) {
+        if (disposed) break;
+        try {
+          const profile = await fetchCharacterProfile(character.nickname);
+          if (disposed) break;
+          if (!profile.characterImage) continue;
+          setCharacters(previous => previous.map(current =>
+            current.id === character.id && current.nickname === character.nickname
+              ? { ...current, characterImage: profile.characterImage }
+              : current,
+          ));
+        } catch {
+          // 갱신 실패 시 저장된 이미지와 보스 설정을 그대로 유지함
+        }
+      }
+    };
+    refreshImages();
+    return () => { disposed = true; };
+  }, [storedState]);
 
   const moveCharacter = (sourceId, targetId) => {
     setCharacters((previous) => {
