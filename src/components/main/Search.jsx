@@ -188,7 +188,6 @@ export const Search = ({ variant = "page", compact = false }) => {
             alt="검색"
             width={18}
             height={18}
-            $mobileExpanded={isMobileExpanded}
           />
         </StyledButton>
       </InputWrap>

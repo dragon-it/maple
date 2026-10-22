@@ -445,7 +445,8 @@ const MiniGameWrapper = styled.li`
   display: flex;
   align-items: center;
   height: 100%;
-  z-index: 99999;
+  /* 메뉴 글자가 장비 툴팁(9999) 위로 비치지 않도록 메뉴 내부에서만 겹침 순서를 관리함 */
+  z-index: 1000;
 `;
 
 const MiniGameTrigger = styled.a`
@@ -472,7 +473,7 @@ const MiniDropdown = styled.div`
   );
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 12px;
-  z-index: 9999999;  
+  z-index: 1;
   text-align: center;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
 

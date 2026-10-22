@@ -1,54 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { FooterText } from "./FooterText";
 
 export const Footer = () => {
-  useEffect(() => {
-    const pushAds = () => {
-      try {
-        const ads = document.querySelectorAll(
-          ".adsbygoogle:not([data-adsbygoogle-status])",
-        );
+  const adRef = useRef(null);
+  const requestedRef = useRef(false);
 
-        ads.forEach(() => {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        });
+  useEffect(() => {
+    const ad = adRef.current;
+    if (!ad) return;
+
+    // 광고 스크립트는 public/index.html에서 한 번만 로드함
+    const script = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
+    let ready = document.readyState === "complete" || Boolean(window.adsbygoogle?.loaded);
+    const pushAd = () => {
+      if (!ready || requestedRef.current || ad.hasAttribute("data-adsbygoogle-status")) return;
+      // 너비가 없는 숨겨진 영역에서는 초기화하지 않음
+      if (!ad.isConnected || ad.getBoundingClientRect().width <= 0) return;
+      requestedRef.current = true;
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (e) {
         console.error("Adsense Error:", e);
       }
     };
 
-    const loadAds = () => {
-      const existingScript = document.querySelector(
-        'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]',
-      );
-
-      if (existingScript) {
-        pushAds();
-        return;
-      }
-
-      const script = document.createElement("script");
-      script.src =
-        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9967012422287379";
-      script.async = true;
-      script.crossOrigin = "anonymous";
-      script.onload = pushAds;
-      script.onerror = () => {
-        console.error("Failed to load AdSense script");
-      };
-
-      document.head.appendChild(script);
+    const onReady = () => {
+      ready = true;
+      pushAd();
     };
 
-    if (document.readyState === "complete") {
-      loadAds();
-    } else {
-      window.addEventListener("load", loadAds);
-    }
+    const observer = new ResizeObserver(pushAd);
+    observer.observe(ad);
+    script?.addEventListener("load", onReady);
+    window.addEventListener("load", onReady);
+    pushAd();
 
     return () => {
-      window.removeEventListener("load", loadAds);
+      observer.disconnect();
+      script?.removeEventListener("load", onReady);
+      window.removeEventListener("load", onReady);
     };
   }, []);
 
@@ -56,11 +47,11 @@ export const Footer = () => {
     <>
       <Adsense>
         <ins
+          ref={adRef}
           className="adsbygoogle"
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            display: "block",
+            width: "100%",
             height: "auto",
             maxWidth: "100vw",
           }}
@@ -80,7 +71,8 @@ export const Footer = () => {
 
 const Adsense = styled.div`
   width: 90%;
-  min-width: 300px;
+  box-sizing: border-box;
+  min-width: 0;
   height: auto;
   display: flex;
   justify-content: center;

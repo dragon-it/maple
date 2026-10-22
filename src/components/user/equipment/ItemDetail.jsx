@@ -11,6 +11,7 @@ import epic_Border from "../../../assets/pages/user/equipment/optionIcon/Item.It
 import unique_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.3.png";
 import legendary_Border from "../../../assets/pages/user/equipment/optionIcon/Item.ItemIcon.4.png";
 import DesiredPart from "./itemDetailDesiredPart";
+import { getSoulOptions } from "./soulOptions";
 
 export const ItemDetail = ({ item, onClose }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -121,7 +122,7 @@ export const ItemDetail = ({ item, onClose }) => {
 
     // exceptional_upgrade도 체크
     return Object.entries(stats).every(
-      ([key, value]) => value === "0" || value === 0 || value === null
+      ([key, value]) => value === "0" || value === 0 || value === null,
     );
   };
 
@@ -159,6 +160,8 @@ export const ItemDetail = ({ item, onClose }) => {
   };
 
   // 잠재 옵션 배열
+  const soul = getSoulOptions(item);
+
   const potentials = [
     item.potential_option_1,
     item.potential_option_2,
@@ -210,7 +213,7 @@ export const ItemDetail = ({ item, onClose }) => {
                       ></span>
                     )}
                   </React.Fragment>
-                )
+                ),
               )}
           </StartForceSecondLine>
         </StarForce>
@@ -434,7 +437,32 @@ export const ItemDetail = ({ item, onClose }) => {
         {item.soul_name && (
           <SoulOptionWrap>
             <div>{item.soul_name}</div>
-            <div>{item.soul_option}</div>
+            <div>
+              {[item.soul_option, ...soul.bonuses].filter(Boolean).join(", ")}
+            </div>
+            {soul.canApply && (
+              <SoulAvailable>소울 잠재능력 부여 가능</SoulAvailable>
+            )}
+            {soul.grade && (
+              <PotentialOptionWrap>
+                <OptionHeader $potengrade={soul.grade}>
+                  {getInitial(soul.grade) && (
+                    <OptionInitial src={getInitial(soul.grade)} alt="" />
+                  )}
+                  <span>소울 잠재능력: {soul.grade}</span>
+                  {soul.amplifiedGrade > 0 && (
+                    <SoulAmplification>
+                      (증폭 {soul.amplifiedGrade}단계)
+                    </SoulAmplification>
+                  )}
+                </OptionHeader>
+                {soul.options.map((option, index) => (
+                  <PotentialItems key={`soul-${index}`}>
+                    {option}
+                  </PotentialItems>
+                ))}
+              </PotentialOptionWrap>
+            )}
           </SoulOptionWrap>
         )}
         {item.item_exceptional_option &&
@@ -670,9 +698,19 @@ const AdditionalOptionWrap = styled.div`
 const SoulOptionWrap = styled.div`
   border-top: 1px dashed rgb(89, 85, 82);
   padding: 5px 0px;
-  :first-child {
+  > div:first-child {
     color: rgb(255, 255, 68);
+    margin-bottom: 2px;
   }
+`;
+
+const SoulAvailable = styled.div`
+  margin: 4px 0;
+`;
+
+const SoulAmplification = styled.span`
+  color: white;
+  margin-left: 4px;
 `;
 
 const ExOptionWrap = styled.div`
