@@ -1,27 +1,50 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { CHARACTER_NAME_MAX_LENGTH, normalizeCharacterName } from "../../utils/characterName";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import characterCaptureFetch from "../../api/characterCaptureFetch";
 import serchIcon from "../../assets/icons/searchIcons/light_mode_icon_search.svg";
 import colors from "../common/color/colors";
+import { isRequestCanceled } from "../../api/requestCancellation";
 
-export const CaptureInput = ({ setResult, setError }) => {
+export const CaptureInput = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isMainCharacterSearch, setIsMainCharacterSearch] = useState(false);
   const navigate = useNavigate();
+  const { pathname, key: locationKey } = useLocation();
+  const requestRef = useRef(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setError(null);
+    return () => requestRef.current?.abort();
+  }, [pathname, locationKey]);
 
   const handleSearch = async () => {
     if (!searchValue.trim()) return;
 
-    const processedSearchValue = searchValue.replace(/\s+/g, "");
+    const processedSearchValue = normalizeCharacterName(searchValue);
+    requestRef.current?.abort();
+    setError(null);
+
+    // 일반 검색 결과는 URL을 기준으로 조회하는 훅에서만 관리
+    if (!isMainCharacterSearch) {
+      navigate(
+        `/character-capture/${encodeURIComponent(processedSearchValue)}`,
+      );
+      return;
+    }
+
+    const controller = new AbortController();
+    requestRef.current = controller;
 
     try {
-      const result = await characterCaptureFetch(
-        processedSearchValue,
-        setResult,
-      );
+      const result = await characterCaptureFetch(processedSearchValue, {
+        signal: controller.signal,
+      });
+      if (controller.signal.aborted) return;
       const mainCharacterName =
-        result?.getCombinedData?.getUnionRanking?.ranking[0]?.character_name;
+        result?.getCombinedData?.getUnionRanking?.ranking?.[0]?.character_name;
 
       const redirectName =
         isMainCharacterSearch && mainCharacterName
@@ -37,7 +60,8 @@ export const CaptureInput = ({ setResult, setError }) => {
         navigate(`/character-capture/${encodeURIComponent(redirectName)}`);
       }
     } catch (error) {
-      setError("오류가 발생하였습니다. 닉네임을 확인해주세요.");
+      if (controller.signal.aborted || isRequestCanceled(error)) return;
+      setError(error.message || "조회에 실패했습니다. 잠시 후 다시 시도해주세요.");
       console.error("본캐 찾기 중 오류 발생:", error);
     }
   };
@@ -66,7 +90,7 @@ export const CaptureInput = ({ setResult, setError }) => {
           placeholder="캐릭터 닉네임을 입력해주세요."
           value={searchValue}
           onChange={handleInputChange}
-          maxLength={15}
+          maxLength={CHARACTER_NAME_MAX_LENGTH}
         />
         <StyledButton>
           <img src={serchIcon} alt="검색" width={20} height={20} />
@@ -82,6 +106,7 @@ export const CaptureInput = ({ setResult, setError }) => {
         <CheckBoxLabel htmlFor="check1" />
         본캐 찾기
       </FindMainCheckBox>
+      {error && <div role="alert">{error}</div>}
     </Container>
   );
 };

@@ -4,7 +4,7 @@ import Information from "../components/user/Information";
 import { Equipment } from "../components/user/Equipment";
 import { Skill } from "../components/user/Skill";
 import { useParams } from "react-router-dom";
-import UserApi from "../api/userApi";
+import { useCharacterQuery } from "../hooks/useCharacterQuery";
 import loadingImg_light from "../assets/loading/loading_light.gif";
 import loadingImg_dark from "../assets/loading/loading_dark.gif";
 import { Error } from "./Error";
@@ -32,10 +32,7 @@ export const User = () => {
   const [isSubHeaderCollapsed, setIsSubHeaderCollapsed] = useState(false);
   const [isCompactHeader, setIsCompactHeader] = useState(false);
   const [activeTab, setActiveTab] = useState(1);
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [guildLoading, setGuildLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { result, loading, guildLoading, error } = useCharacterQuery(characterName);
   const basicInfo = result?.getCombinedData?.getBasicInformation || {};
   const statInfo = result?.getCombinedData?.getCharacterStat || {};
   const combatStat = statInfo?.final_stat?.[42];
@@ -63,23 +60,7 @@ export const User = () => {
   const liberationLabel = liberationLabelMap[liberation] ?? "-";
 
   useEffect(() => {
-    const fetchDataAndUpdateState = async () => {
-      setLoading(true);
-      setError(null);
-      setActiveTab(1);
-      setResult(null);
-      setGuildLoading(true);
-      await UserApi(
-        characterName,
-        setResult,
-        setLoading,
-        setError,
-        setGuildLoading,
-      );
-      setLoading(false);
-    };
-
-    fetchDataAndUpdateState();
+    setActiveTab(1);
   }, [characterName]);
 
   useEffect(() => {

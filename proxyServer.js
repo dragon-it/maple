@@ -1,4 +1,5 @@
 const express = require("express");
+const { createOcidHandler } = require("./server/ocid");
 const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -87,28 +88,7 @@ app.get("/notice-event/detail", async (req, res) => {
 });
 
 // 캐릭터 OCID API
-app.get("/api/ocid", async (req, res) => {
-  const { character_name } = req.query;
-
-  if (!character_name) {
-    return res.status(400).json({ error: "character_name is required" });
-  }
-
-  try {
-    const data = await callMapleStoryAPI("id", { character_name });
-
-    if (!data || !data.ocid) {
-      return res
-        .status(500)
-        .json({ error: "Failed to fetch data or ocid is missing" });
-    }
-
-    res.json(data);
-  } catch (error) {
-    console.error(`Error during API call: ${error.message}`);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+app.get("/api/ocid", createOcidHandler(axios, BASE_URL, () => process.env.NEXON_API_KEY));
 
 // 길드 oguildId 취득
 app.get("/api/guild/id", async (req, res) => {

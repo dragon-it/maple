@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  getGuildBasicInformation,
-  getGuildMembers,
-  getGuildRanking,
-  getOguildId,
-} from "../../api/api";
+import React from "react";
+import { loadGuildData } from "../../api/userApi";
+import { useLatestQuery } from "../../hooks/useLatestQuery";
 import { useParams } from "react-router-dom";
 import { Guild } from "../user/Guild";
 import { Helmet } from "react-helmet-async";
@@ -13,44 +9,16 @@ import loadingImg_light from "../../assets/loading/loading_light.gif";
 import loadingImg_dark from "../../assets/loading/loading_dark.gif";
 import { useTheme } from "../../context/ThemeProvider";
 
+const fetchGuildDetails = (key, options) => {
+  const [guildName, worldName] = JSON.parse(key);
+  return loadGuildData(guildName, worldName, options);
+};
+
 export const SearchGuildDetail = ({ isGuildDetail }) => {
   const { guildName, worldName } = useParams();
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
   const { theme } = useTheme();
-
-  useEffect(() => {
-    if ((guildName, worldName)) {
-      const fetchGuildDetails = async () => {
-        const oguild_id = await getOguildId(guildName, worldName);
-        try {
-          // 병렬로 길드 정보 및 랭킹 정보 가져오기
-          const [guildBasicInformation, guildRankInformation] =
-            await Promise.all([
-              getGuildBasicInformation(oguild_id.oguild_id),
-              getGuildRanking(guildName, worldName),
-            ]);
-
-          // 길드 멤버 정보 가져오기
-          const { guild_member } = guildBasicInformation;
-
-          let guildMembersData = await getGuildMembers(guild_member);
-
-          // 결과 설정
-          setResult({
-            guildBasicInformation,
-            guildRankInformation,
-            guildMembersData,
-          });
-        } catch (error) {
-          console.error("길드 상세 정보를 가져오는 중 오류 발생:", error);
-          setError("길드 정보를 가져오는 중 오류가 발생했습니다.");
-        }
-      };
-
-      fetchGuildDetails();
-    }
-  }, [guildName, worldName]);
+  const key = guildName && worldName ? JSON.stringify([guildName, worldName]) : null;
+  const { result, error } = useLatestQuery(key, fetchGuildDetails);
 
   if (error) {
     return <div>{error}</div>;
