@@ -2,11 +2,16 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
+    # 일반 버전 업데이트를 dev에서 검증함. 보안 업데이트는 기본 브랜치 대상으로 생성됨
+    target-branch: "dev"
     schedule:
-      interval: "daily"
-    open-pull-requests-limit: 10
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 4
 
-    # major는 전부 수동 (PR은 만들되 자동머지 절대 금지)
+    # 일반 major 업데이트 PR은 생성하지 않음. major 전환은 별도로 검토함
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
@@ -24,7 +29,18 @@ updates:
           - "http-proxy-middleware"
           - "styled-components"
 
-      # 툴링/개발도구 (대부분 자동머지)
+      # 허용한 개발 도구의 patch만 묶음. CI의 자동 병합 허용 목록과 맞춤
+      tooling-patch:
+        update-types: ["patch"]
+        patterns:
+          - "@eslint/js"
+          - "eslint"
+          - "eslint-plugin-react"
+          - "@testing-library/jest-dom"
+          - "typescript"
+          - "concurrently"
+
+      # 나머지 개발 도구 업데이트는 수동 검토함
       tooling:
         patterns:
           - "@eslint/*"
@@ -36,7 +52,7 @@ updates:
           - "browserslist"
           - "caniuse-lite"
 
-      # 그 외 나머지 (자동머지)
+      # 그 외 나머지는 수동 검토함
       misc:
         patterns:
           - "*"
