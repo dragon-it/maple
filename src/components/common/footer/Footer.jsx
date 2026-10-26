@@ -70,7 +70,6 @@ export const Footer = () => {
 };
 
 const Adsense = styled.div`
-  width: 90%;
   box-sizing: border-box;
   min-width: 0;
   height: auto;
