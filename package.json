@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^6.4.6",
-    "axios": "^1.7.2",
+    "axios": "^1.20.0",
     "cors": "^2.8.6",
     "cross-env": "^7.0.3",
-    "express": "^4.19.2",
+    "express": "^4.22.3",
     "html2canvas": "^1.4.1",
     "http-proxy-middleware": "^3.0.3",
     "lucide-react": "^1.25.0",
@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node proxyServer.js",
-    "dev": "cross-env NODE_ENV=development concurrently \"node proxyServer.js\" \"react-scripts start\"",
+    "dev": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"node proxyServer.js\" \"node scripts/start-dev-client.js\"",
     "build:blue": "export GENERATE_SOURCEMAP=false && rm -rf build-blue && react-scripts build && mv build build-blue",
     "build:green": "export GENERATE_SOURCEMAP=false && rm -rf build-green && react-scripts build && mv build build-green",
     "build": "react-scripts build",
