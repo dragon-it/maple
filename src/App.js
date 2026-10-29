@@ -20,33 +20,38 @@ import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 
 function App() {
   useEffect(() => {
-    if (typeof document === "undefined" || !document.body) return;
+    const body = document.body;
+    const root = document.documentElement;
+    let padding = body.style.paddingBottom;
+    let priority = body.style.getPropertyPriority("padding-bottom");
 
-    const moveAdsenseBodyPaddingToFooter = () => {
-      const paddingBottom = document.body.style.paddingBottom;
-      const safeArea =
-        paddingBottom && paddingBottom !== "0px" ? paddingBottom : "0px";
+    const moveAdPadding = () => {
+      const nextPadding = body.style.paddingBottom;
+      const nextPriority = body.style.getPropertyPriority("padding-bottom");
 
-      document.documentElement.style.setProperty(
-        "--adsense-footer-safe-area",
-        safeArea,
-      );
-      document.body.style.setProperty("padding-bottom", "0px", "important");
+      // 적용한 0px은 무시함. 다른 body 스타일 변경에도 광고 여백을 유지함
+      if (nextPadding === "0px" && nextPriority === "important") return;
+
+      padding = nextPadding;
+      priority = nextPriority;
+      root.style.setProperty("--adsense-footer-safe-area", padding || "0px");
+
+      // 직접 변경하는 동안 감지를 끊어 자기 변경을 다시 처리하지 않음
+      observer.disconnect();
+      body.style.setProperty("padding-bottom", "0px", "important");
+      observer.observe(body, { attributes: true, attributeFilter: ["style"] });
     };
 
-    moveAdsenseBodyPaddingToFooter();
-
-    const observer = new MutationObserver(moveAdsenseBodyPaddingToFooter);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
+    const observer = new MutationObserver(moveAdPadding);
+    observer.observe(body, { attributes: true, attributeFilter: ["style"] });
+    moveAdPadding();
 
     return () => {
       observer.disconnect();
-      document.documentElement.style.removeProperty(
-        "--adsense-footer-safe-area",
-      );
+      // 마지막으로 광고가 지정했던 값을 복원함 (StrictMode 재실행 포함)
+      if (padding) body.style.setProperty("padding-bottom", padding, priority);
+      else body.style.removeProperty("padding-bottom");
+      root.style.removeProperty("--adsense-footer-safe-area");
     };
   }, []);
 
