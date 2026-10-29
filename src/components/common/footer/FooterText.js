@@ -73,6 +73,8 @@ const FooterContainer = styled.footer`
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   background: ${({ theme }) => theme.footerBgColor || "rgba(15, 23, 42, 0.8)"};
   padding: 16px 12px;
+  /* 앵커 광고 여백을 footer 안으로 옮겨 바깥에 배경이 드러나지 않게 함 */
+  padding-bottom: calc(16px + var(--adsense-footer-safe-area, 0px));
   box-sizing: border-box;
   margin-top: auto;
 `;
