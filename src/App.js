@@ -6,6 +6,7 @@ import { Main } from "./pages/Main.jsx";
 import styled from "styled-components";
 import { ThemeProvider } from "./context/ThemeProvider.js";
 import { GlobalStyle } from "./components/theme/GlobalStyles.js";
+import { MapleCursor } from "./components/common/MapleCursor";
 import { Error } from "./pages/Error.jsx";
 import { BackgroundImage } from "./components/main/BackgroundImage";
 import { SearchGuild } from "./pages/SearchGuild";
@@ -63,6 +64,7 @@ function App() {
     <HelmetProvider>
       <ThemeProvider>
         <GlobalStyle />
+        <MapleCursor />
         <Container>
           <Router>
             <Routes>
