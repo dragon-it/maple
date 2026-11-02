@@ -21,37 +21,41 @@ import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 function App() {
   useEffect(() => {
     const body = document.body;
-    const root = document.documentElement;
-    let padding = body.style.paddingBottom;
-    let priority = body.style.getPropertyPriority("padding-bottom");
+    const paddingProperties = ["padding-top", "padding-bottom"];
+    const previousPadding = new Map();
 
-    const moveAdPadding = () => {
-      const nextPadding = body.style.paddingBottom;
-      const nextPriority = body.style.getPropertyPriority("padding-bottom");
-
-      // 적용한 0px은 무시함. 다른 body 스타일 변경에도 광고 여백을 유지함
-      if (nextPadding === "0px" && nextPriority === "important") return;
-
-      padding = nextPadding;
-      priority = nextPriority;
-      root.style.setProperty("--adsense-footer-safe-area", padding || "0px");
+    const clearAdPadding = () => {
+      // 광고가 상단 또는 하단에 붙을 때 body에 넣는 여백을 각각 확인함
+      // 이미 처리한 방향 때문에 다른 방향의 여백 처리가 생략되지 않게 함
+      const changed = paddingProperties.filter((property) =>
+        body.style.getPropertyValue(property) !== "0px" ||
+        body.style.getPropertyPriority(property) !== "important"
+      );
+      if (changed.length === 0) return;
 
       // 직접 변경하는 동안 감지를 끊어 자기 변경을 다시 처리하지 않음
       observer.disconnect();
-      body.style.setProperty("padding-bottom", "0px", "important");
+      changed.forEach((property) => {
+        previousPadding.set(property, {
+          value: body.style.getPropertyValue(property),
+          priority: body.style.getPropertyPriority(property),
+        });
+        body.style.setProperty(property, "0px", "important");
+      });
       observer.observe(body, { attributes: true, attributeFilter: ["style"] });
     };
 
-    const observer = new MutationObserver(moveAdPadding);
+    const observer = new MutationObserver(clearAdPadding);
     observer.observe(body, { attributes: true, attributeFilter: ["style"] });
-    moveAdPadding();
+    clearAdPadding();
 
     return () => {
       observer.disconnect();
       // 마지막으로 광고가 지정했던 값을 복원함 (StrictMode 재실행 포함)
-      if (padding) body.style.setProperty("padding-bottom", padding, priority);
-      else body.style.removeProperty("padding-bottom");
-      root.style.removeProperty("--adsense-footer-safe-area");
+      previousPadding.forEach(({ value, priority }, property) => {
+        if (value) body.style.setProperty(property, value, priority);
+        else body.style.removeProperty(property);
+      });
     };
   }, []);
 
